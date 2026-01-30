@@ -120,6 +120,43 @@
 }
 
 /* ==================== */
+/* WHY LOCAL (Service)  */
+/* Duplicated from city-pages for service pages */
+/* ==================== */
+.why-local {
+  background: var(--cream);
+  padding: 5rem 0;
+}
+
+.why-local-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.why-local-content h2 {
+  margin-bottom: 2rem;
+}
+
+.why-local-content p {
+  color: var(--slate);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.why-local-cta {
+  margin-top: 2rem;
+}
+
+.why-local-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* ==================== */
 /* RESPONSIVE           */
 /* ==================== */
 @media (max-width: 1024px) {
@@ -134,6 +171,15 @@
   
   .benefits-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .why-local-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .why-local-image {
+    order: -1;
   }
 }
 
@@ -150,11 +196,23 @@
     padding: 3rem 0;
   }
   
+  .why-local {
+    padding: 3rem 0;
+  }
+  
   .benefits-grid {
     grid-template-columns: 1fr;
   }
   
   .explanation-content {
+    text-align: center;
+  }
+  
+  .why-local-content {
+    text-align: center;
+  }
+  
+  .why-local-cta {
     text-align: center;
   }
 }
