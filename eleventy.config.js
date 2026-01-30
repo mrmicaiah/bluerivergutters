@@ -16,6 +16,7 @@ module.exports = function(eleventyConfig) {
       layouts: "_includes/layouts",
       data: "_data"
     },
+    pathPrefix: "/bluerivergutters/",
     templateFormats: ["njk", "md", "html"],
     htmlTemplateEngine: "njk",
     markdownTemplateEngine: "njk"
