@@ -70,10 +70,10 @@ extraCss: service-pages.css
   "mainEntity": [
     {% for faq in faqs %}{
       "@type": "Question",
-      "name": "{{ faq.question }}",
+      "name": "{{ faq.question | striptags }}",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "{{ faq.answer | replace('"', '\\"') | replace('\n', ' ') | striptags }}"
+        "text": "{{ faq.answer | striptags | trim }}"
       }
     }{% if not loop.last %},{% endif %}
     {% endfor %}
@@ -199,7 +199,7 @@ extraCss: service-pages.css
         <p class="section-eyebrow">Local Experts</p>
         <h2>Why Choose Blue River Gutters in {{ city }}</h2>
         
-        {{ why_us | safe | default("<p>We're not a national franchise. We're your neighbors — headquartered just minutes away in Huntsville. When you call Blue River Gutters, you're talking to people who've been serving " + city + " and Madison County for over two decades.</p>") }}
+        {{ why_us | safe | default("<p>We are not a national franchise. We are your neighbors — headquartered just minutes away in Huntsville. When you call Blue River Gutters, you are talking to people who have been serving " + city + " and Madison County for over two decades.</p>") }}
         
         <ul class="checkmarks">
           <li>✓ 20+ years serving North Alabama</li>
