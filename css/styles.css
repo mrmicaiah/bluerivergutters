@@ -177,6 +177,47 @@ section { padding: 4rem 0; }
   margin-top: 1rem;
 }
 
+/* =====================
+   BREADCRUMBS
+   ===================== */
+.breadcrumbs {
+  background: var(--light-gray);
+  padding: 0.75rem 0;
+  font-size: 0.85rem;
+}
+
+.breadcrumb-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.breadcrumb-list li {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-list li:not(:last-child)::after {
+  content: "›";
+  margin-left: 0.5rem;
+  color: var(--gray);
+}
+
+.breadcrumb-list a {
+  color: var(--gray);
+}
+
+.breadcrumb-list a:hover {
+  color: var(--blue);
+}
+
+.breadcrumb-list li[aria-current="page"] {
+  color: var(--navy);
+  font-weight: 500;
+}
+
 .hero {
   position: relative;
   padding: 6rem 0;
@@ -319,6 +360,25 @@ section { padding: 4rem 0; }
   margin-bottom: 0.5rem;
 }
 
+/* =====================
+   LOCAL PROBLEMS SECTION
+   ===================== */
+.local-problems {
+  background: var(--cream);
+}
+
+.local-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.local-content p {
+  color: var(--slate);
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
 .reviews { background: var(--cream); }
 
 .review-platforms {
@@ -403,6 +463,49 @@ section { padding: 4rem 0; }
   font-size: 0.95rem;
 }
 
+/* =====================
+   WHY LOCAL SECTION
+   ===================== */
+.why-local {
+  background: var(--light-gray);
+}
+
+.why-local-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.why-local-content h2 {
+  margin-bottom: 1.5rem;
+}
+
+.why-local-content p {
+  color: var(--gray);
+  margin-bottom: 1rem;
+}
+
+.checkmarks {
+  list-style: none;
+  margin: 1.5rem 0;
+}
+
+.checkmarks li {
+  padding: 0.5rem 0;
+  color: var(--slate);
+  font-weight: 500;
+}
+
+.why-local-cta {
+  margin-top: 2rem;
+}
+
+.why-local-image img {
+  width: 100%;
+  border-radius: 12px;
+}
+
 .workmanship { background: var(--light-gray); }
 
 .workmanship-grid {
@@ -429,6 +532,59 @@ section { padding: 4rem 0; }
   gap: 1rem;
   margin-top: 2rem;
   flex-wrap: wrap;
+}
+
+/* =====================
+   TESTIMONIALS SECTION
+   ===================== */
+.testimonials {
+  background: var(--white);
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.testimonial-card {
+  background: var(--cream);
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.testimonial-stars {
+  color: #f59e0b;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.testimonial-text {
+  color: var(--slate);
+  font-style: italic;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.testimonial-author {
+  color: var(--gray);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.review-cta {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--light-gray);
+}
+
+.review-cta p {
+  color: var(--gray);
+}
+
+.review-cta a {
+  font-weight: 600;
 }
 
 .faq { background: var(--white); }
@@ -484,6 +640,11 @@ section { padding: 4rem 0; }
 
 .cta h2 {
   color: var(--white);
+  margin-bottom: 1rem;
+}
+
+.cta p {
+  color: rgba(255,255,255,0.9);
   margin-bottom: 1.5rem;
 }
 
@@ -568,13 +729,45 @@ section { padding: 4rem 0; }
   opacity: 1;
 }
 
+/* =====================
+   FOOTER LOCATIONS (Internal Links)
+   ===================== */
+.footer-locations {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  text-align: center;
+}
+
+.footer-locations h4 {
+  margin-bottom: 1rem;
+}
+
+.footer-locations p {
+  font-size: 0.9rem;
+  line-height: 2;
+}
+
+.footer-locations a {
+  opacity: 0.7;
+}
+
+.footer-locations a:hover {
+  opacity: 1;
+}
+
 .footer-bottom {
-  margin-top: 3rem;
+  margin-top: 2rem;
   padding-top: 2rem;
   border-top: 1px solid rgba(255,255,255,0.1);
   text-align: center;
   font-size: 0.9rem;
   opacity: 0.7;
+}
+
+.footer-bottom a {
+  color: var(--light-gray);
+  margin: 0 0.5rem;
 }
 
 .mobile-sticky-footer {
@@ -600,9 +793,14 @@ section { padding: 4rem 0; }
 
 .mobile-sticky-btn:last-child { border-right: none; }
 
+/* =====================
+   RESPONSIVE STYLES
+   ===================== */
 @media (max-width: 1024px) {
   .services-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
   .workmanship-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .why-local-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .why-local-image { order: -1; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 
@@ -616,9 +814,11 @@ section { padding: 4rem 0; }
   .stats { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
   .stat-number { font-size: 2rem; }
   .services-grid { grid-template-columns: 1fr; }
+  .testimonial-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; text-align: center; }
   .social-links { justify-content: center; }
   .mobile-sticky-footer { display: flex; }
   .footer { padding-bottom: 5rem; }
   section { padding: 3rem 0; }
+  .breadcrumb-list { font-size: 0.8rem; }
 }
