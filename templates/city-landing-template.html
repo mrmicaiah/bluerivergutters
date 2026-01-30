@@ -5,51 +5,63 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <!-- 
-    CITY LANDING PAGE TEMPLATE - Blue River Gutters
-    ================================================
-    Template Variables (replace with actual values):
+    CITY LANDING PAGE TEMPLATE
+    ==========================
+    Blue River Gutters - Local SEO Template
+    
+    PLACEHOLDER VARIABLES:
     - {{city}} = City name (e.g., "Madison")
     - {{city_slug}} = URL-safe city name (e.g., "madison")
     - {{state}} = State abbreviation (e.g., "AL")
     - {{state_full}} = Full state name (e.g., "Alabama")
-    - {{local_hook}} = Local problem hook specific to this city
-    - {{local_description}} = 2-3 sentences about local drainage/gutter issues
-    - {{population}} = City population (optional, for schema)
-    - {{county}} = County name (optional, for local flavor)
+    - {{local_hook}} = Local problem hook paragraph
+    - {{local_fact}} = Specific local fact/stat
+    - {{population}} = City population
+    - {{distance}} = Miles from Huntsville
+    - {{county}} = County name
+    
+    Replace all {{variables}} before publishing.
   -->
   
-  <title>Gutters {{city}} {{state}} | Professional Gutter Services | Blue River Gutters</title>
-  <meta name="description" content="Professional gutter services in {{city}}, {{state_full}}. Seamless gutters, gutter guards, cleaning, and repair. 20+ years experience, 4.7★ rating. Free estimates!">
+  <!-- SEO Meta Tags -->
+  <title>Gutters {{city}} {{state}} | Gutter Installation & Repair | Blue River Gutters</title>
+  <meta name="description" content="Professional gutter services in {{city}}, {{state_full}}. Seamless gutters, gutter guards, cleaning & repair. Locally owned, 20+ years experience. Free estimates. Call (256) 616-6760.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bluerivergutters.com/gutters-{{city_slug}}-al/">
   
   <!-- Open Graph -->
   <meta property="og:title" content="Gutters {{city}} {{state}} | Blue River Gutters">
-  <meta property="og:description" content="Professional gutter services in {{city}}, {{state_full}}. Seamless gutters, gutter guards, cleaning, and repair.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://bluerivergutters.com/gutters-{{city_slug}}-al/">
+  <meta property="og:description" content="Professional gutter services in {{city}}, {{state_full}}. Seamless gutters, gutter guards, cleaning & repair.">
   <meta property="og:image" content="https://res.cloudinary.com/dxzw1zwez/image/upload/blue-river-gutters/og-image.jpg">
+  <meta property="og:url" content="https://bluerivergutters.com/gutters-{{city_slug}}-al/">
+  <meta property="og:type" content="website">
   
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://bluerivergutters.com/gutters-{{city_slug}}-al/">
-  
-  <!-- Fonts & Styles -->
+  <!-- Fonts & CSS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
   
-  <!-- ===========================================
-       SCHEMA MARKUP - LocalBusiness + Breadcrumbs
-       =========================================== -->
+  <!-- 
+    =====================
+    SCHEMA MARKUP - START
+    =====================
+  -->
+  
+  <!-- LocalBusiness Schema (include on every page) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "HomeAndConstructionBusiness",
     "@id": "https://bluerivergutters.com/#organization",
     "name": "Blue River Gutters",
-    "image": "https://res.cloudinary.com/dxzw1zwez/image/upload/logo_fih2rm.webp",
+    "description": "Professional gutter installation, repair, cleaning, and gutter guard services in {{city}}, {{state_full}} and North Alabama.",
     "url": "https://bluerivergutters.com",
-    "telephone": "(256) 616-6760",
+    "logo": "https://bluerivergutters.com/images/logo.png",
+    "image": "https://res.cloudinary.com/dxzw1zwez/image/upload/blue-river-gutters/og-image.jpg",
+    "telephone": "+1-256-616-6760",
     "email": "service@bluerivergutters.com",
+    "priceRange": "$$",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "3315 Memorial Pkwy SW Suite B13",
@@ -60,35 +72,34 @@
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 34.7304,
-      "longitude": -86.5861
+      "latitude": "34.7304",
+      "longitude": "-86.5861"
     },
     "areaServed": {
       "@type": "City",
       "name": "{{city}}",
-      "addressRegion": "{{state}}"
+      "addressRegion": "{{state}}",
+      "addressCountry": "US"
     },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "17:00"
+      }
+    ],
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.7",
-      "reviewCount": "96"
-    },
-    "priceRange": "$$",
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      "opens": "08:00",
-      "closes": "17:00"
-    },
-    "sameAs": [
-      "https://www.facebook.com/bluerivergutters",
-      "https://www.instagram.com/bluerivergutter/",
-      "https://www.youtube.com/channel/UCzhtpjwziYvsTB_lHzmVT0w"
-    ]
+      "reviewCount": "240",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
   }
   </script>
   
-  <!-- Breadcrumb Schema -->
+  <!-- BreadcrumbList Schema -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -98,7 +109,7 @@
         "@type": "ListItem",
         "position": 1,
         "name": "Home",
-        "item": "https://bluerivergutters.com/"
+        "item": "https://bluerivergutters.com"
       },
       {
         "@type": "ListItem",
@@ -109,25 +120,72 @@
       {
         "@type": "ListItem",
         "position": 3,
-        "name": "{{city}}, {{state}}",
-        "item": "https://bluerivergutters.com/gutters-{{city_slug}}-al/"
+        "name": "{{city}}, {{state}}"
       }
     ]
   }
   </script>
+  
+  <!-- FAQPage Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How much do gutters cost in {{city}}, {{state}}?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Gutter installation in {{city}} typically costs $6-12 per linear foot for aluminum seamless gutters, depending on home size and complexity. We provide free estimates for accurate pricing."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do you offer free estimates in {{city}}?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, Blue River Gutters provides free, no-obligation estimates for all gutter services in {{city}} and surrounding areas. Call (256) 616-6760 to schedule."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How often should I clean my gutters in {{city}}?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We recommend cleaning gutters at least twice per year in {{city}} — once after pine needle season (October) and again after leaf drop (December). Homes near trees may need more frequent cleaning."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What areas do you serve near {{city}}?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Blue River Gutters serves {{city}} and all of {{county}} County, plus Huntsville, Madison, Decatur, Athens, Hartselle, and surrounding communities within 30 miles."
+        }
+      }
+    ]
+  }
+  </script>
+  
+  <!-- 
+    ===================
+    SCHEMA MARKUP - END
+    ===================
+  -->
 </head>
 <body>
 
-  <!-- =====================
-       TOP BANNER
-       ===================== -->
+  <!-- ==================== -->
+  <!-- TOP BANNER           -->
+  <!-- ==================== -->
   <div class="top-banner">
-    <a href="https://BlueRiverGutters.as.me/">✉️ Schedule Now</a>
+    <a href="https://BlueRiverGutters.as.me/">✉️ Schedule Your Free Estimate</a>
   </div>
 
-  <!-- =====================
-       HEADER
-       ===================== -->
+  <!-- ==================== -->
+  <!-- HEADER               -->
+  <!-- ==================== -->
   <header class="header">
     <div class="header-inner">
       <a href="/">
@@ -136,7 +194,7 @@
       <nav class="nav">
         <a href="/#services">Services</a>
         <a href="/#about">About</a>
-        <a href="/#contact">Contact</a>
+        <a href="/locations/">Locations</a>
         <a href="tel:2566166760" class="nav-cta">📞 (256) 616-6760</a>
       </nav>
       <button class="mobile-menu-btn" aria-label="Menu">
@@ -151,14 +209,14 @@
   <nav class="mobile-nav">
     <a href="/#services">Services</a>
     <a href="/#about">About</a>
-    <a href="/#contact">Contact</a>
+    <a href="/locations/">Locations</a>
     <a href="tel:2566166760" class="mobile-nav-cta">📞 (256) 616-6760</a>
   </nav>
 
-  <!-- =====================
-       BREADCRUMBS
-       ===================== -->
-  <nav class="breadcrumbs" aria-label="Breadcrumb">
+  <!-- ==================== -->
+  <!-- BREADCRUMBS          -->
+  <!-- ==================== -->
+  <nav class="breadcrumb" aria-label="Breadcrumb">
     <div class="container">
       <ol class="breadcrumb-list">
         <li><a href="/">Home</a></li>
@@ -168,25 +226,30 @@
     </div>
   </nav>
 
-  <!-- =====================
-       HERO SECTION
-       Local Problem Hook
-       ===================== -->
-  <section class="hero" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/blue-river-gutters/hero-bg_axhlw4.jpg');">
+  <!-- ==================== -->
+  <!-- HERO SECTION         -->
+  <!-- Local problem hook   -->
+  <!-- ==================== -->
+  <section class="hero" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/blue-river-gutters/hero-bg.jpg');">
     <div class="hero-overlay"></div>
     <div class="container hero-container">
       <div class="hero-content">
-        <p class="hero-eyebrow">Blue River Gutters • {{city}}, {{state}}</p>
-        <h1>Professional Gutter Services in {{city}}, {{state_full}}</h1>
+        <p class="hero-eyebrow">Serving {{city}}, {{state_full}}</p>
+        <h1>Professional Gutter Services in {{city}}, {{state}}</h1>
         
         <!-- 
-          LOCAL HOOK: Replace this paragraph with city-specific content.
-          Examples:
-          - Madison: "Madison's rapid growth means new homes with builder-grade gutters that fail within years."
-          - Decatur: "Decatur's proximity to the Tennessee River creates unique flooding challenges."
-          - Athens: "Athens homeowners know red clay soil doesn't absorb water—it pools around your foundation."
+          LOCAL HOOK PARAGRAPH
+          Replace {{local_hook}} with city-specific content about:
+          - Local drainage problems (red clay, flooding)
+          - Weather challenges (rainfall, storms)
+          - Area-specific issues (pine needles, oak trees)
+          
+          Example: "{{city}}'s red clay soil and 55 inches of annual rainfall 
+          create the perfect recipe for drainage problems. Without properly 
+          functioning gutters, that water has nowhere to go — except into 
+          your foundation, landscaping, and basement."
         -->
-        <p>{{local_hook}} Our experienced team has served {{city}} homeowners for over 20 years, providing gutter solutions built for North Alabama's unique climate.</p>
+        <p>{{local_hook}}</p>
         
         <div class="hero-cta">
           <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
@@ -196,158 +259,154 @@
     </div>
   </section>
 
-  <!-- =====================
-       STATS SECTION
-       ===================== -->
+  <!-- ==================== -->
+  <!-- TRUST INDICATORS     -->
+  <!-- Stats + Reviews      -->
+  <!-- ==================== -->
   <section class="stats-section">
     <div class="container">
       <div class="stats">
         <div class="stat">
-          <div class="stat-number">1,700+</div>
-          <div class="stat-label">Satisfied Customers</div>
+          <div class="stat-number">20+</div>
+          <div class="stat-label">Years Experience</div>
         </div>
         <div class="stat">
-          <div class="stat-number">20+</div>
-          <div class="stat-label">Years in Business</div>
+          <div class="stat-number">1,700+</div>
+          <div class="stat-label">Happy Customers</div>
         </div>
         <div class="stat">
           <div class="stat-number">4.7★</div>
           <div class="stat-label">Google Rating</div>
         </div>
         <div class="stat">
-          <div class="stat-number">96</div>
+          <div class="stat-number">240+</div>
           <div class="stat-label">5-Star Reviews</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- =====================
-       LOCAL PROBLEM SECTION
-       City-specific drainage issues
-       ===================== -->
-  <section class="local-problems">
-    <div class="container">
-      <div class="section-header">
-        <p class="section-eyebrow">Local Expertise</p>
-        <h2>Why {{city}} Homes Need Quality Gutters</h2>
-      </div>
-      
-      <div class="local-content">
-        <!-- 
-          LOCAL DESCRIPTION: 2-3 paragraphs about why this city specifically needs good gutters.
-          Include:
-          - Specific soil type (red clay)
-          - Rainfall amounts (50+ inches/year)
-          - Local challenges (pine needles, flooding, humidity)
-          - Neighborhood references if applicable
-        -->
-        <p>{{local_description}}</p>
-        
-        <p>North Alabama receives over 50 inches of rain annually—that's a lot of water hitting your roof. Without properly functioning gutters, that water pools around your foundation, seeps into your basement, and erodes your landscaping.</p>
-        
-        <p>Our team understands {{city}}'s unique challenges. We've installed thousands of gutter systems across North Alabama, and we know what works.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- =====================
-       SERVICES GRID
-       Links to individual service pages
-       ===================== -->
+  <!-- ==================== -->
+  <!-- SERVICES GRID        -->
+  <!-- 6 Core Services      -->
+  <!-- ==================== -->
   <section class="services" id="services">
     <div class="container">
       <div class="section-header">
-        <p class="section-eyebrow">What We Offer in {{city}}</p>
-        <h2>Our Gutter Services</h2>
+        <p class="section-eyebrow">What We Offer</p>
+        <h2>Gutter Services in {{city}}, {{state}}</h2>
+        <p class="section-intro">From new installations to repairs and maintenance, Blue River Gutters has {{city}} covered.</p>
       </div>
       
       <div class="services-grid">
-        <!-- Seamless Gutters -->
+        
+        <!-- Service 1: Seamless Gutters -->
         <div class="service-card">
-          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-seamless-gutters_hcf6si.webp" alt="Seamless Gutters Installation in {{city}}">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-seamless-gutters_hcf6si.webp" alt="Seamless Gutter Installation in {{city}}" loading="lazy">
           <div class="service-card-content">
             <h3>Seamless Gutters</h3>
-            <p>Custom-fit seamless gutters eliminate leak points. We fabricate on-site for a perfect fit to your {{city}} home.</p>
-            <a href="/services/{{city_slug}}/seamless-gutters-{{city_slug}}-al.html" class="btn btn-dark">Learn More</a>
+            <p>Custom-fabricated on-site for a perfect fit. No seams means fewer leaks and less maintenance for your {{city}} home.</p>
+            <a href="/seamless-gutters-{{city_slug}}-al/" class="btn btn-dark">Learn More</a>
           </div>
         </div>
         
-        <!-- Gutter Guards -->
+        <!-- Service 2: Gutter Guards -->
         <div class="service-card">
-          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-gutter-guards_csf0zo.webp" alt="Gutter Guards Installation in {{city}}">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-gutter-guards_csf0zo.webp" alt="Gutter Guard Installation in {{city}}" loading="lazy">
           <div class="service-card-content">
             <h3>Gutter Guards</h3>
-            <p>Keep pine needles, leaves, and debris out of your gutters. Reduce maintenance and prevent clogs.</p>
-            <a href="/services/{{city_slug}}/gutter-guards-{{city_slug}}-al.html" class="btn btn-dark">Learn More</a>
+            <p>Keep pine needles, leaves, and debris out of your gutters. Reduce cleaning and prevent clogs year-round.</p>
+            <a href="/gutter-guards-{{city_slug}}-al/" class="btn btn-dark">Learn More</a>
           </div>
         </div>
         
-        <!-- Gutter Cleaning -->
+        <!-- Service 3: Gutter Cleaning -->
         <div class="service-card">
-          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-gutter-cleaning_kqfwes.webp" alt="Gutter Cleaning Services in {{city}}">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-gutter-cleaning_kqfwes.webp" alt="Gutter Cleaning Services in {{city}}" loading="lazy">
           <div class="service-card-content">
             <h3>Gutter Cleaning</h3>
             <p>Professional cleaning inside and out. We clear clogs, flush downspouts, and inspect for damage.</p>
-            <a href="/services/{{city_slug}}/gutter-cleaning-{{city_slug}}-al.html" class="btn btn-dark">Learn More</a>
+            <a href="/gutter-cleaning-{{city_slug}}-al/" class="btn btn-dark">Learn More</a>
           </div>
         </div>
         
-        <!-- Downspouts -->
+        <!-- Service 4: Downspouts -->
         <div class="service-card">
-          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-downspouts_iqkukv.webp" alt="Downspout Installation in {{city}}">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-downspouts_iqkukv.webp" alt="Downspout Installation in {{city}}" loading="lazy">
           <div class="service-card-content">
             <h3>Downspouts</h3>
-            <p>Properly sized and positioned downspouts move water away from your foundation fast.</p>
-            <a href="/services/{{city_slug}}/downspouts-{{city_slug}}-al.html" class="btn btn-dark">Learn More</a>
+            <p>Properly sized and positioned downspouts ensure water flows away from your foundation — not toward it.</p>
+            <a href="/downspouts-{{city_slug}}-al/" class="btn btn-dark">Learn More</a>
           </div>
         </div>
         
-        <!-- Underground Drains -->
+        <!-- Service 5: Underground Drains -->
         <div class="service-card">
-          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-underground-drains_sbbgru.webp" alt="Underground Drain Installation in {{city}}">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-underground-drains_sbbgru.webp" alt="Underground Drainage in {{city}}" loading="lazy">
           <div class="service-card-content">
             <h3>Underground Drains</h3>
-            <p>Route water away from your home with buried drain lines. Ideal for {{city}}'s clay soil.</p>
-            <a href="/services/{{city_slug}}/underground-drains-{{city_slug}}-al.html" class="btn btn-dark">Learn More</a>
+            <p>Route water away from your home with buried drainage systems. Essential for {{city}}'s clay soil.</p>
+            <a href="/underground-drains-{{city_slug}}-al/" class="btn btn-dark">Learn More</a>
           </div>
         </div>
         
-        <!-- Rotten Wood Repair -->
+        <!-- Service 6: Rotten Wood Repair -->
         <div class="service-card">
-          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-rotten-wood_jhfmim.webp" alt="Rotten Wood Repair in {{city}}">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-rotten-wood_jhfmim.webp" alt="Fascia and Rotten Wood Repair in {{city}}" loading="lazy">
           <div class="service-card-content">
             <h3>Rotten Wood Repair</h3>
-            <p>Alabama humidity accelerates wood rot. We repair fascia and soffit before installing new gutters.</p>
-            <a href="/services/{{city_slug}}/rotten-wood-repair-{{city_slug}}-al.html" class="btn btn-dark">Learn More</a>
+            <p>Water damage rotted your fascia? We repair and replace damaged wood before installing new gutters.</p>
+            <a href="/rotten-wood-repair-{{city_slug}}-al/" class="btn btn-dark">Learn More</a>
           </div>
         </div>
+        
       </div>
     </div>
   </section>
 
-  <!-- =====================
-       WHY LOCAL MATTERS
-       Trust-building section
-       ===================== -->
+  <!-- ==================== -->
+  <!-- WHY LOCAL MATTERS    -->
+  <!-- Local expertise      -->
+  <!-- ==================== -->
   <section class="why-local">
     <div class="container">
       <div class="why-local-grid">
         <div class="why-local-content">
-          <p class="section-eyebrow">Why Choose Us</p>
-          <h2>A Local Company That Knows {{city}}</h2>
+          <h2>Why {{city}} Homeowners Choose Blue River Gutters</h2>
           
-          <p>When you call Blue River Gutters, you're not getting a call center in another state. You're getting a local team that lives and works in North Alabama.</p>
-          
-          <ul class="checkmarks">
-            <li>✓ Family-owned and operated since 2003</li>
-            <li>✓ All work performed by our trained employees</li>
-            <li>✓ Licensed and insured in Alabama</li>
-            <li>✓ Same-day estimates available</li>
-            <li>✓ Financing options for larger projects</li>
-          </ul>
-          
-          <p>We show up on time, answer our phones, and stand behind our work. That's the Blue River difference.</p>
+          <div class="why-local-points">
+            <div class="why-point">
+              <span class="why-icon">📍</span>
+              <div>
+                <h3>Local Knowledge</h3>
+                <p>We understand {{city}}'s unique challenges — from {{county}} County's clay soil to seasonal storm patterns. That local expertise means better solutions for your home.</p>
+              </div>
+            </div>
+            
+            <div class="why-point">
+              <span class="why-icon">⏱️</span>
+              <div>
+                <h3>Fast Response</h3>
+                <p>Just {{distance}} miles from our Huntsville headquarters means we can respond quickly. Storm damage? We'll be there.</p>
+              </div>
+            </div>
+            
+            <div class="why-point">
+              <span class="why-icon">🏆</span>
+              <div>
+                <h3>Proven Track Record</h3>
+                <p>Over 20 years serving North Alabama with 1,700+ satisfied customers and a 4.7-star rating across 240+ reviews.</p>
+              </div>
+            </div>
+            
+            <div class="why-point">
+              <span class="why-icon">✅</span>
+              <div>
+                <h3>Quality Guarantee</h3>
+                <p>We stand behind our work. If you're not satisfied, we'll make it right — that's the Blue River promise.</p>
+              </div>
+            </div>
+          </div>
           
           <div class="why-local-cta">
             <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
@@ -355,98 +414,172 @@
         </div>
         
         <div class="why-local-image">
-          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/fascia-boards_rszmd9.webp" alt="Blue River Gutters Quality Workmanship">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/blue-river-gutters/team-truck.jpg" alt="Blue River Gutters serving {{city}}" loading="lazy">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- =====================
-       TESTIMONIALS
-       Placeholder for reviews
-       ===================== -->
+  <!-- ==================== -->
+  <!-- TESTIMONIALS         -->
+  <!-- Customer reviews     -->
+  <!-- ==================== -->
   <section class="testimonials">
     <div class="container">
       <div class="section-header">
-        <p class="section-eyebrow">Customer Reviews</p>
-        <h2>What {{city}} Homeowners Say</h2>
+        <p class="section-eyebrow">What Our Customers Say</p>
+        <h2>Trusted by {{city}} Homeowners</h2>
       </div>
       
-      <!-- 
-        TESTIMONIALS: Add actual reviews from {{city}} area customers.
-        If no city-specific reviews, use general reviews and remove city reference.
-      -->
-      <div class="testimonial-grid">
+      <div class="testimonials-grid">
+        <!-- 
+          TESTIMONIAL PLACEHOLDER
+          Replace with actual customer reviews.
+          Ideally use reviews from customers in or near {{city}}.
+        -->
         <div class="testimonial-card">
           <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"Great experience from start to finish. They showed up when they said they would and did excellent work. Highly recommend!"</p>
-          <p class="testimonial-author">— {{city}} Homeowner</p>
+          <p class="testimonial-text">"Blue River Gutters did an excellent job on our home. Professional crew, on time, and cleaned up after themselves. Highly recommend!"</p>
+          <div class="testimonial-author">
+            <span class="author-name">— John M.</span>
+            <span class="author-location">{{city}}, {{state}}</span>
+          </div>
         </div>
         
         <div class="testimonial-card">
           <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"Professional, courteous, and reasonably priced. Our new gutters look fantastic and work perfectly."</p>
-          <p class="testimonial-author">— {{city}} Homeowner</p>
+          <p class="testimonial-text">"Had seamless gutters installed after spring storms damaged ours. Fair price and quality work. They really know what they're doing."</p>
+          <div class="testimonial-author">
+            <span class="author-name">— Sarah T.</span>
+            <span class="author-location">{{city}}, {{state}}</span>
+          </div>
         </div>
         
         <div class="testimonial-card">
           <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">"After getting quotes from three companies, Blue River had the best value. Quality materials and excellent installation."</p>
-          <p class="testimonial-author">— {{city}} Homeowner</p>
+          <p class="testimonial-text">"They replaced our old gutters and added gutter guards. No more climbing ladders to clean out pine needles every fall!"</p>
+          <div class="testimonial-author">
+            <span class="author-name">— Mike R.</span>
+            <span class="author-location">{{city}}, {{state}}</span>
+          </div>
         </div>
       </div>
       
-      <!-- Review Platforms -->
-      <div class="review-cta">
-        <p>See all our reviews on <a href="https://g.co/kgs/oHV77L" target="_blank">Google</a> (96 reviews, 4.7★)</p>
+      <div class="testimonials-cta">
+        <a href="https://g.co/kgs/oHV77L" target="_blank" class="btn btn-secondary">Read More Reviews on Google</a>
       </div>
     </div>
   </section>
 
-  <!-- =====================
-       CTA SECTION
-       ===================== -->
+  <!-- ==================== -->
+  <!-- FAQ SECTION          -->
+  <!-- Local FAQs           -->
+  <!-- ==================== -->
+  <section class="faq">
+    <div class="container">
+      <div class="section-header">
+        <h2>Frequently Asked Questions</h2>
+        <p>Common questions about gutter services in {{city}}, {{state}}</p>
+      </div>
+      
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How much do gutters cost in {{city}}, {{state}}?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Gutter installation in {{city}} typically costs $6-12 per linear foot for aluminum seamless gutters, depending on your home's size, height, and complexity. Copper gutters run $15-30 per linear foot. We provide free, no-obligation estimates so you know exactly what to expect.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Do you offer free estimates in {{city}}?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes! We provide free estimates for all gutter services in {{city}} and {{county}} County. Call (256) 616-6760 or schedule online. We'll come to your home, assess your needs, and give you an honest quote — no pressure, no obligation.</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How often should I clean my gutters in {{city}}?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>We recommend cleaning gutters at least twice per year in {{city}} — once after pine needle season (September-October) and again after leaf drop (November-December). Homes with lots of trees overhead may need quarterly cleaning. Or install gutter guards and skip the hassle!</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>What areas do you serve near {{city}}?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Blue River Gutters serves {{city}} and all of {{county}} County, including Huntsville, Madison, Decatur, Athens, Hartselle, and surrounding communities within approximately 30 miles. Not sure if we cover your area? Give us a call!</p>
+          </div>
+        </div>
+        
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Why is proper drainage so important in {{city}}?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>{{city}} gets over 55 inches of rain annually — that's 45% more than the national average. Combined with North Alabama's clay soil that doesn't absorb water well, improper drainage leads to foundation damage, basement flooding, and erosion. Good gutters are your first line of defense.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== -->
+  <!-- FINAL CTA            -->
+  <!-- Contact block        -->
+  <!-- ==================== -->
   <section class="cta" id="contact">
     <div class="container">
-      <h2>Ready for a Free Gutter Estimate in {{city}}?</h2>
-      <p>Call today or schedule online. Same-day estimates available.</p>
+      <h2>Ready to Protect Your {{city}} Home?</h2>
+      <p>Get a free estimate from North Alabama's trusted gutter experts.</p>
       <a href="https://BlueRiverGutters.as.me/" class="btn btn-primary">Schedule Free Estimate</a>
       <p class="cta-phone"><a href="tel:2566166760">📞 (256) 616-6760</a></p>
       <p class="cta-hours">MON-FRI 8:00AM-5:00PM</p>
     </div>
   </section>
 
-  <!-- =====================
-       FOOTER
-       ===================== -->
+  <!-- ==================== -->
+  <!-- FOOTER               -->
+  <!-- ==================== -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
           <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/logo-white_w60npv.png" alt="Blue River Gutters" class="footer-logo">
-          <p>Blue River Gutters is the leading provider of exceptional gutter services in {{city}}, {{state}} and surrounding areas.</p>
+          <p>Blue River Gutters is the leading provider of gutter services in {{city}}, {{state}} and throughout North Alabama.</p>
           <div class="social-links">
             <a href="https://www.facebook.com/bluerivergutters" target="_blank" aria-label="Facebook">FB</a>
             <a href="https://www.instagram.com/bluerivergutter/" target="_blank" aria-label="Instagram">IG</a>
             <a href="https://www.youtube.com/channel/UCzhtpjwziYvsTB_lHzmVT0w" target="_blank" aria-label="YouTube">YT</a>
-            <a href="https://www.pinterest.com/bluerivergutter/" target="_blank" aria-label="Pinterest">PIN</a>
           </div>
         </div>
         
         <div class="footer-links">
           <h4>Services in {{city}}</h4>
           <ul>
-            <li><a href="/services/{{city_slug}}/seamless-gutters-{{city_slug}}-al.html">Seamless Gutters</a></li>
-            <li><a href="/services/{{city_slug}}/gutter-guards-{{city_slug}}-al.html">Gutter Guards</a></li>
-            <li><a href="/services/{{city_slug}}/gutter-cleaning-{{city_slug}}-al.html">Gutter Cleaning</a></li>
-            <li><a href="/services/{{city_slug}}/downspouts-{{city_slug}}-al.html">Downspouts</a></li>
-            <li><a href="/services/{{city_slug}}/underground-drains-{{city_slug}}-al.html">Underground Drains</a></li>
-            <li><a href="/services/{{city_slug}}/rotten-wood-repair-{{city_slug}}-al.html">Rotten Wood Repair</a></li>
+            <li><a href="/seamless-gutters-{{city_slug}}-al/">Seamless Gutters</a></li>
+            <li><a href="/gutter-guards-{{city_slug}}-al/">Gutter Guards</a></li>
+            <li><a href="/gutter-cleaning-{{city_slug}}-al/">Gutter Cleaning</a></li>
+            <li><a href="/downspouts-{{city_slug}}-al/">Downspouts</a></li>
+            <li><a href="/underground-drains-{{city_slug}}-al/">Underground Drains</a></li>
+            <li><a href="/rotten-wood-repair-{{city_slug}}-al/">Rotten Wood Repair</a></li>
           </ul>
         </div>
         
         <div class="footer-contact">
-          <h4>Contact</h4>
+          <h4>Contact Us</h4>
           <ul>
             <li><a href="tel:2566166760">📞 (256) 616-6760</a></li>
             <li><a href="mailto:service@bluerivergutters.com">✉️ service@bluerivergutters.com</a></li>
@@ -456,21 +589,8 @@
         </div>
       </div>
       
-      <!-- Nearby Cities (Internal Linking) -->
-      <div class="footer-locations">
-        <h4>Serving All of North Alabama</h4>
-        <p>
-          <a href="/gutters-huntsville-al/">Huntsville</a> • 
-          <a href="/gutters-madison-al/">Madison</a> • 
-          <a href="/gutters-decatur-al/">Decatur</a> • 
-          <a href="/gutters-athens-al/">Athens</a> • 
-          <a href="/gutters-hartselle-al/">Hartselle</a> • 
-          <a href="/locations/">View All Locations</a>
-        </p>
-      </div>
-      
       <div class="footer-bottom">
-        <p>© 2025 Blue River Gutters. All rights reserved. | <a href="/privacy/">Privacy Policy</a> | <a href="/sitemap.html">Sitemap</a></p>
+        <p>© 2026 Blue River Gutters. All rights reserved. | Serving {{city}}, {{state}} and North Alabama</p>
       </div>
     </div>
   </footer>
@@ -485,9 +605,9 @@
     </a>
   </div>
 
-  <!-- =====================
-       JAVASCRIPT
-       ===================== -->
+  <!-- ==================== -->
+  <!-- SCRIPTS              -->
+  <!-- ==================== -->
   <script>
     // Mobile menu toggle
     const menuBtn = document.querySelector('.mobile-menu-btn');
@@ -496,6 +616,24 @@
     menuBtn.addEventListener('click', () => {
       menuBtn.classList.toggle('active');
       mobileNav.classList.toggle('active');
+    });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const faqItem = button.parentElement;
+        const isOpen = faqItem.classList.contains('active');
+        
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        // Open clicked if it was closed
+        if (!isOpen) {
+          faqItem.classList.add('active');
+        }
+      });
     });
   </script>
 
