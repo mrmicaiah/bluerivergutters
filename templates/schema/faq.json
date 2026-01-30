@@ -1,0 +1,74 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "{{FAQ_QUESTION_1}}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{FAQ_ANSWER_1}}"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "{{FAQ_QUESTION_2}}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{FAQ_ANSWER_2}}"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "{{FAQ_QUESTION_3}}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{FAQ_ANSWER_3}}"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "{{FAQ_QUESTION_4}}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{FAQ_ANSWER_4}}"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "{{FAQ_QUESTION_5}}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{FAQ_ANSWER_5}}"
+      }
+    }
+  ]
+}
+
+/*
+ * FAQ EXAMPLES BY SERVICE TYPE
+ *
+ * SEAMLESS GUTTERS:
+ * Q: How long do seamless gutters last?
+ * A: With proper maintenance, seamless aluminum gutters last 20-30 years in North Alabama's climate.
+ *
+ * Q: What size gutters do I need for my home?
+ * A: Most homes use 5-inch K-style gutters. Homes with large roofs or steep pitches may need 6-inch gutters.
+ *
+ * Q: Are seamless gutters worth the investment?
+ * A: Yes. Seamless gutters have fewer leak points and require less maintenance than sectional gutters.
+ *
+ * GUTTER GUARDS:
+ * Q: Do gutter guards work with pine needles?
+ * A: Quality micro-mesh guards handle pine needles well, though some surface maintenance may still be needed.
+ *
+ * Q: Will gutter guards void my roof warranty?
+ * A: Our installation method doesn't lift shingles or void warranties. We're careful to protect your roof.
+ *
+ * GUTTER CLEANING:
+ * Q: How often should I clean my gutters in {{CITY_NAME}}?
+ * A: We recommend twice yearly - after pine needle season (October) and after leaf drop (December).
+ *
+ * Q: What happens if I don't clean my gutters?
+ * A: Clogged gutters cause water overflow, foundation damage, fascia rot, and can attract pests.
+ */
