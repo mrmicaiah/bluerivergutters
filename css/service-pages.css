@@ -1,0 +1,218 @@
+/* 
+ * Blue River Gutters - Service Page Styles
+ * Additional styles for service+city pages
+ * Include after main styles.css
+ */
+
+/* ==================== */
+/* SERVICE EXPLANATION  */
+/* ==================== */
+.service-explanation {
+  background: var(--white);
+  padding: 5rem 0;
+}
+
+.explanation-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.explanation-content p {
+  color: var(--slate);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+
+.explanation-content p:last-child {
+  margin-bottom: 0;
+}
+
+.explanation-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* ==================== */
+/* BENEFITS GRID        */
+/* ==================== */
+.benefits-section {
+  background: var(--light-gray);
+  padding: 5rem 0;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.benefit-card {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.benefit-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+}
+
+.benefit-card h3 {
+  color: var(--navy);
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+}
+
+.benefit-card p {
+  color: var(--gray);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 0;
+}
+
+/* ==================== */
+/* RELATED SERVICES     */
+/* ==================== */
+.related-services {
+  background: var(--cream);
+  padding: 5rem 0;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.related-card {
+  display: block;
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 2px solid transparent;
+}
+
+.related-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  border-color: var(--blue);
+}
+
+.related-card h3 {
+  color: var(--navy);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.related-card p {
+  color: var(--gray);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+/* ==================== */
+/* WHY LOCAL (Service)  */
+/* Duplicated from city-pages for service pages */
+/* ==================== */
+.why-local {
+  background: var(--cream);
+  padding: 5rem 0;
+}
+
+.why-local-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.why-local-content h2 {
+  margin-bottom: 2rem;
+}
+
+.why-local-content p {
+  color: var(--slate);
+  font-size: 1.05rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.why-local-cta {
+  margin-top: 2rem;
+}
+
+.why-local-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* ==================== */
+/* RESPONSIVE           */
+/* ==================== */
+@media (max-width: 1024px) {
+  .explanation-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .explanation-image {
+    order: -1;
+  }
+  
+  .benefits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .why-local-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .why-local-image {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .service-explanation {
+    padding: 3rem 0;
+  }
+  
+  .benefits-section {
+    padding: 3rem 0;
+  }
+  
+  .related-services {
+    padding: 3rem 0;
+  }
+  
+  .why-local {
+    padding: 3rem 0;
+  }
+  
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .explanation-content {
+    text-align: center;
+  }
+  
+  .why-local-content {
+    text-align: center;
+  }
+  
+  .why-local-cta {
+    text-align: center;
+  }
+}
