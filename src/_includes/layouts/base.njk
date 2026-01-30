@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title | default("Blue River Gutters | North Alabama Gutter Services") }}</title>
+  <meta name="description" content="{{ description | default("Professional gutter installation, repair, and cleaning in Huntsville, Madison, Decatur, and throughout North Alabama. 20+ years experience.") }}">
+  
+  {# Open Graph #}
+  <meta property="og:title" content="{{ title | default("Blue River Gutters") }}">
+  <meta property="og:description" content="{{ description | default("Professional gutter services in North Alabama.") }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bluerivergutters.com{{ page.url }}">
+  <meta property="og:image" content="{{ ogImage | default("https://res.cloudinary.com/dxzw1zwez/image/upload/hero-bg_axhlw4.jpg") }}">
+  
+  {# Fonts #}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  {# Styles #}
+  <link rel="stylesheet" href="/css/styles.css">
+  {% if extraCss %}
+  <link rel="stylesheet" href="/css/{{ extraCss }}">
+  {% endif %}
+  
+  {# Canonical URL #}
+  <link rel="canonical" href="https://bluerivergutters.com{{ page.url }}">
+  
+  {# Schema markup slot #}
+  {% block schema %}{% endblock %}
+</head>
+<body>
+  
+  {% include "partials/header.njk" %}
+  
+  <main>
+    {% block content %}
+    {{ content | safe }}
+    {% endblock %}
+  </main>
+  
+  {% include "partials/footer.njk" %}
+  
+  {# Mobile Menu Script #}
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.querySelector('.mobile-menu-btn');
+    const mobileNav = document.querySelector('.mobile-nav');
+    
+    if (menuBtn && mobileNav) {
+      menuBtn.addEventListener('click', () => {
+        menuBtn.classList.toggle('active');
+        mobileNav.classList.toggle('active');
+      });
+    }
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const faqItem = button.parentElement;
+        const isOpen = faqItem.classList.contains('active');
+        
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        // Open clicked if it was closed
+        if (!isOpen) {
+          faqItem.classList.add('active');
+        }
+      });
+    });
+  </script>
+  
+  {# Additional scripts slot #}
+  {% block scripts %}{% endblock %}
+  
+</body>
+</html>
