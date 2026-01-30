@@ -1,8 +1,8 @@
 module.exports = function(eleventyConfig) {
-  // Passthrough copy for static assets
-  eleventyConfig.addPassthroughCopy("src/css");
-  eleventyConfig.addPassthroughCopy("src/js");
-  eleventyConfig.addPassthroughCopy("src/images");
+  // Passthrough copy for static assets - map src/css to /css in output
+  eleventyConfig.addPassthroughCopy({"src/css": "css"});
+  eleventyConfig.addPassthroughCopy({"src/js": "js"});
+  eleventyConfig.addPassthroughCopy({"src/images": "images"});
 
   // Watch for changes in these directories
   eleventyConfig.addWatchTarget("src/css/");
