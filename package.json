@@ -1,0 +1,17 @@
+{
+  "name": "bluerivergutters",
+  "version": "1.0.0",
+  "description": "Blue River Gutters website - North Alabama gutter services",
+  "scripts": {
+    "build": "eleventy",
+    "serve": "eleventy --serve",
+    "watch": "eleventy --watch"
+  },
+  "keywords": ["gutters", "huntsville", "alabama", "home-services"],
+  "author": "Untitled Publishers",
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}
