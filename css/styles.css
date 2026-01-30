@@ -360,6 +360,12 @@ section { padding: 4rem 0; }
   margin-bottom: 0.5rem;
 }
 
+.section-intro {
+  color: var(--gray);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 /* =====================
    LOCAL PROBLEMS SECTION
    ===================== */
@@ -370,12 +376,11 @@ section { padding: 4rem 0; }
 .local-content {
   max-width: 800px;
   margin: 0 auto;
-  text-align: center;
 }
 
 .local-content p {
   color: var(--slate);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   line-height: 1.8;
 }
 
@@ -504,6 +509,55 @@ section { padding: 4rem 0; }
 .why-local-image img {
   width: 100%;
   border-radius: 12px;
+}
+
+/* =====================
+   NEIGHBORHOODS SECTION
+   ===================== */
+.neighborhoods {
+  background: var(--cream);
+}
+
+.neighborhoods-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.neighborhoods-content > p {
+  text-align: center;
+  color: var(--gray);
+  margin-bottom: 2rem;
+}
+
+.neighborhoods-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.neighborhood-group h3 {
+  color: var(--navy);
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--red);
+}
+
+.neighborhood-group ul {
+  list-style: none;
+}
+
+.neighborhood-group li {
+  color: var(--slate);
+  padding: 0.35rem 0;
+  font-size: 0.95rem;
+}
+
+.neighborhoods-note {
+  text-align: center;
+  color: var(--gray);
+  margin-top: 2rem;
+  font-style: italic;
 }
 
 .workmanship { background: var(--light-gray); }
@@ -645,7 +699,7 @@ section { padding: 4rem 0; }
 
 .cta p {
   color: rgba(255,255,255,0.9);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .cta .btn-primary {
@@ -666,6 +720,12 @@ section { padding: 4rem 0; }
 .cta-hours {
   color: rgba(255,255,255,0.8);
   font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.cta-address {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.85rem;
   margin-top: 0.5rem;
 }
 
@@ -802,6 +862,7 @@ section { padding: 4rem 0; }
   .why-local-grid { grid-template-columns: 1fr; gap: 2rem; }
   .why-local-image { order: -1; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
+  .neighborhoods-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -821,4 +882,9 @@ section { padding: 4rem 0; }
   .footer { padding-bottom: 5rem; }
   section { padding: 3rem 0; }
   .breadcrumb-list { font-size: 0.8rem; }
+  .neighborhoods-grid { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+}
+
+@media (max-width: 480px) {
+  .neighborhoods-grid { grid-template-columns: 1fr; }
 }
