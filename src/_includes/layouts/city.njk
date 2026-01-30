@@ -81,10 +81,10 @@ extraCss: city-pages.css
   "mainEntity": [
     {% for faq in faqs %}{
       "@type": "Question",
-      "name": "{{ faq.question }}",
+      "name": "{{ faq.question | striptags }}",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "{{ faq.answer | replace('"', '\\"') | replace('\n', ' ') }}"
+        "text": "{{ faq.answer | striptags | trim }}"
       }
     }{% if not loop.last %},{% endif %}
     {% endfor %}
