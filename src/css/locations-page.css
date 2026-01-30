@@ -1,0 +1,227 @@
+/* 
+ * Blue River Gutters - Locations Index Page Styles
+ */
+
+/* Locations Grid */
+.locations-section {
+  padding: 5rem 0;
+}
+
+.locations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.location-card {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: block;
+  border: 2px solid transparent;
+}
+
+.location-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+  border-color: var(--blue);
+}
+
+.location-card-featured {
+  border-color: var(--red);
+}
+
+.location-card-content {
+  padding: 1.5rem;
+}
+
+.location-badge {
+  display: inline-block;
+  background: var(--red);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.location-card h3 {
+  margin: 0 0 0.25rem 0;
+  color: var(--navy);
+  font-size: 1.25rem;
+}
+
+.location-county {
+  color: var(--gray);
+  font-size: 0.875rem;
+  margin: 0 0 0.75rem 0;
+}
+
+.location-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--slate);
+  margin-bottom: 1rem;
+}
+
+.location-services {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.location-services li {
+  background: var(--light-gray);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--slate);
+}
+
+.location-link {
+  color: var(--blue);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Additional Areas */
+.additional-areas {
+  background: var(--light-gray);
+  padding: 5rem 0;
+}
+
+.areas-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.areas-column h3 {
+  font-size: 1rem;
+  color: var(--navy);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--red);
+}
+
+.areas-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.areas-column li {
+  padding: 0.35rem 0;
+  color: var(--slate);
+  font-size: 0.95rem;
+}
+
+.areas-note {
+  margin-top: 3rem;
+  padding: 1.5rem 2rem;
+  background: var(--white);
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.areas-note p {
+  margin: 0;
+  color: var(--slate);
+}
+
+.areas-note a {
+  color: var(--blue);
+  font-weight: 600;
+}
+
+/* Why Local Section (override for this page) */
+.why-local {
+  background: var(--cream);
+  padding: 5rem 0;
+}
+
+.why-local-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.why-local-content h2 {
+  margin-bottom: 1.5rem;
+}
+
+.why-local-content p {
+  color: var(--slate);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.why-local-cta {
+  margin-top: 2rem;
+}
+
+.why-local-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .why-local-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .why-local-image {
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .locations-section {
+    padding: 3rem 0;
+  }
+  
+  .additional-areas {
+    padding: 3rem 0;
+  }
+  
+  .why-local {
+    padding: 3rem 0;
+  }
+  
+  .locations-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .areas-columns {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .why-local-content {
+    text-align: center;
+  }
+  
+  .why-local-cta {
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .areas-columns {
+    grid-template-columns: 1fr;
+  }
+}
