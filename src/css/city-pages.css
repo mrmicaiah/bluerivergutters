@@ -1,0 +1,243 @@
+/* 
+ * Blue River Gutters - City Page Styles
+ * Additional styles for city landing pages
+ * Include after main styles.css
+ */
+
+/* ==================== */
+/* BREADCRUMBS          */
+/* ==================== */
+.breadcrumb {
+  background: var(--light-gray);
+  padding: 0.75rem 0;
+  font-size: 0.875rem;
+}
+
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.breadcrumb-list li {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumb-list li:not(:last-child)::after {
+  content: "›";
+  margin-left: 0.5rem;
+  color: var(--gray);
+}
+
+.breadcrumb-list a {
+  color: var(--gray);
+}
+
+.breadcrumb-list a:hover {
+  color: var(--blue);
+}
+
+.breadcrumb-list li:last-child {
+  color: var(--navy);
+  font-weight: 500;
+}
+
+/* ==================== */
+/* SECTION INTRO        */
+/* ==================== */
+.section-intro {
+  color: var(--gray);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ==================== */
+/* WHY LOCAL SECTION    */
+/* ==================== */
+.why-local {
+  background: var(--cream);
+  padding: 5rem 0;
+}
+
+.why-local-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.why-local-content h2 {
+  margin-bottom: 2rem;
+}
+
+.why-local-points {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.why-point {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.why-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.why-point h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.25rem;
+  color: var(--navy);
+}
+
+.why-point p {
+  color: var(--gray);
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.why-local-cta {
+  margin-top: 2rem;
+}
+
+.why-local-image img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* ==================== */
+/* TESTIMONIALS         */
+/* ==================== */
+.testimonials {
+  background: var(--white);
+  padding: 5rem 0;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.testimonial-card {
+  background: var(--light-gray);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.testimonial-stars {
+  color: #f59e0b;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+}
+
+.testimonial-text {
+  color: var(--slate);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.testimonial-author {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.author-name {
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.author-location {
+  font-size: 0.875rem;
+  color: var(--gray);
+}
+
+.testimonials-cta {
+  text-align: center;
+}
+
+.testimonials-cta .btn-secondary {
+  background: var(--white);
+  color: var(--navy);
+  border: 2px solid var(--navy);
+}
+
+.testimonials-cta .btn-secondary:hover {
+  background: var(--navy);
+  color: var(--white);
+}
+
+/* ==================== */
+/* CTA ENHANCEMENTS     */
+/* ==================== */
+.cta p:not(.cta-phone):not(.cta-hours) {
+  color: rgba(255,255,255,0.9);
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+/* ==================== */
+/* RESPONSIVE           */
+/* ==================== */
+@media (max-width: 1024px) {
+  .why-local-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .why-local-image {
+    order: -1;
+  }
+  
+  .testimonials-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .why-local {
+    padding: 3rem 0;
+  }
+  
+  .testimonials {
+    padding: 3rem 0;
+  }
+  
+  .why-point {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+  
+  .why-local-content {
+    text-align: center;
+  }
+  
+  .why-local-cta {
+    text-align: center;
+  }
+}
