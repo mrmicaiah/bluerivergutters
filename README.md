@@ -8,37 +8,61 @@ Professional gutter services website for Blue River Gutters, serving Huntsville,
 - **Templating:** Nunjucks
 - **CSS:** Custom stylesheet (no framework)
 - **Images:** Cloudinary CDN
-- **Hosting:** GitHub Pages
+- **Hosting:** GitHub Pages (auto-deploy from gh-pages branch)
 
 ## Project Structure
 
 ```
 /
-├── src/                    # Source files (11ty input)
-│   ├── _includes/          # Reusable components
-│   │   ├── layouts/        # Page layouts (base, city, service)
-│   │   └── partials/       # Header, footer
-│   ├── _data/              # Global data files (JSON/JS)
-│   ├── css/                # Stylesheets
-│   ├── js/                 # JavaScript files
-│   ├── images/             # Local images (prefer Cloudinary)
-│   ├── locations/          # City landing pages
-│   ├── services/           # Service pages by city
-│   ├── blog/               # Blog posts
-│   └── index.njk           # Homepage
-├── .github/workflows/      # GitHub Actions
-│   └── build.yml           # Auto-build and deploy
-├── _site/                  # Built output (gitignored)
-├── eleventy.config.js      # 11ty configuration
-├── package.json            # Dependencies
-└── README.md               # This file
+├── src/                      # Source files (11ty input)
+│   ├── _includes/
+│   │   ├── layouts/          # Page layouts
+│   │   │   ├── base.njk      # Master template (head, scripts)
+│   │   │   ├── city.njk      # City landing pages
+│   │   │   └── service.njk   # Service+city pages
+│   │   └── partials/
+│   │       ├── header.njk
+│   │       └── footer.njk
+│   ├── _data/                # Global data files (JSON/JS)
+│   ├── css/
+│   │   ├── styles.css        # Main stylesheet
+│   │   ├── city-pages.css    # City page styles
+│   │   ├── service-pages.css # Service page styles
+│   │   └── locations-page.css
+│   ├── js/
+│   ├── images/
+│   ├── locations/            # City landing pages (.njk)
+│   │   ├── index.njk         # /locations/
+│   │   ├── huntsville.njk    # /gutters-huntsville-al/
+│   │   ├── madison.njk       # /gutters-madison-al/
+│   │   ├── decatur.njk       # /gutters-decatur-al/
+│   │   ├── athens.njk        # /gutters-athens-al/
+│   │   └── hartselle.njk     # /gutters-hartselle-al/
+│   ├── services/             # Service pages by city
+│   │   ├── huntsville/
+│   │   │   └── seamless-gutters.njk
+│   │   └── madison/
+│   │       ├── seamless-gutters.njk
+│   │       ├── gutter-guards.njk
+│   │       ├── gutter-cleaning.njk
+│   │       ├── downspouts.njk
+│   │       ├── underground-drains.njk
+│   │       └── rotten-wood-repair.njk
+│   ├── blog/                 # Blog posts (future)
+│   └── index.njk             # Homepage
+├── .github/workflows/
+│   └── build.yml             # Auto-build and deploy
+├── _site/                    # Built output (gitignored)
+├── eleventy.config.js        # 11ty configuration
+├── package.json
+└── README.md
 ```
 
 ## Local Development
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm
 
 ### Setup
@@ -54,88 +78,83 @@ npm run serve
 npm run build
 ```
 
-The dev server runs at `http://localhost:8080` with live reload.
-
-### Build Output
-
-The `_site` folder contains the built static files. This folder is gitignored.
+Dev server runs at `http://localhost:8080` with live reload.
 
 ## Deployment
 
-### Automatic Deployment
-
-The site auto-deploys to GitHub Pages via GitHub Actions when changes are pushed to `main`:
+Site auto-deploys to GitHub Pages via GitHub Actions on push to `main`:
 
 1. Push triggers `.github/workflows/build.yml`
-2. Action installs dependencies and runs `npx eleventy`
+2. Action runs `npm install` and `npx eleventy`
 3. Built `_site/` folder deploys to `gh-pages` branch
 4. GitHub Pages serves from `gh-pages` branch
 
-### GitHub Pages Setup
-
-To enable GitHub Pages for this repo:
-
-1. Go to **Settings** → **Pages**
-2. Under "Build and deployment":
-   - Source: **Deploy from a branch**
-   - Branch: **gh-pages** / **(root)**
-3. Save
-
 **Preview site:** [mrmicaiah.github.io/bluerivergutters](https://mrmicaiah.github.io/bluerivergutters)
-
-When ready for production, add `cname: bluerivergutters.com` to the workflow deploy step and configure DNS.
 
 ### Manual Deploy
 
-If needed, you can manually trigger a deploy:
 1. Go to **Actions** tab
 2. Select "Build and Deploy 11ty Site"
 3. Click "Run workflow"
 
 ## Image Handling
 
-Images are served via Cloudinary CDN for performance:
+Images served via Cloudinary CDN:
 
 - **Cloud name:** `dxzw1zwez`
-- **Folder:** `blue-river-gutters/`
 - **Base URL:** `https://res.cloudinary.com/dxzw1zwez/image/upload/`
 
-Example usage:
-```html
-<img src="https://res.cloudinary.com/dxzw1zwez/image/upload/v1/blue-river-gutters/hero.jpg" alt="...">
-```
-
-## Content Structure
+## Content Patterns
 
 ### City Landing Pages
-- Location: `src/locations/[city].njk`
-- Layout: `city.njk`
-- URL pattern: `/gutters-[city]-al/`
+
+- **Location:** `src/locations/[city].njk`
+- **Layout:** `city.njk`
+- **URL:** `/gutters-[city]-al/`
+
+Front matter includes: city, city_slug, county, distance, local_hook, neighborhoods, testimonials, faqs
 
 ### Service Pages
-- Location: `src/services/[city]/[service].njk`
-- Layout: `service.njk`
-- URL pattern: `/services/[city]/[service]/`
 
-Six services per city:
-- Seamless Gutters
-- Gutter Guards
-- Gutter Cleaning
-- Downspouts
-- Underground Drains
-- Rotten Wood Repair
+- **Location:** `src/services/[city]/[service].njk`
+- **Layout:** `service.njk`
+- **URL:** `/services/[city]/[service]/`
 
-### Blog
-- Location: `src/blog/`
-- Informational content for SEO and authority building
+Front matter includes: service, service_slug, city, city_slug, hero_intro, benefits array, faqs array
 
-## Development Notes
+Content blocks use `{% set %}` for multi-paragraph HTML:
+- `local_problem` - City-specific problem description
+- `service_explanation` - What the service is/how it works
+- `why_us` - Why choose Blue River Gutters
 
-- Templates use Nunjucks (`.njk`) files
-- Markdown (`.md`) supported for content pages
-- CSS variables defined in `src/css/styles.css`
-- Site data (company info, navigation) goes in `src/_data/`
-- Each layout (city, service) has its own CSS file
+## Adding New Pages
+
+### New City
+
+1. Create `src/locations/[city].njk`
+2. Use `city.njk` layout
+3. Set front matter (copy from existing city)
+4. Write content blocks
+
+### New Service Page
+
+1. Create `src/services/[city]/[service].njk`
+2. Use `service.njk` layout
+3. Set front matter with service and city data
+4. Write content blocks
+
+---
+
+## Cleanup Notes
+
+The following legacy files can be deleted (replaced by 11ty):
+
+- `/index.html` → now `src/index.njk`
+- `/test.html` → test file, not needed
+- `/css/` folder → now `src/css/`
+- `/locations/*.html` → now `src/locations/*.njk`
+- `/services/madison/*.html` → now `src/services/madison/*.njk`
+- `/templates/` folder → layouts now in `src/_includes/layouts/`
 
 ---
 
