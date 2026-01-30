@@ -81,10 +81,9 @@ To enable GitHub Pages for this repo:
    - Branch: **gh-pages** / **(root)**
 3. Save
 
-The CNAME file for `bluerivergutters.com` is automatically added during deploy.
-
-**Live site:** [bluerivergutters.com](https://bluerivergutters.com)  
 **Preview site:** [mrmicaiah.github.io/bluerivergutters](https://mrmicaiah.github.io/bluerivergutters)
+
+When ready for production, add `cname: bluerivergutters.com` to the workflow deploy step and configure DNS.
 
 ### Manual Deploy
 
@@ -137,51 +136,6 @@ Six services per city:
 - CSS variables defined in `src/css/styles.css`
 - Site data (company info, navigation) goes in `src/_data/`
 - Each layout (city, service) has its own CSS file
-
-## GitHub Actions Workflow
-
-The workflow file (`.github/workflows/build.yml`) should contain:
-
-```yaml
-name: Build and Deploy 11ty Site
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    
-    permissions:
-      contents: write
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build 11ty site
-        run: npx eleventy
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
-          publish_branch: gh-pages
-          cname: bluerivergutters.com
-```
 
 ---
 
