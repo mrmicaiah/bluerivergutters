@@ -122,6 +122,37 @@ extraCss: blog.css
   </div>
 </article>
 
+{# Related Services & Locations #}
+{% if related_services or related_cities %}
+<section class="blog-related">
+  <div class="container container--blog">
+    
+    {% if related_services %}
+    <div class="blog-related-group">
+      <h3>Related Services</h3>
+      <div class="blog-related-links">
+        {% for service in related_services %}
+        <a href="{{ '/services/' + service + '/' | url }}">{{ service | replace("-", " ") | title }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    
+    {% if related_cities %}
+    <div class="blog-related-group">
+      <h3>Gutter Services By City</h3>
+      <div class="blog-related-links">
+        {% for city in related_cities %}
+        <a href="{{ '/gutters-' + city + '-al/' | url }}">{{ city | replace("-", " ") | title }}, AL</a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+    
+  </div>
+</section>
+{% endif %}
+
 {# CTA Section #}
 <section class="cta">
   <div class="container">
