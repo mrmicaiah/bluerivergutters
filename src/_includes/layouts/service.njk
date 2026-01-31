@@ -5,14 +5,14 @@ extraCss: service-pages.css
 
 {# Service-specific hero image mapping #}
 {% set service_hero_images = {
-  "seamless-gutters": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/bluerivergutters/corner_of_a_roof_gutters_yd8zzf.jpg",
-  "gutter-guards": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/bluerivergutters/gutter_guards_metal_roof_hnrqoc.webp",
-  "gutter-cleaning": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/bluerivergutters/dirty_gutter_v8f4cm.jpg",
-  "downspouts": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/bluerivergutters/gutter_on_house_zbvhii.webp",
-  "underground-drains": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/bluerivergutters/french_drains_peqnfn.webp",
-  "rotten-wood-repair": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/bluerivergutters/rotten_wood_hero_r1dtrh.jpg"
+  "seamless-gutters": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/corner_of_a_roof_gutters_yd8zzf.jpg",
+  "gutter-guards": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/gutter_guards_metal_roof_hnrqoc.webp",
+  "gutter-cleaning": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/dirty_gutter_v8f4cm.jpg",
+  "downspouts": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/gutter_on_house_zbvhii.webp",
+  "underground-drains": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/french_drains_peqnfn.webp",
+  "rotten-wood-repair": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/rotten_wood_hero_r1dtrh.jpg"
 } %}
-{% set default_hero = "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/bluerivergutters/corner_of_a_roof_gutters_yd8zzf.jpg" %}
+{% set default_hero = "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/corner_of_a_roof_gutters_yd8zzf.jpg" %}
 {% set computed_hero = hero_image | default(service_hero_images[service_slug] | default(default_hero)) %}
 
 {# Schema Markup #}
@@ -176,7 +176,7 @@ extraCss: service-pages.css
       </div>
       
       <div class="explanation-image">
-        <img src="{{ service_image | default("https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_500/bluerivergutters/service-seamless-gutters_hcf6si.webp") }}" alt="{{ service }} in {{ city }}" loading="lazy">
+        <img src="{{ service_image | default("https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_500/service-seamless-gutters_hcf6si.webp") }}" alt="{{ service }} in {{ city }}" loading="lazy">
       </div>
     </div>
   </div>
@@ -227,7 +227,7 @@ extraCss: service-pages.css
       </div>
       
       <div class="why-local-image">
-        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/bluerivergutters/cleaning_composite_facia_ekqfke.webp" alt="Blue River Gutters professional installation" loading="lazy">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/cleaning_composite_facia_ekqfke.webp" alt="Blue River Gutters professional installation" loading="lazy">
       </div>
     </div>
   </div>
