@@ -268,15 +268,9 @@
 }
 
 /* =====================
-   RESPONSIVE
+   RESPONSIVE - Hamburger at 1024px
    ===================== */
 @media (max-width: 1024px) {
-  .nav-dropdown-mega {
-    min-width: 350px;
-  }
-}
-
-@media (max-width: 768px) {
   .nav {
     display: none !important;
   }
