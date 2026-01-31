@@ -107,7 +107,7 @@ section { padding: 4rem 0; }
 .nav a:hover { color: var(--navy); }
 
 .nav-cta {
-  background: var(--blue);
+  background: var(--blue-light);
   color: var(--white) !important;
   padding: 0.75rem 1.5rem;
   border-radius: 6px;
@@ -115,7 +115,7 @@ section { padding: 4rem 0; }
 }
 
 .nav-cta:hover {
-  background: var(--blue-light);
+  background: var(--blue);
   color: var(--white) !important;
 }
 
@@ -170,7 +170,7 @@ section { padding: 4rem 0; }
 }
 
 .mobile-nav-cta {
-  background: var(--blue);
+  background: var(--blue-light);
   color: var(--white) !important;
   text-align: center;
   border-radius: 6px;
