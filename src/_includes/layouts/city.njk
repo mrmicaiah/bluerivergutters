@@ -267,6 +267,57 @@ extraCss: city-pages.css
   </div>
 </section>
 
+{# ============================================== #}
+{# OPTIONAL CONTENT BLOCKS                        #}
+{# These sections only render if content is set   #}
+{# ============================================== #}
+
+{# Local Deep Dive - For in-depth local content (history, drainage patterns, neighborhood specifics) #}
+{% if local_deep_dive %}
+<section class="content-block content-deep-dive">
+  <div class="container">
+    <div class="section-header">
+      <h2>{{ local_deep_dive_title | default("Understanding " + city + "'s Unique Drainage Challenges") }}</h2>
+    </div>
+    <div class="content-block-body">
+      {{ local_deep_dive | safe }}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# Homeowner Guide - For practical advice specific to that city #}
+{% if homeowner_guide %}
+<section class="content-block content-homeowner-guide">
+  <div class="container">
+    <div class="section-header">
+      <h2>{{ homeowner_guide_title | default("Gutter Care Guide for " + city + " Homeowners") }}</h2>
+    </div>
+    <div class="content-block-body">
+      {{ homeowner_guide | safe }}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# Local Spotlight - For neighborhood spotlights, local projects, case studies #}
+{% if local_spotlight %}
+<section class="content-block content-local-spotlight">
+  <div class="container">
+    <div class="section-header">
+      <h2>{{ local_spotlight_title | default("Featured Projects in " + city) }}</h2>
+    </div>
+    <div class="content-block-body">
+      {{ local_spotlight | safe }}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{# ============================================== #}
+{# END OPTIONAL CONTENT BLOCKS                    #}
+{# ============================================== #}
+
 {# Neighborhoods Section #}
 {% if neighborhoods %}
 <section class="neighborhoods">
