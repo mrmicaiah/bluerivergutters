@@ -1,0 +1,43 @@
+{
+  "services": [
+    { "name": "Seamless Gutters", "slug": "seamless-gutters" },
+    { "name": "Gutter Guards", "slug": "gutter-guards" },
+    { "name": "Gutter Cleaning", "slug": "gutter-cleaning" },
+    { "name": "Downspouts", "slug": "downspouts" },
+    { "name": "Underground Drains", "slug": "underground-drains" },
+    { "name": "Rotten Wood Repair", "slug": "rotten-wood-repair" }
+  ],
+  "locations": {
+    "tier1": [
+      { "name": "Huntsville", "slug": "huntsville" },
+      { "name": "Madison", "slug": "madison" },
+      { "name": "Decatur", "slug": "decatur" },
+      { "name": "Athens", "slug": "athens" },
+      { "name": "Hartselle", "slug": "hartselle" }
+    ],
+    "tier2": [
+      { "name": "Scottsboro", "slug": "scottsboro" },
+      { "name": "Albertville", "slug": "albertville" },
+      { "name": "Cullman", "slug": "cullman" },
+      { "name": "Arab", "slug": "arab" },
+      { "name": "Guntersville", "slug": "guntersville" }
+    ],
+    "tier3": [
+      { "name": "Meridianville", "slug": "meridianville" },
+      { "name": "Hazel Green", "slug": "hazel-green" },
+      { "name": "Hampton Cove", "slug": "hampton-cove" },
+      { "name": "Owens Cross Roads", "slug": "owens-cross-roads" },
+      { "name": "Harvest", "slug": "harvest" },
+      { "name": "Toney", "slug": "toney" },
+      { "name": "New Hope", "slug": "new-hope" },
+      { "name": "New Market", "slug": "new-market" },
+      { "name": "Monrovia", "slug": "monrovia" },
+      { "name": "Brownsboro", "slug": "brownsboro" },
+      { "name": "Priceville", "slug": "priceville" },
+      { "name": "Trinity", "slug": "trinity" },
+      { "name": "Tanner", "slug": "tanner" },
+      { "name": "Somerville", "slug": "somerville" },
+      { "name": "Lacey's Spring", "slug": "laceys-spring" }
+    ]
+  }
+}
