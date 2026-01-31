@@ -37,7 +37,44 @@
       { "name": "Trinity", "slug": "trinity" },
       { "name": "Tanner", "slug": "tanner" },
       { "name": "Somerville", "slug": "somerville" },
-      { "name": "Lacey's Spring", "slug": "laceys-spring" }
+      { "name": "Lacey's Spring", "slug": "laceys-spring" },
+      { "name": "Elkmont", "slug": "elkmont" },
+      { "name": "Ardmore", "slug": "ardmore" },
+      { "name": "Gurley", "slug": "gurley" },
+      { "name": "Paint Rock", "slug": "paint-rock" },
+      { "name": "Triana", "slug": "triana" }
     ]
-  }
+  },
+  "allCities": [
+    { "name": "Huntsville", "slug": "huntsville" },
+    { "name": "Madison", "slug": "madison" },
+    { "name": "Decatur", "slug": "decatur" },
+    { "name": "Athens", "slug": "athens" },
+    { "name": "Hartselle", "slug": "hartselle" },
+    { "name": "Scottsboro", "slug": "scottsboro" },
+    { "name": "Albertville", "slug": "albertville" },
+    { "name": "Cullman", "slug": "cullman" },
+    { "name": "Arab", "slug": "arab" },
+    { "name": "Guntersville", "slug": "guntersville" },
+    { "name": "Meridianville", "slug": "meridianville" },
+    { "name": "Hazel Green", "slug": "hazel-green" },
+    { "name": "Hampton Cove", "slug": "hampton-cove" },
+    { "name": "Owens Cross Roads", "slug": "owens-cross-roads" },
+    { "name": "Harvest", "slug": "harvest" },
+    { "name": "Toney", "slug": "toney" },
+    { "name": "New Hope", "slug": "new-hope" },
+    { "name": "New Market", "slug": "new-market" },
+    { "name": "Monrovia", "slug": "monrovia" },
+    { "name": "Brownsboro", "slug": "brownsboro" },
+    { "name": "Priceville", "slug": "priceville" },
+    { "name": "Trinity", "slug": "trinity" },
+    { "name": "Tanner", "slug": "tanner" },
+    { "name": "Somerville", "slug": "somerville" },
+    { "name": "Lacey's Spring", "slug": "laceys-spring" },
+    { "name": "Elkmont", "slug": "elkmont" },
+    { "name": "Ardmore", "slug": "ardmore" },
+    { "name": "Gurley", "slug": "gurley" },
+    { "name": "Paint Rock", "slug": "paint-rock" },
+    { "name": "Triana", "slug": "triana" }
+  ]
 }
