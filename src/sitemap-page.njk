@@ -1,0 +1,141 @@
+---
+layout: base.njk
+title: Sitemap | Blue River Gutters
+description: Complete sitemap of Blue River Gutters website. Find all our service pages, location pages, and blog posts.
+permalink: /sitemap/
+---
+
+<section class="sitemap-page">
+  <div class="container">
+    <h1>Sitemap</h1>
+    <p class="sitemap-intro">Find everything on our website organized by category.</p>
+    
+    <div class="sitemap-grid">
+      
+      {# Main Pages #}
+      <div class="sitemap-section">
+        <h2>Main Pages</h2>
+        <ul>
+          <li><a href="{{ '/' | url }}">Home</a></li>
+          <li><a href="{{ '/services/' | url }}">All Services</a></li>
+          <li><a href="{{ '/locations/' | url }}">All Locations</a></li>
+          <li><a href="{{ '/blog/' | url }}">Blog</a></li>
+          <li><a href="{{ '/articles/' | url }}">Local Guides</a></li>
+        </ul>
+      </div>
+      
+      {# Services #}
+      <div class="sitemap-section">
+        <h2>Services</h2>
+        <ul>
+          {% for service in nav.services %}
+          <li><a href="{{ ('/services/' + service.slug + '/') | url }}">{{ service.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+      {# Primary Locations #}
+      <div class="sitemap-section">
+        <h2>Primary Locations</h2>
+        <ul>
+          {% for city in nav.locations.tier1 %}
+          <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+      {# Regional Locations #}
+      <div class="sitemap-section">
+        <h2>Regional Locations</h2>
+        <ul>
+          {% for city in nav.locations.tier2 %}
+          <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+      {# Community Locations #}
+      <div class="sitemap-section">
+        <h2>Communities We Serve</h2>
+        <ul>
+          {% for city in nav.locations.tier3 %}
+          <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+      {# Blog Posts #}
+      <div class="sitemap-section sitemap-section-wide">
+        <h2>Blog Posts</h2>
+        <ul>
+          {% for post in collections.blog | reverse %}
+          <li><a href="{{ post.url | url }}">{{ post.data.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+</section>
+
+<style>
+.sitemap-page {
+  padding: 3rem 0 4rem;
+}
+
+.sitemap-page h1 {
+  margin-bottom: 0.5rem;
+}
+
+.sitemap-intro {
+  color: var(--gray);
+  margin-bottom: 2.5rem;
+}
+
+.sitemap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+}
+
+.sitemap-section h2 {
+  font-size: 1.1rem;
+  color: var(--navy);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--red);
+}
+
+.sitemap-section ul {
+  list-style: none;
+}
+
+.sitemap-section li {
+  margin-bottom: 0.4rem;
+}
+
+.sitemap-section a {
+  color: var(--slate);
+  font-size: 0.9rem;
+}
+
+.sitemap-section a:hover {
+  color: var(--blue);
+}
+
+.sitemap-section-wide {
+  grid-column: 1 / -1;
+}
+
+.sitemap-section-wide ul {
+  columns: 2;
+  column-gap: 2rem;
+}
+
+@media (max-width: 768px) {
+  .sitemap-section-wide ul {
+    columns: 1;
+  }
+}
+</style>
