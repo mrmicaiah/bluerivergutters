@@ -122,19 +122,41 @@ extraCss: article.css
   </div>
 </article>
 
-{# Related Services #}
-{% if related_city %}
+{# Related Content #}
 <section class="article-related">
   <div class="container">
-    <h2>Gutter Services in {{ related_city }}</h2>
-    <p>Need help with your gutters? We serve {{ related_city }} and surrounding areas.</p>
-    <div class="related-links">
-      <a href="{{ '/gutters-' + related_city_slug + '-al/' | url }}" class="btn btn-dark">{{ related_city }} Services</a>
-      <a href="tel:2566166760" class="btn btn-primary">📞 (256) 616-6760</a>
+    <div class="article-related-grid">
+      
+      {# City Services #}
+      {% if related_city %}
+      <div class="article-related-block">
+        <h3>Gutter Services in {{ related_city }}</h3>
+        <ul class="article-services-list">
+          <li><a href="{{ '/services/' + related_city_slug + '/seamless-gutters/' | url }}">Seamless Gutters</a></li>
+          <li><a href="{{ '/services/' + related_city_slug + '/gutter-guards/' | url }}">Gutter Guards</a></li>
+          <li><a href="{{ '/services/' + related_city_slug + '/gutter-cleaning/' | url }}">Gutter Cleaning</a></li>
+          <li><a href="{{ '/services/' + related_city_slug + '/downspouts/' | url }}">Downspouts</a></li>
+          <li><a href="{{ '/services/' + related_city_slug + '/underground-drains/' | url }}">Underground Drains</a></li>
+          <li><a href="{{ '/services/' + related_city_slug + '/rotten-wood-repair/' | url }}">Rotten Wood Repair</a></li>
+        </ul>
+        <a href="{{ '/gutters-' + related_city_slug + '-al/' | url }}" class="btn btn-dark">View All {{ related_city }} Services</a>
+      </div>
+      {% endif %}
+      
+      {# Related Blog Posts #}
+      <div class="article-related-block">
+        <h3>From Our Blog</h3>
+        <ul class="article-blog-list">
+          <li><a href="{{ '/blog/red-clay-soil-drainage-alabama/' | url }}">The Red Clay Problem</a></li>
+          <li><a href="{{ '/blog/seasonal-gutter-maintenance-guide-alabama/' | url }}">Seasonal Maintenance Guide</a></li>
+          <li><a href="{{ '/blog/gutter-cost-north-alabama-2026/' | url }}">2026 Pricing Guide</a></li>
+        </ul>
+        <a href="{{ '/blog/' | url }}" class="btn btn-outline">View All Blog Posts</a>
+      </div>
+      
     </div>
   </div>
 </section>
-{% endif %}
 
 {# CTA Section #}
 <section class="cta">
