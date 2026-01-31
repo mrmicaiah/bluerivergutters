@@ -8,72 +8,91 @@ permalink: /sitemap/
 <section class="sitemap-page">
   <div class="container">
     <h1>Sitemap</h1>
-    <p class="sitemap-intro">Find everything on our website organized by category.</p>
+    <p class="sitemap-intro">Complete index of all {{ 1 + 1 + 1 + 1 + 1 + 6 + 30 + 5 + (30 * 6) + 6 }}+ pages on our website.</p>
     
-    <div class="sitemap-grid">
-      
-      {# Main Pages #}
-      <div class="sitemap-section">
-        <h2>Main Pages</h2>
-        <ul>
-          <li><a href="{{ '/' | url }}">Home</a></li>
-          <li><a href="{{ '/services/' | url }}">All Services</a></li>
-          <li><a href="{{ '/locations/' | url }}">All Locations</a></li>
-          <li><a href="{{ '/blog/' | url }}">Blog</a></li>
-          <li><a href="{{ '/articles/' | url }}">Local Guides</a></li>
-        </ul>
+    {# Main Pages #}
+    <div class="sitemap-section">
+      <h2>Main Pages</h2>
+      <ul class="sitemap-list">
+        <li><a href="{{ '/' | url }}">Home</a></li>
+        <li><a href="{{ '/services/' | url }}">All Services</a></li>
+        <li><a href="{{ '/locations/' | url }}">All Locations</a></li>
+        <li><a href="{{ '/blog/' | url }}">Blog</a></li>
+        <li><a href="{{ '/articles/' | url }}">Local Guides</a></li>
+      </ul>
+    </div>
+    
+    {# Blog Posts #}
+    <div class="sitemap-section">
+      <h2>Blog Posts</h2>
+      <ul class="sitemap-list">
+        {% for post in collections.blog | reverse %}
+        <li><a href="{{ post.url | url }}">{{ post.data.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    
+    {# Local Guides / Articles #}
+    <div class="sitemap-section">
+      <h2>Local Guides</h2>
+      <ul class="sitemap-list">
+        <li><a href="{{ '/articles/article-huntsville-al/' | url }}">Complete Guide to Gutters in Huntsville, AL</a></li>
+        <li><a href="{{ '/articles/article-madison-al/' | url }}">Complete Guide to Gutters in Madison, AL</a></li>
+        <li><a href="{{ '/articles/article-decatur-al/' | url }}">Complete Guide to Gutters in Decatur, AL</a></li>
+        <li><a href="{{ '/articles/article-athens-al/' | url }}">Complete Guide to Gutters in Athens, AL</a></li>
+        <li><a href="{{ '/articles/article-hartselle-al/' | url }}">Complete Guide to Gutters in Hartselle, AL</a></li>
+      </ul>
+    </div>
+    
+    {# All Location Pages #}
+    <div class="sitemap-section">
+      <h2>All Locations (30 Cities)</h2>
+      <div class="sitemap-columns sitemap-columns-3">
+        <div class="sitemap-column">
+          <h3>Primary Markets</h3>
+          <ul class="sitemap-list">
+            {% for city in nav.locations.tier1 %}
+            <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="sitemap-column">
+          <h3>Regional Cities</h3>
+          <ul class="sitemap-list">
+            {% for city in nav.locations.tier2 %}
+            <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="sitemap-column">
+          <h3>Communities</h3>
+          <ul class="sitemap-list">
+            {% for city in nav.locations.tier3 %}
+            <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a></li>
+            {% endfor %}
+          </ul>
+        </div>
       </div>
+    </div>
+    
+    {# Service + City Pages - The Big One #}
+    <div class="sitemap-section">
+      <h2>Service Pages by Location (180 Pages)</h2>
+      <p class="sitemap-note">Each city has dedicated pages for all 6 of our services.</p>
       
-      {# Services #}
-      <div class="sitemap-section">
-        <h2>Services</h2>
-        <ul>
-          {% for service in nav.services %}
-          <li><a href="{{ ('/services/' + service.slug + '/') | url }}">{{ service.name }}</a></li>
-          {% endfor %}
+      {% for city in nav.allCities %}
+      <details class="sitemap-accordion">
+        <summary>{{ city.name }}, AL <span class="sitemap-count">(6 services)</span></summary>
+        <ul class="sitemap-list">
+          <li><a href="{{ ('/services/' + city.slug + '/seamless-gutters/') | url }}">Seamless Gutters in {{ city.name }}</a></li>
+          <li><a href="{{ ('/services/' + city.slug + '/gutter-guards/') | url }}">Gutter Guards in {{ city.name }}</a></li>
+          <li><a href="{{ ('/services/' + city.slug + '/gutter-cleaning/') | url }}">Gutter Cleaning in {{ city.name }}</a></li>
+          <li><a href="{{ ('/services/' + city.slug + '/downspouts/') | url }}">Downspouts in {{ city.name }}</a></li>
+          <li><a href="{{ ('/services/' + city.slug + '/underground-drains/') | url }}">Underground Drains in {{ city.name }}</a></li>
+          <li><a href="{{ ('/services/' + city.slug + '/rotten-wood-repair/') | url }}">Rotten Wood Repair in {{ city.name }}</a></li>
         </ul>
-      </div>
-      
-      {# Primary Locations #}
-      <div class="sitemap-section">
-        <h2>Primary Locations</h2>
-        <ul>
-          {% for city in nav.locations.tier1 %}
-          <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-      
-      {# Regional Locations #}
-      <div class="sitemap-section">
-        <h2>Regional Locations</h2>
-        <ul>
-          {% for city in nav.locations.tier2 %}
-          <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-      
-      {# Community Locations #}
-      <div class="sitemap-section">
-        <h2>Communities We Serve</h2>
-        <ul>
-          {% for city in nav.locations.tier3 %}
-          <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-      
-      {# Blog Posts #}
-      <div class="sitemap-section sitemap-section-wide">
-        <h2>Blog Posts</h2>
-        <ul>
-          {% for post in collections.blog | reverse %}
-          <li><a href="{{ post.url | url }}">{{ post.data.title }}</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-      
+      </details>
+      {% endfor %}
     </div>
     
   </div>
@@ -82,60 +101,141 @@ permalink: /sitemap/
 <style>
 .sitemap-page {
   padding: 3rem 0 4rem;
+  background: var(--cream);
+  min-height: 80vh;
 }
 
 .sitemap-page h1 {
   margin-bottom: 0.5rem;
+  color: var(--navy);
 }
 
 .sitemap-intro {
   color: var(--gray);
   margin-bottom: 2.5rem;
+  font-size: 1.1rem;
 }
 
-.sitemap-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2rem;
+.sitemap-section {
+  background: var(--white);
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 .sitemap-section h2 {
-  font-size: 1.1rem;
+  font-size: 1.25rem;
   color: var(--navy);
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid var(--red);
 }
 
-.sitemap-section ul {
-  list-style: none;
-}
-
-.sitemap-section li {
-  margin-bottom: 0.4rem;
-}
-
-.sitemap-section a {
+.sitemap-section h3 {
+  font-size: 0.95rem;
   color: var(--slate);
-  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.sitemap-section a:hover {
+.sitemap-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sitemap-list li {
+  margin-bottom: 0.5rem;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.sitemap-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--red);
+  font-size: 0.8rem;
+}
+
+.sitemap-list a {
+  color: var(--slate);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.sitemap-list a:hover {
   color: var(--blue);
+  text-decoration: underline;
 }
 
-.sitemap-section-wide {
-  grid-column: 1 / -1;
+.sitemap-columns {
+  display: grid;
+  gap: 2rem;
 }
 
-.sitemap-section-wide ul {
-  columns: 2;
-  column-gap: 2rem;
+.sitemap-columns-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.sitemap-note {
+  color: var(--gray);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.sitemap-accordion {
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+
+.sitemap-accordion summary {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  background: #f9f9f9;
+  font-weight: 600;
+  color: var(--navy);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.sitemap-accordion summary:hover {
+  background: #f0f0f0;
+}
+
+.sitemap-accordion summary::marker {
+  color: var(--red);
+}
+
+.sitemap-accordion[open] summary {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.sitemap-accordion .sitemap-list {
+  padding: 1rem;
+  background: var(--white);
+}
+
+.sitemap-count {
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--gray);
 }
 
 @media (max-width: 768px) {
-  .sitemap-section-wide ul {
-    columns: 1;
+  .sitemap-columns-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .sitemap-section {
+    padding: 1rem 1.25rem;
   }
 }
 </style>
