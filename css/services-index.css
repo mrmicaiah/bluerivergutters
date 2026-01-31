@@ -81,6 +81,16 @@
   text-decoration: underline;
 }
 
+.service-cities-more {
+  font-weight: 600;
+  color: var(--red) !important;
+  white-space: nowrap;
+}
+
+.service-cities-more:hover {
+  color: var(--red-dark) !important;
+}
+
 /* Not Sure Section */
 .not-sure {
   background: var(--blue);
