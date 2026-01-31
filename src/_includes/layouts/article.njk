@@ -25,8 +25,8 @@ extraCss: article.css
       "url": "https://res.cloudinary.com/dxzw1zwez/image/upload/logo_fih2rm.webp"
     }
   },
-  "datePublished": "{{ publish_date | default('2026-01-30') }}",
-  "dateModified": "{{ modified_date | default(publish_date) | default('2026-01-30') }}"
+  "datePublished": "{{ date_published | default('2026-01-30') }}",
+  "dateModified": "{{ date_modified | default(date_published) | default('2026-01-30') }}"
 }
 </script>
 
@@ -83,7 +83,7 @@ extraCss: article.css
       {% endif %}
       <div class="article-meta">
         {% if read_time %}<span class="read-time">📖 {{ read_time }} min read</span>{% endif %}
-        {% if publish_date %}<span class="publish-date">{{ publish_date }}</span>{% endif %}
+        {% if date_display %}<span class="publish-date">{{ date_display }}</span>{% endif %}
       </div>
     </div>
   </div>
