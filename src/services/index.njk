@@ -1,0 +1,349 @@
+---
+layout: base.njk
+title: Gutter Services in North Alabama | Blue River Gutters
+description: Professional gutter services across North Alabama. Seamless gutters, gutter guards, cleaning, downspouts, underground drains & wood repair. 20+ years experience. Call (256) 616-6760.
+extraCss: services-index.css
+---
+
+{# Schema Markup #}
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Gutter Services by Blue River Gutters",
+  "description": "Professional gutter services available across North Alabama",
+  "numberOfItems": 6,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "Service",
+        "name": "Seamless Gutters",
+        "description": "Custom-fabricated seamless gutter installation with no leak points",
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Blue River Gutters"
+        },
+        "areaServed": ["Huntsville, AL", "Madison, AL", "Decatur, AL", "Athens, AL", "Hartselle, AL"]
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "Service",
+        "name": "Gutter Guards",
+        "description": "Leaf and debris protection systems to eliminate gutter cleaning",
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Blue River Gutters"
+        },
+        "areaServed": ["Huntsville, AL", "Madison, AL", "Decatur, AL", "Athens, AL", "Hartselle, AL"]
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "Service",
+        "name": "Gutter Cleaning",
+        "description": "Professional gutter cleaning and maintenance services",
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Blue River Gutters"
+        },
+        "areaServed": ["Huntsville, AL", "Madison, AL", "Decatur, AL", "Athens, AL", "Hartselle, AL"]
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "Service",
+        "name": "Downspouts",
+        "description": "Downspout installation, repair, and extensions",
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Blue River Gutters"
+        },
+        "areaServed": ["Huntsville, AL", "Madison, AL", "Decatur, AL", "Athens, AL", "Hartselle, AL"]
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "item": {
+        "@type": "Service",
+        "name": "Underground Drains",
+        "description": "Buried drainage systems to route water away from foundations",
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Blue River Gutters"
+        },
+        "areaServed": ["Huntsville, AL", "Madison, AL", "Decatur, AL", "Athens, AL", "Hartselle, AL"]
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "item": {
+        "@type": "Service",
+        "name": "Rotten Wood Repair",
+        "description": "Fascia and soffit repair for water-damaged wood",
+        "provider": {
+          "@type": "LocalBusiness",
+          "name": "Blue River Gutters"
+        },
+        "areaServed": ["Huntsville, AL", "Madison, AL", "Decatur, AL", "Athens, AL", "Hartselle, AL"]
+      }
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://bluerivergutters.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Services",
+      "item": "https://bluerivergutters.com/services/"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{# Breadcrumbs #}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb-list">
+      <li><a href="{{ '/' | url }}">Home</a></li>
+      <li aria-current="page">Services</li>
+    </ol>
+  </div>
+</nav>
+
+{# Hero #}
+<section class="hero" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/hero-bg_axhlw4.jpg');">
+  <div class="hero-overlay"></div>
+  <div class="container hero-container">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Complete Gutter Solutions</p>
+      <h1>Professional Gutter Services Across North Alabama</h1>
+      <p>From seamless gutter installation to gutter guards, cleaning, and repair — Blue River Gutters delivers expert solutions for every drainage challenge. Serving Huntsville, Madison, Decatur, Athens, Hartselle, and surrounding communities for over 20 years.</p>
+      <div class="hero-cta">
+        <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
+        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary">✉️ Get Free Estimate</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# Stats #}
+<section class="stats-section">
+  <div class="container">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-number">20+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">1,700+</div>
+        <div class="stat-label">Happy Customers</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">4.7★</div>
+        <div class="stat-label">Google Rating</div>
+      </div>
+      <div class="stat">
+        <div class="stat-number">6</div>
+        <div class="stat-label">Core Services</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# Services Grid #}
+<section class="services-hub">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">What We Offer</p>
+      <h2>Our Gutter Services</h2>
+      <p class="section-intro">Click any service to learn more and find availability in your city.</p>
+    </div>
+    
+    <div class="services-hub-grid">
+      
+      {# Seamless Gutters #}
+      <div class="service-hub-card">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-seamless-gutters_hcf6si.webp" alt="Seamless Gutter Installation" loading="lazy">
+        <div class="service-hub-content">
+          <h3>Seamless Gutters</h3>
+          <p>Custom-fabricated on-site from a single piece of aluminum. No seams means no leaks — just clean lines and reliable performance that lasts 20+ years.</p>
+          <div class="service-cities">
+            <span class="service-cities-label">Available in:</span>
+            <a href="{{ '/services/huntsville/seamless-gutters/' | url }}">Huntsville</a> |
+            <a href="{{ '/services/madison/seamless-gutters/' | url }}">Madison</a> |
+            <a href="{{ '/services/decatur/seamless-gutters/' | url }}">Decatur</a> |
+            <a href="{{ '/services/athens/seamless-gutters/' | url }}">Athens</a> |
+            <a href="{{ '/services/hartselle/seamless-gutters/' | url }}">Hartselle</a>
+          </div>
+        </div>
+      </div>
+      
+      {# Gutter Guards #}
+      <div class="service-hub-card">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-gutter-guards_csf0zo.webp" alt="Gutter Guard Installation" loading="lazy">
+        <div class="service-hub-content">
+          <h3>Gutter Guards</h3>
+          <p>Stop climbing ladders and paying for cleanings. Our gutter guards block pine needles, leaves, and debris while letting water flow freely into your gutters.</p>
+          <div class="service-cities">
+            <span class="service-cities-label">Available in:</span>
+            <a href="{{ '/services/huntsville/gutter-guards/' | url }}">Huntsville</a> |
+            <a href="{{ '/services/madison/gutter-guards/' | url }}">Madison</a> |
+            <a href="{{ '/services/decatur/gutter-guards/' | url }}">Decatur</a> |
+            <a href="{{ '/services/athens/gutter-guards/' | url }}">Athens</a> |
+            <a href="{{ '/services/hartselle/gutter-guards/' | url }}">Hartselle</a>
+          </div>
+        </div>
+      </div>
+      
+      {# Gutter Cleaning #}
+      <div class="service-hub-card">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-gutter-cleaning_kqfwes.webp" alt="Gutter Cleaning Services" loading="lazy">
+        <div class="service-hub-content">
+          <h3>Gutter Cleaning</h3>
+          <p>Professional cleaning inside and out. We clear clogs, flush downspouts, and inspect for damage — so you don't have to climb that ladder yourself.</p>
+          <div class="service-cities">
+            <span class="service-cities-label">Available in:</span>
+            <a href="{{ '/services/huntsville/gutter-cleaning/' | url }}">Huntsville</a> |
+            <a href="{{ '/services/madison/gutter-cleaning/' | url }}">Madison</a> |
+            <a href="{{ '/services/decatur/gutter-cleaning/' | url }}">Decatur</a> |
+            <a href="{{ '/services/athens/gutter-cleaning/' | url }}">Athens</a> |
+            <a href="{{ '/services/hartselle/gutter-cleaning/' | url }}">Hartselle</a>
+          </div>
+        </div>
+      </div>
+      
+      {# Downspouts #}
+      <div class="service-hub-card">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-downspouts_iqkukv.webp" alt="Downspout Installation" loading="lazy">
+        <div class="service-hub-content">
+          <h3>Downspouts</h3>
+          <p>Properly sized and positioned downspouts ensure water flows away from your foundation — critical for North Alabama's red clay soil that doesn't absorb water.</p>
+          <div class="service-cities">
+            <span class="service-cities-label">Available in:</span>
+            <a href="{{ '/services/huntsville/downspouts/' | url }}">Huntsville</a> |
+            <a href="{{ '/services/madison/downspouts/' | url }}">Madison</a> |
+            <a href="{{ '/services/decatur/downspouts/' | url }}">Decatur</a> |
+            <a href="{{ '/services/athens/downspouts/' | url }}">Athens</a> |
+            <a href="{{ '/services/hartselle/downspouts/' | url }}">Hartselle</a>
+          </div>
+        </div>
+      </div>
+      
+      {# Underground Drains #}
+      <div class="service-hub-card">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-underground-drains_sbbgru.webp" alt="Underground Drainage Systems" loading="lazy">
+        <div class="service-hub-content">
+          <h3>Underground Drains</h3>
+          <p>Route water far from your foundation with buried drainage systems. The ultimate solution for standing water, erosion, and flooding in your yard.</p>
+          <div class="service-cities">
+            <span class="service-cities-label">Available in:</span>
+            <a href="{{ '/services/huntsville/underground-drains/' | url }}">Huntsville</a> |
+            <a href="{{ '/services/madison/underground-drains/' | url }}">Madison</a> |
+            <a href="{{ '/services/decatur/underground-drains/' | url }}">Decatur</a> |
+            <a href="{{ '/services/athens/underground-drains/' | url }}">Athens</a> |
+            <a href="{{ '/services/hartselle/underground-drains/' | url }}">Hartselle</a>
+          </div>
+        </div>
+      </div>
+      
+      {# Rotten Wood Repair #}
+      <div class="service-hub-card">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-rotten-wood_jhfmim.webp" alt="Fascia and Rotten Wood Repair" loading="lazy">
+        <div class="service-hub-content">
+          <h3>Rotten Wood Repair</h3>
+          <p>Alabama's humidity accelerates wood rot. We repair damaged fascia and soffit boards before installing new gutters — ensuring a solid foundation for your system.</p>
+          <div class="service-cities">
+            <span class="service-cities-label">Available in:</span>
+            <a href="{{ '/services/huntsville/rotten-wood-repair/' | url }}">Huntsville</a> |
+            <a href="{{ '/services/madison/rotten-wood-repair/' | url }}">Madison</a> |
+            <a href="{{ '/services/decatur/rotten-wood-repair/' | url }}">Decatur</a> |
+            <a href="{{ '/services/athens/rotten-wood-repair/' | url }}">Athens</a> |
+            <a href="{{ '/services/hartselle/rotten-wood-repair/' | url }}">Hartselle</a>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+{# Not Sure Section #}
+<section class="not-sure">
+  <div class="container">
+    <div class="not-sure-content">
+      <h2>Not Sure What You Need?</h2>
+      <p>No problem — that's what we're here for. Give us a call or schedule a free estimate, and we'll assess your home's drainage situation and recommend the right solution. No pressure, no obligation.</p>
+      <div class="not-sure-cta">
+        <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
+        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary">✉️ Schedule Free Estimate</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# Why Blue River #}
+<section class="why-local">
+  <div class="container">
+    <div class="why-local-grid">
+      <div class="why-local-content">
+        <p class="section-eyebrow">Local Expertise</p>
+        <h2>Why Choose Blue River Gutters?</h2>
+        
+        <p>We're not a national franchise — we're your neighbors. Headquartered right here in North Alabama, we've been serving the Tennessee Valley for over two decades.</p>
+        
+        <ul class="checkmarks">
+          <li>✓ 20+ years serving North Alabama</li>
+          <li>✓ 1,700+ satisfied customers</li>
+          <li>✓ 4.7-star Google rating (240+ reviews)</li>
+          <li>✓ Licensed and fully insured</li>
+          <li>✓ Warranty-backed installation</li>
+          <li>✓ Free, no-obligation estimates</li>
+        </ul>
+        
+        <div class="why-local-cta">
+          <a href="{{ '/locations/' | url }}" class="btn btn-dark">View All Service Areas →</a>
+        </div>
+      </div>
+      
+      <div class="why-local-image">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/fascia-boards_rszmd9.webp" alt="Blue River Gutters professional installation" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+{# CTA #}
+<section class="cta" id="contact">
+  <div class="container">
+    <h2>Ready to Protect Your Home?</h2>
+    <p>Get a free estimate from North Alabama's trusted gutter experts — your neighbors since 2003.</p>
+    <a href="https://BlueRiverGutters.as.me/" class="btn btn-primary">Schedule Free Estimate</a>
+    <p class="cta-phone"><a href="tel:2566166760">📞 (256) 616-6760</a></p>
+    <p class="cta-hours">MON-FRI 8:00AM-5:00PM</p>
+  </div>
+</section>
