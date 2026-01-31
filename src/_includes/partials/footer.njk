@@ -2,9 +2,11 @@
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
+      
+      {# Brand Column #}
       <div class="footer-brand">
         <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/logo-white_w60npv.png" alt="Blue River Gutters" class="footer-logo">
-        <p>Blue River Gutters is the leading provider of exceptional gutter services in Huntsville, AL and surrounding areas.</p>
+        <p>North Alabama's trusted gutter company since 2003. Locally owned and operated in Hartselle, serving Huntsville, Madison, Decatur, and 25+ communities.</p>
         <div class="social-links">
           <a href="https://www.facebook.com/bluerivergutters" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
           <a href="https://www.instagram.com/bluerivergutter/" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
@@ -13,54 +15,112 @@
         </div>
       </div>
       
+      {# Services Column #}
       <div class="footer-links">
         <h4>Services</h4>
         <ul>
-          <li><a href="{{ '/' | url }}#services">Seamless Gutters</a></li>
-          <li><a href="{{ '/' | url }}#services">Gutter Guards</a></li>
-          <li><a href="{{ '/' | url }}#services">Gutter Cleaning</a></li>
-          <li><a href="{{ '/' | url }}#services">Downspouts</a></li>
-          <li><a href="{{ '/' | url }}#services">Underground Drains</a></li>
-          <li><a href="{{ '/' | url }}#services">Rotten Wood Repair</a></li>
+          {% for service in nav.services %}
+          <li><a href="{{ '/services/' | url }}#{{ service.slug }}">{{ service.name }}</a></li>
+          {% endfor %}
         </ul>
       </div>
       
+      {# Locations Column #}
+      <div class="footer-links">
+        <h4>Locations</h4>
+        <ul>
+          {% for city in nav.locations.tier1 %}
+          <li><a href="{{ '/locations/gutters-' + city.slug + '-al/' | url }}">{{ city.name }}, AL</a></li>
+          {% endfor %}
+          <li><a href="{{ '/locations/' | url }}" class="footer-more-link">All Locations →</a></li>
+        </ul>
+      </div>
+      
+      {# Resources Column #}
+      <div class="footer-links">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="{{ '/blog/' | url }}">Blog</a></li>
+          <li><a href="{{ '/articles/' | url }}">Local Guides</a></li>
+          <li><a href="{{ '/sitemap/' | url }}">Sitemap</a></li>
+        </ul>
+      </div>
+      
+      {# Contact Column #}
       <div class="footer-contact">
         <h4>Contact</h4>
         <ul>
           <li><a href="tel:2566166760">📞 (256) 616-6760</a></li>
           <li><a href="mailto:service@bluerivergutters.com">✉️ service@bluerivergutters.com</a></li>
-          <li>📍 3315 Memorial Pkwy SW<br>Suite B13<br>Huntsville, AL 35801</li>
+          <li class="footer-address">
+            📍 3315 Memorial Pkwy SW<br>
+            Suite B13<br>
+            Huntsville, AL 35801
+          </li>
         </ul>
-        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary btn-small">✉️ Schedule Now</a>
+        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary btn-small">Schedule Estimate</a>
       </div>
     </div>
     
-    {# Footer Locations - Tier 1 Cities Only #}
-    <div class="footer-locations">
-      <h4>Service Areas</h4>
-      <p>
-        <a href="{{ '/gutters-huntsville-al/' | url }}">Huntsville</a> | 
-        <a href="{{ '/gutters-madison-al/' | url }}">Madison</a> | 
-        <a href="{{ '/gutters-decatur-al/' | url }}">Decatur</a> | 
-        <a href="{{ '/gutters-athens-al/' | url }}">Athens</a> | 
-        <a href="{{ '/gutters-hartselle-al/' | url }}">Hartselle</a> |
-        <a href="{{ '/locations/' | url }}">All Locations</a>
-      </p>
+    {# Extended Location Links #}
+    <div class="footer-locations-extended">
+      <h4>All Service Areas</h4>
+      <div class="footer-location-grid">
+        <div class="footer-location-column">
+          <span class="footer-region-label">Madison County</span>
+          <a href="{{ '/locations/gutters-huntsville-al/' | url }}">Huntsville</a>
+          <a href="{{ '/locations/gutters-madison-al/' | url }}">Madison</a>
+          <a href="{{ '/locations/gutters-meridianville-al/' | url }}">Meridianville</a>
+          <a href="{{ '/locations/gutters-hazel-green-al/' | url }}">Hazel Green</a>
+          <a href="{{ '/locations/gutters-hampton-cove-al/' | url }}">Hampton Cove</a>
+          <a href="{{ '/locations/gutters-owens-cross-roads-al/' | url }}">Owens Cross Roads</a>
+          <a href="{{ '/locations/gutters-harvest-al/' | url }}">Harvest</a>
+          <a href="{{ '/locations/gutters-toney-al/' | url }}">Toney</a>
+          <a href="{{ '/locations/gutters-new-hope-al/' | url }}">New Hope</a>
+          <a href="{{ '/locations/gutters-new-market-al/' | url }}">New Market</a>
+          <a href="{{ '/locations/gutters-monrovia-al/' | url }}">Monrovia</a>
+          <a href="{{ '/locations/gutters-brownsboro-al/' | url }}">Brownsboro</a>
+        </div>
+        <div class="footer-location-column">
+          <span class="footer-region-label">Morgan County</span>
+          <a href="{{ '/locations/gutters-decatur-al/' | url }}">Decatur</a>
+          <a href="{{ '/locations/gutters-hartselle-al/' | url }}">Hartselle</a>
+          <a href="{{ '/locations/gutters-priceville-al/' | url }}">Priceville</a>
+          <a href="{{ '/locations/gutters-trinity-al/' | url }}">Trinity</a>
+          <a href="{{ '/locations/gutters-tanner-al/' | url }}">Tanner</a>
+          <a href="{{ '/locations/gutters-somerville-al/' | url }}">Somerville</a>
+          <a href="{{ '/locations/gutters-laceys-spring-al/' | url }}">Lacey's Spring</a>
+        </div>
+        <div class="footer-location-column">
+          <span class="footer-region-label">Limestone County</span>
+          <a href="{{ '/locations/gutters-athens-al/' | url }}">Athens</a>
+        </div>
+        <div class="footer-location-column">
+          <span class="footer-region-label">More Areas</span>
+          <a href="{{ '/locations/gutters-scottsboro-al/' | url }}">Scottsboro</a>
+          <a href="{{ '/locations/gutters-albertville-al/' | url }}">Albertville</a>
+          <a href="{{ '/locations/gutters-cullman-al/' | url }}">Cullman</a>
+          <a href="{{ '/locations/gutters-arab-al/' | url }}">Arab</a>
+          <a href="{{ '/locations/gutters-guntersville-al/' | url }}">Guntersville</a>
+        </div>
+      </div>
     </div>
     
+    {# Bottom Bar #}
     <div class="footer-bottom">
-      <p>&copy; 2026 Blue River Gutters. All rights reserved.</p>
+      <p>&copy; 2026 Blue River Gutters. All rights reserved. | <a href="{{ '/sitemap/' | url }}">Sitemap</a></p>
     </div>
   </div>
 </footer>
 
 {# Sticky Mobile Footer #}
 <div class="mobile-sticky-footer">
-  <a href="tel:2566166760" class="mobile-sticky-btn">
+  <a href="tel:2566166760" class="mobile-sticky-btn" aria-label="Call us">
     <span>📞</span>
+    <small>Call</small>
   </a>
-  <a href="https://BlueRiverGutters.as.me/" class="mobile-sticky-btn">
+  <a href="https://BlueRiverGutters.as.me/" class="mobile-sticky-btn" aria-label="Schedule estimate">
     <span>📋</span>
+    <small>Schedule</small>
   </a>
 </div>
