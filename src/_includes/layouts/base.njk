@@ -6,6 +6,15 @@
   <title>{{ title | default("Blue River Gutters | North Alabama Gutter Services") }}</title>
   <meta name="description" content="{{ meta_description | default(description) | default("Professional gutter installation, repair, and cleaning in Huntsville, Madison, Decatur, and throughout North Alabama. 20+ years experience.") }}">
   
+  {# Google Analytics #}
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GT8EBK75TK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-GT8EBK75TK');
+  </script>
+  
   {# Open Graph #}
   <meta property="og:title" content="{{ title | default("Blue River Gutters") }}">
   <meta property="og:description" content="{{ meta_description | default(description) | default("Professional gutter services in North Alabama.") }}">
