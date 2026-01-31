@@ -1,0 +1,75 @@
+---
+layout: base.njk
+title: Recent Projects | Blue River Gutters
+description: See our recent gutter installation, repair, and cleaning projects across Huntsville, Madison, Decatur, and North Alabama. Quality workmanship on every job.
+permalink: /recent-projects/
+---
+
+{# Breadcrumbs #}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb-list">
+      <li><a href="{{ '/' | url }}">Home</a></li>
+      <li aria-current="page">Recent Projects</li>
+    </ol>
+  </div>
+</nav>
+
+{# Hero #}
+<section class="page-hero">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Our Work</p>
+      <h1>Recent Projects</h1>
+      <p class="section-intro">Browse our latest gutter installations, repairs, and cleaning projects across North Alabama. Every job reflects our commitment to quality workmanship and customer satisfaction.</p>
+    </div>
+  </div>
+</section>
+
+{# RealWork Labs Projects Gallery #}
+<section class="projects-gallery">
+  <div class="container">
+    <div id="rwl-output"></div>
+  </div>
+</section>
+
+{# CTA #}
+<section class="cta" id="contact">
+  <div class="container">
+    <h2>Ready to Start Your Project?</h2>
+    <p>Get a free estimate for your gutter installation, repair, or cleaning project.</p>
+    <a href="https://BlueRiverGutters.as.me/" class="btn btn-primary">Schedule Free Estimate</a>
+    <p class="cta-phone"><a href="tel:2566166760">📞 (256) 616-6760</a></p>
+    <p class="cta-hours">MON-FRI 8:00AM-5:00PM</p>
+  </div>
+</section>
+
+{# RealWork Labs Script - Projects page widget #}
+<script type="text/javascript">
+(function(){
+  var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = 'https://app.realworklabs.com/static/plugin/loader.js?v=' + new Date().getTime();
+      window.addEventListener('rwlPluginReady', function () {
+          window.rwlPlugin.init('https://app.realworklabs.com', 'RlomFVKLymXtpSXg');
+      }, false);
+      s.parentNode.insertBefore(o, s);
+}());
+</script>
+
+<style>
+.page-hero {
+  padding: 3rem 0;
+  background: var(--light-gray);
+}
+
+.page-hero h1 {
+  margin-bottom: 1rem;
+}
+
+.projects-gallery {
+  padding: 3rem 0 4rem;
+  min-height: 400px;
+}
+</style>
