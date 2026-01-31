@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ title | default("Blue River Gutters | North Alabama Gutter Services") }}</title>
-  <meta name="description" content="{{ description | default("Professional gutter installation, repair, and cleaning in Huntsville, Madison, Decatur, and throughout North Alabama. 20+ years experience.") }}">
+  <meta name="description" content="{{ meta_description | default(description) | default("Professional gutter installation, repair, and cleaning in Huntsville, Madison, Decatur, and throughout North Alabama. 20+ years experience.") }}">
   
   {# Open Graph #}
   <meta property="og:title" content="{{ title | default("Blue River Gutters") }}">
-  <meta property="og:description" content="{{ description | default("Professional gutter services in North Alabama.") }}">
+  <meta property="og:description" content="{{ meta_description | default(description) | default("Professional gutter services in North Alabama.") }}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://bluerivergutters.com{{ page.url }}">
   <meta property="og:image" content="{{ ogImage | default("https://res.cloudinary.com/dxzw1zwez/image/upload/hero-bg_axhlw4.jpg") }}">
@@ -43,20 +43,11 @@
   
   {% include "partials/footer.njk" %}
   
-  {# Mobile Menu Script #}
+  {# Navigation JS (dropdowns, mobile menu, accordions) #}
+  <script src="{{ '/js/navigation.js' | url }}"></script>
+  
+  {# FAQ accordion #}
   <script>
-    // Mobile menu toggle
-    const menuBtn = document.querySelector('.mobile-menu-btn');
-    const mobileNav = document.querySelector('.mobile-nav');
-    
-    if (menuBtn && mobileNav) {
-      menuBtn.addEventListener('click', () => {
-        menuBtn.classList.toggle('active');
-        mobileNav.classList.toggle('active');
-      });
-    }
-
-    // FAQ accordion
     document.querySelectorAll('.faq-question').forEach(button => {
       button.addEventListener('click', () => {
         const faqItem = button.parentElement;
