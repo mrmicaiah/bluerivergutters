@@ -408,6 +408,31 @@ extraCss: city-pages.css
 </section>
 {% endif %}
 
+{# Nearby Areas Section #}
+{% if nearby_cities %}
+<section class="nearby-areas">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Also Serving</p>
+      <h2>Gutter Services in Nearby Areas</h2>
+    </div>
+    
+    <div class="nearby-grid">
+      {% for nearby in nearby_cities %}
+      <a href="{{ '/gutters-' + nearby.slug + '-al/' | url }}" class="nearby-card">
+        <h3>{{ nearby.name }}, AL</h3>
+        <span class="nearby-link">View Services →</span>
+      </a>
+      {% endfor %}
+    </div>
+    
+    <p class="nearby-note">
+      <a href="{{ '/locations/' | url }}">View all service areas →</a>
+    </p>
+  </div>
+</section>
+{% endif %}
+
 {# FAQ Section #}
 {% if faqs %}
 <section class="faq">
