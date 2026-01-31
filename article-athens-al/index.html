@@ -589,6 +589,82 @@
   </script>
   
   
+  <script>
+    (function() {
+      const counters = document.querySelectorAll('.stat-number');
+      if (!counters.length) return;
+      
+      let animated = false;
+      
+      function animateCounter(el) {
+        const text = el.textContent;
+        // Extract number and any suffix (like +, ★, ", etc)
+        const match = text.match(/^([\d,]+)(.*)/);
+        if (!match) return;
+        
+        const target = parseInt(match[1].replace(/,/g, ''));
+        const suffix = match[2] || '';
+        const duration = 1500;
+        const start = performance.now();
+        
+        function update(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.floor(target * eased);
+          
+          // Format with commas
+          el.textContent = current.toLocaleString() + suffix;
+          
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            el.textContent = target.toLocaleString() + suffix;
+          }
+        }
+        
+        requestAnimationFrame(update);
+      }
+      
+      function checkVisibility() {
+        if (animated) return;
+        
+        const statsSection = document.querySelector('.stats-section');
+        if (!statsSection) return;
+        
+        const rect = statsSection.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight * 0.8 && rect.bottom > 0;
+        
+        if (isVisible) {
+          animated = true;
+          counters.forEach(counter => animateCounter(counter));
+        }
+      }
+      
+      // Use Intersection Observer if available
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !animated) {
+              animated = true;
+              counters.forEach(counter => animateCounter(counter));
+              observer.disconnect();
+            }
+          });
+        }, { threshold: 0.3 });
+        
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) observer.observe(statsSection);
+      } else {
+        // Fallback for older browsers
+        window.addEventListener('scroll', checkVisibility);
+        checkVisibility();
+      }
+    })();
+  </script>
+  
+  
   
   
 </body>
