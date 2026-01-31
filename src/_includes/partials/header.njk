@@ -22,7 +22,7 @@
           <a href="{{ '/services/' | url }}">All Services</a>
           <div class="dropdown-divider"></div>
           {% for service in nav.services %}
-          <a href="{{ ('/services/' + service.slug + '/') | url }}">{{ service.name }}</a>
+          <a href="{{ ('/services/huntsville/' + service.slug + '/') | url }}">{{ service.name }}</a>
           {% endfor %}
         </div>
       </div>
@@ -74,7 +74,7 @@
     <div class="mobile-accordion-content">
       <a href="{{ '/services/' | url }}">All Services</a>
       {% for service in nav.services %}
-      <a href="{{ ('/services/' + service.slug + '/') | url }}">{{ service.name }}</a>
+      <a href="{{ ('/services/huntsville/' + service.slug + '/') | url }}">{{ service.name }}</a>
       {% endfor %}
     </div>
   </div>
