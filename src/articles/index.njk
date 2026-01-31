@@ -1,0 +1,122 @@
+---
+layout: base.njk
+title: Local Gutter Guides | Blue River Gutters
+meta_description: In-depth guides to gutter services and drainage challenges for Huntsville, Madison, Decatur, Athens, and Hartselle. Local expertise from North Alabama's trusted gutter company.
+permalink: /articles/
+---
+
+{# Breadcrumbs #}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb-list">
+      <li><a href="{{ '/' | url }}">Home</a></li>
+      <li aria-current="page">Local Guides</li>
+    </ol>
+  </div>
+</nav>
+
+{# Page Header #}
+<header class="page-header">
+  <div class="container">
+    <h1>Local Gutter Guides</h1>
+    <p>In-depth guides to gutter services and drainage challenges for North Alabama cities.</p>
+  </div>
+</header>
+
+{# Articles List #}
+<section class="articles-listing">
+  <div class="container">
+    <div class="articles-grid">
+      
+      <a href="{{ '/article-huntsville-al/' | url }}" class="article-card">
+        <h2>Huntsville, AL</h2>
+        <p>Why the Rocket City's geography works against your home — and what to do about it. Tennessee Valley drainage, red clay soil, and seasonal challenges.</p>
+        <span class="article-link">Read Guide →</span>
+      </a>
+      
+      <a href="{{ '/article-madison-al/' | url }}" class="article-card">
+        <h2>Madison, AL</h2>
+        <p>Alabama's fastest-growing city brings unique drainage challenges. New construction issues, builder-grade gutters, and what Madison homeowners need to know.</p>
+        <span class="article-link">Read Guide →</span>
+      </a>
+      
+      <a href="{{ '/article-decatur-al/' | url }}" class="article-card">
+        <h2>Decatur, AL</h2>
+        <p>Living on the Tennessee River means unique moisture challenges. Flood plain concerns, humidity damage, and protecting Decatur's historic homes.</p>
+        <span class="article-link">Read Guide →</span>
+      </a>
+      
+      <a href="{{ '/article-athens-al/' | url }}" class="article-card">
+        <h2>Athens, AL</h2>
+        <p>Limestone County's county seat combines historic charm with mature tree coverage. Managing leaves, protecting older homes, and Athens-specific drainage tips.</p>
+        <span class="article-link">Read Guide →</span>
+      </a>
+      
+      <a href="{{ '/article-hartselle-al/' | url }}" class="article-card">
+        <h2>Hartselle, AL</h2>
+        <p>Our hometown. Blue River Gutters' home base means fast response and deep community knowledge. Local insights for Hartselle homeowners.</p>
+        <span class="article-link">Read Guide →</span>
+      </a>
+      
+    </div>
+  </div>
+</section>
+
+{# CTA #}
+<section class="cta">
+  <div class="container">
+    <h2>Questions About Your Area?</h2>
+    <p>We serve all of North Alabama. Give us a call for local expertise.</p>
+    <a href="https://BlueRiverGutters.as.me/" class="btn btn-primary">Schedule Free Estimate</a>
+    <p class="cta-phone"><a href="tel:2566166760">📞 (256) 616-6760</a></p>
+  </div>
+</section>
+
+<style>
+.page-header {
+  background: var(--navy);
+  color: var(--white);
+  padding: 3rem 0;
+  text-align: center;
+}
+.page-header h1 { color: var(--white); margin-bottom: 0.5rem; }
+.page-header p { color: rgba(255,255,255,0.8); margin: 0; }
+
+.articles-listing {
+  padding: 4rem 0;
+  background: var(--cream);
+}
+
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.article-card {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.article-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+.article-card h2 {
+  color: var(--navy);
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.article-card p {
+  color: var(--gray);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+.article-link {
+  color: var(--red);
+  font-weight: 600;
+}
+</style>
