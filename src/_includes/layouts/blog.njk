@@ -132,7 +132,7 @@ extraCss: blog.css
       <h3>Related Services</h3>
       <div class="blog-related-links">
         {% for service in related_services %}
-        <a href="{{ '/services/' + service + '/' | url }}">{{ service | replace("-", " ") | title }}</a>
+        <a href="{{ '/services/huntsville/' + service + '/' | url }}">{{ service | replace("-", " ") | title }}</a>
         {% endfor %}
       </div>
     </div>
