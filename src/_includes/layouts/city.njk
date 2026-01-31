@@ -375,6 +375,39 @@ extraCss: city-pages.css
 </section>
 {% endif %}
 
+{# Related Reading Section #}
+{% if related_article or related_posts %}
+<section class="related-reading">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Learn More</p>
+      <h2>Helpful Resources for {{ city }} Homeowners</h2>
+    </div>
+    
+    <div class="related-reading-grid">
+      {% if related_article %}
+      <a href="{{ '/article-' + related_article + '/' | url }}" class="related-reading-card related-reading-featured">
+        <span class="related-type">In-Depth Guide</span>
+        <h3>Complete Guide to Gutters in {{ city }}, AL</h3>
+        <p>Everything you need to know about protecting your {{ city }} home from water damage.</p>
+        <span class="related-link">Read Full Guide →</span>
+      </a>
+      {% endif %}
+      
+      {% if related_posts %}
+      {% for post in related_posts %}
+      <a href="{{ post.url | url }}" class="related-reading-card">
+        <span class="related-type">Blog</span>
+        <h3>{{ post.title }}</h3>
+        <span class="related-link">Read Article →</span>
+      </a>
+      {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
 {# FAQ Section #}
 {% if faqs %}
 <section class="faq">
