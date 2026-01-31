@@ -1,0 +1,292 @@
+/* =====================
+   HEADER & NAVIGATION
+   Blue River Gutters
+   ===================== */
+
+/* =====================
+   DESKTOP DROPDOWNS
+   ===================== */
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-toggle {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--slate);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.nav-dropdown-toggle:hover {
+  color: var(--navy);
+}
+
+.dropdown-arrow {
+  font-size: 0.75rem;
+  transition: transform 0.2s;
+}
+
+.nav-dropdown.active .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--white);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  padding: 0.75rem 0;
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  margin-top: 0.75rem;
+  z-index: 1000;
+}
+
+.nav-dropdown.active .nav-dropdown-menu,
+.nav-dropdown:hover .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+}
+
+.nav-dropdown-menu a {
+  display: block;
+  padding: 0.6rem 1.25rem;
+  color: var(--slate);
+  font-size: 0.9rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nav-dropdown-menu a:hover {
+  background: var(--light-gray);
+  color: var(--navy);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: var(--light-gray);
+  margin: 0.5rem 0;
+}
+
+/* Mega Menu for Locations */
+.nav-dropdown-mega {
+  min-width: 400px;
+  padding: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.mega-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.mega-heading {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+  padding: 0 0.5rem;
+}
+
+.mega-column a {
+  padding: 0.4rem 0.5rem;
+  border-radius: 4px;
+}
+
+.view-all-link {
+  margin-top: 0.5rem;
+  color: var(--red) !important;
+  font-weight: 600;
+}
+
+/* =====================
+   MOBILE NAVIGATION
+   ===================== */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--white);
+  padding: 1rem;
+  padding-top: 5rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  z-index: 998;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.mobile-nav.active {
+  display: flex;
+}
+
+.mobile-nav > a {
+  padding: 1rem;
+  border-bottom: 1px solid var(--light-gray);
+  color: var(--slate);
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.mobile-nav > a:hover {
+  color: var(--navy);
+  background: var(--light-gray);
+}
+
+.mobile-nav-cta {
+  background: var(--blue) !important;
+  color: var(--white) !important;
+  text-align: center;
+  border-radius: 6px;
+  margin-top: 1rem;
+  padding: 1rem !important;
+  border-bottom: none !important;
+}
+
+.mobile-nav-cta:hover {
+  background: var(--blue-light) !important;
+}
+
+/* Mobile Accordion */
+.mobile-accordion {
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.mobile-accordion-toggle {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--slate);
+  cursor: pointer;
+  text-align: left;
+}
+
+.mobile-accordion-toggle:hover {
+  color: var(--navy);
+  background: var(--light-gray);
+}
+
+.accordion-arrow {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--gray);
+  transition: transform 0.2s;
+}
+
+.mobile-accordion.active .accordion-arrow {
+  transform: rotate(45deg);
+}
+
+.mobile-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  background: var(--light-gray);
+}
+
+.mobile-accordion.active .mobile-accordion-content {
+  max-height: 600px;
+}
+
+.mobile-accordion-content a {
+  display: block;
+  padding: 0.75rem 1rem 0.75rem 1.5rem;
+  color: var(--slate);
+  font-size: 1rem;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.mobile-accordion-content a:hover {
+  background: var(--cream);
+  color: var(--navy);
+}
+
+.mobile-accordion-content a:last-child {
+  border-bottom: none;
+}
+
+.mobile-section-label {
+  display: block;
+  padding: 0.75rem 1rem 0.5rem 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mobile-view-all {
+  color: var(--red) !important;
+  font-weight: 600;
+}
+
+/* =====================
+   HEADER ADJUSTMENTS
+   ===================== */
+.header {
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  z-index: 1001;
+}
+
+/* =====================
+   RESPONSIVE
+   ===================== */
+@media (max-width: 1024px) {
+  .nav-dropdown-mega {
+    min-width: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    display: none !important;
+  }
+  
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  .nav-dropdown-menu,
+  .nav-dropdown-mega {
+    display: none;
+  }
+}
