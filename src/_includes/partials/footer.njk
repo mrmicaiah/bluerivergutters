@@ -1,12 +1,12 @@
 {# Footer #}
 <footer class="footer">
   <div class="container">
-    <div class="footer-grid">
+    <div class="footer-grid-expanded">
       
       {# Brand Column #}
       <div class="footer-brand">
         <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/logo-white_w60npv.png" alt="Blue River Gutters" class="footer-logo">
-        <p>North Alabama's trusted gutter company since 2003. Locally owned and operated in Hartselle, serving Huntsville, Madison, Decatur, and 25+ communities.</p>
+        <p>North Alabama's trusted gutter experts since 2005. Professional installation, repair, and maintenance for homes and businesses.</p>
         <div class="social-links">
           <a href="https://www.facebook.com/bluerivergutters" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
           <a href="https://www.instagram.com/bluerivergutter/" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
@@ -20,96 +20,86 @@
         <h4>Services</h4>
         <ul>
           {% for service in nav.services %}
-          <li><a href="{{ '/services/' | url }}#{{ service.slug }}">{{ service.name }}</a></li>
+          <li><a href="{{ ('/services/' + service.slug + '/') | url }}">{{ service.name }}</a></li>
           {% endfor %}
         </ul>
       </div>
       
-      {# Locations Column #}
+      {# Primary Locations Column #}
       <div class="footer-links">
-        <h4>Locations</h4>
+        <h4>Primary Markets</h4>
         <ul>
           {% for city in nav.locations.tier1 %}
-          <li><a href="{{ '/locations/gutters-' + city.slug + '-al/' | url }}">{{ city.name }}, AL</a></li>
+          <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a></li>
           {% endfor %}
-          <li><a href="{{ '/locations/' | url }}" class="footer-more-link">All Locations →</a></li>
         </ul>
       </div>
       
-      {# Resources Column #}
+      {# More Locations Column #}
       <div class="footer-links">
-        <h4>Resources</h4>
+        <h4>More Locations</h4>
         <ul>
-          <li><a href="{{ '/blog/' | url }}">Blog</a></li>
-          <li><a href="{{ '/articles/' | url }}">Local Guides</a></li>
-          <li><a href="{{ '/sitemap/' | url }}">Sitemap</a></li>
+          {% for city in nav.locations.tier2 %}
+          <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}</a></li>
+          {% endfor %}
+          <li><a href="{{ '/locations/' | url }}" class="footer-view-all">All Locations →</a></li>
         </ul>
       </div>
       
       {# Contact Column #}
       <div class="footer-contact">
-        <h4>Contact</h4>
+        <h4>Contact Us</h4>
         <ul>
           <li><a href="tel:2566166760">📞 (256) 616-6760</a></li>
           <li><a href="mailto:service@bluerivergutters.com">✉️ service@bluerivergutters.com</a></li>
-          <li class="footer-address">
-            📍 3315 Memorial Pkwy SW<br>
-            Suite B13<br>
-            Huntsville, AL 35801
-          </li>
+          <li class="footer-address">📍 3315 Memorial Pkwy SW<br>Suite B13<br>Huntsville, AL 35801</li>
         </ul>
-        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary btn-small">Schedule Estimate</a>
+        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary btn-small footer-cta">Schedule Free Estimate</a>
       </div>
+      
     </div>
     
-    {# Extended Location Links #}
-    <div class="footer-locations-extended">
-      <h4>All Service Areas</h4>
-      <div class="footer-location-grid">
-        <div class="footer-location-column">
-          <span class="footer-region-label">Madison County</span>
-          <a href="{{ '/locations/gutters-huntsville-al/' | url }}">Huntsville</a>
-          <a href="{{ '/locations/gutters-madison-al/' | url }}">Madison</a>
-          <a href="{{ '/locations/gutters-meridianville-al/' | url }}">Meridianville</a>
-          <a href="{{ '/locations/gutters-hazel-green-al/' | url }}">Hazel Green</a>
-          <a href="{{ '/locations/gutters-hampton-cove-al/' | url }}">Hampton Cove</a>
-          <a href="{{ '/locations/gutters-owens-cross-roads-al/' | url }}">Owens Cross Roads</a>
-          <a href="{{ '/locations/gutters-harvest-al/' | url }}">Harvest</a>
-          <a href="{{ '/locations/gutters-toney-al/' | url }}">Toney</a>
-          <a href="{{ '/locations/gutters-new-hope-al/' | url }}">New Hope</a>
-          <a href="{{ '/locations/gutters-new-market-al/' | url }}">New Market</a>
-          <a href="{{ '/locations/gutters-monrovia-al/' | url }}">Monrovia</a>
-          <a href="{{ '/locations/gutters-brownsboro-al/' | url }}">Brownsboro</a>
+    {# Expanded Footer Locations - All Tiers #}
+    <div class="footer-locations-expanded">
+      <h4>Service Areas Across North Alabama</h4>
+      <div class="footer-locations-grid">
+        <div class="footer-locations-tier">
+          <span class="tier-label">Huntsville Metro</span>
+          <p>
+            {% for city in nav.locations.tier1 %}
+            <a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}</a>{% if not loop.last %} · {% endif %}
+            {% endfor %}
+          </p>
         </div>
-        <div class="footer-location-column">
-          <span class="footer-region-label">Morgan County</span>
-          <a href="{{ '/locations/gutters-decatur-al/' | url }}">Decatur</a>
-          <a href="{{ '/locations/gutters-hartselle-al/' | url }}">Hartselle</a>
-          <a href="{{ '/locations/gutters-priceville-al/' | url }}">Priceville</a>
-          <a href="{{ '/locations/gutters-trinity-al/' | url }}">Trinity</a>
-          <a href="{{ '/locations/gutters-tanner-al/' | url }}">Tanner</a>
-          <a href="{{ '/locations/gutters-somerville-al/' | url }}">Somerville</a>
-          <a href="{{ '/locations/gutters-laceys-spring-al/' | url }}">Lacey's Spring</a>
+        <div class="footer-locations-tier">
+          <span class="tier-label">Regional Cities</span>
+          <p>
+            {% for city in nav.locations.tier2 %}
+            <a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}</a>{% if not loop.last %} · {% endif %}
+            {% endfor %}
+          </p>
         </div>
-        <div class="footer-location-column">
-          <span class="footer-region-label">Limestone County</span>
-          <a href="{{ '/locations/gutters-athens-al/' | url }}">Athens</a>
-        </div>
-        <div class="footer-location-column">
-          <span class="footer-region-label">More Areas</span>
-          <a href="{{ '/locations/gutters-scottsboro-al/' | url }}">Scottsboro</a>
-          <a href="{{ '/locations/gutters-albertville-al/' | url }}">Albertville</a>
-          <a href="{{ '/locations/gutters-cullman-al/' | url }}">Cullman</a>
-          <a href="{{ '/locations/gutters-arab-al/' | url }}">Arab</a>
-          <a href="{{ '/locations/gutters-guntersville-al/' | url }}">Guntersville</a>
+        <div class="footer-locations-tier">
+          <span class="tier-label">Communities We Serve</span>
+          <p>
+            {% for city in nav.locations.tier3 %}
+            <a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}</a>{% if not loop.last %} · {% endif %}
+            {% endfor %}
+          </p>
         </div>
       </div>
     </div>
     
-    {# Bottom Bar #}
+    {# Footer Bottom #}
     <div class="footer-bottom">
-      <p>&copy; 2026 Blue River Gutters. All rights reserved. | <a href="{{ '/sitemap/' | url }}">Sitemap</a></p>
+      <p>&copy; {{ 'now' | date: '%Y' }} Blue River Gutters. All rights reserved.</p>
+      <p class="footer-links-bottom">
+        <a href="{{ '/sitemap/' | url }}">Sitemap</a> · 
+        <a href="{{ '/' | url }}#about">About Us</a> · 
+        <a href="{{ '/blog/' | url }}">Blog</a>
+      </p>
     </div>
+    
   </div>
 </footer>
 
@@ -117,10 +107,8 @@
 <div class="mobile-sticky-footer">
   <a href="tel:2566166760" class="mobile-sticky-btn" aria-label="Call us">
     <span>📞</span>
-    <small>Call</small>
   </a>
   <a href="https://BlueRiverGutters.as.me/" class="mobile-sticky-btn" aria-label="Schedule estimate">
     <span>📋</span>
-    <small>Schedule</small>
   </a>
 </div>

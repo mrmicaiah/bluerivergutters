@@ -1,6 +1,6 @@
 {# Top Banner #}
 <div class="top-banner">
-  <a href="https://BlueRiverGutters.as.me/">✉️ Schedule Your Free Estimate</a>
+  <a href="https://BlueRiverGutters.as.me/">✉️ Schedule Your Free Estimate Today</a>
 </div>
 
 {# Header #}
@@ -10,47 +10,52 @@
       <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/logo_fih2rm.webp" alt="Blue River Gutters" class="logo">
     </a>
     
-    <nav class="nav">
+    <nav class="nav" role="navigation" aria-label="Main navigation">
       <a href="{{ '/' | url }}">Home</a>
       
       {# Services Dropdown #}
       <div class="nav-dropdown">
-        <a href="{{ '/services/' | url }}" class="nav-dropdown-trigger">
+        <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
           Services <span class="dropdown-arrow">▾</span>
-        </a>
+        </button>
         <div class="nav-dropdown-menu">
-          {% for service in nav.services %}
-          <a href="{{ '/services/' | url }}#{{ service.slug }}">{{ service.name }}</a>
-          {% endfor %}
+          <a href="{{ '/services/' | url }}">All Services</a>
           <div class="dropdown-divider"></div>
-          <a href="{{ '/services/' | url }}" class="dropdown-view-all">All Services →</a>
+          {% for service in nav.services %}
+          <a href="{{ ('/services/' + service.slug + '/') | url }}">{{ service.name }}</a>
+          {% endfor %}
         </div>
       </div>
       
       {# Locations Dropdown #}
       <div class="nav-dropdown">
-        <a href="{{ '/locations/' | url }}" class="nav-dropdown-trigger">
+        <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
           Locations <span class="dropdown-arrow">▾</span>
-        </a>
-        <div class="nav-dropdown-menu nav-dropdown-locations">
-          <div class="dropdown-section">
-            <span class="dropdown-label">Primary Service Areas</span>
+        </button>
+        <div class="nav-dropdown-menu nav-dropdown-mega">
+          <div class="mega-column">
+            <span class="mega-heading">Primary Markets</span>
             {% for city in nav.locations.tier1 %}
-            <a href="{{ '/locations/gutters-' + city.slug + '-al/' | url }}">{{ city.name }}</a>
+            <a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a>
             {% endfor %}
           </div>
-          <div class="dropdown-divider"></div>
-          <a href="{{ '/locations/' | url }}" class="dropdown-view-all">All 25+ Locations →</a>
+          <div class="mega-column">
+            <span class="mega-heading">More Locations</span>
+            {% for city in nav.locations.tier2 %}
+            <a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}</a>
+            {% endfor %}
+            <a href="{{ '/locations/' | url }}" class="view-all-link">View All Locations →</a>
+          </div>
         </div>
       </div>
       
       <a href="{{ '/blog/' | url }}">Blog</a>
       <a href="{{ '/' | url }}#about">About</a>
-      <a href="{{ '/' | url }}#contact">Contact</a>
+      <a href="{{ '/sitemap/' | url }}">Sitemap</a>
       <a href="tel:2566166760" class="nav-cta">📞 (256) 616-6760</a>
     </nav>
     
-    <button class="mobile-menu-btn" aria-label="Open menu">
+    <button class="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
       <span></span>
       <span></span>
       <span></span>
@@ -59,31 +64,42 @@
 </header>
 
 {# Mobile Nav #}
-<nav class="mobile-nav">
+<nav class="mobile-nav" role="navigation" aria-label="Mobile navigation">
   <a href="{{ '/' | url }}">Home</a>
   
-  <div class="mobile-nav-section">
-    <a href="{{ '/services/' | url }}" class="mobile-nav-header">Services</a>
-    <div class="mobile-nav-sub">
+  {# Mobile Services Accordion #}
+  <div class="mobile-accordion">
+    <button class="mobile-accordion-toggle" aria-expanded="false">
+      Services <span class="accordion-arrow">+</span>
+    </button>
+    <div class="mobile-accordion-content">
+      <a href="{{ '/services/' | url }}">All Services</a>
       {% for service in nav.services %}
-      <a href="{{ '/services/' | url }}#{{ service.slug }}">{{ service.name }}</a>
+      <a href="{{ ('/services/' + service.slug + '/') | url }}">{{ service.name }}</a>
       {% endfor %}
     </div>
   </div>
   
-  <div class="mobile-nav-section">
-    <a href="{{ '/locations/' | url }}" class="mobile-nav-header">Locations</a>
-    <div class="mobile-nav-sub">
+  {# Mobile Locations Accordion #}
+  <div class="mobile-accordion">
+    <button class="mobile-accordion-toggle" aria-expanded="false">
+      Locations <span class="accordion-arrow">+</span>
+    </button>
+    <div class="mobile-accordion-content">
+      <span class="mobile-section-label">Primary Markets</span>
       {% for city in nav.locations.tier1 %}
-      <a href="{{ '/locations/gutters-' + city.slug + '-al/' | url }}">{{ city.name }}</a>
+      <a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a>
       {% endfor %}
-      <a href="{{ '/locations/' | url }}" class="mobile-nav-more">All Locations →</a>
+      <span class="mobile-section-label">More Locations</span>
+      {% for city in nav.locations.tier2 %}
+      <a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}</a>
+      {% endfor %}
+      <a href="{{ '/locations/' | url }}" class="mobile-view-all">View All Locations →</a>
     </div>
   </div>
   
   <a href="{{ '/blog/' | url }}">Blog</a>
   <a href="{{ '/' | url }}#about">About</a>
-  <a href="{{ '/' | url }}#contact">Contact</a>
+  <a href="{{ '/sitemap/' | url }}">Sitemap</a>
   <a href="tel:2566166760" class="mobile-nav-cta">📞 (256) 616-6760</a>
-  <a href="https://BlueRiverGutters.as.me/" class="mobile-nav-cta mobile-nav-schedule">Schedule Estimate</a>
 </nav>
