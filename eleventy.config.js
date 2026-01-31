@@ -8,6 +8,13 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addWatchTarget("src/css/");
   eleventyConfig.addWatchTarget("src/js/");
 
+  // Blog collection - all posts in /blog/ folder with tags: blog
+  eleventyConfig.addCollection("blog", function(collectionApi) {
+    return collectionApi.getFilteredByTag("blog").sort((a, b) => {
+      return new Date(b.data.publish_date) - new Date(a.data.publish_date);
+    });
+  });
+
   return {
     dir: {
       input: "src",
