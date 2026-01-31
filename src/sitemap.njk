@@ -1,0 +1,209 @@
+---
+layout: base.njk
+title: Sitemap | Blue River Gutters
+description: Complete sitemap of Blue River Gutters website. Find all our service pages, location pages, blog posts, and resources.
+permalink: /sitemap/
+---
+
+{# Breadcrumbs #}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb-list">
+      <li><a href="{{ '/' | url }}">Home</a></li>
+      <li aria-current="page">Sitemap</li>
+    </ol>
+  </div>
+</nav>
+
+{# Page Header #}
+<header class="page-header">
+  <div class="container">
+    <h1>Sitemap</h1>
+    <p>Find everything on the Blue River Gutters website.</p>
+  </div>
+</header>
+
+{# Sitemap Content #}
+<section class="sitemap-content">
+  <div class="container">
+    <div class="sitemap-grid">
+      
+      {# Main Pages #}
+      <div class="sitemap-section">
+        <h2>Main Pages</h2>
+        <ul>
+          <li><a href="{{ '/' | url }}">Home</a></li>
+          <li><a href="{{ '/services/' | url }}">Services</a></li>
+          <li><a href="{{ '/locations/' | url }}">Locations</a></li>
+          <li><a href="{{ '/blog/' | url }}">Blog</a></li>
+          <li><a href="{{ '/articles/' | url }}">Local Guides</a></li>
+        </ul>
+      </div>
+      
+      {# Services #}
+      <div class="sitemap-section">
+        <h2>Our Services</h2>
+        <ul>
+          {% for service in nav.services %}
+          <li><a href="{{ '/services/' | url }}#{{ service.slug }}">{{ service.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+      {# Tier 1 Locations #}
+      <div class="sitemap-section">
+        <h2>Primary Service Areas</h2>
+        <ul>
+          {% for city in nav.locations.tier1 %}
+          <li>
+            <a href="{{ '/locations/gutters-' + city.slug + '-al/' | url }}">{{ city.name }}, AL</a>
+            <ul class="sitemap-sub">
+              {% for service in nav.services %}
+              <li><a href="{{ '/services/' + city.slug + '/' + service.slug + '/' | url }}">{{ service.name }} in {{ city.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+      {# Tier 2 Locations #}
+      <div class="sitemap-section">
+        <h2>Additional Service Areas</h2>
+        <ul>
+          {% for city in nav.locations.tier2 %}
+          <li>
+            <a href="{{ '/locations/gutters-' + city.slug + '-al/' | url }}">{{ city.name }}, AL</a>
+            <ul class="sitemap-sub">
+              {% for service in nav.services %}
+              <li><a href="{{ '/services/' + city.slug + '/' + service.slug + '/' | url }}">{{ service.name }} in {{ city.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+      {# Tier 3 Locations #}
+      <div class="sitemap-section">
+        <h2>More Locations</h2>
+        <ul>
+          {% for city in nav.locations.tier3 %}
+          <li>
+            <a href="{{ '/locations/gutters-' + city.slug + '-al/' | url }}">{{ city.name }}, AL</a>
+            <ul class="sitemap-sub">
+              {% for service in nav.services %}
+              <li><a href="{{ '/services/' + city.slug + '/' + service.slug + '/' | url }}">{{ service.name }} in {{ city.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+      {# Blog Posts #}
+      <div class="sitemap-section">
+        <h2>Blog Posts</h2>
+        <ul>
+          {%- for post in collections.blog | reverse -%}
+          <li><a href="{{ post.url | url }}">{{ post.data.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </div>
+      
+      {# Local Guides #}
+      <div class="sitemap-section">
+        <h2>Local Guides</h2>
+        <ul>
+          <li><a href="{{ '/article-huntsville-al/' | url }}">Gutter Services in Huntsville, AL</a></li>
+          <li><a href="{{ '/article-madison-al/' | url }}">Gutter Services in Madison, AL</a></li>
+          <li><a href="{{ '/article-decatur-al/' | url }}">Gutter Services in Decatur, AL</a></li>
+          <li><a href="{{ '/article-athens-al/' | url }}">Gutter Services in Athens, AL</a></li>
+          <li><a href="{{ '/article-hartselle-al/' | url }}">Gutter Services in Hartselle, AL</a></li>
+        </ul>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+<style>
+.page-header {
+  background: var(--navy);
+  color: var(--white);
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.page-header h1 {
+  color: var(--white);
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+}
+
+.sitemap-content {
+  padding: 4rem 0;
+}
+
+.sitemap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 3rem;
+}
+
+.sitemap-section h2 {
+  font-size: 1.25rem;
+  color: var(--navy);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--red);
+}
+
+.sitemap-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sitemap-section > ul > li {
+  margin-bottom: 0.5rem;
+}
+
+.sitemap-section a {
+  color: var(--slate);
+  text-decoration: none;
+}
+
+.sitemap-section a:hover {
+  color: var(--red);
+  text-decoration: underline;
+}
+
+.sitemap-sub {
+  margin-top: 0.5rem;
+  margin-left: 1.25rem;
+  font-size: 0.9rem;
+}
+
+.sitemap-sub li {
+  margin-bottom: 0.25rem;
+}
+
+.sitemap-sub a {
+  color: var(--gray);
+}
+
+@media (max-width: 768px) {
+  .sitemap-content {
+    padding: 2rem 0;
+  }
+  
+  .sitemap-grid {
+    gap: 2rem;
+  }
+}
+</style>
