@@ -198,8 +198,8 @@
 
 .footer-grid-expanded {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr 1.25fr;
-  gap: 2rem;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.25fr;
+  gap: 1.5rem;
 }
 
 .footer-address {
@@ -367,6 +367,12 @@
 /* =====================
    RESPONSIVE NAVIGATION
    ===================== */
+
+@media (max-width: 1200px) {
+  .footer-grid-expanded {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
 @media (max-width: 1024px) {
   .footer-grid-expanded {
