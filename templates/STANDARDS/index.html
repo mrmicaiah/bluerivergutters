@@ -1,0 +1,365 @@
+<h1>Blue River Gutters Site Standards</h1>
+<p><strong>Reference this document before creating any new pages.</strong></p>
+<p>This is an <strong>11ty (Eleventy)</strong> static site. Understanding the build system prevents common issues.</p>
+<hr>
+<h2>Site Architecture</h2>
+<pre><code>src/
+├── _data/           # Global data files (JSON/JS)
+├── _includes/
+│   ├── layouts/     # Page layouts (base.njk, service.njk, city.njk)
+│   └── partials/    # Reusable components (header.njk, footer.njk)
+├── css/             # Stylesheets
+├── js/              # Scripts
+├── locations/       # City landing pages
+├── services/        # Service pages organized by city
+│   ├── huntsville/
+│   ├── madison/
+│   └── ...
+├── blog/            # Blog posts
+└── index.njk        # Homepage
+</code></pre>
+<hr>
+<h2>CSS Paths</h2>
+<p><strong>Always use 11ty's url filter for paths:</strong></p>
+<pre><code class="language-njk">&lt;link rel=&quot;stylesheet&quot; href=&quot;/bluerivergutters/css/styles.css&quot;&gt;
+</code></pre>
+<p>This outputs root-relative paths (<code>/css/styles.css</code>) that work from any folder depth.</p>
+<p><strong>NEVER use:</strong></p>
+<ul>
+<li>Relative paths: <code>../css/styles.css</code></li>
+<li>Hardcoded absolute paths without the url filter</li>
+</ul>
+<p>The base layout (<code>_includes/layouts/base.njk</code>) already handles CSS loading — new pages should extend it.</p>
+<hr>
+<h2>Image URLs (Cloudinary)</h2>
+<p><strong>All images are hosted on Cloudinary.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloud name</td>
+<td><code>dxzw1zwez</code></td>
+</tr>
+<tr>
+<td>Base URL</td>
+<td><code>https://res.cloudinary.com/dxzw1zwez/image/upload/</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Common Images</h3>
+<table>
+<thead>
+<tr>
+<th>Image</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Logo</td>
+<td><code>https://res.cloudinary.com/dxzw1zwez/image/upload/logo_fih2rm.webp</code></td>
+</tr>
+<tr>
+<td>OG/Hero Background</td>
+<td><code>https://res.cloudinary.com/dxzw1zwez/image/upload/hero-bg_axhlw4.jpg</code></td>
+</tr>
+<tr>
+<td>Why Local Section</td>
+<td><code>https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/cleaning_composite_facia_ekqfke.webp</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Service Hero Images</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Seamless Gutters</td>
+<td><code>https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/corner_of_a_roof_gutters_yd8zzf.jpg</code></td>
+</tr>
+<tr>
+<td>Gutter Guards</td>
+<td><code>https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/gutter_guards_metal_roof_hnrqoc.webp</code></td>
+</tr>
+<tr>
+<td>Gutter Cleaning</td>
+<td><code>https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/dirty_gutter_v8f4cm.jpg</code></td>
+</tr>
+<tr>
+<td>Downspouts</td>
+<td><code>https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/gutter_on_house_zbvhii.webp</code></td>
+</tr>
+<tr>
+<td>Underground Drains</td>
+<td><code>https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/french_drains_peqnfn.webp</code></td>
+</tr>
+<tr>
+<td>Rotten Wood Repair</td>
+<td><code>https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/rotten_wood_hero_r1dtrh.jpg</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Service Card Images</h3>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Seamless Gutters</td>
+<td><code>https://res.cloudinary.com/dxzw1zwez/image/upload/service-seamless-gutters_hcf6si.webp</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Image Transformation Parameters</h3>
+<p>Always include these for performance:</p>
+<ul>
+<li><code>f_auto</code> — Auto-select best format (WebP, AVIF where supported)</li>
+<li><code>q_auto</code> — Auto-select quality level</li>
+<li><code>w_[width]</code> — Resize to specific width</li>
+</ul>
+<p><strong>Example:</strong> <code>f_auto,q_auto,w_1920</code> for hero images</p>
+<hr>
+<h2>Navigation Links</h2>
+<p><strong>All navigation links must use root-relative paths or the url filter.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Page</th>
+<th>URL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Home</td>
+<td><code>/</code></td>
+</tr>
+<tr>
+<td>Services Index</td>
+<td><code>/services/</code></td>
+</tr>
+<tr>
+<td>Locations</td>
+<td><code>/locations/</code></td>
+</tr>
+<tr>
+<td>Blog</td>
+<td><code>/blog/</code></td>
+</tr>
+<tr>
+<td>Contact/CTA</td>
+<td><code>/#contact</code> (homepage section)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>In templates, use:</strong></p>
+<pre><code class="language-njk">&lt;a href=&quot;/bluerivergutters/&quot;&gt;Home&lt;/a&gt;
+&lt;a href=&quot;/bluerivergutters/services/&quot;&gt;Services&lt;/a&gt;
+</code></pre>
+<hr>
+<h2>File Naming Conventions</h2>
+<h3>City Landing Pages</h3>
+<p><strong>Location:</strong> <code>src/locations/</code><br>
+<strong>Format:</strong> <code>gutters-[city]-al.njk</code><br>
+<strong>Permalink:</strong> <code>/gutters-[city]-al/</code></p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><code>gutters-huntsville-al.njk</code> → <code>/gutters-huntsville-al/</code></li>
+<li><code>gutters-madison-al.njk</code> → <code>/gutters-madison-al/</code></li>
+</ul>
+<h3>Service Pages</h3>
+<p><strong>Location:</strong> <code>src/services/[city]/</code><br>
+<strong>Format:</strong> <code>[service-slug].njk</code><br>
+<strong>Permalink:</strong> <code>/services/[city]/[service-slug]/</code></p>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><code>src/services/huntsville/seamless-gutters.njk</code> → <code>/services/huntsville/seamless-gutters/</code></li>
+<li><code>src/services/madison/gutter-guards.njk</code> → <code>/services/madison/gutter-guards/</code></li>
+</ul>
+<h3>Blog Posts</h3>
+<p><strong>Location:</strong> <code>src/blog/</code><br>
+<strong>Format:</strong> <code>[slug].njk</code> or <code>[slug].md</code><br>
+<strong>Permalink:</strong> <code>/blog/[slug]/</code></p>
+<hr>
+<h2>Layouts</h2>
+<h3>Available Layouts</h3>
+<table>
+<thead>
+<tr>
+<th>Layout</th>
+<th>Purpose</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>base.njk</code></td>
+<td>Base HTML wrapper</td>
+<td><code>src/_includes/layouts/</code></td>
+</tr>
+<tr>
+<td><code>service.njk</code></td>
+<td>Service + city pages</td>
+<td><code>src/_includes/layouts/</code></td>
+</tr>
+<tr>
+<td><code>city.njk</code></td>
+<td>City landing pages</td>
+<td><code>src/_includes/layouts/</code></td>
+</tr>
+<tr>
+<td><code>article.njk</code></td>
+<td>Blog posts</td>
+<td><code>src/_includes/layouts/</code></td>
+</tr>
+</tbody>
+</table>
+<h3>Using Layouts</h3>
+<pre><code class="language-njk">---
+layout: service.njk
+title: Seamless Gutters Huntsville AL
+description: Professional seamless gutter installation...
+---
+</code></pre>
+<p><strong>Don't create new layout files unless absolutely necessary.</strong> Existing layouts handle all current use cases.</p>
+<hr>
+<h2>Schema Markup</h2>
+<h3>Required on Every Page</h3>
+<ol>
+<li><strong>LocalBusiness</strong> — Embedded in base layout (verify it's present)</li>
+<li><strong>BreadcrumbList</strong> — Required for all subpages</li>
+</ol>
+<h3>Required by Page Type</h3>
+<table>
+<thead>
+<tr>
+<th>Page Type</th>
+<th>Additional Schema</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Service pages</td>
+<td><code>Service</code> schema</td>
+</tr>
+<tr>
+<td>FAQ sections</td>
+<td><code>FAQPage</code> schema</td>
+</tr>
+</tbody>
+</table>
+<h3>Schema is Handled by Layouts</h3>
+<p>The <code>service.njk</code> and <code>city.njk</code> layouts automatically generate schema markup based on frontmatter data. Don't manually add schema unless the layout doesn't cover your case.</p>
+<hr>
+<h2>Frontmatter Reference (Service Pages)</h2>
+<pre><code class="language-yaml">---
+layout: service.njk
+title: SEO Title | Blue River Gutters
+description: Meta description (150-160 chars)
+permalink: /services/[city]/[service]/
+
+# Service + City Data
+service: Service Name
+service_slug: service-slug
+city: City Name
+city_slug: city-slug
+state: AL
+distance: &quot;15&quot;  # Minutes from Huntsville
+
+# Images
+service_image: https://res.cloudinary.com/...
+
+# Hero
+hero_headline: Main H1 Headline
+hero_intro: &quot;Opening paragraph text&quot;
+
+# Section Headings
+problem_eyebrow: The City Problem
+problem_headline: Why City Homes Need Service
+
+explanation_eyebrow: The Smart Choice
+explanation_headline: What Are Service?
+
+benefits_eyebrow: Why Upgrade?
+benefits_headline: Benefits of Service
+
+# Benefits Array
+benefits:
+  - title: Benefit Title
+    text: Benefit description text
+
+# FAQs Array
+faqs:
+  - question: Question text?
+    answer: &quot;&lt;p&gt;Answer HTML&lt;/p&gt;&quot;
+
+# CTA
+cta_headline: Get a Free Estimate
+cta_subhead: Subheading text
+---
+</code></pre>
+<hr>
+<h2>Brand Colors (CSS Variables)</h2>
+<pre><code class="language-css">:root {
+  --navy: #0f172a;
+  --slate: #334155;
+  --gray: #64748b;
+  --light-gray: #f1f5f9;
+  --cream: #faf8f5;
+  --white: #ffffff;
+  --blue: #1e40af;
+  --blue-light: #3b82f6;
+  --red: #b91c1c;      /* Primary CTA color */
+  --red-dark: #991b1b;
+}
+</code></pre>
+<hr>
+<h2>Before Publishing Checklist</h2>
+<ul>
+<li>[ ] Layout is set correctly (service.njk, city.njk, etc.)</li>
+<li>[ ] Permalink follows naming convention</li>
+<li>[ ] All frontmatter fields populated</li>
+<li>[ ] All Cloudinary image URLs are valid</li>
+<li>[ ] Local build passes (<code>npm run build</code> or <code>npx @11ty/eleventy</code>)</li>
+<li>[ ] Mobile responsive (check at 375px width)</li>
+<li>[ ] Links work from the page's actual URL depth</li>
+<li>[ ] Meta title under 60 characters</li>
+<li>[ ] Meta description 150-160 characters</li>
+<li>[ ] FAQs have proper HTML in answers</li>
+</ul>
+<hr>
+<h2>Common Mistakes to Avoid</h2>
+<ol>
+<li><strong>Using relative CSS paths</strong> — Always use <code>/bluerivergutters/css/styles.css</code></li>
+<li><strong>Broken image URLs</strong> — Always copy exact Cloudinary URLs from this doc</li>
+<li><strong>Wrong permalink format</strong> — Must start and end with <code>/</code></li>
+<li><strong>Missing trailing slash</strong> — <code>/services/huntsville/seamless-gutters/</code> not <code>/services/huntsville/seamless-gutters</code></li>
+<li><strong>Hardcoding content in layouts</strong> — Use frontmatter variables instead</li>
+<li><strong>Creating duplicate layouts</strong> — Extend existing layouts with content blocks</li>
+</ol>
+<hr>
+<h2>Quick Reference Commands</h2>
+<pre><code class="language-bash"># Local development
+npm run dev
+
+# Build for production
+npm run build
+
+# Check if build succeeds
+npx @11ty/eleventy
+</code></pre>
+<hr>
+<p><em>Last updated: January 30, 2026</em></p>
