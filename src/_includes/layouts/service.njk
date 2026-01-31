@@ -101,7 +101,8 @@ extraCss: service-pages.css
   <div class="container">
     <ol class="breadcrumb-list">
       <li><a href="{{ '/' | url }}">Home</a></li>
-      <li><a href="{{ '/gutters-' + city_slug + '-al/' | url }}">{{ city }}, AL</a></li>
+      {% set city_link = "/gutters-" + city_slug + "-al/" %}
+      <li><a href="{{ city_link | url }}">{{ city }}, AL</a></li>
       <li aria-current="page">{{ service }}</li>
     </ol>
   </div>
@@ -177,7 +178,7 @@ extraCss: service-pages.css
       </div>
       
       <div class="explanation-image">
-        <img src="{{ service_image | default("https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_500/service-seamless-gutters_hcf6si") }}" alt="{{ service }} in {{ city }}" loading="lazy">
+        <img src="{{ service_image | default('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_500/service-seamless-gutters_hcf6si') }}" alt="{{ service }} in {{ city }}" loading="lazy">
       </div>
     </div>
   </div>
@@ -270,42 +271,48 @@ extraCss: service-pages.css
     
     <div class="related-grid">
       {% if service_slug != "seamless-gutters" %}
-      <a href="{{ '/services/' + city_slug + '/seamless-gutters/' | url }}" class="related-card">
+      {% set link_path = "/services/" + city_slug + "/seamless-gutters/" %}
+      <a href="{{ link_path | url }}" class="related-card">
         <h3>Seamless Gutters</h3>
         <p>Custom-fabricated gutters with no leak points.</p>
       </a>
       {% endif %}
       
       {% if service_slug != "gutter-guards" %}
-      <a href="{{ '/services/' + city_slug + '/gutter-guards/' | url }}" class="related-card">
+      {% set link_path = "/services/" + city_slug + "/gutter-guards/" %}
+      <a href="{{ link_path | url }}" class="related-card">
         <h3>Gutter Guards</h3>
         <p>Keep debris out and eliminate cleaning.</p>
       </a>
       {% endif %}
       
       {% if service_slug != "gutter-cleaning" %}
-      <a href="{{ '/services/' + city_slug + '/gutter-cleaning/' | url }}" class="related-card">
+      {% set link_path = "/services/" + city_slug + "/gutter-cleaning/" %}
+      <a href="{{ link_path | url }}" class="related-card">
         <h3>Gutter Cleaning</h3>
         <p>Professional cleaning inside and out.</p>
       </a>
       {% endif %}
       
       {% if service_slug != "downspouts" %}
-      <a href="{{ '/services/' + city_slug + '/downspouts/' | url }}" class="related-card">
+      {% set link_path = "/services/" + city_slug + "/downspouts/" %}
+      <a href="{{ link_path | url }}" class="related-card">
         <h3>Downspouts</h3>
         <p>Properly sized downspouts move water away.</p>
       </a>
       {% endif %}
       
       {% if service_slug != "underground-drains" %}
-      <a href="{{ '/services/' + city_slug + '/underground-drains/' | url }}" class="related-card">
+      {% set link_path = "/services/" + city_slug + "/underground-drains/" %}
+      <a href="{{ link_path | url }}" class="related-card">
         <h3>Underground Drains</h3>
         <p>Route water far from your foundation.</p>
       </a>
       {% endif %}
       
       {% if service_slug != "rotten-wood-repair" %}
-      <a href="{{ '/services/' + city_slug + '/rotten-wood-repair/' | url }}" class="related-card">
+      {% set link_path = "/services/" + city_slug + "/rotten-wood-repair/" %}
+      <a href="{{ link_path | url }}" class="related-card">
         <h3>Rotten Wood Repair</h3>
         <p>We repair damaged fascia before installing.</p>
       </a>
