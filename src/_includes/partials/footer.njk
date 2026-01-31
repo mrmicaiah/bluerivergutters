@@ -1,7 +1,7 @@
 {# Footer #}
 <footer class="footer">
   <div class="container">
-    <div class="footer-grid-expanded">
+    <div class="footer-grid">
       
       {# Brand Column #}
       <div class="footer-brand">
@@ -33,6 +33,17 @@
         </ul>
       </div>
       
+      {# Locations Column - Combined #}
+      <div class="footer-links">
+        <h4>Locations</h4>
+        <ul>
+          {% for city in nav.locations.tier1 %}
+          <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}</a></li>
+          {% endfor %}
+          <li><a href="{{ '/locations/' | url }}" class="footer-view-all">All 25+ Locations →</a></li>
+        </ul>
+      </div>
+      
       {# Resources Column #}
       <div class="footer-links">
         <h4>Resources</h4>
@@ -40,29 +51,7 @@
           <li><a href="{{ '/blog/' | url }}">Blog</a></li>
           <li><a href="{{ '/articles/' | url }}">Local Guides</a></li>
           <li><a href="{{ '/blog/gutter-cost-north-alabama-2026/' | url }}">Pricing Guide</a></li>
-          <li><a href="{{ '/blog/seasonal-gutter-maintenance-guide-alabama/' | url }}">Maintenance Guide</a></li>
           <li><a href="{{ '/sitemap/' | url }}">Sitemap</a></li>
-        </ul>
-      </div>
-      
-      {# Primary Locations Column #}
-      <div class="footer-links">
-        <h4>Primary Markets</h4>
-        <ul>
-          {% for city in nav.locations.tier1 %}
-          <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}, AL</a></li>
-          {% endfor %}
-        </ul>
-      </div>
-      
-      {# More Locations Column #}
-      <div class="footer-links">
-        <h4>More Locations</h4>
-        <ul>
-          {% for city in nav.locations.tier2 %}
-          <li><a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}</a></li>
-          {% endfor %}
-          <li><a href="{{ '/locations/' | url }}" class="footer-view-all">All Locations →</a></li>
         </ul>
       </div>
       
@@ -71,53 +60,26 @@
         <h4>Contact Us</h4>
         <ul>
           <li><a href="tel:2566166760">📞 (256) 616-6760</a></li>
-          <li><a href="mailto:service@bluerivergutters.com">✉️ service@bluerivergutters.com</a></li>
-          <li class="footer-address">📍 3315 Memorial Pkwy SW<br>Suite B13<br>Huntsville, AL 35801</li>
+          <li><a href="mailto:service@bluerivergutters.com">✉️ Email Us</a></li>
+          <li class="footer-address">📍 3315 Memorial Pkwy SW<br>Suite B13, Huntsville, AL</li>
         </ul>
-        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary btn-small footer-cta">Schedule Free Estimate</a>
+        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary btn-small footer-cta">Free Estimate</a>
       </div>
       
     </div>
     
-    {# Expanded Footer Locations - All Tiers #}
-    <div class="footer-locations-expanded">
-      <h4>Service Areas Across North Alabama</h4>
-      <div class="footer-locations-grid">
-        <div class="footer-locations-tier">
-          <span class="tier-label">Huntsville Metro</span>
-          <p>
-            {% for city in nav.locations.tier1 %}
-            <a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}</a>{% if not loop.last %} · {% endif %}
-            {% endfor %}
-          </p>
-        </div>
-        <div class="footer-locations-tier">
-          <span class="tier-label">Regional Cities</span>
-          <p>
-            {% for city in nav.locations.tier2 %}
-            <a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}</a>{% if not loop.last %} · {% endif %}
-            {% endfor %}
-          </p>
-        </div>
-        <div class="footer-locations-tier">
-          <span class="tier-label">Communities We Serve</span>
-          <p>
-            {% for city in nav.locations.tier3 %}
-            <a href="{{ ('/gutters-' + city.slug + '-al/') | url }}">{{ city.name }}</a>{% if not loop.last %} · {% endif %}
-            {% endfor %}
-          </p>
-        </div>
-      </div>
+    {# Compact Service Areas - Inline Style #}
+    <div class="footer-service-areas">
+      <p><strong>Serving:</strong> 
+        {% for city in nav.locations.tier1 %}{{ city.name }}{% if not loop.last %} · {% endif %}{% endfor %} · 
+        {% for city in nav.locations.tier2 %}{{ city.name }}{% if not loop.last %} · {% endif %}{% endfor %} · 
+        <a href="{{ '/locations/' | url }}">and 15+ more communities</a>
+      </p>
     </div>
     
     {# Footer Bottom #}
     <div class="footer-bottom">
       <p>&copy; 2026 Blue River Gutters. All rights reserved.</p>
-      <p class="footer-links-bottom">
-        <a href="{{ '/' | url }}#about">About Us</a> · 
-        <a href="{{ '/blog/' | url }}">Blog</a> ·
-        <a href="{{ '/sitemap/' | url }}">Sitemap</a>
-      </p>
     </div>
     
   </div>
