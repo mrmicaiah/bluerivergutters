@@ -1,0 +1,112 @@
+/* =====================
+   PARALLAX / FLOATING BACKGROUND EFFECTS
+   ===================== */
+
+/* Basic parallax - background stays fixed while content scrolls */
+.parallax-bg {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Hero with parallax */
+.hero.parallax-bg {
+  background-attachment: fixed;
+}
+
+/* Section parallax backgrounds */
+.parallax-section {
+  position: relative;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Dark overlay for parallax sections */
+.parallax-section .parallax-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.85);
+  z-index: 1;
+}
+
+.parallax-section > .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Light overlay variant */
+.parallax-section.parallax-light .parallax-overlay {
+  background: rgba(255, 255, 255, 0.92);
+}
+
+/* CTA section with parallax */
+.cta.parallax-bg {
+  background-color: transparent;
+}
+
+.cta.parallax-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(30, 64, 175, 0.9);
+  z-index: 1;
+}
+
+.cta.parallax-bg > .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Workmanship section with parallax */
+.workmanship.parallax-bg {
+  background-color: transparent;
+}
+
+.workmanship.parallax-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(241, 245, 249, 0.95);
+  z-index: 1;
+}
+
+.workmanship.parallax-bg > .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* =====================
+   MOBILE FALLBACK
+   iOS doesn't support background-attachment: fixed well
+   ===================== */
+@supports (-webkit-touch-callout: none) {
+  .parallax-bg,
+  .hero.parallax-bg,
+  .parallax-section,
+  .cta.parallax-bg,
+  .workmanship.parallax-bg {
+    background-attachment: scroll;
+  }
+}
+
+@media (max-width: 768px) {
+  .parallax-bg,
+  .hero.parallax-bg,
+  .parallax-section,
+  .cta.parallax-bg,
+  .workmanship.parallax-bg {
+    background-attachment: scroll;
+  }
+}
