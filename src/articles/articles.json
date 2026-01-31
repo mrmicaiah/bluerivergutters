@@ -1,4 +1,4 @@
 {
-  "tags": ["article"],
-  "layout": "article.njk"
+  "layout": "article.njk",
+  "date": "2026-01-30"
 }
