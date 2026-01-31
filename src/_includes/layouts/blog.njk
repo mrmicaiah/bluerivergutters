@@ -1,0 +1,133 @@
+---
+layout: base.njk
+extraCss: blog.css
+---
+
+{# Schema Markup #}
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ title }}",
+  "description": "{{ description }}",
+  "image": "{{ featured_image | default('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1200/bluerivergutters/corner_of_a_roof_gutters_yd8zzf.jpg') }}",
+  "author": {
+    "@type": "Organization",
+    "name": "Blue River Gutters",
+    "url": "https://bluerivergutters.com"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blue River Gutters",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://res.cloudinary.com/dxzw1zwez/image/upload/logo_fih2rm.webp"
+    }
+  },
+  "datePublished": "{{ publish_date | default('2026-01-30') }}",
+  "dateModified": "{{ modified_date | default(publish_date) | default('2026-01-30') }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://bluerivergutters.com{{ page.url }}"
+  }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://bluerivergutters.com/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Blog",
+      "item": "https://bluerivergutters.com/blog/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ title }}",
+      "item": "https://bluerivergutters.com{{ page.url }}"
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{# Breadcrumbs #}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb-list">
+      <li><a href="{{ '/' | url }}">Home</a></li>
+      <li><a href="{{ '/blog/' | url }}">Blog</a></li>
+      <li aria-current="page">{{ breadcrumb_title | default(title) }}</li>
+    </ol>
+  </div>
+</nav>
+
+{# Blog Post Header - Simpler than article hero #}
+<header class="blog-header">
+  <div class="container container--blog">
+    {% if category %}
+    <span class="blog-category">{{ category }}</span>
+    {% endif %}
+    <h1>{{ headline | default(title) }}</h1>
+    <div class="blog-meta">
+      {% if publish_date %}<time datetime="{{ publish_date }}">{{ publish_date }}</time>{% endif %}
+      {% if read_time %}<span class="blog-read-time">{{ read_time }} min read</span>{% endif %}
+    </div>
+  </div>
+</header>
+
+{# Featured Image - Optional, appears below header #}
+{% if featured_image %}
+<div class="blog-featured-image">
+  <div class="container container--blog">
+    <img src="{{ featured_image }}" alt="{{ featured_image_alt | default(title) }}" loading="eager">
+  </div>
+</div>
+{% endif %}
+
+{# Blog Body #}
+<article class="blog-body">
+  <div class="container container--blog">
+    
+    {# Main Content #}
+    <div class="blog-content">
+      {{ content | safe }}
+    </div>
+    
+    {# Tags #}
+    {% if tags %}
+    <div class="blog-tags">
+      {% for tag in tags %}
+      <span class="blog-tag">{{ tag }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+    
+    {# Simple Author Line #}
+    <div class="blog-author">
+      <p>Written by <strong>Blue River Gutters</strong> · Serving North Alabama since 2003</p>
+    </div>
+    
+  </div>
+</article>
+
+{# CTA Section #}
+<section class="cta">
+  <div class="container">
+    <h2>{{ cta_headline | default('Need Help With Your Gutters?') }}</h2>
+    <p>{{ cta_text | default('Free estimates for homeowners across North Alabama.') }}</p>
+    <a href="https://BlueRiverGutters.as.me/" class="btn btn-primary">Schedule Free Estimate</a>
+    <p class="cta-phone"><a href="tel:2566166760">📞 (256) 616-6760</a></p>
+  </div>
+</section>
