@@ -206,22 +206,13 @@
     
     
 
-<nav class="breadcrumbs" aria-label="Breadcrumb">
-  <div class="container">
-    <ol class="breadcrumb-list">
-      <li><a href="/bluerivergutters/">Home</a></li>
-      <li aria-current="page">Recent Projects</li>
-    </ol>
-  </div>
-</nav>
-
-
-<section class="page-hero">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-eyebrow">Our Work</p>
+<section class="hero hero-short" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/hero-bg_axhlw4.jpg');">
+  <div class="hero-overlay"></div>
+  <div class="container hero-container">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Our Work</p>
       <h1>Recent Projects</h1>
-      <p class="section-intro">Browse our latest gutter installations, repairs, and cleaning projects across North Alabama. Every job reflects our commitment to quality workmanship and customer satisfaction.</p>
+      <p>Browse our latest gutter installations, repairs, and cleaning projects across North Alabama. Every job reflects our commitment to quality workmanship and customer satisfaction.</p>
     </div>
   </div>
 </section>
@@ -230,6 +221,17 @@
 <section class="projects-gallery">
   <div class="container">
     <div id="rwl-output"></div>
+  </div>
+</section>
+
+
+<section class="service-area-section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Where We Work</p>
+      <h2>Our Service Area</h2>
+    </div>
+    <div id="rwl-map"></div>
   </div>
 </section>
 
@@ -259,18 +261,31 @@
 </script>
 
 <style>
-.page-hero {
-  padding: 3rem 0;
-  background: var(--light-gray);
+.hero-short {
+  min-height: 40vh;
+  padding: 4rem 0;
 }
 
-.page-hero h1 {
-  margin-bottom: 1rem;
+.hero-short .hero-content {
+  max-width: 700px;
+}
+
+.hero-short .hero-content p {
+  margin-bottom: 0;
 }
 
 .projects-gallery {
   padding: 3rem 0 4rem;
   min-height: 400px;
+}
+
+.service-area-section {
+  padding: 3rem 0 4rem;
+  background: var(--light-gray);
+}
+
+.service-area-section .section-header {
+  margin-bottom: 2rem;
 }
 </style>
 
