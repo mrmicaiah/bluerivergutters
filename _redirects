@@ -1,0 +1,123 @@
+# Blue River Gutters - Cloudflare Pages Redirects
+# Format: /old-path /new-path [status]
+# All redirects are 301 (permanent) unless specified
+
+# ===========================================
+# SERVICE PAGES (Priority 1)
+# ===========================================
+/seamless-gutters-huntsville-al /services/seamless-gutters/ 301
+/gutter-guards-huntsville-al-2 /services/gutter-guards/ 301
+/gutter-cleaning-huntsville-al-2 /services/gutter-cleaning/ 301
+/downspouts-huntsville-al-2 /services/downspouts/ 301
+/underground-drains-huntsville-al-2 /services/underground-drains/ 301
+/rotten-wood-repair-huntsville-al /services/rotten-wood-repair/ 301
+
+# ===========================================
+# MAIN PAGES (Priority 2)
+# ===========================================
+/about-us /about/ 301
+/blog-grid /blog/ 301
+# /contact stays the same - no redirect needed
+# /thank-you stays the same - no redirect needed
+
+# ===========================================
+# BLOG POSTS - HIGH PRIORITY (Priority 3)
+# ===========================================
+/how-to-calculate-gutter-slope /blog/how-to-calculate-gutter-slope/ 301
+/why-your-underground-downspout-drain-is-clogged-and-what-to-do-about-it /blog/underground-drain-clogged/ 301
+/seamless-gutters-everything-you-need-to-know /blog/seamless-gutters-guide/ 301
+/what-are-gutter-screens-and-how-do-they-work /blog/gutter-screens-guide/ 301
+/what-happens-if-leaves-get-stuck-in-your-gutters-for-too-long /blog/leaves-stuck-in-gutters/ 301
+/why-hanging-gutters-yourself-is-a-bad-idea /blog/diy-gutter-installation-risks/ 301
+/how-blocked-gutters-become-a-health-hazard /blog/blocked-gutters-health-hazard/ 301
+/how-to-stop-gutter-downspout-drainage-from-destroying-your-yard /blog/downspout-drainage-solutions/ 301
+
+# ===========================================
+# BLOG POSTS - MEDIUM PRIORITY
+# ===========================================
+/how-to-install-a-downspout-adapter-and-when-to-use-one /blog/downspout-adapter-guide/ 301
+/how-to-install-a-fascia-board /blog/install-fascia-board/ 301
+/how-to-cut-gutters-at-a-corner-or-end-of-a-run /blog/how-to-cut-gutters/ 301
+/how-your-roof-and-gutters-can-be-affected-by-wind-damage /blog/wind-damage-gutters/ 301
+/what-are-the-best-alternatives-to-gutters /blog/gutter-alternatives/ 301
+/understanding-fascia-gutters /blog/fascia-gutters-explained/ 301
+/decoding-gutters-a-comprehensive-guide-to-50-common-terms-in-gutter-systems /blog/gutter-glossary/ 301
+/how-to-choose-the-right-gutter-elbows-for-your-gutters-and-downspouts /blog/gutter-elbows-guide/ 301
+/how-to-assemble-and-install-a-downspout-extension /blog/downspout-extension-install/ 301
+/how-to-install-gutter-brackets-correctly /blog/gutter-brackets-guide/ 301
+
+# ===========================================
+# BLOG POSTS - LOW PRIORITY
+# ===========================================
+/how-is-a-barge-board-different-from-a-fascia-board /blog/barge-board-vs-fascia/ 301
+/your-comprehensive-list-of-guttering-supplies-for-any-residential-project /blog/guttering-supplies-list/ 301
+/splash-block-ideas-for-residential-gutters /blog/splash-block-ideas/ 301
+/eavestrough-vs-gutter-is-there-a-difference /blog/eavestrough-vs-gutter/ 301
+
+# ===========================================
+# BLOG POSTS - REDIRECT TO SERVICE PAGES
+# ===========================================
+/the-importance-of-seamless-gutters /services/seamless-gutters/ 301
+
+# ===========================================
+# BLOG POSTS - CONSOLIDATED
+# ===========================================
+# Both of these Huntsville maintenance posts merge into one
+/the-importance-of-gutter-maintenance-especially-in-huntsville-alabama /blog/gutter-maintenance-huntsville/ 301
+/protecting-your-home-the-importance-of-gutter-maintenance-in-huntsville-alabama-and-why-blue-rive /blog/gutter-maintenance-huntsville/ 301
+/essential-guide-to-gutter-maintenance-protecting-your-home-year-round /blog/gutter-maintenance-guide/ 301
+/how-to-clean-underground-gutter-drains-ensuring-efficient-water-management-with-expert-huntsville-g /blog/clean-underground-drains/ 301
+
+# ===========================================
+# BLOG POSTS - KILLED (redirect to blog index)
+# ===========================================
+/the-difference-between-a-heavy-contractor-and-other-types-of-contractors /blog/ 301
+/how-to-get-a-job-in-the-heavy-contractor-industry /blog/ 301
+
+# ===========================================
+# CATEGORY PAGES (Priority 5)
+# ===========================================
+/blog-grid/categories/big-buildings /blog/ 301
+/blog-grid/categories/building /blog/ 301
+/blog-grid/categories/construction /blog/ 301
+/blog-grid/categories/gutter-cleaning /services/gutter-cleaning/ 301
+/blog-grid/categories/renovations /blog/ 301
+/blog-grid/categories/project /blog/ 301
+/blog-grid/categories/home /blog/ 301
+/blog-grid/categories/gutter-guards /services/gutter-guards/ 301
+/blog-grid/categories/downspouts /services/downspouts/ 301
+/blog-grid/categories/rotten-wood /services/rotten-wood-repair/ 301
+/blog-grid/categories/seamless-gutters /services/seamless-gutters/ 301
+/blog-grid/categories/underground-drains /services/underground-drains/ 301
+/blog-grid/categories/fascia-capping /services/rotten-wood-repair/ 301
+/blog-grid/categories/gutter-services-huntsville-al / 301
+/blog-grid/categories/gutter-maintenance /services/gutter-cleaning/ 301
+
+# ===========================================
+# TAG PAGES (Priority 5)
+# ===========================================
+/blog-grid/tags/gutter-repair-huntsville /gutters-huntsville-al/ 301
+/blog-grid/tags/gutter-guards-huntsville /services/gutter-guards/ 301
+/blog-grid/tags/huntsville-gutter-cleaning /services/gutter-cleaning/ 301
+/blog-grid/tags/best-gutter-company-huntsville / 301
+/blog-grid/tags/affordable-gutters-huntsville-al / 301
+/blog-grid/tags/gutter-installation-huntsville-al /gutters-huntsville-al/ 301
+/blog-grid/tags/huntsville-al-gutter-contractors / 301
+/blog-grid/tags/huntsville-gutter-services / 301
+/blog-grid/tags/seamless-gutters-huntsville /services/seamless-gutters/ 301
+/blog-grid/tags/gutter-replacement-in-huntsville /gutters-huntsville-al/ 301
+/blog-grid/tags/gutter-installation-huntsville /gutters-huntsville-al/ 301
+/blog-grid/tags/fascia-capping /services/rotten-wood-repair/ 301
+
+# ===========================================
+# OLD WORDPRESS URLs (Priority 6)
+# ===========================================
+/gutter-protection/ /services/gutter-guards/ 301
+/gutters-huntsville-al/ /gutters-huntsville-al/ 301
+/how-to-unclog-your-downspout-or-underground-drain-system/ /blog/underground-drain-clogged/ 301
+
+# ===========================================
+# CATCH-ALL FOR BLOG CATEGORY/TAG WILDCARDS
+# ===========================================
+/blog-grid/categories/* /blog/ 301
+/blog-grid/tags/* /blog/ 301

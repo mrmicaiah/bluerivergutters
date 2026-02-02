@@ -21,7 +21,7 @@
 <hr>
 <h2>CSS Paths</h2>
 <p><strong>Always use 11ty's url filter for paths:</strong></p>
-<pre><code class="language-njk">&lt;link rel=&quot;stylesheet&quot; href=&quot;/bluerivergutters/css/styles.css&quot;&gt;
+<pre><code class="language-njk">&lt;link rel=&quot;stylesheet&quot; href=&quot;/css/styles.css&quot;&gt;
 </code></pre>
 <p>This outputs root-relative paths (<code>/css/styles.css</code>) that work from any folder depth.</p>
 <p><strong>NEVER use:</strong></p>
@@ -166,8 +166,8 @@
 </tbody>
 </table>
 <p><strong>In templates, use:</strong></p>
-<pre><code class="language-njk">&lt;a href=&quot;/bluerivergutters/&quot;&gt;Home&lt;/a&gt;
-&lt;a href=&quot;/bluerivergutters/services/&quot;&gt;Services&lt;/a&gt;
+<pre><code class="language-njk">&lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;
+&lt;a href=&quot;/services/&quot;&gt;Services&lt;/a&gt;
 </code></pre>
 <hr>
 <h2>File Naming Conventions</h2>
@@ -343,7 +343,7 @@ cta_subhead: Subheading text
 <hr>
 <h2>Common Mistakes to Avoid</h2>
 <ol>
-<li><strong>Using relative CSS paths</strong> — Always use <code>/bluerivergutters/css/styles.css</code></li>
+<li><strong>Using relative CSS paths</strong> — Always use <code>/css/styles.css</code></li>
 <li><strong>Broken image URLs</strong> — Always copy exact Cloudinary URLs from this doc</li>
 <li><strong>Wrong permalink format</strong> — Must start and end with <code>/</code></li>
 <li><strong>Missing trailing slash</strong> — <code>/services/huntsville/seamless-gutters/</code> not <code>/services/huntsville/seamless-gutters</code></li>
