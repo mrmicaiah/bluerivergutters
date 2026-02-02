@@ -3,6 +3,9 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy({"src/css": "css"});
   eleventyConfig.addPassthroughCopy({"src/js": "js"});
   eleventyConfig.addPassthroughCopy({"src/images": "images"});
+  
+  // Passthrough for Cloudflare Pages _redirects file
+  eleventyConfig.addPassthroughCopy({"src/_redirects": "_redirects"});
 
   // Watch for changes in these directories
   eleventyConfig.addWatchTarget("src/css/");
@@ -23,7 +26,7 @@ module.exports = function(eleventyConfig) {
       layouts: "_includes/layouts",
       data: "_data"
     },
-    pathPrefix: "/bluerivergutters/",
+    // Removed pathPrefix for Cloudflare Pages (was "/bluerivergutters/" for GitHub Pages)
     templateFormats: ["njk", "md", "html"],
     htmlTemplateEngine: "njk",
     markdownTemplateEngine: "njk"
