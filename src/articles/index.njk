@@ -1,8 +1,9 @@
 ---
 layout: base.njk
-title: Local Gutter Guides | Blue River Gutters
-meta_description: In-depth guides to gutter services and drainage challenges for Huntsville, Madison, Decatur, Athens, and Hartselle. Local expertise from North Alabama's trusted gutter company.
+title: Local Gutter Guides & Articles | Blue River Gutters
+meta_description: In-depth guides to gutter services, pricing, and drainage challenges for North Alabama. Local expertise from 20+ years serving Huntsville, Madison, Decatur, and beyond.
 permalink: /articles/
+tags: []
 ---
 
 {# Breadcrumbs #}
@@ -10,7 +11,7 @@ permalink: /articles/
   <div class="container">
     <ol class="breadcrumb-list">
       <li><a href="{{ '/' | url }}">Home</a></li>
-      <li aria-current="page">Local Guides</li>
+      <li aria-current="page">Articles</li>
     </ol>
   </div>
 </nav>
@@ -18,55 +19,58 @@ permalink: /articles/
 {# Page Header #}
 <header class="page-header">
   <div class="container">
-    <h1>Local Gutter Guides</h1>
-    <p>In-depth guides to gutter services and drainage challenges for North Alabama cities.</p>
+    <h1>Gutter Guides & Articles</h1>
+    <p>In-depth guides, pricing info, and local expertise from 20+ years in North Alabama.</p>
   </div>
 </header>
 
 {# Articles List #}
 <section class="articles-listing">
   <div class="container">
-    <div class="articles-grid">
-      
-      <a href="{{ '/article-huntsville-al/' | url }}" class="article-card">
-        <h2>Huntsville, AL</h2>
-        <p>Why the Rocket City's geography works against your home — and what to do about it. Tennessee Valley drainage, red clay soil, and seasonal challenges.</p>
-        <span class="article-link">Read Guide →</span>
-      </a>
-      
-      <a href="{{ '/article-madison-al/' | url }}" class="article-card">
-        <h2>Madison, AL</h2>
-        <p>Alabama's fastest-growing city brings unique drainage challenges. New construction issues, builder-grade gutters, and what Madison homeowners need to know.</p>
-        <span class="article-link">Read Guide →</span>
-      </a>
-      
-      <a href="{{ '/article-decatur-al/' | url }}" class="article-card">
-        <h2>Decatur, AL</h2>
-        <p>Living on the Tennessee River means unique moisture challenges. Flood plain concerns, humidity damage, and protecting Decatur's historic homes.</p>
-        <span class="article-link">Read Guide →</span>
-      </a>
-      
-      <a href="{{ '/article-athens-al/' | url }}" class="article-card">
-        <h2>Athens, AL</h2>
-        <p>Limestone County's county seat combines historic charm with mature tree coverage. Managing leaves, protecting older homes, and Athens-specific drainage tips.</p>
-        <span class="article-link">Read Guide →</span>
-      </a>
-      
-      <a href="{{ '/article-hartselle-al/' | url }}" class="article-card">
-        <h2>Hartselle, AL</h2>
-        <p>Our hometown. Blue River Gutters' home base means fast response and deep community knowledge. Local insights for Hartselle homeowners.</p>
-        <span class="article-link">Read Guide →</span>
-      </a>
-      
+    
+    {# Buyer's Guides & How-To Articles #}
+    <div class="articles-section">
+      <h2 class="section-title">Guides & Resources</h2>
+      <div class="articles-grid">
+        {% for article in collections.articles | reverse %}
+          {% if article.data.category and article.data.category != "Local Guide" %}
+          <a href="{{ article.url | url }}" class="article-card">
+            <span class="article-category">{{ article.data.category }}</span>
+            <h3>{{ article.data.headline | default(article.data.title) }}</h3>
+            <p>{{ article.data.description | truncate(120) }}</p>
+            <span class="article-meta">{{ article.data.read_time }} min read</span>
+            <span class="article-link">Read Article →</span>
+          </a>
+          {% endif %}
+        {% endfor %}
+      </div>
     </div>
+    
+    {# City Guides #}
+    <div class="articles-section">
+      <h2 class="section-title">Local City Guides</h2>
+      <div class="articles-grid">
+        {% for article in collections.articles %}
+          {% if article.data.category == "Local Guide" %}
+          <a href="{{ article.url | url }}" class="article-card article-card--city">
+            <span class="article-category">{{ article.data.related_city | default("Local Guide") }}</span>
+            <h3>{{ article.data.headline | default(article.data.title) }}</h3>
+            <p>{{ article.data.description | truncate(120) }}</p>
+            <span class="article-link">Read Guide →</span>
+          </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+    
   </div>
 </section>
 
 {# CTA #}
 <section class="cta">
   <div class="container">
-    <h2>Questions About Your Area?</h2>
-    <p>We serve all of North Alabama. Give us a call for local expertise.</p>
+    <h2>Questions About Your Gutters?</h2>
+    <p>We've been serving North Alabama for over 20 years. Give us a call for straight answers.</p>
     <a href="https://BlueRiverGutters.as.me/" class="btn btn-primary">Schedule Free Estimate</a>
     <p class="cta-phone"><a href="tel:2566166760">📞 (256) 616-6760</a></p>
   </div>
@@ -87,36 +91,81 @@ permalink: /articles/
   background: var(--cream);
 }
 
+.articles-section {
+  margin-bottom: 3rem;
+}
+.articles-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  color: var(--navy);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--red);
+}
+
 .articles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
 }
 
 .article-card {
   background: var(--white);
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 8px;
   text-decoration: none;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
 }
 .article-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.12);
 }
-.article-card h2 {
-  color: var(--navy);
-  font-size: 1.5rem;
+
+.article-category {
+  display: inline-block;
+  background: var(--red);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
   margin-bottom: 0.75rem;
+  align-self: flex-start;
+}
+
+.article-card--city .article-category {
+  background: var(--navy);
+}
+
+.article-card h3 {
+  color: var(--navy);
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
 }
 .article-card p {
   color: var(--gray);
-  line-height: 1.6;
+  font-size: 0.95rem;
+  line-height: 1.5;
   margin-bottom: 1rem;
+  flex-grow: 1;
+}
+.article-meta {
+  color: var(--gray);
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
 }
 .article-link {
   color: var(--red);
   font-weight: 600;
+  font-size: 0.95rem;
 }
 </style>
