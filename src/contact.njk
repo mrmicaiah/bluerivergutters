@@ -91,7 +91,7 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
       {# Contact Form #}
       <div class="contact-form-wrapper">
         <h2>Send Us a Message</h2>
-        <form action="https://formspree.io/f/xyzgwqvk" method="POST" class="contact-form">
+        <form id="contact-form" class="contact-form">
           <div class="form-group">
             <label for="name">Your Name *</label>
             <input type="text" id="name" name="name" required>
@@ -139,9 +139,6 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
             <label for="message">Message *</label>
             <textarea id="message" name="message" rows="4" required placeholder="Tell us about your project or question..."></textarea>
           </div>
-          
-          <input type="hidden" name="_subject" value="New contact form submission from bluerivergutters.com">
-          <input type="hidden" name="_next" value="https://bluerivergutters.com/thank-you/">
           
           <button type="submit" class="btn btn-primary btn-full">Send Message</button>
         </form>
@@ -357,6 +354,23 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
   width: 100%;
 }
 
+.form-message {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.form-message.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.form-message.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
 @media (max-width: 768px) {
   .contact-grid {
     grid-template-columns: 1fr;
@@ -377,3 +391,84 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
   }
 }
 </style>
+
+{# Courier Form Handler #}
+<script>
+(function() {
+  const CONFIG = {
+    list: 'blue-river-gutters-leads',
+    source: 'bluerivergutters.com',
+    funnel: 'contact-form',
+    formSelector: '#contact-form',
+    customFields: ['phone', 'city', 'service', 'message'],
+    redirectUrl: '/thank-you/'
+  };
+
+  const API_URL = 'https://email-bot-server.micaiah-tasks.workers.dev/api/subscribe';
+
+  document.querySelector(CONFIG.formSelector)?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]');
+    const originalText = btn?.textContent;
+    
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Sending...';
+    }
+
+    const payload = {
+      email: form.querySelector('[name="email"]')?.value,
+      list: CONFIG.list,
+      source: CONFIG.source,
+      funnel: CONFIG.funnel
+    };
+
+    const nameField = form.querySelector('[name="name"]');
+    if (nameField?.value) payload.name = nameField.value;
+
+    if (CONFIG.customFields.length > 0) {
+      payload.metadata = {};
+      CONFIG.customFields.forEach(field => {
+        const el = form.querySelector(`[name="${field}"]`);
+        if (el?.value) payload.metadata[field] = el.value;
+      });
+    }
+
+    try {
+      const resp = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await resp.json();
+
+      if (resp.ok) {
+        window.location.href = CONFIG.redirectUrl;
+      } else {
+        showMessage(form, data.error || 'Something went wrong. Please try again.', 'error');
+      }
+    } catch (err) {
+      showMessage(form, 'Something went wrong. Please try again.', 'error');
+    }
+
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  });
+
+  function showMessage(form, text, type) {
+    let msg = form.querySelector('.form-message');
+    if (!msg) {
+      msg = document.createElement('p');
+      msg.className = 'form-message';
+      form.appendChild(msg);
+    }
+    msg.textContent = text;
+    msg.className = 'form-message ' + type;
+  }
+})();
+</script>
