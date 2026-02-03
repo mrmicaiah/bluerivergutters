@@ -1,0 +1,284 @@
+---
+layout: base.njk
+title: Customer Reviews | Blue River Gutters
+description: Read what our customers say about Blue River Gutters. 96+ reviews with a 4.7 star average rating across Huntsville, Madison, Decatur, and North Alabama.
+permalink: /reviews/
+---
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <div class="container">
+    <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemprop="item" href="{{ '/' | url }}"><span itemprop="name">Home</span></a>
+        <meta itemprop="position" content="1" />
+      </li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" aria-current="page">
+        <span itemprop="name">Reviews</span>
+        <meta itemprop="position" content="2" />
+      </li>
+    </ol>
+  </div>
+</nav>
+
+<section class="hero hero-short" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/hero-bg_axhlw4.jpg');">
+  <div class="hero-overlay"></div>
+  <div class="container hero-container">
+    <div class="hero-content">
+      <p class="hero-eyebrow">What Our Customers Say</p>
+      <h1>Customer Reviews</h1>
+      <p>Don't just take our word for it. See what homeowners across North Alabama are saying about Blue River Gutters.</p>
+    </div>
+  </div>
+</section>
+
+<section class="reviews-summary">
+  <div class="container">
+    <div class="summary-card">
+      <div class="summary-rating">
+        <span class="rating-number">{{ reviews.business.averageRating }}</span>
+        <div class="rating-stars">
+          {% for i in range(0, 5) %}
+            {% if i < (reviews.business.averageRating | round) %}
+              <span class="star filled">&#9733;</span>
+            {% else %}
+              <span class="star">&#9734;</span>
+            {% endif %}
+          {% endfor %}
+        </div>
+        <span class="rating-count">Based on {{ reviews.business.totalReviews }}+ reviews</span>
+      </div>
+      <div class="summary-cta">
+        <a href="https://g.co/kgs/oHV77L" class="btn btn-primary" target="_blank" rel="noopener">Leave a Review on Google</a>
+        <p class="summary-note">Your feedback helps other homeowners find quality gutter services</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reviews-filters">
+  <div class="container">
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all">All Reviews</button>
+      <button class="filter-btn" data-filter="Seamless Gutters">Seamless Gutters</button>
+      <button class="filter-btn" data-filter="Gutter Guards">Gutter Guards</button>
+      <button class="filter-btn" data-filter="Underground Drains">Underground Drains</button>
+      <button class="filter-btn" data-filter="Gutter Cleaning">Gutter Cleaning</button>
+      <button class="filter-btn" data-filter="Rotten Wood Repair">Wood Repair</button>
+    </div>
+  </div>
+</section>
+
+<section class="reviews-list">
+  <div class="container">
+    <div class="reviews-grid">
+      {% for review in reviews.reviews %}
+      <div class="review-card" data-service="{{ review.service }}">
+        <div class="review-header">
+          <div class="review-author">
+            <div class="author-avatar">{{ review.author | first }}</div>
+            <div class="author-info">
+              <span class="author-name">{{ review.author }}</span>
+              <span class="review-location">&#128205; {{ review.city }}, AL</span>
+            </div>
+          </div>
+          <div class="review-meta">
+            <div class="review-stars">
+              {% for i in range(0, 5) %}
+                {% if i < review.rating %}
+                  <span class="star filled">&#9733;</span>
+                {% else %}
+                  <span class="star">&#9734;</span>
+                {% endif %}
+              {% endfor %}
+            </div>
+            <span class="review-date">{{ review.date | dateFormat("MMM YYYY") }}</span>
+          </div>
+        </div>
+        <div class="review-body">
+          <span class="review-service-tag">{{ review.service }}</span>
+          <p class="review-text">{{ review.text }}</p>
+        </div>
+        {% if review.ownerResponse %}
+        <div class="owner-response">
+          <div class="response-header">
+            <strong>Response from Blue River Gutters</strong>
+            <span class="response-date">{{ review.ownerResponse.date | dateFormat("MMM YYYY") }}</span>
+          </div>
+          <p class="response-text">{{ review.ownerResponse.text }}</p>
+        </div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    
+    <div class="reviews-empty" style="display: none;">
+      <p>No reviews found for this service. <button class="filter-reset">View all reviews</button></p>
+    </div>
+  </div>
+</section>
+
+<section class="review-platforms">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Find Us On</p>
+      <h2>Review Platforms</h2>
+    </div>
+    <div class="platforms-grid">
+      <a href="https://g.co/kgs/oHV77L" class="platform-card" target="_blank" rel="noopener">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_80/google-icon_placeholder.png" alt="Google" loading="lazy">
+        <span class="platform-name">Google</span>
+        <span class="platform-rating">4.7 &#9733;</span>
+        <span class="platform-count">96+ reviews</span>
+      </a>
+      <a href="https://www.angi.com/companylist/us/al/hartselle/blue-river-gutters-reviews-8156246.htm" class="platform-card" target="_blank" rel="noopener">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_80/angi-icon_placeholder.png" alt="Angi" loading="lazy">
+        <span class="platform-name">Angi</span>
+        <span class="platform-rating">A Rating</span>
+        <span class="platform-count">View Profile</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <div class="container">
+    <h2>Ready to Join Our Happy Customers?</h2>
+    <p>Get a free estimate for your gutter project and see why homeowners across North Alabama trust Blue River Gutters.</p>
+    <a href="https://BlueRiverGutters.as.me/" class="btn btn-primary">Schedule Free Estimate</a>
+    <p class="cta-phone"><a href="tel:2566166760">&#128222; (256) 616-6760</a></p>
+    <p class="cta-hours">MON-FRI 8:00AM-5:00PM</p>
+  </div>
+</section>
+
+{% block schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Blue River Gutters",
+  "image": "https://res.cloudinary.com/dxzw1zwez/image/upload/logo-horizontal-white_kzwl0f.png",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "3315 Memorial Pkwy SW Suite B13",
+    "addressLocality": "Huntsville",
+    "addressRegion": "AL",
+    "postalCode": "35801"
+  },
+  "telephone": "(256) 616-6760",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ reviews.business.averageRating }}",
+    "reviewCount": "{{ reviews.business.totalReviews }}"
+  },
+  "review": [
+    {% for review in reviews.reviews | slice(0, 5) %}
+    {
+      "@type": "Review",
+      "author": {
+        "@type": "Person",
+        "name": "{{ review.author }}"
+      },
+      "datePublished": "{{ review.date }}",
+      "reviewRating": {
+        "@type": "Rating",
+        "ratingValue": "{{ review.rating }}"
+      },
+      "reviewBody": "{{ review.text | replace('"', '\\"') }}"
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endblock %}
+
+<style>
+.hero-short{min-height:40vh;padding:4rem 0}
+.reviews-summary{padding:3rem 0;background:var(--white)}
+.summary-card{display:flex;justify-content:space-between;align-items:center;background:var(--cream);padding:2rem;border-radius:12px;flex-wrap:wrap;gap:2rem}
+.summary-rating{text-align:center}
+.rating-number{font-size:4rem;font-weight:700;color:var(--navy);line-height:1}
+.rating-stars{font-size:1.5rem;margin:.5rem 0}
+.rating-stars .star{color:#d4d4d4}
+.rating-stars .star.filled{color:#f59e0b}
+.rating-count{color:var(--gray);font-size:.9rem}
+.summary-cta{text-align:center}
+.summary-note{color:var(--gray);font-size:.85rem;margin-top:.75rem}
+.reviews-filters{padding:2rem 0;background:var(--white);border-bottom:1px solid var(--light-gray);position:sticky;top:80px;z-index:100}
+.filter-buttons{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center}
+.filter-btn{background:var(--light-gray);border:none;padding:.6rem 1.25rem;border-radius:25px;font-size:.9rem;font-weight:500;color:var(--slate);cursor:pointer;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:var(--navy);color:var(--white)}
+.reviews-list{padding:3rem 0 4rem;background:var(--light-gray)}
+.reviews-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+.review-card{background:var(--white);border-radius:12px;padding:1.5rem;box-shadow:0 2px 4px rgba(0,0,0,.05)}
+.review-card.hidden{display:none}
+.review-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.review-author{display:flex;align-items:center;gap:.75rem}
+.author-avatar{width:48px;height:48px;border-radius:50%;background:var(--blue);color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.25rem}
+.author-info{display:flex;flex-direction:column}
+.author-name{font-weight:600;color:var(--navy)}
+.review-location{font-size:.8rem;color:var(--gray)}
+.review-meta{text-align:right}
+.review-stars{font-size:1rem}
+.review-stars .star{color:#d4d4d4}
+.review-stars .star.filled{color:#f59e0b}
+.review-date{font-size:.8rem;color:var(--gray)}
+.review-body{margin-bottom:1rem}
+.review-service-tag{display:inline-block;background:var(--light-gray);color:var(--slate);padding:.2rem .6rem;border-radius:15px;font-size:.7rem;font-weight:600;margin-bottom:.5rem}
+.review-text{color:var(--slate);line-height:1.6;font-size:.95rem}
+.owner-response{background:var(--cream);padding:1rem;border-radius:8px;border-left:3px solid var(--blue)}
+.response-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:.25rem}
+.response-header strong{color:var(--navy);font-size:.85rem}
+.response-date{font-size:.75rem;color:var(--gray)}
+.response-text{color:var(--slate);font-size:.9rem;line-height:1.5;margin:0}
+.reviews-empty{text-align:center;padding:3rem;color:var(--gray)}
+.filter-reset{background:none;border:none;color:var(--blue);cursor:pointer;text-decoration:underline}
+.review-platforms{padding:4rem 0;background:var(--white)}
+.platforms-grid{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap}
+.platform-card{display:flex;flex-direction:column;align-items:center;padding:2rem;background:var(--cream);border-radius:12px;min-width:180px;transition:transform .2s}
+.platform-card:hover{transform:translateY(-4px)}
+.platform-card img{width:60px;height:60px;object-fit:contain;margin-bottom:1rem}
+.platform-name{font-weight:600;color:var(--navy)}
+.platform-rating{color:#f59e0b;font-weight:600;margin:.25rem 0}
+.platform-count{font-size:.85rem;color:var(--gray)}
+@media(max-width:1024px){.reviews-grid{grid-template-columns:1fr}}
+@media(max-width:768px){.summary-card{flex-direction:column;text-align:center}.filter-buttons{overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;padding-bottom:.5rem}.filter-btn{white-space:nowrap}.reviews-filters{top:70px}}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  const filterBtns=document.querySelectorAll('.filter-btn');
+  const reviewCards=document.querySelectorAll('.review-card');
+  const emptyState=document.querySelector('.reviews-empty');
+  const resetBtn=document.querySelector('.filter-reset');
+  
+  function filterReviews(filter){
+    let visibleCount=0;
+    reviewCards.forEach(card=>{
+      const service=card.dataset.service;
+      if(filter==='all'||service===filter){
+        card.classList.remove('hidden');
+        visibleCount++;
+      }else{
+        card.classList.add('hidden');
+      }
+    });
+    emptyState.style.display=visibleCount===0?'block':'none';
+  }
+  
+  filterBtns.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      filterBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      filterReviews(btn.dataset.filter);
+    });
+  });
+  
+  if(resetBtn){
+    resetBtn.addEventListener('click',()=>{
+      filterBtns.forEach(b=>b.classList.remove('active'));
+      document.querySelector('[data-filter="all"]').classList.add('active');
+      filterReviews('all');
+    });
+  }
+});
+</script>
