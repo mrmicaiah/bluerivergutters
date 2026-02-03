@@ -48,7 +48,7 @@ permalink: /recent-projects/
           <p>{{ project.description }}</p>
           <div class="project-meta">
             <span class="project-location">📍 {{ project.city }}, AL</span>
-            <span class="project-date">{{ project.date | date: "%b %Y" }}</span>
+            <span class="project-date">{{ project.date | dateFormat("MMM YYYY") }}</span>
           </div>
         </div>
       </a>
