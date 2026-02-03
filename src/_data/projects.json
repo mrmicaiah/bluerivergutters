@@ -1,0 +1,108 @@
+[
+  {
+    "title": "Seamless Gutter Installation - Hampton Cove",
+    "slug": "seamless-gutters-hampton-cove",
+    "date": "2024-12-15",
+    "city": "Hampton Cove",
+    "service": "Seamless Gutters",
+    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/projects/hampton-cove-seamless_sample.jpg",
+    "images": [
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1200/projects/hampton-cove-seamless-1.jpg",
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1200/projects/hampton-cove-seamless-2.jpg"
+    ],
+    "description": "Complete seamless gutter system for a two-story home with complex roofline.",
+    "details": "This Hampton Cove homeowner needed a complete gutter replacement. The original builder-grade gutters were failing at the seams after just 8 years. We installed 6-inch seamless aluminum gutters in bronze to complement the home's exterior.",
+    "specs": {
+      "gutterSize": "6-inch K-style",
+      "material": "0.032 gauge aluminum",
+      "color": "Bronze",
+      "linearFeet": 285,
+      "downspouts": 8
+    },
+    "featured": true
+  },
+  {
+    "title": "Gutter Guards Installation - Madison",
+    "slug": "gutter-guards-madison",
+    "date": "2024-11-28",
+    "city": "Madison",
+    "service": "Gutter Guards",
+    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/projects/madison-guards_sample.jpg",
+    "images": [
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1200/projects/madison-guards-1.jpg"
+    ],
+    "description": "Heavy-duty leaf guards installed on existing gutters surrounded by mature oaks.",
+    "details": "Located in a heavily wooded Madison subdivision, this homeowner was cleaning gutters 4-5 times per year. We installed micro-mesh gutter guards that handle both large oak leaves and small pine needles.",
+    "specs": {
+      "guardType": "Micro-mesh stainless steel",
+      "linearFeet": 210,
+      "warranty": "Lifetime clog-free guarantee"
+    },
+    "featured": true
+  },
+  {
+    "title": "Underground Drain System - Huntsville",
+    "slug": "underground-drains-huntsville",
+    "date": "2024-10-22",
+    "city": "Huntsville",
+    "service": "Underground Drains",
+    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/projects/huntsville-drains_sample.jpg",
+    "images": [
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1200/projects/huntsville-drains-1.jpg",
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1200/projects/huntsville-drains-2.jpg"
+    ],
+    "description": "Complete underground drainage solution for water pooling issues near foundation.",
+    "details": "This Huntsville home had serious water pooling near the foundation due to North Alabama's notorious red clay soil. We installed 4-inch corrugated drain pipe with pop-up emitters positioned 30 feet from the house.",
+    "specs": {
+      "pipeType": "4-inch corrugated",
+      "totalLength": "180 linear feet",
+      "emitters": 4,
+      "catchBasins": 2
+    },
+    "featured": false
+  },
+  {
+    "title": "Rotten Fascia Repair - Decatur",
+    "slug": "fascia-repair-decatur",
+    "date": "2024-09-14",
+    "city": "Decatur",
+    "service": "Rotten Wood Repair",
+    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/projects/decatur-fascia_sample.jpg",
+    "images": [
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1200/projects/decatur-fascia-1.jpg"
+    ],
+    "description": "Extensive fascia board replacement and aluminum capping to prevent future rot.",
+    "details": "Years of Alabama humidity and overflowing gutters had caused significant fascia damage. We replaced 45 feet of rotten fascia board with treated lumber and installed aluminum fascia capping for long-term protection.",
+    "specs": {
+      "fasciaReplaced": "45 linear feet",
+      "cappingInstalled": "Yes - aluminum",
+      "newGutters": "Yes - 5-inch white"
+    },
+    "featured": false
+  },
+  {
+    "title": "Complete Gutter System - Athens",
+    "slug": "complete-system-athens",
+    "date": "2024-08-30",
+    "city": "Athens",
+    "service": "Seamless Gutters",
+    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/projects/athens-complete_sample.jpg",
+    "images": [
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1200/projects/athens-complete-1.jpg",
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1200/projects/athens-complete-2.jpg",
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1200/projects/athens-complete-3.jpg"
+    ],
+    "description": "New construction gutter installation with underground drainage.",
+    "details": "This new-build Athens home needed a complete gutter system. We installed 6-inch seamless gutters with leaf guards and ran underground drains to a drainage easement at the back of the property.",
+    "specs": {
+      "gutterSize": "6-inch K-style",
+      "material": "0.032 gauge aluminum",
+      "color": "White",
+      "linearFeet": 320,
+      "downspouts": 10,
+      "guards": "Micro-mesh",
+      "undergroundDrains": "220 feet"
+    },
+    "featured": true
+  }
+]
