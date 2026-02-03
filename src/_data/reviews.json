@@ -1,0 +1,106 @@
+{
+  "business": {
+    "name": "Blue River Gutters",
+    "averageRating": 4.7,
+    "totalReviews": 96,
+    "googlePlaceId": "ChIJxxxxxx",
+    "lastUpdated": "2026-02-03"
+  },
+  "reviews": [
+    {
+      "id": "review-001",
+      "author": "Jennifer M.",
+      "rating": 5,
+      "date": "2025-01-15",
+      "text": "Blue River Gutters did an amazing job on our home in Madison. Adam and his crew were professional, on time, and the seamless gutters look fantastic. They even helped us understand why our old gutters were causing water damage near the foundation. Highly recommend!",
+      "service": "Seamless Gutters",
+      "city": "Madison",
+      "ownerResponse": {
+        "date": "2025-01-16",
+        "text": "Thank you Jennifer! We're glad we could help identify the drainage issue before it caused more damage. Enjoy your new gutters!"
+      }
+    },
+    {
+      "id": "review-002",
+      "author": "Robert T.",
+      "rating": 5,
+      "date": "2025-01-10",
+      "text": "Had gutter guards installed on our Hampton Cove home. With all the oak trees in our yard, we were cleaning gutters constantly. It's been 3 months and not a single clog. Worth every penny!",
+      "service": "Gutter Guards",
+      "city": "Hampton Cove",
+      "ownerResponse": null
+    },
+    {
+      "id": "review-003",
+      "author": "Sarah K.",
+      "rating": 5,
+      "date": "2024-12-20",
+      "text": "We had a serious drainage problem in our Huntsville home - water was pooling right against the foundation every time it rained. Blue River installed underground drains and the problem is completely solved. Professional work and fair pricing.",
+      "service": "Underground Drains",
+      "city": "Huntsville",
+      "ownerResponse": {
+        "date": "2024-12-21",
+        "text": "Thanks Sarah! That red clay soil in North Alabama doesn't drain well on its own. Glad the underground system is working perfectly for you."
+      }
+    },
+    {
+      "id": "review-004",
+      "author": "Mike D.",
+      "rating": 4,
+      "date": "2024-12-05",
+      "text": "Good work on our gutter installation in Decatur. Only reason for 4 stars instead of 5 is scheduling took a bit longer than expected due to weather. But the quality of work was excellent.",
+      "service": "Seamless Gutters",
+      "city": "Decatur",
+      "ownerResponse": {
+        "date": "2024-12-06",
+        "text": "Thanks Mike! Sorry about the weather delays - safety first when we're up on ladders. Appreciate your patience and glad the final result met your expectations."
+      }
+    },
+    {
+      "id": "review-005",
+      "author": "Lisa H.",
+      "rating": 5,
+      "date": "2024-11-28",
+      "text": "Adam and his team replaced our rotted fascia boards and installed new gutters. They found wood rot we didn't even know about behind the old gutters. Honest company that does quality work. Our Athens home looks great!",
+      "service": "Rotten Wood Repair",
+      "city": "Athens",
+      "ownerResponse": null
+    },
+    {
+      "id": "review-006",
+      "author": "David R.",
+      "rating": 5,
+      "date": "2024-11-15",
+      "text": "Best gutter company in North Alabama! Used them twice now - once for our house in Meridianville and once for my mom's place in Hazel Green. Same great service both times.",
+      "service": "Seamless Gutters",
+      "city": "Meridianville",
+      "ownerResponse": {
+        "date": "2024-11-16",
+        "text": "Thank you David! We appreciate the repeat business and the referral. Tell your mom we said hi!"
+      }
+    },
+    {
+      "id": "review-007",
+      "author": "Patricia W.",
+      "rating": 5,
+      "date": "2024-10-30",
+      "text": "Had Blue River clean our gutters and they discovered the downspouts were clogged underground. They cleared everything out and now water drains properly away from our house. Very thorough!",
+      "service": "Gutter Cleaning",
+      "city": "Huntsville",
+      "ownerResponse": null
+    },
+    {
+      "id": "review-008",
+      "author": "James C.",
+      "rating": 5,
+      "date": "2024-10-15",
+      "text": "New construction in Owens Cross Roads - the builder's gutters were already failing after 2 years. Blue River replaced everything with proper 6-inch seamless gutters and quality hangers. Night and day difference.",
+      "service": "Seamless Gutters",
+      "city": "Owens Cross Roads",
+      "ownerResponse": {
+        "date": "2024-10-16",
+        "text": "Thanks James! Builder-grade gutters often use 5-inch with minimal hangers. The 6-inch K-style with proper spacing will last you decades."
+      }
+    }
+  ]
+}
