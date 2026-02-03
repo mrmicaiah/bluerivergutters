@@ -1,0 +1,121 @@
+---
+layout: base.njk
+title: Thank You | Blue River Gutters
+description: Thanks for contacting Blue River Gutters. We'll be in touch soon.
+---
+
+<section class="thank-you-section">
+  <div class="container">
+    <div class="thank-you-content">
+      <div class="thank-you-icon">✓</div>
+      <h1>Thank You!</h1>
+      <p class="thank-you-message">We got your message and will be in touch within 24 hours.</p>
+      <p>In the meantime, feel free to give us a call if you need immediate assistance:</p>
+      <a href="tel:2566166760" class="btn btn-primary">📞 (256) 616-6760</a>
+      
+      <div class="thank-you-links">
+        <p>Or explore more about our services:</p>
+        <div class="link-grid">
+          <a href="{{ '/services/seamless-gutters/' | url }}">Seamless Gutters</a>
+          <a href="{{ '/services/gutter-guards/' | url }}">Gutter Guards</a>
+          <a href="{{ '/services/gutter-cleaning/' | url }}">Gutter Cleaning</a>
+          <a href="{{ '/blog/' | url }}">Read Our Blog</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.thank-you-section {
+  padding: 8rem 0;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+}
+
+.thank-you-content {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.thank-you-icon {
+  width: 80px;
+  height: 80px;
+  background: #22c55e;
+  color: white;
+  font-size: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 2rem;
+}
+
+.thank-you-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--dark);
+}
+
+.thank-you-message {
+  font-size: 1.25rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.thank-you-content > p {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.thank-you-content .btn {
+  margin-bottom: 3rem;
+}
+
+.thank-you-links {
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.thank-you-links p {
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.link-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.link-grid a {
+  background: #f0f4f8;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  color: var(--dark);
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.link-grid a:hover {
+  background: #e2e8f0;
+}
+
+@media (max-width: 768px) {
+  .thank-you-section {
+    padding: 4rem 0;
+  }
+  
+  .thank-you-content h1 {
+    font-size: 2rem;
+  }
+  
+  .link-grid {
+    flex-direction: column;
+  }
+}
+</style>
