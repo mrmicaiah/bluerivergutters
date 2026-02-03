@@ -11,6 +11,22 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addWatchTarget("src/css/");
   eleventyConfig.addWatchTarget("src/js/");
 
+  // Date filter for Nunjucks templates
+  eleventyConfig.addFilter("dateFormat", function(dateString, format) {
+    const date = new Date(dateString);
+    const months = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"];
+    const monthsShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    
+    if (format === "MMMM YYYY") {
+      return months[date.getMonth()] + " " + date.getFullYear();
+    } else if (format === "MMM YYYY") {
+      return monthsShort[date.getMonth()] + " " + date.getFullYear();
+    }
+    return dateString;
+  });
+
   // Blog collection - all posts in /blog/ folder with tags: blog
   eleventyConfig.addCollection("blog", function(collectionApi) {
     return collectionApi.getFilteredByTag("blog").sort((a, b) => {
