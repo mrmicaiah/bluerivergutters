@@ -20,7 +20,7 @@ eleventyExcludeFromCollections: true
       {% if page.url != "/thank-you/" and page.url != "/sitemap/" %}
       <url>
         <loc>https://bluerivergutters.com{{ page.url }}</loc>
-        <lastmod>{{ page.date | dateToFormat("yyyy-MM-dd") }}</lastmod>
+        <lastmod>{{ page.date.toISOString().slice(0, 10) }}</lastmod>
         <changefreq>{% if page.url == "/" %}weekly{% elif "/blog/" in page.url %}yearly{% else %}monthly{% endif %}</changefreq>
         <priority>{% if page.url == "/" %}1.0{% elif page.url == "/services/" or page.url == "/locations/" %}0.9{% elif "gutters-" in page.url and "-al" in page.url %}0.8{% elif "/services/" in page.url %}0.8{% elif "/blog/" in page.url %}0.5{% elif "/articles/" in page.url %}0.6{% else %}0.7{% endif %}</priority>
       </url>
