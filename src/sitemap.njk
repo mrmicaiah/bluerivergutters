@@ -4,27 +4,14 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {# 
-    Fully automatic sitemap - loops through ALL pages
-    Excludes: 
-    - Pages with eleventyExcludeFromCollections: true
-    - Pages with sitemap: false in frontmatter
-    - /thank-you/ (confirmation page, no SEO value)
-    - /sitemap/ (HTML sitemap page)
-    - Any page without a URL
-  #}
   {% for page in collections.all %}
-    {# Skip pages that should be excluded #}
-    {% if page.url and page.data.sitemap != false %}
-      {# Skip utility pages #}
-      {% if page.url != "/thank-you/" and page.url != "/sitemap/" %}
+    {% if page.url and page.data.sitemap != false and page.url != "/thank-you/" and page.url != "/sitemap/" %}
       <url>
         <loc>https://bluerivergutters.com{{ page.url }}</loc>
-        <lastmod>{{ page.date.toISOString().slice(0, 10) }}</lastmod>
-        <changefreq>{% if page.url == "/" %}weekly{% elif "/blog/" in page.url %}yearly{% else %}monthly{% endif %}</changefreq>
-        <priority>{% if page.url == "/" %}1.0{% elif page.url == "/services/" or page.url == "/locations/" %}0.9{% elif "gutters-" in page.url and "-al" in page.url %}0.8{% elif "/services/" in page.url %}0.8{% elif "/blog/" in page.url %}0.5{% elif "/articles/" in page.url %}0.6{% else %}0.7{% endif %}</priority>
+        <lastmod>{{ page.date | isoDate }}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
       </url>
-      {% endif %}
     {% endif %}
   {% endfor %}
 </urlset>
