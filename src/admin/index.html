@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics Dashboard | Blue River Gutters</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://res.cloudinary.com/dxzw1zwez/image/upload/v1738185366/favicon-32x32_dogbih.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0f172a;
+      --slate: #334155;
+      --gray: #64748b;
+      --light-gray: #f1f5f9;
+      --cream: #faf8f5;
+      --white: #ffffff;
+      --blue: #1e40af;
+      --blue-light: #3b82f6;
+      --red: #b91c1c;
+      --red-light: #fecaca;
+      --green: #16a34a;
+      --green-light: #dcfce7;
+      --yellow: #ca8a04;
+      --yellow-light: #fef9c3;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--light-gray);
+      color: var(--slate);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    
+    /* LOGIN SCREEN */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+    }
+    
+    .login-box {
+      background: var(--white);
+      padding: 3rem;
+      border-radius: 16px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    
+    .login-logo { height: 50px; margin-bottom: 2rem; }
+    .login-box h1 { font-size: 1.5rem; color: var(--navy); margin-bottom: 0.5rem; }
+    .login-box > p { color: var(--gray); margin-bottom: 2rem; }
+    
+    .login-input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid var(--light-gray);
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    
+    .login-input:focus { outline: none; border-color: var(--blue-light); }
+    
+    .login-btn {
+      width: 100%;
+      padding: 1rem;
+      background: var(--blue);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .login-btn:hover { background: var(--navy); }
+    .login-error { color: var(--red); font-size: 0.9rem; margin-top: 1rem; display: none; }
+    
+    /* DASHBOARD */
+    .dashboard { display: none; }
+    .dashboard.active { display: block; }
+    
+    .dashboard-header {
+      background: var(--navy);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .dashboard-header img { height: 36px; }
+    .header-right { display: flex; align-items: center; gap: 1.5rem; }
+    .header-link { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .header-link:hover { color: var(--white); }
+    
+    .logout-btn {
+      background: rgba(255,255,255,0.1);
+      color: var(--white);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+    
+    .logout-btn:hover { background: rgba(255,255,255,0.2); }
+    
+    .dashboard-content { max-width: 1400px; margin: 0 auto; padding: 2rem; }
+    .dashboard-title { margin-bottom: 0.25rem; color: var(--navy); font-size: 1.75rem; }
+    .dashboard-subtitle { color: var(--gray); margin-bottom: 1.5rem; }
+    
+    /* CONTROLS */
+    .controls { display: flex; gap: 0.75rem; margin-bottom: 2rem; flex-wrap: wrap; align-items: center; }
+    
+    .date-btn {
+      padding: 0.6rem 1.25rem;
+      background: var(--white);
+      border: 2px solid var(--light-gray);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--slate);
+      transition: all 0.2s;
+    }
+    
+    .date-btn:hover { border-color: var(--blue-light); color: var(--blue); }
+    .date-btn.active { background: var(--blue); border-color: var(--blue); color: var(--white); }
+    
+    .refresh-btn {
+      padding: 0.6rem 1.25rem;
+      background: var(--white);
+      border: 2px solid var(--light-gray);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--slate);
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    
+    .refresh-btn:hover { border-color: var(--blue-light); color: var(--blue); }
+    .refresh-btn.loading .refresh-icon { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .last-updated { font-size: 0.8rem; color: var(--gray); margin-left: 1rem; }
+    
+    /* STAT CARDS */
+    .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.25rem; margin-bottom: 2rem; }
+    
+    .stat-card {
+      background: var(--white);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      border-left: 4px solid transparent;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .stat-card.primary { border-left-color: var(--blue); }
+    .stat-card.success { border-left-color: var(--green); }
+    .stat-card.warning { border-left-color: var(--yellow); }
+    .stat-card.danger { border-left-color: var(--red); }
+    
+    .stat-label { font-size: 0.8rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .stat-icon { font-size: 1rem; }
+    .stat-value { font-size: 2rem; font-weight: 700; color: var(--navy); line-height: 1.1; }
+    .stat-subtext { font-size: 0.85rem; color: var(--gray); margin-top: 0.25rem; }
+    
+    /* DATA SECTIONS */
+    .section-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+    .section-grid.triple { grid-template-columns: repeat(3, 1fr); }
+    
+    .data-card { background: var(--white); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); overflow: hidden; }
+    .data-card.full-width { grid-column: 1 / -1; }
+    
+    .data-card-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--cream);
+    }
+    
+    .data-card-title { font-size: 0.95rem; font-weight: 600; color: var(--navy); display: flex; align-items: center; gap: 0.5rem; }
+    .data-card-badge { background: var(--light-gray); padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.75rem; color: var(--gray); font-weight: 500; }
+    .data-card-body { padding: 0; }
+    .data-card-body.padded { padding: 1.5rem; }
+    
+    /* DATA LISTS */
+    .data-list { list-style: none; }
+    
+    .data-list-item {
+      padding: 0.875rem 1.5rem;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+    
+    .data-list-item:last-child { border-bottom: none; }
+    .data-list-item:hover { background: var(--cream); }
+    .data-list-left { display: flex; align-items: center; gap: 0.75rem; flex: 1; min-width: 0; }
+    
+    .data-list-rank {
+      width: 26px;
+      height: 26px;
+      background: var(--light-gray);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gray);
+      flex-shrink: 0;
+    }
+    
+    .data-list-rank.gold { background: #fef3c7; color: #b45309; }
+    .data-list-rank.silver { background: #e5e7eb; color: #4b5563; }
+    .data-list-rank.bronze { background: #fed7aa; color: #c2410c; }
+    .data-list-label { font-size: 0.9rem; color: var(--slate); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .data-list-value { font-weight: 600; color: var(--navy); font-size: 0.9rem; flex-shrink: 0; }
+    .data-list-bar-wrap { flex: 1; margin: 0 1rem; max-width: 120px; }
+    .data-list-bar { height: 6px; background: var(--light-gray); border-radius: 3px; overflow: hidden; }
+    .data-list-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue-light), var(--blue)); border-radius: 3px; transition: width 0.5s ease; }
+    
+    /* DAILY CHART */
+    .daily-chart { display: flex; align-items: flex-end; gap: 4px; height: 120px; padding: 1rem 1.5rem 0.5rem; }
+    .daily-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; }
+    
+    .daily-bar {
+      width: 100%;
+      max-width: 40px;
+      background: linear-gradient(180deg, var(--blue-light), var(--blue));
+      border-radius: 4px 4px 0 0;
+      transition: height 0.5s ease;
+      position: relative;
+    }
+    
+    .daily-bar:hover { opacity: 0.85; }
+    .daily-bar-value { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; font-weight: 600; color: var(--navy); opacity: 0; transition: opacity 0.2s; }
+    .daily-bar-wrap:hover .daily-bar-value { opacity: 1; }
+    .daily-labels { display: flex; gap: 4px; padding: 0.5rem 1.5rem 1rem; border-top: 1px solid var(--light-gray); margin-top: auto; }
+    .daily-label { flex: 1; text-align: center; font-size: 0.7rem; color: var(--gray); }
+    
+    /* LOADING */
+    .skeleton { background: linear-gradient(90deg, var(--light-gray) 25%, #e2e8f0 50%, var(--light-gray) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    
+    .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255,255,255,0.9); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; gap: 1rem; }
+    .loading-overlay.hidden { display: none; }
+    .spinner { width: 48px; height: 48px; border: 4px solid var(--light-gray); border-top-color: var(--blue); border-radius: 50%; animation: spin 1s linear infinite; }
+    .loading-text { color: var(--gray); font-size: 0.9rem; }
+    
+    /* ERROR */
+    .error-banner { background: var(--red-light); border: 1px solid var(--red); color: #991b1b; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; display: none; }
+    .error-banner.active { display: block; }
+    
+    /* EMPTY */
+    .empty-state { text-align: center; padding: 2rem; color: var(--gray); }
+    .empty-state-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    
+    /* RESPONSIVE */
+    @media (max-width: 1200px) {
+      .stats-grid { grid-template-columns: repeat(3, 1fr); }
+      .section-grid.triple { grid-template-columns: repeat(2, 1fr); }
+    }
+    
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .section-grid, .section-grid.triple { grid-template-columns: 1fr; }
+    }
+    
+    @media (max-width: 600px) {
+      .dashboard-header { padding: 1rem; }
+      .dashboard-content { padding: 1rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .stat-card { padding: 1rem; }
+      .stat-value { font-size: 1.5rem; }
+      .controls { flex-direction: column; align-items: stretch; }
+      .refresh-btn { margin-left: 0; }
+      .header-right { gap: 0.5rem; }
+      .header-link { font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Login Screen -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-box">
+      <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/v1738185366/logo_fih2rm.webp" alt="Blue River Gutters" class="login-logo">
+      <h1>Analytics Dashboard</h1>
+      <p>Enter your password to view site analytics</p>
+      <form id="loginForm">
+        <input type="password" class="login-input" id="passwordInput" placeholder="Enter password" autocomplete="current-password">
+        <button type="submit" class="login-btn">Sign In</button>
+      </form>
+      <p class="login-error" id="loginError">Incorrect password. Please try again.</p>
+    </div>
+  </div>
+  
+  <!-- Dashboard -->
+  <div class="dashboard" id="dashboard">
+    <header class="dashboard-header">
+      <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/v1738260123/logo-white_w60npv.png" alt="Blue River Gutters">
+      <div class="header-right">
+        <a href="/" class="header-link">← Back to Website</a>
+        <button class="logout-btn" id="logoutBtn">Sign Out</button>
+      </div>
+    </header>
+    
+    <div class="dashboard-content">
+      <h1 class="dashboard-title">Website Analytics</h1>
+      <p class="dashboard-subtitle">Track your website performance and visitor engagement</p>
+      
+      <div class="error-banner" id="errorBanner">
+        Unable to load analytics data. Please check your connection and try again.
+      </div>
+      
+      <div class="controls">
+        <button class="date-btn" data-days="7">7 Days</button>
+        <button class="date-btn active" data-days="30">30 Days</button>
+        <button class="date-btn" data-days="90">90 Days</button>
+        <button class="refresh-btn" id="refreshBtn">
+          <span class="refresh-icon">↻</span> Refresh
+        </button>
+        <span class="last-updated">Updated: <span id="lastUpdated">--</span></span>
+      </div>
+      
+      <div class="stats-grid">
+        <div class="stat-card primary">
+          <div class="stat-label"><span class="stat-icon">👁️</span> Page Views</div>
+          <div class="stat-value" id="statPageViews">--</div>
+          <div class="stat-subtext" id="statPageViewsSub">total views</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><span class="stat-icon">🔗</span> Sessions</div>
+          <div class="stat-value" id="statSessions">--</div>
+          <div class="stat-subtext">site visits</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-label"><span class="stat-icon">👤</span> Visitors</div>
+          <div class="stat-value" id="statVisitors">--</div>
+          <div class="stat-subtext">unique users</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-label"><span class="stat-icon">↩️</span> Bounce Rate</div>
+          <div class="stat-value" id="statBounce">--</div>
+          <div class="stat-subtext">left quickly</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><span class="stat-icon">⏱️</span> Avg. Session</div>
+          <div class="stat-value" id="statDuration">--</div>
+          <div class="stat-subtext">time on site</div>
+        </div>
+      </div>
+      
+      <div class="data-card full-width" style="margin-bottom: 2rem;">
+        <div class="data-card-header">
+          <span class="data-card-title">📊 Daily Page Views</span>
+        </div>
+        <div class="daily-chart" id="dailyChart"></div>
+        <div class="daily-labels" id="dailyLabels"></div>
+      </div>
+      
+      <div class="section-grid triple">
+        <div class="data-card">
+          <div class="data-card-header">
+            <span class="data-card-title">📄 Top Pages</span>
+            <span class="data-card-badge" id="topPagesCount">--</span>
+          </div>
+          <div class="data-card-body">
+            <ul class="data-list" id="topPagesList">
+              <li class="data-list-item"><div class="skeleton" style="width:100%;height:24px;"></div></li>
+              <li class="data-list-item"><div class="skeleton" style="width:90%;height:24px;"></div></li>
+              <li class="data-list-item"><div class="skeleton" style="width:80%;height:24px;"></div></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="data-card">
+          <div class="data-card-header">
+            <span class="data-card-title">🔀 Traffic Sources</span>
+          </div>
+          <div class="data-card-body">
+            <ul class="data-list" id="sourcesList">
+              <li class="data-list-item"><div class="skeleton" style="width:100%;height:24px;"></div></li>
+              <li class="data-list-item"><div class="skeleton" style="width:85%;height:24px;"></div></li>
+              <li class="data-list-item"><div class="skeleton" style="width:70%;height:24px;"></div></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="data-card">
+          <div class="data-card-header">
+            <span class="data-card-title">🌍 Visitor Locations</span>
+          </div>
+          <div class="data-card-body">
+            <ul class="data-list" id="locationsList">
+              <li class="data-list-item"><div class="skeleton" style="width:100%;height:24px;"></div></li>
+              <li class="data-list-item"><div class="skeleton" style="width:75%;height:24px;"></div></li>
+              <li class="data-list-item"><div class="skeleton" style="width:60%;height:24px;"></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="loading-overlay hidden" id="loadingOverlay">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading analytics data...</div>
+  </div>
+  
+  <script>
+    const CONFIG = {
+      password: 'blueriver2026',
+      apiBase: 'https://productivity-mcp-server.micaiah-tasks.workers.dev/api',
+      propertyId: '522376645'
+    };
+    
+    let currentDays = 30;
+    let isLoggedIn = localStorage.getItem('brg_dashboard_auth') === 'true';
+    
+    const loginScreen = document.getElementById('loginScreen');
+    const dashboard = document.getElementById('dashboard');
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
+    const passwordInput = document.getElementById('passwordInput');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const dateBtns = document.querySelectorAll('.date-btn');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const errorBanner = document.getElementById('errorBanner');
+    
+    if (isLoggedIn) showDashboard();
+    
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (passwordInput.value === CONFIG.password) {
+        localStorage.setItem('brg_dashboard_auth', 'true');
+        isLoggedIn = true;
+        loginError.style.display = 'none';
+        showDashboard();
+      } else {
+        loginError.style.display = 'block';
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    });
+    
+    logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem('brg_dashboard_auth');
+      isLoggedIn = false;
+      loginScreen.style.display = 'flex';
+      dashboard.classList.remove('active');
+      passwordInput.value = '';
+    });
+    
+    dateBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        dateBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentDays = parseInt(btn.dataset.days);
+        loadData();
+      });
+    });
+    
+    refreshBtn.addEventListener('click', loadData);
+    
+    function showDashboard() {
+      loginScreen.style.display = 'none';
+      dashboard.classList.add('active');
+      loadData();
+    }
+    
+    async function loadData() {
+      loadingOverlay.classList.remove('hidden');
+      errorBanner.classList.remove('active');
+      refreshBtn.classList.add('loading');
+      
+      try {
+        const [report, topContent, sources, geography] = await Promise.all([
+          fetchAPI('analytics/report', { days: currentDays }),
+          fetchAPI('analytics/top-content', { days: currentDays, limit: 10 }),
+          fetchAPI('analytics/sources', { days: currentDays }),
+          fetchAPI('analytics/geography', { days: currentDays })
+        ]);
+        
+        if (report && report.totals) {
+          const t = report.totals;
+          document.getElementById('statPageViews').textContent = formatNumber(t.pageViews || 0);
+          document.getElementById('statSessions').textContent = formatNumber(t.sessions || 0);
+          document.getElementById('statVisitors').textContent = formatNumber(t.activeUsers || 0);
+          document.getElementById('statBounce').textContent = (t.bounceRate || 0).toFixed(1) + '%';
+          document.getElementById('statDuration').textContent = formatDuration(t.avgSessionDuration || 0);
+          const avgPerDay = Math.round((t.pageViews || 0) / currentDays);
+          document.getElementById('statPageViewsSub').textContent = '~' + avgPerDay + '/day average';
+        }
+        
+        if (report && report.daily) renderDailyChart(report.daily);
+        if (topContent && topContent.pages) {
+          renderTopPages(topContent.pages);
+          document.getElementById('topPagesCount').textContent = topContent.pages.length + ' pages';
+        }
+        if (sources && sources.sources) renderSources(sources.sources);
+        if (geography && geography.countries) renderLocations(geography.countries);
+        
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      } catch (error) {
+        console.error('Error loading data:', error);
+        errorBanner.classList.add('active');
+      }
+      
+      loadingOverlay.classList.add('hidden');
+      refreshBtn.classList.remove('loading');
+    }
+    
+    async function fetchAPI(endpoint, params = {}) {
+      const url = new URL(CONFIG.apiBase + '/' + endpoint);
+      url.searchParams.set('property_id', CONFIG.propertyId);
+      Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('API error: ' + response.status);
+      return response.json();
+    }
+    
+    function renderDailyChart(daily) {
+      const chart = document.getElementById('dailyChart');
+      const labels = document.getElementById('dailyLabels');
+      const data = daily.slice(-14);
+      const maxViews = Math.max(...data.map(d => d.pageViews || 0), 1);
+      
+      chart.innerHTML = data.map(day => {
+        const height = Math.max(((day.pageViews || 0) / maxViews) * 100, 4);
+        return '<div class="daily-bar-wrap"><div class="daily-bar" style="height: ' + height + '%;"><span class="daily-bar-value">' + (day.pageViews || 0) + '</span></div></div>';
+      }).join('');
+      
+      labels.innerHTML = data.map(day => {
+        const date = new Date(day.date);
+        return '<div class="daily-label">' + date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + '</div>';
+      }).join('');
+    }
+    
+    function renderTopPages(pages) {
+      const list = document.getElementById('topPagesList');
+      const maxViews = pages[0]?.views || 1;
+      if (pages.length === 0) {
+        list.innerHTML = '<li class="empty-state"><div class="empty-state-icon">📄</div>No page data available</li>';
+        return;
+      }
+      list.innerHTML = pages.slice(0, 8).map((page, i) => {
+        const pct = Math.round((page.views / maxViews) * 100);
+        const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+        return '<li class="data-list-item"><div class="data-list-left"><span class="data-list-rank ' + rankClass + '">' + (i + 1) + '</span><span class="data-list-label" title="' + page.path + '">' + formatPageTitle(page.title, page.path) + '</span></div><div class="data-list-bar-wrap"><div class="data-list-bar"><div class="data-list-bar-fill" style="width: ' + pct + '%;"></div></div></div><span class="data-list-value">' + formatNumber(page.views) + '</span></li>';
+      }).join('');
+    }
+    
+    function renderSources(sources) {
+      const list = document.getElementById('sourcesList');
+      const total = sources.reduce((sum, s) => sum + s.sessions, 0);
+      if (sources.length === 0) {
+        list.innerHTML = '<li class="empty-state"><div class="empty-state-icon">🔀</div>No source data available</li>';
+        return;
+      }
+      list.innerHTML = sources.slice(0, 8).map((source, i) => {
+        const pct = total > 0 ? Math.round((source.sessions / total) * 100) : 0;
+        const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+        return '<li class="data-list-item"><div class="data-list-left"><span class="data-list-rank ' + rankClass + '">' + (i + 1) + '</span><span class="data-list-label">' + formatSource(source.source, source.medium) + '</span></div><div class="data-list-bar-wrap"><div class="data-list-bar"><div class="data-list-bar-fill" style="width: ' + pct + '%;"></div></div></div><span class="data-list-value">' + pct + '%</span></li>';
+      }).join('');
+    }
+    
+    function renderLocations(countries) {
+      const list = document.getElementById('locationsList');
+      const maxUsers = countries[0]?.users || 1;
+      if (countries.length === 0) {
+        list.innerHTML = '<li class="empty-state"><div class="empty-state-icon">🌍</div>No location data available</li>';
+        return;
+      }
+      list.innerHTML = countries.slice(0, 8).map((country, i) => {
+        const pct = Math.round((country.users / maxUsers) * 100);
+        const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+        return '<li class="data-list-item"><div class="data-list-left"><span class="data-list-rank ' + rankClass + '">' + (i + 1) + '</span><span class="data-list-label">' + (country.country || 'Unknown') + '</span></div><div class="data-list-bar-wrap"><div class="data-list-bar"><div class="data-list-bar-fill" style="width: ' + pct + '%;"></div></div></div><span class="data-list-value">' + formatNumber(country.users) + '</span></li>';
+      }).join('');
+    }
+    
+    function formatNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toLocaleString();
+    }
+    
+    function formatDuration(seconds) {
+      if (!seconds || seconds === 0) return '0s';
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      if (mins === 0) return secs + 's';
+      if (secs === 0) return mins + 'm';
+      return mins + 'm ' + secs + 's';
+    }
+    
+    function formatPageTitle(title, path) {
+      if (title && title !== '(not set)' && title.indexOf('Blue River Gutters') === -1) {
+        return title.length > 40 ? title.slice(0, 40) + '...' : title;
+      }
+      if (path === '/') return 'Homepage';
+      return path.replace(/^\//, '').replace(/\/$/, '').replace(/-/g, ' ').split('/')[0].slice(0, 35);
+    }
+    
+    function formatSource(source, medium) {
+      if (!source || source === '(direct)') return 'Direct / None';
+      if (source === 'google' && medium === 'organic') return 'Google Search';
+      if (source === 'google' && medium === 'cpc') return 'Google Ads';
+      if (source === 'facebook') return 'Facebook';
+      if (source === 'bing') return 'Bing Search';
+      if (medium === 'referral') return source.charAt(0).toUpperCase() + source.slice(1);
+      return source.charAt(0).toUpperCase() + source.slice(1);
+    }
+  </script>
+</body>
+</html>
