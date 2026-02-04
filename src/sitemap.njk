@@ -4,100 +4,27 @@ eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {# Homepage #}
-  <url>
-    <loc>https://bluerivergutters.com/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  
-  {# Main Pages #}
-  <url>
-    <loc>https://bluerivergutters.com/services/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://bluerivergutters.com/locations/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://bluerivergutters.com/blog/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://bluerivergutters.com/sitemap/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  
-  {# Service Pages #}
-  {% for service in nav.services %}
-  <url>
-    <loc>https://bluerivergutters.com/services/{{ service.slug }}/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  {# 
+    Fully automatic sitemap - loops through ALL pages
+    Excludes: 
+    - Pages with eleventyExcludeFromCollections: true
+    - Pages with sitemap: false in frontmatter
+    - /thank-you/ (confirmation page, no SEO value)
+    - /sitemap/ (HTML sitemap page)
+    - Any page without a URL
+  #}
+  {% for page in collections.all %}
+    {# Skip pages that should be excluded #}
+    {% if page.url and page.data.sitemap != false %}
+      {# Skip utility pages #}
+      {% if page.url != "/thank-you/" and page.url != "/sitemap/" %}
+      <url>
+        <loc>https://bluerivergutters.com{{ page.url }}</loc>
+        <lastmod>{{ page.date | date: "%Y-%m-%d" }}</lastmod>
+        <changefreq>{% if page.url == "/" %}weekly{% elif "/blog/" in page.url %}yearly{% else %}monthly{% endif %}</changefreq>
+        <priority>{% if page.url == "/" %}1.0{% elif page.url == "/services/" or page.url == "/locations/" %}0.9{% elif "/gutters-" in page.url and "-al/" in page.url and page.url.split("-") | length <= 4 %}0.8{% elif "/services/" in page.url %}0.8{% elif "/blog/" in page.url %}0.5{% elif "/articles/" in page.url %}0.6{% else %}0.7{% endif %}</priority>
+      </url>
+      {% endif %}
+    {% endif %}
   {% endfor %}
-  
-  {# City Landing Pages - Tier 1 (Highest Priority) #}
-  {% for city in nav.locations.tier1 %}
-  <url>
-    <loc>https://bluerivergutters.com/gutters-{{ city.slug }}-al/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  {% endfor %}
-  
-  {# City Landing Pages - Tier 2 #}
-  {% for city in nav.locations.tier2 %}
-  <url>
-    <loc>https://bluerivergutters.com/gutters-{{ city.slug }}-al/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  {% endfor %}
-  
-  {# City Landing Pages - Tier 3 #}
-  {% for city in nav.locations.tier3 %}
-  <url>
-    <loc>https://bluerivergutters.com/gutters-{{ city.slug }}-al/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  {% endfor %}
-  
-  {# Service + City Pages - Tier 1 Cities #}
-  {% for city in nav.locations.tier1 %}
-  {% for service in nav.services %}
-  <url>
-    <loc>https://bluerivergutters.com/{{ service.slug }}-{{ city.slug }}-al/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  {% endfor %}
-  {% endfor %}
-  
-  {# Service + City Pages - Tier 2 Cities #}
-  {% for city in nav.locations.tier2 %}
-  {% for service in nav.services %}
-  <url>
-    <loc>https://bluerivergutters.com/{{ service.slug }}-{{ city.slug }}-al/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  {% endfor %}
-  {% endfor %}
-  
-  {# Blog Posts - Generated from collection #}
-  {% for post in collections.blog %}
-  <url>
-    <loc>https://bluerivergutters.com{{ post.url }}</loc>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  {% endfor %}
-  
 </urlset>
