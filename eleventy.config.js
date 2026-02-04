@@ -27,6 +27,13 @@ module.exports = function(eleventyConfig) {
     return dateString;
   });
 
+  // ISO date filter for sitemap (YYYY-MM-DD format)
+  eleventyConfig.addFilter("isoDate", function(date) {
+    if (!date) return "";
+    const d = new Date(date);
+    return d.toISOString().slice(0, 10);
+  });
+
   // Blog collection - all posts in /blog/ folder with tags: blog
   eleventyConfig.addCollection("blog", function(collectionApi) {
     return collectionApi.getFilteredByTag("blog").sort((a, b) => {
