@@ -126,6 +126,25 @@
     .dashboard-title { margin-bottom: 0.25rem; color: var(--navy); font-size: 1.75rem; }
     .dashboard-subtitle { color: var(--gray); margin-bottom: 1.5rem; }
     
+    /* TABS */
+    .tab-nav { display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 2px solid var(--light-gray); padding-bottom: 0; }
+    .tab-btn {
+      padding: 0.75rem 1.5rem;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--gray);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover { color: var(--navy); }
+    .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    
     /* CONTROLS */
     .controls { display: flex; gap: 0.75rem; margin-bottom: 2rem; flex-wrap: wrap; align-items: center; }
     
@@ -242,6 +261,7 @@
     .data-list-rank.gold { background: #fef3c7; color: #b45309; }
     .data-list-rank.silver { background: #e5e7eb; color: #4b5563; }
     .data-list-rank.bronze { background: #fed7aa; color: #c2410c; }
+    .data-list-rank.you { background: var(--green-light); color: var(--green); }
     .data-list-label { font-size: 0.9rem; color: var(--slate); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .data-list-value { font-weight: 600; color: var(--navy); font-size: 0.9rem; flex-shrink: 0; }
     .data-list-bar-wrap { flex: 1; margin: 0 1rem; max-width: 120px; }
@@ -267,6 +287,65 @@
     .daily-labels { display: flex; gap: 4px; padding: 0.5rem 1.5rem 1rem; border-top: 1px solid var(--light-gray); margin-top: auto; }
     .daily-label { flex: 1; text-align: center; font-size: 0.7rem; color: var(--gray); }
     
+    /* COMPETITOR SECTION */
+    .competitor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 2rem; }
+    
+    .competitor-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      text-align: center;
+      border-top: 4px solid var(--light-gray);
+    }
+    
+    .competitor-card.you { border-top-color: var(--green); }
+    .competitor-card.competitor { border-top-color: var(--red); }
+    
+    .competitor-logo { font-size: 2rem; margin-bottom: 0.5rem; }
+    .competitor-name { font-weight: 700; color: var(--navy); margin-bottom: 0.25rem; }
+    .competitor-url { font-size: 0.8rem; color: var(--gray); margin-bottom: 1rem; }
+    
+    .competitor-stats { display: flex; justify-content: space-around; gap: 1rem; }
+    .competitor-stat { text-align: center; }
+    .competitor-stat-value { font-size: 1.5rem; font-weight: 700; color: var(--navy); }
+    .competitor-stat-label { font-size: 0.7rem; color: var(--gray); text-transform: uppercase; }
+    
+    /* RANKING TABLE */
+    .ranking-table { width: 100%; border-collapse: collapse; }
+    .ranking-table th { 
+      text-align: left; 
+      padding: 0.75rem 1rem; 
+      background: var(--cream); 
+      font-size: 0.8rem; 
+      text-transform: uppercase; 
+      color: var(--gray);
+      border-bottom: 2px solid var(--light-gray);
+    }
+    .ranking-table td { 
+      padding: 0.875rem 1rem; 
+      border-bottom: 1px solid var(--light-gray);
+      font-size: 0.9rem;
+    }
+    .ranking-table tr:hover td { background: var(--cream); }
+    .ranking-table .keyword { font-weight: 600; color: var(--navy); }
+    .ranking-table .rank { font-weight: 700; }
+    .ranking-table .rank.top3 { color: var(--green); }
+    .ranking-table .rank.top10 { color: var(--blue); }
+    .ranking-table .rank.below { color: var(--gray); }
+    .ranking-table .you { background: var(--green-light); }
+    
+    .rank-badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .rank-badge.top3 { background: var(--green-light); color: var(--green); }
+    .rank-badge.top10 { background: #dbeafe; color: var(--blue); }
+    .rank-badge.below { background: var(--light-gray); color: var(--gray); }
+    
     /* LOADING */
     .skeleton { background: linear-gradient(90deg, var(--light-gray) 25%, #e2e8f0 50%, var(--light-gray) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
     @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
@@ -284,15 +363,21 @@
     .empty-state { text-align: center; padding: 2rem; color: var(--gray); }
     .empty-state-icon { font-size: 2rem; margin-bottom: 0.5rem; }
     
+    /* INFO BOX */
+    .info-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; font-size: 0.9rem; color: #1e40af; }
+    .info-box strong { font-weight: 600; }
+    
     /* RESPONSIVE */
     @media (max-width: 1200px) {
       .stats-grid { grid-template-columns: repeat(3, 1fr); }
       .section-grid.triple { grid-template-columns: repeat(2, 1fr); }
+      .competitor-grid { grid-template-columns: repeat(2, 1fr); }
     }
     
     @media (max-width: 900px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .section-grid, .section-grid.triple { grid-template-columns: 1fr; }
+      .competitor-grid { grid-template-columns: 1fr; }
     }
     
     @media (max-width: 600px) {
@@ -305,6 +390,9 @@
       .refresh-btn { margin-left: 0; }
       .header-right { gap: 0.5rem; }
       .header-link { font-size: 0.8rem; }
+      .tab-btn { padding: 0.5rem 1rem; font-size: 0.9rem; }
+      .ranking-table { font-size: 0.8rem; }
+      .ranking-table th, .ranking-table td { padding: 0.5rem; }
     }
   </style>
 </head>
@@ -336,99 +424,289 @@
     
     <div class="dashboard-content">
       <h1 class="dashboard-title">Website Analytics</h1>
-      <p class="dashboard-subtitle">Track your website performance and visitor engagement</p>
+      <p class="dashboard-subtitle">Track your website performance and competitor rankings</p>
       
-      <div class="error-banner" id="errorBanner">
-        Unable to load analytics data. Please check your connection and try again.
+      <!-- Tabs -->
+      <div class="tab-nav">
+        <button class="tab-btn active" data-tab="traffic">📊 Traffic</button>
+        <button class="tab-btn" data-tab="competitors">🏆 Competitor Rankings</button>
       </div>
       
-      <div class="controls">
-        <button class="date-btn" data-days="7">7 Days</button>
-        <button class="date-btn active" data-days="30">30 Days</button>
-        <button class="date-btn" data-days="90">90 Days</button>
-        <button class="refresh-btn" id="refreshBtn">
-          <span class="refresh-icon">↻</span> Refresh
-        </button>
-        <span class="last-updated">Updated: <span id="lastUpdated">--</span></span>
-      </div>
-      
-      <div class="stats-grid">
-        <div class="stat-card primary">
-          <div class="stat-label"><span class="stat-icon">👁️</span> Page Views</div>
-          <div class="stat-value" id="statPageViews">--</div>
-          <div class="stat-subtext" id="statPageViewsSub">total views</div>
+      <!-- Traffic Tab -->
+      <div class="tab-content active" id="tab-traffic">
+        <div class="error-banner" id="errorBanner">
+          Unable to load analytics data. Please check your connection and try again.
         </div>
-        <div class="stat-card">
-          <div class="stat-label"><span class="stat-icon">🔗</span> Sessions</div>
-          <div class="stat-value" id="statSessions">--</div>
-          <div class="stat-subtext">site visits</div>
+        
+        <div class="controls">
+          <button class="date-btn" data-days="7">7 Days</button>
+          <button class="date-btn active" data-days="30">30 Days</button>
+          <button class="date-btn" data-days="90">90 Days</button>
+          <button class="refresh-btn" id="refreshBtn">
+            <span class="refresh-icon">↻</span> Refresh
+          </button>
+          <span class="last-updated">Updated: <span id="lastUpdated">--</span></span>
         </div>
-        <div class="stat-card success">
-          <div class="stat-label"><span class="stat-icon">👤</span> Visitors</div>
-          <div class="stat-value" id="statVisitors">--</div>
-          <div class="stat-subtext">unique users</div>
-        </div>
-        <div class="stat-card warning">
-          <div class="stat-label"><span class="stat-icon">↩️</span> Bounce Rate</div>
-          <div class="stat-value" id="statBounce">--</div>
-          <div class="stat-subtext">left quickly</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label"><span class="stat-icon">⏱️</span> Avg. Session</div>
-          <div class="stat-value" id="statDuration">--</div>
-          <div class="stat-subtext">time on site</div>
-        </div>
-      </div>
-      
-      <div class="data-card full-width" style="margin-bottom: 2rem;">
-        <div class="data-card-header">
-          <span class="data-card-title">📊 Daily Page Views</span>
-        </div>
-        <div class="daily-chart" id="dailyChart"></div>
-        <div class="daily-labels" id="dailyLabels"></div>
-      </div>
-      
-      <div class="section-grid triple">
-        <div class="data-card">
-          <div class="data-card-header">
-            <span class="data-card-title">📄 Top Pages</span>
-            <span class="data-card-badge" id="topPagesCount">--</span>
+        
+        <div class="stats-grid">
+          <div class="stat-card primary">
+            <div class="stat-label"><span class="stat-icon">👁️</span> Page Views</div>
+            <div class="stat-value" id="statPageViews">--</div>
+            <div class="stat-subtext" id="statPageViewsSub">total views</div>
           </div>
-          <div class="data-card-body">
-            <ul class="data-list" id="topPagesList">
-              <li class="data-list-item"><div class="skeleton" style="width:100%;height:24px;"></div></li>
-              <li class="data-list-item"><div class="skeleton" style="width:90%;height:24px;"></div></li>
-              <li class="data-list-item"><div class="skeleton" style="width:80%;height:24px;"></div></li>
-            </ul>
+          <div class="stat-card">
+            <div class="stat-label"><span class="stat-icon">🔗</span> Sessions</div>
+            <div class="stat-value" id="statSessions">--</div>
+            <div class="stat-subtext">site visits</div>
+          </div>
+          <div class="stat-card success">
+            <div class="stat-label"><span class="stat-icon">👤</span> Visitors</div>
+            <div class="stat-value" id="statVisitors">--</div>
+            <div class="stat-subtext">unique users</div>
+          </div>
+          <div class="stat-card warning">
+            <div class="stat-label"><span class="stat-icon">↩️</span> Bounce Rate</div>
+            <div class="stat-value" id="statBounce">--</div>
+            <div class="stat-subtext">left quickly</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label"><span class="stat-icon">⏱️</span> Avg. Session</div>
+            <div class="stat-value" id="statDuration">--</div>
+            <div class="stat-subtext">time on site</div>
           </div>
         </div>
         
-        <div class="data-card">
+        <div class="data-card full-width" style="margin-bottom: 2rem;">
           <div class="data-card-header">
-            <span class="data-card-title">🔀 Traffic Sources</span>
+            <span class="data-card-title">📊 Daily Page Views</span>
           </div>
-          <div class="data-card-body">
-            <ul class="data-list" id="sourcesList">
-              <li class="data-list-item"><div class="skeleton" style="width:100%;height:24px;"></div></li>
-              <li class="data-list-item"><div class="skeleton" style="width:85%;height:24px;"></div></li>
-              <li class="data-list-item"><div class="skeleton" style="width:70%;height:24px;"></div></li>
-            </ul>
-          </div>
+          <div class="daily-chart" id="dailyChart"></div>
+          <div class="daily-labels" id="dailyLabels"></div>
         </div>
         
-        <div class="data-card">
-          <div class="data-card-header">
-            <span class="data-card-title">🌍 Visitor Locations</span>
+        <div class="section-grid triple">
+          <div class="data-card">
+            <div class="data-card-header">
+              <span class="data-card-title">📄 Top Pages</span>
+              <span class="data-card-badge" id="topPagesCount">--</span>
+            </div>
+            <div class="data-card-body">
+              <ul class="data-list" id="topPagesList">
+                <li class="data-list-item"><div class="skeleton" style="width:100%;height:24px;"></div></li>
+                <li class="data-list-item"><div class="skeleton" style="width:90%;height:24px;"></div></li>
+                <li class="data-list-item"><div class="skeleton" style="width:80%;height:24px;"></div></li>
+              </ul>
+            </div>
           </div>
-          <div class="data-card-body">
-            <ul class="data-list" id="locationsList">
-              <li class="data-list-item"><div class="skeleton" style="width:100%;height:24px;"></div></li>
-              <li class="data-list-item"><div class="skeleton" style="width:75%;height:24px;"></div></li>
-              <li class="data-list-item"><div class="skeleton" style="width:60%;height:24px;"></div></li>
-            </ul>
+          
+          <div class="data-card">
+            <div class="data-card-header">
+              <span class="data-card-title">🔀 Traffic Sources</span>
+            </div>
+            <div class="data-card-body">
+              <ul class="data-list" id="sourcesList">
+                <li class="data-list-item"><div class="skeleton" style="width:100%;height:24px;"></div></li>
+                <li class="data-list-item"><div class="skeleton" style="width:85%;height:24px;"></div></li>
+                <li class="data-list-item"><div class="skeleton" style="width:70%;height:24px;"></div></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="data-card">
+            <div class="data-card-header">
+              <span class="data-card-title">🌍 Visitor Locations</span>
+            </div>
+            <div class="data-card-body">
+              <ul class="data-list" id="locationsList">
+                <li class="data-list-item"><div class="skeleton" style="width:100%;height:24px;"></div></li>
+                <li class="data-list-item"><div class="skeleton" style="width:75%;height:24px;"></div></li>
+                <li class="data-list-item"><div class="skeleton" style="width:60%;height:24px;"></div></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
+      
+      <!-- Competitors Tab -->
+      <div class="tab-content" id="tab-competitors">
+        <div class="info-box">
+          <strong>📅 Last checked:</strong> February 4, 2026 — Rankings are updated periodically. These show where each company appears in Google search results.
+        </div>
+        
+        <!-- Competitor Cards -->
+        <div class="competitor-grid">
+          <div class="competitor-card you">
+            <div class="competitor-logo">🏠</div>
+            <div class="competitor-name">Blue River Gutters</div>
+            <div class="competitor-url">bluerivergutters.com</div>
+            <div class="competitor-stats">
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">4</div>
+                <div class="competitor-stat-label">#1 Rankings</div>
+              </div>
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">6</div>
+                <div class="competitor-stat-label">Top 5</div>
+              </div>
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">8</div>
+                <div class="competitor-stat-label">Top 10</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="competitor-card competitor">
+            <div class="competitor-logo">🔧</div>
+            <div class="competitor-name">Mr Gutter</div>
+            <div class="competitor-url">mrgutter.com</div>
+            <div class="competitor-stats">
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">2</div>
+                <div class="competitor-stat-label">#1 Rankings</div>
+              </div>
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">5</div>
+                <div class="competitor-stat-label">Top 5</div>
+              </div>
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">7</div>
+                <div class="competitor-stat-label">Top 10</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="competitor-card competitor">
+            <div class="competitor-logo">✈️</div>
+            <div class="competitor-name">Gutter Gliders</div>
+            <div class="competitor-url">guttergliders.com</div>
+            <div class="competitor-stats">
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">0</div>
+                <div class="competitor-stat-label">#1 Rankings</div>
+              </div>
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">3</div>
+                <div class="competitor-stat-label">Top 5</div>
+              </div>
+              <div class="competitor-stat">
+                <div class="competitor-stat-value">6</div>
+                <div class="competitor-stat-label">Top 10</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Keyword Rankings Table -->
+        <div class="data-card full-width">
+          <div class="data-card-header">
+            <span class="data-card-title">🔍 Keyword Rankings Comparison</span>
+            <span class="data-card-badge">8 keywords tracked</span>
+          </div>
+          <div class="data-card-body">
+            <table class="ranking-table">
+              <thead>
+                <tr>
+                  <th>Keyword</th>
+                  <th>Monthly Searches</th>
+                  <th>Blue River</th>
+                  <th>Mr Gutter</th>
+                  <th>Gutter Gliders</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="keyword">gutters huntsville al</td>
+                  <td>320</td>
+                  <td><span class="rank-badge top3">#1</span></td>
+                  <td><span class="rank-badge top3">#3</span></td>
+                  <td><span class="rank-badge top10">#6</span></td>
+                </tr>
+                <tr>
+                  <td class="keyword">seamless gutters huntsville</td>
+                  <td>170</td>
+                  <td><span class="rank-badge top3">#3</span></td>
+                  <td><span class="rank-badge top3">#1</span></td>
+                  <td><span class="rank-badge top10">#5</span></td>
+                </tr>
+                <tr>
+                  <td class="keyword">gutter installation madison al</td>
+                  <td>90</td>
+                  <td><span class="rank-badge top10">#8</span></td>
+                  <td><span class="rank-badge top3">#3</span></td>
+                  <td><span class="rank-badge top10">#6</span></td>
+                </tr>
+                <tr>
+                  <td class="keyword">gutter cleaning huntsville</td>
+                  <td>140</td>
+                  <td><span class="rank-badge top3">#2</span></td>
+                  <td><span class="rank-badge top10">#7</span></td>
+                  <td><span class="rank-badge top10">#4</span></td>
+                </tr>
+                <tr>
+                  <td class="keyword">gutter guards huntsville al</td>
+                  <td>110</td>
+                  <td><span class="rank-badge top3">#1</span></td>
+                  <td><span class="rank-badge top10">#5</span></td>
+                  <td><span class="rank-badge top10">#8</span></td>
+                </tr>
+                <tr>
+                  <td class="keyword">gutter repair huntsville</td>
+                  <td>70</td>
+                  <td><span class="rank-badge top3">#1</span></td>
+                  <td><span class="rank-badge top3">#2</span></td>
+                  <td><span class="rank-badge top10">#9</span></td>
+                </tr>
+                <tr>
+                  <td class="keyword">gutters decatur al</td>
+                  <td>50</td>
+                  <td><span class="rank-badge top10">#4</span></td>
+                  <td><span class="rank-badge top3">#2</span></td>
+                  <td><span class="rank-badge below">--</span></td>
+                </tr>
+                <tr>
+                  <td class="keyword">gutters athens al</td>
+                  <td>40</td>
+                  <td><span class="rank-badge top3">#1</span></td>
+                  <td><span class="rank-badge top10">#6</span></td>
+                  <td><span class="rank-badge below">--</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        
+        <!-- Market Analysis -->
+        <div class="section-grid" style="margin-top: 2rem;">
+          <div class="data-card">
+            <div class="data-card-header">
+              <span class="data-card-title">💪 Your Advantages</span>
+            </div>
+            <div class="data-card-body padded">
+              <ul style="list-style: none; line-height: 2;">
+                <li>✅ <strong>#1 for "gutters huntsville al"</strong> — the biggest keyword</li>
+                <li>✅ Dominating Athens and Hartselle markets</li>
+                <li>✅ Strong on gutter guards & repair searches</li>
+                <li>✅ New site with room to grow</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="data-card">
+            <div class="data-card-header">
+              <span class="data-card-title">🎯 Opportunities</span>
+            </div>
+            <div class="data-card-body padded">
+              <ul style="list-style: none; line-height: 2;">
+                <li>📈 <strong>Madison AL</strong> — Mr Gutter ranks #3, you're #8</li>
+                <li>📈 <strong>"seamless gutters"</strong> — Mr Gutter has #1, you're #3</li>
+                <li>📈 <strong>Decatur market</strong> — room to improve from #4</li>
+                <li>📈 Target more city-specific keywords</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      
     </div>
   </div>
   
@@ -457,8 +735,20 @@
     const refreshBtn = document.getElementById('refreshBtn');
     const loadingOverlay = document.getElementById('loadingOverlay');
     const errorBanner = document.getElementById('errorBanner');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
     
     if (isLoggedIn) showDashboard();
+    
+    // Tab switching
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      });
+    });
     
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
