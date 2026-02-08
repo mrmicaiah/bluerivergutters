@@ -1,6 +1,7 @@
 # Blue River Gutters - Cloudflare Pages Redirects
 # Format: /old-path /new-path [status]
 # All redirects are 301 (permanent) unless specified
+# Updated: February 8, 2026 - Added missing Wix URLs from GSC crawl data
 
 # ===========================================
 # SERVICE PAGES (Priority 1)
@@ -75,6 +76,35 @@
 /how-to-get-a-job-in-the-heavy-contractor-industry /blog/ 301
 
 # ===========================================
+# ADDITIONAL BLOG POSTS (Added Feb 8, 2026)
+# From GSC crawl data - Wix URLs Google is still indexing
+# ===========================================
+/top-4-reasons-why-you-want-6-inch-gutters-instead-of-5-inch /blog/ 301
+/why-metal-soffit-is-not-the-best-option-for-your-home /blog/ 301
+/half-round-gutters-vs-k-style-gutters-which-one-is-better /blog/ 301
+/what-does-a-pop-up-gutter-drain-do-and-how-does-it-work /blog/underground-drain-clogged/ 301
+/top-4-types-of-composite-fascia-boards-for-any-project /services/rotten-wood-repair/ 301
+/how-to-know-if-you-have-a-blocked-gutter-system /blog/blocked-gutters-health-hazard/ 301
+/3-steps-to-repairing-your-underground-gutter-drainage-system /blog/underground-drain-clogged/ 301
+/why-your-fascia-board-is-rotting-and-what-to-do-about-it /blog/why-your-fascia-board-is-rotting/ 301
+/3-most-common-fascia-board-sizes-for-gutters /services/rotten-wood-repair/ 301
+/when-you-should-use-downspout-covers-for-your-gutter-system /services/downspouts/ 301
+/why-you-need-a-specific-type-of-gutter-guard-for-pine-needles /blog/pine-needle-gutter-protection-alabama/ 301
+/why-you-shouldn-t-use-box-gutters-for-your-home /services/seamless-gutters/ 301
+/how-to-keep-your-rain-gutters-from-overflowing /blog/gutter-maintenance-guide/ 301
+/how-gutters-protect-your-home-from-rain-damage /services/seamless-gutters/ 301
+/roofing-and-gutters-how-one-affects-the-other /blog/ 301
+/how-to-install-a-drip-edge-on-your-home /blog/ 301
+/how-to-fix-your-clogged-underground-drain-system /blog/underground-drain-clogged/ 301
+/11-things-to-know-when-considering-fascia-capping /services/rotten-wood-repair/ 301
+/5-downspout-cleaning-hacks-used-by-gutter-professionals /services/gutter-cleaning/ 301
+/before-you-get-copper-gutters-installed-consider-these-things /services/seamless-gutters/ 301
+/8-reasons-why-your-gutter-toppers-are-failing /services/gutter-guards/ 301
+/how-often-should-you-clean-your-gutters /articles/how-often-clean-gutters/ 301
+/blue-river-gutters-the-gutter-company-that-delivers /about/ 301
+/seamless-gutter-installation-vs-diy-vinyl-gutters-and-aluminum-gutters /blog/seamless-gutters-guide/ 301
+
+# ===========================================
 # CATEGORY PAGES (Priority 5)
 # ===========================================
 /blog-grid/categories/big-buildings /blog/ 301
@@ -108,6 +138,12 @@
 /blog-grid/tags/gutter-replacement-in-huntsville /gutters-huntsville-al/ 301
 /blog-grid/tags/gutter-installation-huntsville /gutters-huntsville-al/ 301
 /blog-grid/tags/fascia-capping /services/rotten-wood-repair/ 301
+/blog-grid/tags/gutter-maintenance /services/gutter-cleaning/ 301
+
+# ===========================================
+# ARCHIVE PAGES (redirect to blog)
+# ===========================================
+/blog-grid/archive/* /blog/ 301
 
 # ===========================================
 # OLD WORDPRESS URLs (Priority 6)
