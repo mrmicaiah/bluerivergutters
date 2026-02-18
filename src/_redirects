@@ -1,7 +1,12 @@
 # Blue River Gutters - Cloudflare Pages Redirects
 # Format: /old-path /new-path [status]
 # All redirects are 301 (permanent) unless specified
-# Updated: February 8, 2026 - Added missing Wix URLs from GSC crawl data
+# Updated: February 18, 2026 - Added www to non-www redirect
+
+# ===========================================
+# WWW TO NON-WWW REDIRECT (Priority 0)
+# ===========================================
+https://www.bluerivergutters.com/* https://bluerivergutters.com/:splat 301
 
 # ===========================================
 # SERVICE PAGES (Priority 1)
