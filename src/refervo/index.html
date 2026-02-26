@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReferVo - Professional Referral Marketplace | A Blue River Company</title>
+  <meta name="description" content="ReferVo is a professional referral marketplace that helps businesses connect, share leads, and earn money. A product of Blue River Inc.">
+  <link rel="canonical" href="https://bluerivergutters.com/refervo/">
+  <link rel="icon" type="image/png" href="https://refervo.com/images/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #f97316;
+      --primary-dark: #ea580c;
+      --dark: #1a1a1a;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-500: #6b7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --white: #ffffff;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      color: var(--gray-900);
+      background: var(--white);
+    }
+    
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    
+    /* Navigation */
+    .nav {
+      background: var(--dark);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-weight: 800;
+    }
+    
+    .logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+    
+    .logo-refer { color: var(--white); }
+    .logo-vo { color: var(--primary); }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    
+    .nav-links a {
+      color: var(--gray-200);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+    
+    .nav-badge {
+      background: var(--primary);
+      color: var(--white);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, var(--dark) 0%, #2d2d2d 100%);
+      padding: 5rem 0;
+      text-align: center;
+    }
+    
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+    
+    .hero h1 span {
+      color: var(--primary);
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--gray-200);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 0.875rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: var(--white);
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+    
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 2px solid var(--gray-500);
+    }
+    
+    .btn-outline:hover {
+      border-color: var(--white);
+    }
+    
+    /* Features */
+    .features {
+      padding: 5rem 0;
+      background: var(--gray-50);
+    }
+    
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    
+    .section-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    
+    .section-header p {
+      color: var(--gray-500);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    
+    .feature-card {
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .feature-card h3 {
+      font-size: 1.125rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .feature-card p {
+      color: var(--gray-500);
+      font-size: 0.9375rem;
+    }
+    
+    /* How It Works */
+    .how-it-works {
+      padding: 5rem 0;
+    }
+    
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    
+    .step {
+      text-align: center;
+    }
+    
+    .step-number {
+      width: 60px;
+      height: 60px;
+      background: var(--primary);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 auto 1rem;
+    }
+    
+    .step h3 {
+      margin-bottom: 0.5rem;
+    }
+    
+    .step p {
+      color: var(--gray-500);
+    }
+    
+    /* Company Info */
+    .company-info {
+      padding: 4rem 0;
+      background: var(--gray-100);
+      text-align: center;
+    }
+    
+    .company-info h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .company-info p {
+      color: var(--gray-500);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    
+    /* Footer */
+    .footer {
+      background: var(--dark);
+      color: var(--gray-200);
+      padding: 3rem 0 1.5rem;
+    }
+    
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2rem;
+    }
+    
+    .footer-brand p {
+      margin-top: 1rem;
+      font-size: 0.9375rem;
+      color: var(--gray-500);
+    }
+    
+    .footer h4 {
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1rem;
+      color: var(--white);
+    }
+    
+    .footer ul {
+      list-style: none;
+    }
+    
+    .footer li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer a {
+      color: var(--gray-500);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    
+    .footer a:hover {
+      color: var(--primary);
+    }
+    
+    .footer-bottom {
+      border-top: 1px solid #333;
+      padding-top: 1.5rem;
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--gray-500);
+    }
+    
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: 1rem; }
+      .features-grid, .steps { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href="/refervo/" class="logo">
+        <img src="https://refervo.com/images/icon.png" alt="ReferVo">
+        <span class="logo-refer">Refer</span><span class="logo-vo">Vo</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="/refervo/">Home</a></li>
+        <li><a href="/refervo/privacy">Privacy</a></li>
+        <li><a href="/refervo/terms">Terms</a></li>
+        <li><a href="/refervo/sms-consent">SMS Consent</a></li>
+      </ul>
+      <a href="https://refervo.com" class="nav-badge">Visit ReferVo.com →</a>
+    </div>
+  </nav>
+  
+  <section class="hero">
+    <div class="container">
+      <h1>Turn Referrals Into <span>Revenue</span></h1>
+      <p>ReferVo is a professional referral marketplace that helps businesses connect, share quality leads, and earn money for every successful referral.</p>
+      <div class="hero-buttons">
+        <a href="https://refervo.com" class="btn btn-primary">Download the App</a>
+        <a href="/refervo/privacy" class="btn btn-outline">Learn More</a>
+      </div>
+    </div>
+  </section>
+  
+  <section class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2>Why Professionals Choose ReferVo</h2>
+        <p>Everything you need to monetize your referral network</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🤝</div>
+          <h3>Connect with Partners</h3>
+          <p>Build your network of trusted professionals and manage all your referral relationships in one place.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>Send Leads Easily</h3>
+          <p>Send referrals in seconds with automatic consent collection and status tracking.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3>Get Paid When Accepted</h3>
+          <p>Earn money when your partners accept your leads — not when they convert.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <h2>How It Works</h2>
+        <p>Start earning from your referrals in three simple steps</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Connect</h3>
+          <p>Add partners using a connect code or QR scan. Set your referral fees.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Send Leads</h3>
+          <p>Enter lead details and send. We handle consent via SMS automatically.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Get Paid</h3>
+          <p>When your partner accepts the lead, you earn your referral fee instantly.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="company-info">
+    <div class="container">
+      <h2>A Product of Blue River Inc.</h2>
+      <p>ReferVo is developed and operated by Blue River Inc., a North Alabama company committed to building tools that help local businesses thrive. Based in Hartselle, AL, we understand the value of trusted business relationships.</p>
+    </div>
+  </section>
+  
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/refervo/" class="logo">
+            <img src="https://refervo.com/images/icon.png" alt="ReferVo" style="width:32px;height:32px;border-radius:6px;">
+            <span class="logo-refer">Refer</span><span class="logo-vo">Vo</span>
+          </a>
+          <p>The referral marketplace for professionals. Connect with trusted partners, send quality leads, and earn when they convert.</p>
+        </div>
+        <div>
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="/refervo/privacy">Privacy Policy</a></li>
+            <li><a href="/refervo/terms">Terms of Service</a></li>
+            <li><a href="/refervo/sms-consent">SMS Consent Policy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:support@refervo.com">support@refervo.com</a></li>
+            <li><a href="mailto:hello@refervo.com">hello@refervo.com</a></li>
+            <li><a href="https://refervo.com">refervo.com</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Blue River Inc. All rights reserved. ReferVo is a trademark of Blue River Inc.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
