@@ -1,0 +1,73 @@
+{
+  "lastUpdated": "2026-02-04",
+  "rankings": {
+    "gutter installation huntsville alabama": {
+      "blueRiverPosition": 6,
+      "totalResults": 206000,
+      "topCompetitors": [
+        { "position": 1, "name": "Mr Gutter Of Huntsville", "url": "https://mrgutter.com/" },
+        { "position": 2, "name": "The Brothers that just do Gutters", "url": "https://huntsville.brothersgutters.com/" },
+        { "position": 3, "name": "Hello Gutters", "url": "https://hellogutters.com/" },
+        { "position": 4, "name": "BBB Directory", "url": "https://www.bbb.org/us/al/huntsville/category/gutters/accredited" },
+        { "position": 5, "name": "Yelp", "url": "https://www.yelp.com/search?cflt=gutterservices&find_loc=Huntsville%2C+AL" },
+        { "position": 6, "name": "Blue River Gutters", "url": "https://bluerivergutters.com/" }
+      ]
+    },
+    "seamless gutters huntsville": {
+      "blueRiverPosition": 3,
+      "totalResults": 43500,
+      "topCompetitors": [
+        { "position": 1, "name": "Huntsville Seamless Gutters", "url": "https://huntsvilleseamlessgutters.com/" },
+        { "position": 2, "name": "Mr Gutter Of Huntsville", "url": "https://mrgutter.com/" },
+        { "position": 3, "name": "Blue River Gutters", "url": "https://bluerivergutters.com/" },
+        { "position": 4, "name": "The Brothers that just do Gutters", "url": "https://huntsville.brothersgutters.com/" },
+        { "position": 5, "name": "Hello Gutters", "url": "https://hellogutters.com/" }
+      ]
+    }
+  },
+  "competitors": [
+    {
+      "name": "Mr Gutter Of Huntsville",
+      "url": "https://mrgutter.com/",
+      "description": "Long-established seamless gutter provider in Huntsville",
+      "strengths": ["25+ years in business", "Strong brand recognition", "Top organic rankings"],
+      "weaknesses": ["Older website design", "Limited local city pages"]
+    },
+    {
+      "name": "The Brothers that just do Gutters",
+      "url": "https://huntsville.brothersgutters.com/",
+      "description": "National franchise with Huntsville location",
+      "strengths": ["National brand backing", "Professional marketing", "Consistent rankings"],
+      "weaknesses": ["Franchise model less local", "Generic content"]
+    },
+    {
+      "name": "Hello Gutters",
+      "url": "https://hellogutters.com/",
+      "description": "Local competitor with voted best gutter company positioning",
+      "strengths": ["Local awards", "Wide color selection", "Heavy-duty materials focus"],
+      "weaknesses": ["Less established online presence"]
+    },
+    {
+      "name": "Gutter Gliders",
+      "url": "https://guttergliders.com/",
+      "description": "Full-service gutter company, gutter-only focus",
+      "strengths": ["Specialized focus", "In-house team", "Service variety"],
+      "weaknesses": ["Smaller geographic reach"]
+    },
+    {
+      "name": "Huntsville Seamless Gutters",
+      "url": "https://huntsvilleseamlessgutters.com/",
+      "description": "Domain-matched competitor for seamless gutters keyword",
+      "strengths": ["Exact match domain for seamless gutters", "Top ranking for key term"],
+      "weaknesses": ["Unknown service quality", "Limited online reviews"]
+    }
+  ],
+  "blueRiverAdvantages": [
+    "20+ years experience",
+    "1700+ satisfied customers",
+    "96 Google reviews (4.7★)",
+    "Hyper-local content strategy (30+ city pages)",
+    "Family-owned authenticity",
+    "North Alabama soil/climate expertise"
+  ]
+}
