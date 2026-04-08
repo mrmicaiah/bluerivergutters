@@ -223,115 +223,9 @@
 </section>
 
 
-<section class="projects-filters">
-  <div class="container">
-    <div class="filter-buttons">
-      <button class="filter-btn active" data-filter="all">All Projects</button>
-      <button class="filter-btn" data-filter="Seamless Gutters">Seamless Gutters</button>
-      <button class="filter-btn" data-filter="Gutter Guards">Gutter Guards</button>
-      <button class="filter-btn" data-filter="Underground Drains">Underground Drains</button>
-      <button class="filter-btn" data-filter="Rotten Wood Repair">Wood Repair</button>
-    </div>
-  </div>
-</section>
-
-
 <section class="projects-gallery">
   <div class="container">
-    <div class="projects-grid">
-      
-      <a href="/projects/seamless-gutters-hampton-cove/" class="project-card" data-service="Seamless Gutters">
-        <div class="project-card-image">
-          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/projects/hampton-cove-seamless_sample.jpg" alt="Seamless Gutter Installation - Hampton Cove" loading="lazy">
-          
-          <span class="featured-badge">Featured</span>
-          
-        </div>
-        <div class="project-card-content">
-          <span class="project-tag">Seamless Gutters</span>
-          <h3>Seamless Gutter Installation - Hampton Cove</h3>
-          <p>Complete seamless gutter system for a two-story home with complex roofline.</p>
-          <div class="project-meta">
-            <span class="project-location">📍 Hampton Cove, AL</span>
-            <span class="project-date">Dec 2024</span>
-          </div>
-        </div>
-      </a>
-      
-      <a href="/projects/gutter-guards-madison/" class="project-card" data-service="Gutter Guards">
-        <div class="project-card-image">
-          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/projects/madison-guards_sample.jpg" alt="Gutter Guards Installation - Madison" loading="lazy">
-          
-          <span class="featured-badge">Featured</span>
-          
-        </div>
-        <div class="project-card-content">
-          <span class="project-tag">Gutter Guards</span>
-          <h3>Gutter Guards Installation - Madison</h3>
-          <p>Heavy-duty leaf guards installed on existing gutters surrounded by mature oaks.</p>
-          <div class="project-meta">
-            <span class="project-location">📍 Madison, AL</span>
-            <span class="project-date">Nov 2024</span>
-          </div>
-        </div>
-      </a>
-      
-      <a href="/projects/underground-drains-huntsville/" class="project-card" data-service="Underground Drains">
-        <div class="project-card-image">
-          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/projects/huntsville-drains_sample.jpg" alt="Underground Drain System - Huntsville" loading="lazy">
-          
-        </div>
-        <div class="project-card-content">
-          <span class="project-tag">Underground Drains</span>
-          <h3>Underground Drain System - Huntsville</h3>
-          <p>Complete underground drainage solution for water pooling issues near foundation.</p>
-          <div class="project-meta">
-            <span class="project-location">📍 Huntsville, AL</span>
-            <span class="project-date">Oct 2024</span>
-          </div>
-        </div>
-      </a>
-      
-      <a href="/projects/fascia-repair-decatur/" class="project-card" data-service="Rotten Wood Repair">
-        <div class="project-card-image">
-          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/projects/decatur-fascia_sample.jpg" alt="Rotten Fascia Repair - Decatur" loading="lazy">
-          
-        </div>
-        <div class="project-card-content">
-          <span class="project-tag">Rotten Wood Repair</span>
-          <h3>Rotten Fascia Repair - Decatur</h3>
-          <p>Extensive fascia board replacement and aluminum capping to prevent future rot.</p>
-          <div class="project-meta">
-            <span class="project-location">📍 Decatur, AL</span>
-            <span class="project-date">Sep 2024</span>
-          </div>
-        </div>
-      </a>
-      
-      <a href="/projects/complete-system-athens/" class="project-card" data-service="Seamless Gutters">
-        <div class="project-card-image">
-          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/projects/athens-complete_sample.jpg" alt="Complete Gutter System - Athens" loading="lazy">
-          
-          <span class="featured-badge">Featured</span>
-          
-        </div>
-        <div class="project-card-content">
-          <span class="project-tag">Seamless Gutters</span>
-          <h3>Complete Gutter System - Athens</h3>
-          <p>New construction gutter installation with underground drainage.</p>
-          <div class="project-meta">
-            <span class="project-location">📍 Athens, AL</span>
-            <span class="project-date">Aug 2024</span>
-          </div>
-        </div>
-      </a>
-      
-    </div>
-    
-    
-    <div class="projects-empty" style="display: none;">
-      <p>No projects found for this filter. <button class="filter-reset">View all projects</button></p>
-    </div>
+    <div id="rwl-output"></div>
   </div>
 </section>
 
@@ -393,6 +287,20 @@
   </div>
 </section>
 
+
+<script type="text/javascript">
+(function(){
+  var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = 'https://app.realworklabs.com/static/plugin/loader.js?v=' + new Date().getTime();
+      window.addEventListener('rwlPluginReady', function () {
+          window.rwlPlugin.init('https://app.realworklabs.com', 'RlomFVKLymXtpSXg');
+      }, false);
+      s.parentNode.insertBefore(o, s);
+}());
+</script>
+
 <style>
 .hero-short {
   min-height: 40vh;
@@ -407,146 +315,10 @@
   margin-bottom: 0;
 }
 
-.projects-filters {
-  padding: 2rem 0;
-  background: var(--white);
-  border-bottom: 1px solid var(--light-gray);
-  position: sticky;
-  top: 80px;
-  z-index: 100;
-}
-
-.filter-buttons {
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.filter-btn {
-  background: var(--light-gray);
-  border: none;
-  padding: 0.6rem 1.25rem;
-  border-radius: 25px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--slate);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.filter-btn:hover {
-  background: var(--navy);
-  color: var(--white);
-}
-
-.filter-btn.active {
-  background: var(--navy);
-  color: var(--white);
-}
-
 .projects-gallery {
   padding: 3rem 0 4rem;
   background: var(--cream);
   min-height: 400px;
-}
-
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-}
-
-.project-card {
-  background: var(--white);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s;
-  display: block;
-  color: inherit;
-}
-
-.project-card.hidden {
-  display: none;
-}
-
-.project-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
-}
-
-.project-card-image {
-  position: relative;
-}
-
-.project-card-image img {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-}
-
-.featured-badge {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: var(--red);
-  color: var(--white);
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.project-card-content {
-  padding: 1.5rem;
-}
-
-.project-tag {
-  display: inline-block;
-  background: var(--light-gray);
-  color: var(--slate);
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-}
-
-.project-card h3 {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  color: var(--navy);
-}
-
-.project-card p {
-  font-size: 0.9rem;
-  color: var(--gray);
-  margin-bottom: 1rem;
-  line-height: 1.5;
-}
-
-.project-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.8rem;
-  color: var(--gray);
-}
-
-.projects-empty {
-  text-align: center;
-  padding: 3rem;
-  color: var(--gray);
-}
-
-.filter-reset {
-  background: none;
-  border: none;
-  color: var(--blue);
-  cursor: pointer;
-  text-decoration: underline;
 }
 
 .service-area-section {
@@ -575,83 +347,7 @@
   font-size: 0.9rem;
   color: var(--slate);
 }
-
-@media (max-width: 1024px) {
-  .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .projects-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .filter-buttons {
-    justify-content: flex-start;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: 0.5rem;
-  }
-  
-  .filter-btn {
-    white-space: nowrap;
-  }
-  
-  .projects-filters {
-    top: 70px;
-  }
-}
 </style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const projectCards = document.querySelectorAll('.project-card');
-  const emptyState = document.querySelector('.projects-empty');
-  const resetBtn = document.querySelector('.filter-reset');
-  
-  function filterProjects(filter) {
-    let visibleCount = 0;
-    
-    projectCards.forEach(card => {
-      const service = card.dataset.service;
-      if (filter === 'all' || service === filter) {
-        card.classList.remove('hidden');
-        visibleCount++;
-      } else {
-        card.classList.add('hidden');
-      }
-    });
-    
-    // Show/hide empty state
-    if (visibleCount === 0) {
-      emptyState.style.display = 'block';
-    } else {
-      emptyState.style.display = 'none';
-    }
-  }
-  
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Update active state
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      
-      // Filter projects
-      filterProjects(btn.dataset.filter);
-    });
-  });
-  
-  if (resetBtn) {
-    resetBtn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      document.querySelector('[data-filter="all"]').classList.add('active');
-      filterProjects('all');
-    });
-  }
-});
-</script>
 
     
   </main>
