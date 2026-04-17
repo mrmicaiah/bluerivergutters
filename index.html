@@ -121,7 +121,7 @@
         </div>
       </div>
       
-      
+      <a href="/recent-projects/">Projects</a>
       <a href="/reviews/">Reviews</a>
       <a href="/articles/">Articles</a>
       <a href="/blog/">Blog</a>
@@ -198,7 +198,7 @@
     </div>
   </div>
   
-  
+  <a href="/recent-projects/">Projects</a>
   <a href="/reviews/">Reviews</a>
   <a href="/articles/">Articles</a>
   <a href="/blog/">Blog</a>
@@ -263,6 +263,20 @@
       <div class="stat">
         <div class="stat-number">4+</div>
         <div class="stat-label">Awards Won</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="rwl-widgets">
+  <div class="container">
+    <div class="rwl-widgets-grid">
+      <div class="rwl-map-wrapper">
+        <div id="rwl-map"></div>
+      </div>
+      <div class="rwl-reviews-wrapper">
+        <div id="rwl-review-carousel"></div>
       </div>
     </div>
   </div>
@@ -468,6 +482,48 @@
     </div>
   </div>
 </section>
+
+
+<script type="text/javascript">
+(function(){
+  var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+      o.src = 'https://app.realworklabs.com/static/plugin/loader.js?v=' + new Date().getTime();
+      window.addEventListener('rwlPluginReady', function () {
+          window.rwlPlugin.init('https://app.realworklabs.com', 'RlomFVKLymXtpSXg');
+      }, false);
+      s.parentNode.insertBefore(o, s);
+}());
+</script>
+
+<style>
+.rwl-widgets {
+  padding: 3rem 0;
+  background: var(--cream);
+}
+
+.rwl-widgets-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.rwl-map-wrapper,
+.rwl-reviews-wrapper {
+  min-height: 350px;
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 768px) {
+  .rwl-widgets-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 
     
   </main>
