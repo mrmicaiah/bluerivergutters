@@ -127,7 +127,7 @@
     .dashboard-subtitle { color: var(--gray); margin-bottom: 1.5rem; }
     
     /* TABS */
-    .tab-nav { display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 2px solid var(--light-gray); padding-bottom: 0; }
+    .tab-nav { display: flex; gap: 0.5rem; margin-bottom: 2rem; border-bottom: 2px solid var(--light-gray); padding-bottom: 0; flex-wrap: wrap; }
     .tab-btn {
       padding: 0.75rem 1.5rem;
       background: none;
@@ -186,6 +186,7 @@
     
     /* STAT CARDS */
     .stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.25rem; margin-bottom: 2rem; }
+    .stats-grid.four { grid-template-columns: repeat(4, 1fr); }
     
     .stat-card {
       background: var(--white);
@@ -267,6 +268,7 @@
     .data-list-bar-wrap { flex: 1; margin: 0 1rem; max-width: 120px; }
     .data-list-bar { height: 6px; background: var(--light-gray); border-radius: 3px; overflow: hidden; }
     .data-list-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue-light), var(--blue)); border-radius: 3px; transition: width 0.5s ease; }
+    .data-list-bar-fill.green { background: linear-gradient(90deg, #4ade80, var(--green)); }
     
     /* DAILY CHART */
     .daily-chart { display: flex; align-items: flex-end; gap: 4px; height: 120px; padding: 1rem 1.5rem 0.5rem; }
@@ -281,11 +283,35 @@
       position: relative;
     }
     
+    .daily-bar.green-grad { background: linear-gradient(180deg, #4ade80, var(--green)); }
     .daily-bar:hover { opacity: 0.85; }
     .daily-bar-value { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; font-weight: 600; color: var(--navy); opacity: 0; transition: opacity 0.2s; }
     .daily-bar-wrap:hover .daily-bar-value { opacity: 1; }
     .daily-labels { display: flex; gap: 4px; padding: 0.5rem 1.5rem 1rem; border-top: 1px solid var(--light-gray); margin-top: auto; }
     .daily-label { flex: 1; text-align: center; font-size: 0.7rem; color: var(--gray); }
+    
+    /* CONVERSION FUNNEL */
+    .funnel { padding: 1.5rem; }
+    .funnel-step { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .funnel-step:last-child { margin-bottom: 0; }
+    .funnel-bar-wrap { flex: 1; height: 50px; background: var(--light-gray); border-radius: 8px; overflow: hidden; position: relative; }
+    .funnel-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue-light), var(--blue));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      color: var(--white);
+      font-weight: 600;
+      transition: width 0.6s ease;
+      min-width: 40px;
+    }
+    .funnel-step.leads .funnel-bar-fill { background: linear-gradient(90deg, #4ade80, var(--green)); }
+    .funnel-label-wrap { width: 140px; }
+    .funnel-label { font-size: 0.85rem; color: var(--slate); font-weight: 600; }
+    .funnel-sublabel { font-size: 0.75rem; color: var(--gray); }
+    .funnel-dropoff { font-size: 0.8rem; color: var(--gray); margin-left: 1rem; min-width: 80px; text-align: right; }
     
     /* COMPETITOR SECTION */
     .competitor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-bottom: 2rem; }
@@ -346,7 +372,40 @@
     .rank-badge.top10 { background: #dbeafe; color: var(--blue); }
     .rank-badge.below { background: var(--light-gray); color: var(--gray); }
     
-    /* LOADING */
+    /* RECENT LEADS TABLE */
+    .leads-table { width: 100%; border-collapse: collapse; }
+    .leads-table th { 
+      text-align: left; 
+      padding: 0.75rem 1rem; 
+      background: var(--cream); 
+      font-size: 0.75rem; 
+      text-transform: uppercase; 
+      color: var(--gray);
+      letter-spacing: 0.5px;
+    }
+    .leads-table td { 
+      padding: 0.875rem 1rem; 
+      border-bottom: 1px solid var(--light-gray);
+      font-size: 0.9rem;
+    }
+    .leads-table tr:last-child td { border-bottom: none; }
+    .leads-table tr:hover td { background: var(--cream); }
+    .lead-service-tag {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      background: var(--light-gray);
+      color: var(--slate);
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    /* EMPTY/LOADING */
+    .empty-state { text-align: center; padding: 3rem 2rem; color: var(--gray); }
+    .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .empty-state h3 { color: var(--slate); margin-bottom: 0.5rem; font-size: 1.1rem; }
+    .empty-state p { font-size: 0.9rem; line-height: 1.6; max-width: 400px; margin: 0 auto; }
+    
     .skeleton { background: linear-gradient(90deg, var(--light-gray) 25%, #e2e8f0 50%, var(--light-gray) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
     @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
     
@@ -359,23 +418,21 @@
     .error-banner { background: var(--red-light); border: 1px solid var(--red); color: #991b1b; padding: 1rem 1.5rem; border-radius: 8px; margin-bottom: 1.5rem; display: none; }
     .error-banner.active { display: block; }
     
-    /* EMPTY */
-    .empty-state { text-align: center; padding: 2rem; color: var(--gray); }
-    .empty-state-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-    
     /* INFO BOX */
     .info-box { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 1rem 1.5rem; margin-bottom: 1.5rem; font-size: 0.9rem; color: #1e40af; }
     .info-box strong { font-weight: 600; }
+    .info-box.success { background: var(--green-light); border-color: #86efac; color: #166534; }
     
     /* RESPONSIVE */
     @media (max-width: 1200px) {
       .stats-grid { grid-template-columns: repeat(3, 1fr); }
+      .stats-grid.four { grid-template-columns: repeat(2, 1fr); }
       .section-grid.triple { grid-template-columns: repeat(2, 1fr); }
       .competitor-grid { grid-template-columns: repeat(2, 1fr); }
     }
     
     @media (max-width: 900px) {
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid, .stats-grid.four { grid-template-columns: repeat(2, 1fr); }
       .section-grid, .section-grid.triple { grid-template-columns: 1fr; }
       .competitor-grid { grid-template-columns: 1fr; }
     }
@@ -383,7 +440,7 @@
     @media (max-width: 600px) {
       .dashboard-header { padding: 1rem; }
       .dashboard-content { padding: 1rem; }
-      .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+      .stats-grid, .stats-grid.four { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
       .stat-card { padding: 1rem; }
       .stat-value { font-size: 1.5rem; }
       .controls { flex-direction: column; align-items: stretch; }
@@ -391,8 +448,9 @@
       .header-right { gap: 0.5rem; }
       .header-link { font-size: 0.8rem; }
       .tab-btn { padding: 0.5rem 1rem; font-size: 0.9rem; }
-      .ranking-table { font-size: 0.8rem; }
-      .ranking-table th, .ranking-table td { padding: 0.5rem; }
+      .ranking-table, .leads-table { font-size: 0.8rem; }
+      .ranking-table th, .ranking-table td, .leads-table th, .leads-table td { padding: 0.5rem; }
+      .funnel-label-wrap { width: 100px; }
     }
   </style>
 </head>
@@ -424,11 +482,12 @@
     
     <div class="dashboard-content">
       <h1 class="dashboard-title">Website Analytics</h1>
-      <p class="dashboard-subtitle">Track your website performance and competitor rankings</p>
+      <p class="dashboard-subtitle">Track your website performance, conversions, and competitor rankings</p>
       
       <!-- Tabs -->
       <div class="tab-nav">
         <button class="tab-btn active" data-tab="traffic">📊 Traffic</button>
+        <button class="tab-btn" data-tab="conversions">🎯 Conversions</button>
         <button class="tab-btn" data-tab="competitors">🏆 Competitor Rankings</button>
       </div>
       
@@ -527,13 +586,129 @@
         </div>
       </div>
       
+      <!-- Conversions Tab -->
+      <div class="tab-content" id="tab-conversions">
+        <div class="info-box success">
+          <strong>🛡️ Bot Protection Active:</strong> Honeypot deployed April 28, 2026. Lead data shown here represents real submissions only. Spam from prior to this date has been cleared.
+        </div>
+        
+        <div class="stats-grid four">
+          <div class="stat-card success">
+            <div class="stat-label"><span class="stat-icon">🎯</span> Total Leads</div>
+            <div class="stat-value" id="convTotalLeads">--</div>
+            <div class="stat-subtext" id="convTotalLeadsSub">all-time</div>
+          </div>
+          <div class="stat-card primary">
+            <div class="stat-label"><span class="stat-icon">📈</span> Conversion Rate</div>
+            <div class="stat-value" id="convRate">--</div>
+            <div class="stat-subtext">leads ÷ sessions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label"><span class="stat-icon">📅</span> Last 7 Days</div>
+            <div class="stat-value" id="convLast7">--</div>
+            <div class="stat-subtext">new leads this week</div>
+          </div>
+          <div class="stat-card warning">
+            <div class="stat-label"><span class="stat-icon">⚡</span> Last 24 Hours</div>
+            <div class="stat-value" id="convLast24">--</div>
+            <div class="stat-subtext">leads today</div>
+          </div>
+        </div>
+        
+        <!-- Conversion Funnel -->
+        <div class="data-card full-width" style="margin-bottom: 2rem;">
+          <div class="data-card-header">
+            <span class="data-card-title">🪄 Conversion Funnel (Last 30 Days)</span>
+            <span class="data-card-badge" id="funnelPeriod">30 days</span>
+          </div>
+          <div class="funnel" id="funnelView">
+            <div class="funnel-step">
+              <div class="funnel-label-wrap">
+                <div class="funnel-label">Page Views</div>
+                <div class="funnel-sublabel">people who saw the site</div>
+              </div>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar-fill" id="funnelPageViews" style="width: 100%;">--</div>
+              </div>
+              <div class="funnel-dropoff">100%</div>
+            </div>
+            <div class="funnel-step">
+              <div class="funnel-label-wrap">
+                <div class="funnel-label">Sessions</div>
+                <div class="funnel-sublabel">unique visits</div>
+              </div>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar-fill" id="funnelSessions">--</div>
+              </div>
+              <div class="funnel-dropoff" id="funnelSessionsPct">--</div>
+            </div>
+            <div class="funnel-step leads">
+              <div class="funnel-label-wrap">
+                <div class="funnel-label">Leads</div>
+                <div class="funnel-sublabel">form submissions</div>
+              </div>
+              <div class="funnel-bar-wrap">
+                <div class="funnel-bar-fill" id="funnelLeads">--</div>
+              </div>
+              <div class="funnel-dropoff" id="funnelLeadsPct">--</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Service Breakdown + Funnel Source -->
+        <div class="section-grid">
+          <div class="data-card">
+            <div class="data-card-header">
+              <span class="data-card-title">🛠️ Leads by Service Requested</span>
+            </div>
+            <div class="data-card-body">
+              <ul class="data-list" id="servicesList">
+                <li class="empty-state"><div class="empty-state-icon">📋</div><h3>No service data yet</h3><p>Service breakdown will appear once leads start coming in.</p></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="data-card">
+            <div class="data-card-header">
+              <span class="data-card-title">🎯 Leads by Form Source</span>
+            </div>
+            <div class="data-card-body">
+              <ul class="data-list" id="funnelList">
+                <li class="empty-state"><div class="empty-state-icon">📋</div><h3>No source data yet</h3><p>Once forms start receiving leads, you'll see which form converts best.</p></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Recent Leads -->
+        <div class="data-card full-width" style="margin-top: 2rem;">
+          <div class="data-card-header">
+            <span class="data-card-title">📥 Recent Leads</span>
+            <span class="data-card-badge" id="recentLeadsCount">0 leads</span>
+          </div>
+          <div class="data-card-body">
+            <div id="recentLeadsContent">
+              <div class="empty-state">
+                <div class="empty-state-icon">📭</div>
+                <h3>No leads yet</h3>
+                <p>The honeypot is active and the form is live. As soon as someone fills out the form, they'll show up here.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Note about data freshness -->
+        <div class="info-box" style="margin-top: 2rem;">
+          <strong>📋 About this data:</strong> Lead counts are pulled from Courier (where leads are stored). Data was last refreshed on <span id="conversionsLastUpdated">--</span>. To get the most current numbers, ask Dave to refresh the conversion data.
+        </div>
+      </div>
+      
       <!-- Competitors Tab -->
       <div class="tab-content" id="tab-competitors">
         <div class="info-box">
           <strong>📅 Last checked:</strong> April 22, 2026 — Rankings are updated periodically. These show where each company appears in Google search results.
         </div>
         
-        <!-- Competitor Cards -->
         <div class="competitor-grid">
           <div class="competitor-card you">
             <div class="competitor-logo">🏠</div>
@@ -596,7 +771,6 @@
           </div>
         </div>
         
-        <!-- Keyword Rankings Table -->
         <div class="data-card full-width">
           <div class="data-card-header">
             <span class="data-card-title">🔍 Keyword Rankings Comparison</span>
@@ -675,7 +849,6 @@
           </div>
         </div>
         
-        <!-- Market Analysis -->
         <div class="section-grid" style="margin-top: 2rem;">
           <div class="data-card">
             <div class="data-card-header">
@@ -724,6 +897,8 @@
     
     let currentDays = 30;
     let isLoggedIn = localStorage.getItem('brg_dashboard_auth') === 'true';
+    let cachedTraffic = null; // Store latest traffic data for conversion math
+    let cachedConversions = null;
     
     const loginScreen = document.getElementById('loginScreen');
     const dashboard = document.getElementById('dashboard');
@@ -747,6 +922,10 @@
         tabContents.forEach(c => c.classList.remove('active'));
         btn.classList.add('active');
         document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+        // Refresh conversions when switched to that tab
+        if (btn.dataset.tab === 'conversions') {
+          renderConversions();
+        }
       });
     });
     
@@ -787,6 +966,7 @@
       loginScreen.style.display = 'none';
       dashboard.classList.add('active');
       loadData();
+      loadConversions();
     }
     
     async function loadData() {
@@ -801,6 +981,8 @@
           fetchAPI('analytics/sources', { days: currentDays }),
           fetchAPI('analytics/geography', { days: currentDays })
         ]);
+        
+        cachedTraffic = report;
         
         if (report && report.totals) {
           const t = report.totals;
@@ -822,6 +1004,11 @@
         if (geography && geography.countries) renderLocations(geography.countries);
         
         document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        
+        // Re-render conversions if that tab was already loaded
+        if (cachedConversions) {
+          renderConversions();
+        }
       } catch (error) {
         console.error('Error loading data:', error);
         errorBanner.classList.add('active');
@@ -829,6 +1016,138 @@
       
       loadingOverlay.classList.add('hidden');
       refreshBtn.classList.remove('loading');
+    }
+    
+    async function loadConversions() {
+      try {
+        const resp = await fetch('/data/conversions.json?_=' + Date.now());
+        if (resp.ok) {
+          cachedConversions = await resp.json();
+          renderConversions();
+        }
+      } catch (error) {
+        console.error('Could not load conversions data:', error);
+      }
+    }
+    
+    function renderConversions() {
+      const c = cachedConversions;
+      if (!c) return;
+      
+      // Top stats
+      document.getElementById('convTotalLeads').textContent = formatNumber(c.totals.allTime);
+      document.getElementById('convLast7').textContent = formatNumber(c.totals.last7Days);
+      document.getElementById('convLast24').textContent = formatNumber(c.totals.last24Hours);
+      
+      // Conversion rate (leads in last 30d / sessions in current period)
+      const sessions = cachedTraffic?.totals?.sessions || 0;
+      const leadsInPeriod = c.totals.last30Days;
+      const rate = sessions > 0 ? ((leadsInPeriod / sessions) * 100).toFixed(2) : '0.00';
+      document.getElementById('convRate').textContent = rate + '%';
+      
+      // Last updated timestamp
+      const updated = new Date(c.lastUpdated);
+      document.getElementById('conversionsLastUpdated').textContent = updated.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      
+      // Funnel
+      const pageViews = cachedTraffic?.totals?.pageViews || 0;
+      document.getElementById('funnelPageViews').textContent = formatNumber(pageViews);
+      
+      const sessionsPct = pageViews > 0 ? (sessions / pageViews * 100) : 0;
+      document.getElementById('funnelSessions').textContent = formatNumber(sessions);
+      document.getElementById('funnelSessions').style.width = Math.max(sessionsPct, 5) + '%';
+      document.getElementById('funnelSessionsPct').textContent = sessionsPct.toFixed(1) + '%';
+      
+      const leadsPct = pageViews > 0 ? (leadsInPeriod / pageViews * 100) : 0;
+      document.getElementById('funnelLeads').textContent = formatNumber(leadsInPeriod);
+      document.getElementById('funnelLeads').style.width = Math.max(leadsPct, 2) + '%';
+      document.getElementById('funnelLeadsPct').textContent = leadsPct.toFixed(2) + '%';
+      
+      // Service breakdown
+      renderServiceBreakdown(c.byService);
+      renderFunnelBreakdown(c.byFunnel);
+      renderRecentLeads(c.recentLeads);
+    }
+    
+    function renderServiceBreakdown(byService) {
+      const list = document.getElementById('servicesList');
+      const entries = Object.entries(byService).filter(([_, count]) => count > 0).sort((a, b) => b[1] - a[1]);
+      
+      if (entries.length === 0) {
+        list.innerHTML = '<li class="empty-state"><div class="empty-state-icon">📋</div><h3>No service data yet</h3><p>Once leads come in, you\'ll see which services are most requested.</p></li>';
+        return;
+      }
+      
+      const max = entries[0][1];
+      const serviceLabels = {
+        'new-gutters': 'New Seamless Gutters',
+        'cleaning': 'Gutter Cleaning',
+        'repair': 'Gutter Repair / Rotten Wood',
+        'guards': 'Gutter Guards',
+        'drains': 'Underground Drains',
+        'not-sure': 'Not Sure / Inspection'
+      };
+      
+      list.innerHTML = entries.map(([key, count], i) => {
+        const pct = Math.round((count / max) * 100);
+        const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : '';
+        const label = serviceLabels[key] || key;
+        return '<li class="data-list-item"><div class="data-list-left"><span class="data-list-rank ' + rankClass + '">' + (i + 1) + '</span><span class="data-list-label">' + label + '</span></div><div class="data-list-bar-wrap"><div class="data-list-bar"><div class="data-list-bar-fill green" style="width: ' + pct + '%;"></div></div></div><span class="data-list-value">' + count + '</span></li>';
+      }).join('');
+    }
+    
+    function renderFunnelBreakdown(byFunnel) {
+      const list = document.getElementById('funnelList');
+      const entries = Object.entries(byFunnel).filter(([_, count]) => count > 0).sort((a, b) => b[1] - a[1]);
+      
+      if (entries.length === 0) {
+        list.innerHTML = '<li class="empty-state"><div class="empty-state-icon">📋</div><h3>No source data yet</h3><p>You\'ll see which form (homepage vs contact) converts best.</p></li>';
+        return;
+      }
+      
+      const max = entries[0][1];
+      const funnelLabels = {
+        'homepage-hero-form': 'Homepage Hero Form',
+        'contact-form': 'Contact Page Form'
+      };
+      
+      list.innerHTML = entries.map(([key, count], i) => {
+        const pct = Math.round((count / max) * 100);
+        const rankClass = i === 0 ? 'gold' : i === 1 ? 'silver' : '';
+        const label = funnelLabels[key] || key;
+        return '<li class="data-list-item"><div class="data-list-left"><span class="data-list-rank ' + rankClass + '">' + (i + 1) + '</span><span class="data-list-label">' + label + '</span></div><div class="data-list-bar-wrap"><div class="data-list-bar"><div class="data-list-bar-fill" style="width: ' + pct + '%;"></div></div></div><span class="data-list-value">' + count + '</span></li>';
+      }).join('');
+    }
+    
+    function renderRecentLeads(leads) {
+      const container = document.getElementById('recentLeadsContent');
+      const badge = document.getElementById('recentLeadsCount');
+      
+      if (!leads || leads.length === 0) {
+        badge.textContent = '0 leads';
+        return; // Keep the empty state HTML
+      }
+      
+      badge.textContent = leads.length + ' lead' + (leads.length === 1 ? '' : 's');
+      
+      const serviceLabels = {
+        'new-gutters': 'New Gutters',
+        'cleaning': 'Cleaning',
+        'repair': 'Repair',
+        'guards': 'Guards',
+        'drains': 'Drains',
+        'not-sure': 'Inspection'
+      };
+      
+      let html = '<table class="leads-table"><thead><tr><th>Date</th><th>Name</th><th>Service</th><th>Zip</th><th>Source</th></tr></thead><tbody>';
+      leads.forEach(lead => {
+        const date = lead.timestamp ? new Date(lead.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '--';
+        const service = serviceLabels[lead.service] || lead.service || '--';
+        const sourceLabel = lead.funnel === 'homepage-hero-form' ? 'Homepage' : 'Contact';
+        html += '<tr><td>' + date + '</td><td><strong>' + (lead.name || '—') + '</strong></td><td><span class="lead-service-tag">' + service + '</span></td><td>' + (lead.zip || '—') + '</td><td>' + sourceLabel + '</td></tr>';
+      });
+      html += '</tbody></table>';
+      container.innerHTML = html;
     }
     
     async function fetchAPI(endpoint, params = {}) {
