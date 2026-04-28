@@ -7,8 +7,11 @@ eleventyExcludeFromCollections: true
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DEMO: Blue River Gutters Homepage v2</title>
+  <title>DEMO v3: Blue River Gutters Homepage</title>
   <meta name="robots" content="noindex,nofollow">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 
   <link rel="icon" type="image/jpeg" sizes="60x60" href="https://res.cloudinary.com/dxzw1zwez/image/upload/Favicon_edited_vk3gls.jpg">
 
@@ -178,12 +181,6 @@ eleventyExcludeFromCollections: true
       font-weight: 600;
       color: var(--slate);
       margin-bottom: 0.35rem;
-    }
-
-    .form-group label .optional {
-      color: var(--gray);
-      font-weight: 400;
-      font-size: 0.75rem;
     }
 
     .form-group input,
@@ -375,15 +372,12 @@ eleventyExcludeFromCollections: true
     .step-card h3 { color: var(--navy); margin-bottom: 0.75rem; }
     .step-card p { color: var(--gray); font-size: 0.95rem; margin: 0; }
 
-    /* Map section — smaller, lower placement */
     .service-area-map {
       background: var(--cream);
       padding: 3rem 0;
     }
 
-    .service-area-map .section-header {
-      margin-bottom: 1.5rem;
-    }
+    .service-area-map .section-header { margin-bottom: 1.5rem; }
 
     .service-area-map .section-header p {
       color: var(--gray);
@@ -401,9 +395,7 @@ eleventyExcludeFromCollections: true
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
-    #rwl-map {
-      min-height: 300px;
-    }
+    #rwl-map { min-height: 300px; }
 
     .sticky-cta {
       display: none;
@@ -456,7 +448,7 @@ eleventyExcludeFromCollections: true
 <body>
 
   <div class="demo-banner">
-    🎨 DEMO PREVIEW — Homepage v2 — Form is LIVE (test submissions go to Courier) · <a href="/" style="color: #78350f; text-decoration: underline;">View Current Homepage</a>
+    🎨 DEMO v3 (Apr 28 ~1pm CST) · Form LIVE · Email field · Schedule option · Map added · <a href="/" style="color: #78350f; text-decoration: underline;">View Current Homepage</a>
   </div>
 
   <div class="top-banner">
@@ -732,7 +724,6 @@ eleventyExcludeFromCollections: true
     </div>
   </section>
 
-  <!-- ============ SERVICE AREA MAP ============ -->
   <section class="service-area-map">
     <div class="container">
       <div class="section-header">
@@ -877,7 +868,6 @@ eleventyExcludeFromCollections: true
     <a href="#lead-form-card" class="sticky-form">✉️ Get Quote</a>
   </div>
 
-  <!-- RealWork Labs Map Widget -->
   {% raw %}
   <script type="text/javascript">
   (function(){
@@ -893,7 +883,6 @@ eleventyExcludeFromCollections: true
   </script>
 
   <script>
-    // FAQ accordion
     document.querySelectorAll('.faq-question').forEach(button => {
       button.addEventListener('click', () => {
         const faqItem = button.parentElement;
@@ -903,7 +892,6 @@ eleventyExcludeFromCollections: true
       });
     });
 
-    // Animated stat counter
     (function() {
       const counters = document.querySelectorAll('.stat-number');
       if (!counters.length) return;
@@ -945,7 +933,6 @@ eleventyExcludeFromCollections: true
       }
     })();
 
-    // ===== LIVE LEAD FORM HANDLER (Courier API) =====
     (function() {
       const COURIER_API = 'https://email-bot-server.micaiah-tasks.workers.dev/api/subscribe';
       const COURIER_LIST = 'blue-river-gutters-leads';
@@ -978,7 +965,6 @@ eleventyExcludeFromCollections: true
           return;
         }
 
-        // Basic email check
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
           showError('Please enter a valid email address.');
           return;
@@ -1029,7 +1015,6 @@ eleventyExcludeFromCollections: true
       });
     })();
 
-    // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         const target = document.querySelector(this.getAttribute('href'));
