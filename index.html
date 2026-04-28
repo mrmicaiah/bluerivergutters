@@ -253,6 +253,12 @@
           </div>
 
           <form id="lead-form" novalidate>
+            
+            <div class="hp-field" aria-hidden="true">
+              <label for="lead-website">Website (leave this blank)</label>
+              <input type="text" id="lead-website" name="website" tabindex="-1" autocomplete="off">
+            </div>
+
             <div class="form-group">
               <label for="lead-name">Your Name</label>
               <input type="text" id="lead-name" name="name" required placeholder="Jane Smith">
@@ -854,6 +860,16 @@
 .form-success h3 { color: var(--navy); margin-bottom: 0.5rem; }
 .form-success p { color: var(--gray); margin: 0; }
 
+/* Honeypot — hide from humans, accessible to bots */
+.hp-field {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+
 .how-it-works { background: var(--cream); }
 .steps-grid {
   display: grid;
@@ -972,11 +988,12 @@
 }());
 </script>
 
-{# Lead form handler — Courier #}
+{# Lead form handler — Courier — with honeypot bot protection #}
 <script>
 (function() {
   const COURIER_API = 'https://email-bot-server.micaiah-tasks.workers.dev/api/subscribe';
   const COURIER_LIST = 'blue-river-gutters-leads';
+  const FORM_LOAD_TIME = Date.now();
 
   const form = document.getElementById('lead-form');
   if (!form) return;
@@ -993,9 +1010,31 @@
     errorEl.classList.remove('active');
   }
 
+  function fakeSuccess() {
+    // Show success to bot so it doesn't try a different attack
+    document.getElementById('form-view').style.display = 'none';
+    document.getElementById('form-success').classList.add('active');
+  }
+
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
     clearError();
+
+    // Honeypot check #1: hidden field must be empty
+    const honeypot = document.getElementById('lead-website').value;
+    if (honeypot) {
+      console.warn('Honeypot triggered — silent reject');
+      fakeSuccess();
+      return;
+    }
+
+    // Honeypot check #2: form must take a human at least 3 seconds to fill
+    const elapsed = Date.now() - FORM_LOAD_TIME;
+    if (elapsed < 3000) {
+      console.warn('Form filled too fast (' + elapsed + 'ms) — silent reject');
+      fakeSuccess();
+      return;
+    }
 
     const name = document.getElementById('lead-name').value.trim();
     const email = document.getElementById('lead-email').value.trim();
@@ -1027,7 +1066,8 @@
         phone: phone,
         zip: zip,
         service: service,
-        page: 'homepage'
+        page: 'homepage',
+        time_to_fill_ms: elapsed
       }
     };
 
@@ -1041,7 +1081,6 @@
       const data = await resp.json().catch(() => ({}));
 
       if (resp.ok) {
-        // GA4 event
         if (typeof gtag === 'function') {
           gtag('event', 'generate_lead', {
             event_category: 'engagement',
