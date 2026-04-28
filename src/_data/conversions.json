@@ -1,10 +1,10 @@
 {
-  "lastUpdated": "2026-04-28T18:30:00Z",
+  "lastUpdated": "2026-04-28T18:55:00Z",
   "totals": {
-    "allTime": 0,
-    "last30Days": 0,
-    "last7Days": 0,
-    "last24Hours": 0
+    "allTime": 1,
+    "last30Days": 1,
+    "last7Days": 1,
+    "last24Hours": 1
   },
   "byService": {
     "new-gutters": 0,
@@ -12,13 +12,24 @@
     "repair": 0,
     "guards": 0,
     "drains": 0,
-    "not-sure": 0
+    "not-sure": 1
   },
   "byFunnel": {
-    "homepage-hero-form": 0,
+    "homepage-hero-form": 1,
     "contact-form": 0
   },
-  "recentLeads": [],
-  "dailyCounts": [],
-  "notes": "Clean slate as of April 28, 2026. Honeypot deployed on homepage and contact forms. All previous 27 entries were spam from VA outreach bots."
+  "recentLeads": [
+    {
+      "name": "Micaiah Bussey - Testing",
+      "email": "mrmicaiah@gmail.com",
+      "service": "not-sure",
+      "zip": "—",
+      "funnel": "homepage-hero-form",
+      "timestamp": "2026-04-28T18:50:00Z"
+    }
+  ],
+  "dailyCounts": [
+    { "date": "2026-04-28", "leads": 1 }
+  ],
+  "notes": "First test lead through the live pipeline. Honeypot passed. Notification routed to brgappt@gmail.com."
 }
