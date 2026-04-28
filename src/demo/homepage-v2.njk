@@ -120,12 +120,13 @@ eleventyExcludeFromCollections: true
       font-size: 0.95rem;
       opacity: 0.85;
       margin-top: 0.75rem;
+      line-height: 1.8;
     }
 
     .hero-v2-phone a {
       color: var(--white);
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       border-bottom: 1px dashed rgba(255,255,255,0.4);
     }
 
@@ -179,6 +180,12 @@ eleventyExcludeFromCollections: true
       margin-bottom: 0.35rem;
     }
 
+    .form-group label .optional {
+      color: var(--gray);
+      font-weight: 400;
+      font-size: 0.75rem;
+    }
+
     .form-group input,
     .form-group select {
       width: 100%;
@@ -211,6 +218,11 @@ eleventyExcludeFromCollections: true
       margin-top: 0.5rem;
     }
 
+    .form-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .form-trust {
       text-align: center;
       font-size: 0.75rem;
@@ -219,6 +231,57 @@ eleventyExcludeFromCollections: true
     }
 
     .form-trust strong { color: var(--slate); }
+
+    .form-or {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin: 1rem 0 0.5rem;
+      position: relative;
+    }
+
+    .form-or::before,
+    .form-or::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 35%;
+      height: 1px;
+      background: var(--light-gray);
+    }
+
+    .form-or::before { left: 0; }
+    .form-or::after { right: 0; }
+
+    .form-schedule-link {
+      display: block;
+      text-align: center;
+      padding: 0.85rem;
+      background: var(--light-gray);
+      color: var(--navy);
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.15s;
+    }
+
+    .form-schedule-link:hover {
+      background: #e2e8f0;
+      color: var(--navy);
+    }
+
+    .form-error {
+      display: none;
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      margin-top: 0.85rem;
+      text-align: center;
+    }
+
+    .form-error.active { display: block; }
 
     .form-success {
       display: none;
@@ -312,6 +375,36 @@ eleventyExcludeFromCollections: true
     .step-card h3 { color: var(--navy); margin-bottom: 0.75rem; }
     .step-card p { color: var(--gray); font-size: 0.95rem; margin: 0; }
 
+    /* Map section — smaller, lower placement */
+    .service-area-map {
+      background: var(--cream);
+      padding: 3rem 0;
+    }
+
+    .service-area-map .section-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .service-area-map .section-header p {
+      color: var(--gray);
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0.5rem auto 0;
+    }
+
+    .map-wrapper {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    #rwl-map {
+      min-height: 300px;
+    }
+
     .sticky-cta {
       display: none;
       position: fixed;
@@ -356,13 +449,14 @@ eleventyExcludeFromCollections: true
       .sticky-cta { display: flex; }
       body { padding-bottom: 70px; }
       .urgency-bar { font-size: 0.85rem; }
+      #rwl-map { min-height: 250px; }
     }
   </style>
 </head>
 <body>
 
   <div class="demo-banner">
-    🎨 DEMO PREVIEW — Homepage v2 — Not Live · <a href="/" style="color: #78350f; text-decoration: underline;">View Current Homepage</a>
+    🎨 DEMO PREVIEW — Homepage v2 — Form is LIVE (test submissions go to Courier) · <a href="/" style="color: #78350f; text-decoration: underline;">View Current Homepage</a>
   </div>
 
   <div class="top-banner">
@@ -417,7 +511,8 @@ eleventyExcludeFromCollections: true
           </ul>
 
           <p class="hero-v2-phone">
-            Prefer to call? <a href="tel:2566166760">(256) 616-6760</a> · Mon–Fri 8AM–5PM
+            Prefer to call? <a href="tel:2566166760">(256) 616-6760</a> · Mon–Fri 8AM–5PM<br>
+            Want to pick a time? <a href="https://BlueRiverGutters.as.me/" target="_blank" rel="noopener">Schedule online →</a>
           </p>
         </div>
 
@@ -433,6 +528,11 @@ eleventyExcludeFromCollections: true
               <div class="form-group">
                 <label for="lead-name">Your Name</label>
                 <input type="text" id="lead-name" name="name" required placeholder="Jane Smith">
+              </div>
+
+              <div class="form-group">
+                <label for="lead-email">Email</label>
+                <input type="email" id="lead-email" name="email" required placeholder="you@example.com">
               </div>
 
               <div class="form-row">
@@ -459,9 +559,17 @@ eleventyExcludeFromCollections: true
                 </select>
               </div>
 
-              <button type="submit" class="btn btn-primary form-submit">
+              <button type="submit" class="btn btn-primary form-submit" id="lead-form-submit">
                 Get My Free Inspection →
               </button>
+
+              <div class="form-error" id="lead-form-error"></div>
+
+              <p class="form-or">or</p>
+
+              <a href="https://BlueRiverGutters.as.me/" target="_blank" rel="noopener" class="form-schedule-link">
+                📅 Schedule Online Instead
+              </a>
 
               <p class="form-trust">
                 🔒 <strong>Your info stays private.</strong> We never spam, sell, or share.
@@ -624,6 +732,20 @@ eleventyExcludeFromCollections: true
     </div>
   </section>
 
+  <!-- ============ SERVICE AREA MAP ============ -->
+  <section class="service-area-map">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Where We Work</p>
+        <h2>Recent Jobs Across North Alabama</h2>
+        <p>We've installed gutters across the entire region. Find your neighborhood on the map.</p>
+      </div>
+      <div class="map-wrapper">
+        <div id="rwl-map"></div>
+      </div>
+    </div>
+  </section>
+
   <section class="faq">
     <div class="container">
       <div class="section-header">
@@ -755,8 +877,23 @@ eleventyExcludeFromCollections: true
     <a href="#lead-form-card" class="sticky-form">✉️ Get Quote</a>
   </div>
 
+  <!-- RealWork Labs Map Widget -->
   {% raw %}
+  <script type="text/javascript">
+  (function(){
+    var d = document, t = 'script',
+        o = d.createElement(t),
+        s = d.getElementsByTagName(t)[0];
+        o.src = 'https://app.realworklabs.com/static/plugin/loader.js?v=' + new Date().getTime();
+        window.addEventListener('rwlPluginReady', function () {
+            window.rwlPlugin.init('https://app.realworklabs.com', 'RlomFVKLymXtpSXg');
+        }, false);
+        s.parentNode.insertBefore(o, s);
+  }());
+  </script>
+
   <script>
+    // FAQ accordion
     document.querySelectorAll('.faq-question').forEach(button => {
       button.addEventListener('click', () => {
         const faqItem = button.parentElement;
@@ -766,6 +903,7 @@ eleventyExcludeFromCollections: true
       });
     });
 
+    // Animated stat counter
     (function() {
       const counters = document.querySelectorAll('.stat-number');
       if (!counters.length) return;
@@ -807,28 +945,91 @@ eleventyExcludeFromCollections: true
       }
     })();
 
-    document.getElementById('lead-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const formData = {
-        name: document.getElementById('lead-name').value.trim(),
-        phone: document.getElementById('lead-phone').value.trim(),
-        zip: document.getElementById('lead-zip').value.trim(),
-        service: document.getElementById('lead-service').value,
-        timestamp: new Date().toISOString(),
-        source: 'homepage-v2-hero-form'
-      };
+    // ===== LIVE LEAD FORM HANDLER (Courier API) =====
+    (function() {
+      const COURIER_API = 'https://email-bot-server.micaiah-tasks.workers.dev/api/subscribe';
+      const COURIER_LIST = 'blue-river-gutters-leads';
 
-      if (!formData.name || !formData.phone || !formData.zip || !formData.service) {
-        alert('Please fill out all fields.');
-        return;
+      const form = document.getElementById('lead-form');
+      const submitBtn = document.getElementById('lead-form-submit');
+      const errorEl = document.getElementById('lead-form-error');
+
+      function showError(msg) {
+        errorEl.textContent = msg;
+        errorEl.classList.add('active');
       }
 
-      console.log('Lead submitted (demo):', formData);
+      function clearError() {
+        errorEl.classList.remove('active');
+      }
 
-      document.getElementById('form-view').style.display = 'none';
-      document.getElementById('form-success').classList.add('active');
-    });
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        clearError();
 
+        const name = document.getElementById('lead-name').value.trim();
+        const email = document.getElementById('lead-email').value.trim();
+        const phone = document.getElementById('lead-phone').value.trim();
+        const zip = document.getElementById('lead-zip').value.trim();
+        const service = document.getElementById('lead-service').value;
+
+        if (!name || !email || !phone || !zip || !service) {
+          showError('Please fill out all fields.');
+          return;
+        }
+
+        // Basic email check
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showError('Please enter a valid email address.');
+          return;
+        }
+
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        const payload = {
+          email: email,
+          name: name,
+          list: COURIER_LIST,
+          source: 'bluerivergutters.com',
+          funnel: 'homepage-hero-form-DEMO',
+          metadata: {
+            phone: phone,
+            zip: zip,
+            service: service,
+            page: 'homepage-v2-demo'
+          }
+        };
+
+        try {
+          const resp = await fetch(COURIER_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await resp.json().catch(() => ({}));
+
+          if (resp.ok) {
+            console.log('Lead submitted:', payload);
+            document.getElementById('form-view').style.display = 'none';
+            document.getElementById('form-success').classList.add('active');
+          } else {
+            showError(data.error || 'Something went wrong. Please call us at (256) 616-6760.');
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+          }
+        } catch (err) {
+          console.error('Form submission error:', err);
+          showError('Connection issue. Please call us at (256) 616-6760.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      });
+    })();
+
+    // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function(e) {
         const target = document.querySelector(this.getAttribute('href'));
