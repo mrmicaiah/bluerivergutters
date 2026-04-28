@@ -1,39 +1,111 @@
 ---
 layout: base.njk
-title: Blue River Gutters | Gutter Services in Huntsville, AL
-description: Huntsville's top-rated gutter company. Seamless gutter installation, gutter guards, cleaning, and repair. 20+ years experience, 1700+ satisfied customers.
+title: Blue River Gutters | Free Gutter Inspection in 24 Hours · Huntsville AL
+description: Get a free gutter inspection in 24 hours from Huntsville's most-trusted gutter team. Seamless gutters, guards, cleaning, and repair across North Alabama. 1,700+ satisfied customers, 4.7 stars.
 ---
 
-{# Hero with Parallax #}
-<section class="hero parallax-bg" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/hero-bg_axhlw4.jpg');">
-  <div class="hero-overlay"></div>
-  <div class="container hero-container">
-    <div class="hero-content">
-      <p class="hero-eyebrow">Blue River Gutters</p>
-      <h1>The #1 Company for Gutters in Huntsville AL</h1>
-      <p>Our experienced rain gutter specialists have been attaching seamless gutters, gutter guards, and accessories around Alabama for many years and we continue to provide 100% satisfaction to our customers.</p>
-      <div class="hero-cta">
-        <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
-        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary">✉️ Schedule Now</a>
+{# Urgency Bar #}
+<div class="urgency-bar">
+  <span class="pulse"></span>
+  <strong>Spring storm season:</strong> Booking 2–3 weeks out · Limited inspection slots this week
+</div>
+
+{# Hero with Lead Form #}
+<section class="hero-v2">
+  <div class="container">
+    <div class="hero-v2-grid">
+
+      <div class="hero-v2-content">
+        <h1>Get Your <span class="accent">Free Gutter Inspection</span> in 24 Hours</h1>
+        <p class="hero-v2-sub">
+          Huntsville's most-trusted gutter team — over 1,700 homeowners served across North Alabama. No pressure, no surprises, just an honest look at your gutters.
+        </p>
+
+        <div class="hero-v2-proof">
+          <span class="stars">★★★★★</span>
+          <span class="proof-text"><strong>4.7 rating</strong> across 240+ verified reviews</span>
+        </div>
+
+        <ul class="hero-v2-benefits">
+          <li>Same-week inspection — most homes seen within 48 hours</li>
+          <li>Honest, written estimate — no high-pressure sales</li>
+          <li>20+ years protecting Alabama homes — licensed &amp; insured</li>
+        </ul>
+
+        <p class="hero-v2-phone">
+          Prefer to call? <a href="tel:2566166760">(256) 616-6760</a> · Mon–Fri 8AM–5PM<br>
+          Want to pick a time? <a href="https://BlueRiverGutters.as.me/" target="_blank" rel="noopener">Schedule online →</a>
+        </p>
       </div>
-      <div class="trust-badges">
-        <div class="trust-badge">
-          <span class="trust-badge-icon">✓</span>
-          <span>Licensed & Insured</span>
+
+      <div class="hero-form-card" id="lead-form-card">
+        <div id="form-view">
+          <div class="hero-form-header">
+            <span class="hero-form-eyebrow">100% Free · No Obligation</span>
+            <h2>Request Your Free Inspection</h2>
+            <p class="form-sub">Takes 30 seconds. We'll be in touch within 24 hours.</p>
+          </div>
+
+          <form id="lead-form" novalidate>
+            <div class="form-group">
+              <label for="lead-name">Your Name</label>
+              <input type="text" id="lead-name" name="name" required placeholder="Jane Smith">
+            </div>
+
+            <div class="form-group">
+              <label for="lead-email">Email</label>
+              <input type="email" id="lead-email" name="email" required placeholder="you@example.com">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="lead-phone">Phone</label>
+                <input type="tel" id="lead-phone" name="phone" required placeholder="(256) 555-0100">
+              </div>
+              <div class="form-group">
+                <label for="lead-zip">Zip Code</label>
+                <input type="text" id="lead-zip" name="zip" required maxlength="5" placeholder="35801">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="lead-service">What do you need?</label>
+              <select id="lead-service" name="service" required>
+                <option value="">Select a service...</option>
+                <option value="new-gutters">New Seamless Gutters</option>
+                <option value="cleaning">Gutter Cleaning</option>
+                <option value="repair">Gutter Repair / Rotten Wood</option>
+                <option value="guards">Gutter Guards</option>
+                <option value="drains">Underground Drains</option>
+                <option value="not-sure">Not sure — need an inspection</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary form-submit" id="lead-form-submit">
+              Get My Free Inspection →
+            </button>
+
+            <div class="form-error" id="lead-form-error"></div>
+
+            <p class="form-or">or</p>
+
+            <a href="https://BlueRiverGutters.as.me/" target="_blank" rel="noopener" class="form-schedule-link">
+              📅 Schedule Online Instead
+            </a>
+
+            <p class="form-trust">
+              🔒 <strong>Your info stays private.</strong> We never spam, sell, or share.
+            </p>
+          </form>
         </div>
-        <div class="trust-badge">
-          <span class="trust-badge-icon">✓</span>
-          <span>20+ Years Experience</span>
-        </div>
-        <div class="trust-badge">
-          <span class="trust-badge-icon">✓</span>
-          <span>Local Family Owned</span>
-        </div>
-        <div class="trust-badge">
-          <span class="trust-badge-icon">★</span>
-          <span>4.7 Google Rating</span>
+
+        <div id="form-success" class="form-success">
+          <div class="form-success-icon">✓</div>
+          <h3>Got it — we're on it!</h3>
+          <p>One of our team will reach out within 24 hours to schedule your free inspection.</p>
         </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -62,48 +134,28 @@ description: Huntsville's top-rated gutter company. Seamless gutter installation
   </div>
 </section>
 
-{# RealWork Labs Widgets - Map & Review Carousel #}
-<section class="rwl-widgets">
-  <div class="container">
-    <div class="rwl-widgets-grid">
-      <div class="rwl-map-wrapper">
-        <div id="rwl-map"></div>
-      </div>
-      <div class="rwl-reviews-wrapper">
-        <div id="rwl-review-carousel"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-{# Reviews #}
-<section class="reviews">
+{# How It Works #}
+<section class="how-it-works">
   <div class="container">
     <div class="section-header">
-      <p class="section-eyebrow">Excellent Reviews</p>
-      <h2>Highest Rated Company for Gutters in Huntsville AL</h2>
+      <p class="section-eyebrow">Simple. Honest. Fast.</p>
+      <h2>How It Works</h2>
     </div>
-    
-    <div class="review-platforms">
-      <a href="https://g.co/kgs/oHV77L" class="review-platform" target="_blank" rel="noopener">
-        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/icon-google_p6e6y8.png" alt="Google Reviews">
-        <div class="review-count">96 Reviews</div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-rating">4.7 Star Rating</div>
-      </a>
-      
-      <a href="https://www.angi.com/companylist/us/al/hartselle/blue-river-gutters-reviews-8156246.htm" class="review-platform" target="_blank" rel="noopener">
-        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/icon-angi_fzphgb.png" alt="Angi Reviews">
-        <div class="review-count">31 Reviews</div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-rating">4.7 Star Rating</div>
-      </a>
-      
-      <div class="review-platform">
-        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/icon-homeadvisor_jpa1lf.webp" alt="HomeAdvisor Reviews">
-        <div class="review-count">113 Reviews</div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-rating">4.6 Star Rating</div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3>Request Your Inspection</h3>
+        <p>Fill out the form or give us a call. We'll get back to you within 24 hours to schedule a time that works.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3>Free On-Site Inspection</h3>
+        <p>We come out, take a look, and give you a clear written estimate. No pressure, no surprises, no upsells.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3>Quality Install — Done Right</h3>
+        <p>Once you give the green light, our team handles the rest. Most jobs are completed in a single day.</p>
       </div>
     </div>
   </div>
@@ -116,66 +168,66 @@ description: Huntsville's top-rated gutter company. Seamless gutter installation
       <p class="section-eyebrow">What We Offer</p>
       <h2>Our Services</h2>
     </div>
-    
+
     <div class="services-grid">
       <div class="service-card">
         <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-seamless-gutters_hcf6si.webp" alt="Seamless Gutters Installation">
         <div class="service-card-content">
           <h3>Seamless Gutters</h3>
-          <p>We pride ourselves on providing exceptional seamless gutter installations that encompass tailored sizing, top-notch materials, and the expertise of our skilled professionals.</p>
-          <a href="{{ '/services/#seamless-gutters' | url }}" class="btn btn-dark">Learn More</a>
+          <p>Custom-cut on-site to fit your home perfectly. Fewer seams means fewer leaks. Available in aluminum, copper, and steel.</p>
+          <a href="{{ '/services/seamless-gutters/' | url }}" class="btn btn-dark">Learn More</a>
         </div>
       </div>
-      
+
       <div class="service-card">
         <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-gutter-guards_csf0zo.webp" alt="Gutter Guards Installation">
         <div class="service-card-content">
           <h3>Gutter Guards</h3>
-          <p>Pine needles and walnuts commonly drop into gutter systems in Huntsville, AL. Our gutter guard installation services will help keep debris out of your system.</p>
-          <a href="{{ '/services/#gutter-guards' | url }}" class="btn btn-dark">Learn More</a>
+          <p>Pine needles, leaves, and walnuts are no match. Our guards keep debris out so water flows where it should.</p>
+          <a href="{{ '/services/gutter-guards/' | url }}" class="btn btn-dark">Learn More</a>
         </div>
       </div>
-      
+
       <div class="service-card">
         <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-gutter-cleaning_kqfwes.webp" alt="Gutter Cleaning Services">
         <div class="service-card-content">
           <h3>Gutter Cleaning</h3>
-          <p>Our gutter cleaning and maintenance services protect your home from water damage. We clean the inside and outside of the system including clearing clogged downspouts.</p>
-          <a href="{{ '/services/#gutter-cleaning' | url }}" class="btn btn-dark">Learn More</a>
+          <p>Clogged gutters cause water damage. We clear the inside, outside, and downspouts so your system actually works.</p>
+          <a href="{{ '/services/gutter-cleaning/' | url }}" class="btn btn-dark">Learn More</a>
         </div>
       </div>
-      
+
       <div class="service-card">
         <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-downspouts_iqkukv.webp" alt="Downspout Installation">
         <div class="service-card-content">
           <h3>Downspouts</h3>
-          <p>Over 50 inches of precipitation falls every year in Huntsville so your downspouts need to be prepared for the volume. We can help you ensure your downspouts are ready.</p>
-          <a href="{{ '/services/#downspouts' | url }}" class="btn btn-dark">Learn More</a>
+          <p>Huntsville gets 50+ inches of rain a year. Properly sized downspouts move that water far away from your foundation.</p>
+          <a href="{{ '/services/downspouts/' | url }}" class="btn btn-dark">Learn More</a>
         </div>
       </div>
-      
+
       <div class="service-card">
         <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-underground-drains_sbbgru.webp" alt="Underground Drain Installation">
         <div class="service-card-content">
           <h3>Underground Drains</h3>
-          <p>Our underground drain systems ensure dense soil, obstructions of watershed or poorly-graded property that can lead to standing water, land erosion and flooding in your yard.</p>
-          <a href="{{ '/services/#underground-drains' | url }}" class="btn btn-dark">Learn More</a>
+          <p>Red clay soil doesn't drain. We install underground systems that move water away from your home — for good.</p>
+          <a href="{{ '/services/underground-drains/' | url }}" class="btn btn-dark">Learn More</a>
         </div>
       </div>
-      
+
       <div class="service-card">
         <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-rotten-wood_jhfmim.webp" alt="Rotten Wood Repair">
         <div class="service-card-content">
           <h3>Rotten Wood Repair</h3>
-          <p>Over time water can deteriorate your fascia board and cause your gutters to sag away from the house. We can repair rotten wood and install new fascia boards to support your gutters.</p>
-          <a href="{{ '/services/#rotten-wood-repair' | url }}" class="btn btn-dark">Learn More</a>
+          <p>Sagging gutters? Often it's the fascia rotting underneath. We replace rotten wood and reinstall your gutters right.</p>
+          <a href="{{ '/services/rotten-wood-repair/' | url }}" class="btn btn-dark">Learn More</a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-{# Quality Workmanship with Parallax Background #}
+{# Quality Workmanship #}
 <section class="workmanship parallax-bg" id="about" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/quality-section-bg_u6ueuq.jpg');">
   <div class="container">
     <div class="workmanship-grid">
@@ -184,13 +236,60 @@ description: Huntsville's top-rated gutter company. Seamless gutter installation
       </div>
       <div class="workmanship-content">
         <h2>Quality Workmanship</h2>
-        <p>When you give us a call, we pick up the phone. We show up to appointments on time and in a professional manner. We walk you through our entire process so you never feel lost.</p>
-        <p>By maintaining clear communication with you, we are able to make sure the job gets done to your specifications without any confusion.</p>
+        <p>When you call, we pick up. We show up on time, in uniform, and walk you through everything — start to finish.</p>
+        <p>Two decades of doing this in North Alabama means we know the climate, the soil, and the homes. No guesswork.</p>
         <div class="workmanship-cta">
           <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
-          <a href="https://BlueRiverGutters.as.me/" class="btn btn-dark">✉️ Schedule Now</a>
+          <a href="#lead-form-card" class="btn btn-dark">Get Free Inspection</a>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+{# Reviews #}
+<section class="reviews">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Excellent Reviews</p>
+      <h2>What Our Customers Say</h2>
+    </div>
+
+    <div class="review-platforms">
+      <a href="https://g.co/kgs/oHV77L" class="review-platform" target="_blank" rel="noopener">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/icon-google_p6e6y8.png" alt="Google Reviews">
+        <div class="review-count">96 Reviews</div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-rating">4.7 Star Rating</div>
+      </a>
+
+      <a href="https://www.angi.com/companylist/us/al/hartselle/blue-river-gutters-reviews-8156246.htm" class="review-platform" target="_blank" rel="noopener">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/icon-angi_fzphgb.png" alt="Angi Reviews">
+        <div class="review-count">31 Reviews</div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-rating">4.7 Star Rating</div>
+      </a>
+
+      <div class="review-platform">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/icon-homeadvisor_jpa1lf.webp" alt="HomeAdvisor Reviews">
+        <div class="review-count">113 Reviews</div>
+        <div class="review-stars">★★★★★</div>
+        <div class="review-rating">4.6 Star Rating</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# Service Area Map #}
+<section class="service-area-map">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Where We Work</p>
+      <h2>Recent Jobs Across North Alabama</h2>
+      <p>We've installed gutters across the entire region. Find your neighborhood on the map.</p>
+    </div>
+    <div class="map-wrapper">
+      <div id="rwl-map"></div>
     </div>
   </div>
 </section>
@@ -199,85 +298,461 @@ description: Huntsville's top-rated gutter company. Seamless gutter installation
 <section class="faq">
   <div class="container">
     <div class="section-header">
-      <h2>Frequently Asked Questions</h2>
+      <h2>Common Questions</h2>
     </div>
-    
+
     <div class="faq-list">
       <div class="faq-item">
         <button class="faq-question">
-          <span>How Much Does Gutter Installation Cost?</span>
+          <span>How fast can you come out for an inspection?</span>
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>The cost of gutter installation can vary depending on various factors, such as the size of your property, the type of gutters you choose, and the complexity of the installation process.</p>
-          <p><strong>Vinyl Gutters:</strong> $3 to $6 per linear foot</p>
-          <p><strong>Aluminum Gutters:</strong> $6 to $12 per linear foot</p>
-          <p><strong>Copper Gutters:</strong> $15 to $30 per linear foot</p>
+          <p>Most homes are seen within 48 hours of your request. During peak storm season we're sometimes booked 2–3 weeks out for installs, but inspections are always free and fast — we'll let you know your real timeline upfront.</p>
         </div>
       </div>
-      
+
       <div class="faq-item">
         <button class="faq-question">
-          <span>Do I Need Gutters For My Home?</span>
+          <span>Do you service my area?</span>
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>In most cases, yes. Gutters are an essential part of a well-functioning home. They are designed to divert rainwater away from your foundation, preventing costly water damage and erosion. Gutters also help protect your landscaping and prevent basement flooding.</p>
+          <p>We cover all of North Alabama — Huntsville, Madison, Decatur, Athens, Hartselle, Hampton Cove, Owens Cross Roads, Harvest, Toney, and surrounding areas. If you're within about 45 minutes of Huntsville, we're there.</p>
         </div>
       </div>
-      
+
       <div class="faq-item">
         <button class="faq-question">
-          <span>What are Seamless Gutters?</span>
+          <span>How long does a typical install take?</span>
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>Seamless gutters are custom-made to fit your home perfectly, eliminating any potential weak points where leaks or debris can accumulate. Unlike traditional gutters made up of multiple sections joined together, seamless gutters are usually made from aluminum or steel and are designed to channel water away from your roof, foundation, and walls.</p>
+          <p>Most full-home gutter installs are done in a single day. We custom-cut your seamless gutters on-site, so there's no waiting around for parts. Larger or more complex jobs may take two days — we'll tell you the real timeline before you sign anything.</p>
         </div>
       </div>
-      
+
       <div class="faq-item">
         <button class="faq-question">
-          <span>Should I Hire a Professional to Install Gutters?</span>
+          <span>Do you offer a warranty?</span>
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>Yes, hiring a professional to install your gutters is highly recommended. Professionals have the knowledge, skills, and experience necessary to ensure the job is done correctly. Improperly installed gutters can lead to water damage to your home, foundation issues, and even personal injury if they collapse.</p>
+          <p>Yes. All of our installs come with a workmanship warranty, plus the manufacturer warranty on the materials. We'll walk you through exactly what's covered when we give you your written estimate.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>Are you licensed and insured?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>Yes — fully licensed and insured in the state of Alabama. We're happy to provide proof of insurance before any work begins. We've been doing this for over 20 years and we don't cut corners.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          <span>How much does gutter installation cost?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>It depends on the size of your home and the material you choose. Aluminum seamless gutters typically run $6–$12 per linear foot installed, copper runs $15–$30 per foot. The only way to get an accurate number for your home is a free inspection — we'll give you a written estimate, no pressure.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-{# CTA with Parallax #}
+{# Final CTA #}
 <section class="cta parallax-bg" id="contact" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/cta-section-bg_bkom8q.png');">
   <div class="container">
-    <h2>Looking for Professional Gutter Services in Huntsville, AL?</h2>
-    <a href="https://BlueRiverGutters.as.me/" class="btn btn-primary">Schedule a Free Estimate</a>
+    <h2>Ready to get those gutters handled?</h2>
+    <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Free inspection. Honest estimate. No pressure.</p>
+    <a href="#lead-form-card" class="btn btn-primary">Get My Free Inspection</a>
     <p class="cta-phone"><a href="tel:2566166760">📞 (256) 616-6760</a></p>
-    <p class="cta-hours">MON-FRI 8:00AM-5:00PM</p>
+    <p class="cta-hours">MON–FRI 8:00AM–5:00PM</p>
     <div class="trust-badges">
-      <div class="trust-badge">
-        <span class="trust-badge-icon">✓</span>
-        <span>Licensed & Insured</span>
-      </div>
-      <div class="trust-badge">
-        <span class="trust-badge-icon">✓</span>
-        <span>20+ Years Experience</span>
-      </div>
-      <div class="trust-badge">
-        <span class="trust-badge-icon">✓</span>
-        <span>Local Family Owned</span>
-      </div>
-      <div class="trust-badge">
-        <span class="trust-badge-icon">★</span>
-        <span>4.7 Google Rating</span>
-      </div>
+      <div class="trust-badge"><span class="trust-badge-icon">✓</span><span>Licensed &amp; Insured</span></div>
+      <div class="trust-badge"><span class="trust-badge-icon">✓</span><span>20+ Years Experience</span></div>
+      <div class="trust-badge"><span class="trust-badge-icon">✓</span><span>Local Family Owned</span></div>
+      <div class="trust-badge"><span class="trust-badge-icon">★</span><span>4.7 Google Rating</span></div>
     </div>
   </div>
 </section>
 
-{# RealWork Labs Script #}
+{# Mobile Sticky CTA #}
+<div class="sticky-cta">
+  <a href="tel:2566166760" class="sticky-call">📞 Call</a>
+  <a href="#lead-form-card" class="sticky-form">✉️ Get Quote</a>
+</div>
+
+{# Page-specific styles #}
+<style>
+.urgency-bar {
+  background: linear-gradient(135deg, #b91c1c, #991b1b);
+  color: var(--white);
+  padding: 0.85rem 1rem;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.urgency-bar strong { font-weight: 700; }
+.urgency-bar .pulse {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #fbbf24;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  animation: pulse 1.5s infinite;
+  vertical-align: middle;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.4); }
+}
+
+.hero-v2 {
+  position: relative;
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.78)),
+    url('https://res.cloudinary.com/dxzw1zwez/image/upload/hero-bg_axhlw4.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 4rem 0 5rem;
+  color: var(--white);
+}
+.hero-v2-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 3rem;
+  align-items: center;
+}
+.hero-v2-content h1 {
+  color: var(--white);
+  font-size: 3rem;
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+.hero-v2-content h1 .accent { color: #fbbf24; }
+.hero-v2-sub {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  opacity: 0.92;
+  margin-bottom: 1.5rem;
+}
+.hero-v2-proof {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 0.85rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  width: fit-content;
+}
+.hero-v2-proof .stars {
+  color: #fbbf24;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+.hero-v2-proof .proof-text { font-size: 0.95rem; font-weight: 500; }
+.hero-v2-benefits {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.hero-v2-benefits li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+}
+.hero-v2-benefits li::before {
+  content: '✓';
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: #10b981;
+  color: var(--white);
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.hero-v2-phone {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin-top: 0.75rem;
+  line-height: 1.8;
+}
+.hero-v2-phone a {
+  color: var(--white);
+  font-weight: 700;
+  font-size: 1.05rem;
+  border-bottom: 1px dashed rgba(255,255,255,0.4);
+}
+
+.hero-form-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  color: var(--slate);
+}
+.hero-form-header {
+  text-align: center;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--light-gray);
+}
+.hero-form-eyebrow {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+.hero-form-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.35rem;
+  color: var(--navy);
+}
+.hero-form-card .form-sub {
+  color: var(--gray);
+  font-size: 0.9rem;
+  margin: 0;
+}
+.form-group { margin-bottom: 0.85rem; }
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--slate);
+  margin-bottom: 0.35rem;
+}
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid var(--light-gray);
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--navy);
+  background: var(--white);
+  transition: border-color 0.15s;
+}
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--blue-light);
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.form-submit {
+  width: 100%;
+  padding: 1.1rem;
+  font-size: 1.05rem;
+  margin-top: 0.5rem;
+}
+.form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.form-trust {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--gray);
+  margin-top: 0.85rem;
+}
+.form-trust strong { color: var(--slate); }
+.form-or {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--gray);
+  margin: 1rem 0 0.5rem;
+  position: relative;
+}
+.form-or::before,
+.form-or::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 35%;
+  height: 1px;
+  background: var(--light-gray);
+}
+.form-or::before { left: 0; }
+.form-or::after { right: 0; }
+.form-schedule-link {
+  display: block;
+  text-align: center;
+  padding: 0.85rem;
+  background: var(--light-gray);
+  color: var(--navy);
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: background 0.15s;
+}
+.form-schedule-link:hover {
+  background: #e2e8f0;
+  color: var(--navy);
+}
+.form-error {
+  display: none;
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  margin-top: 0.85rem;
+  text-align: center;
+}
+.form-error.active { display: block; }
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+.form-success.active { display: block; }
+.form-success-icon {
+  width: 60px;
+  height: 60px;
+  background: #10b981;
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto 1rem;
+}
+.form-success h3 { color: var(--navy); margin-bottom: 0.5rem; }
+.form-success p { color: var(--gray); margin: 0; }
+
+.how-it-works { background: var(--cream); }
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.step-card {
+  background: var(--white);
+  padding: 2rem 1.75rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.step-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+.step-number {
+  width: 50px;
+  height: 50px;
+  background: var(--red);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 auto 1.25rem;
+}
+.step-card h3 { color: var(--navy); margin-bottom: 0.75rem; }
+.step-card p { color: var(--gray); font-size: 0.95rem; margin: 0; }
+
+.service-area-map {
+  background: var(--cream);
+  padding: 3rem 0;
+}
+.service-area-map .section-header { margin-bottom: 1.5rem; }
+.service-area-map .section-header p {
+  color: var(--gray);
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0.5rem auto 0;
+}
+.map-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+#rwl-map { min-height: 300px; }
+
+.sticky-cta {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
+  padding: 0.5rem;
+  z-index: 998;
+  gap: 0.5rem;
+}
+.sticky-cta a {
+  flex: 1;
+  padding: 0.85rem 0.5rem;
+  text-align: center;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.sticky-cta .sticky-call { background: var(--red); color: var(--white); }
+.sticky-cta .sticky-form { background: var(--navy); color: var(--white); }
+
+@media (max-width: 1024px) {
+  .hero-v2-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .hero-v2-content h1 { font-size: 2.5rem; }
+  .steps-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .hero-v2 { padding: 2.5rem 0 3rem; }
+  .hero-v2-content h1 { font-size: 2rem; }
+  .hero-v2-sub { font-size: 1rem; }
+  .hero-form-card { padding: 1.5rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .sticky-cta { display: flex; }
+  body { padding-bottom: 70px; }
+  .urgency-bar { font-size: 0.85rem; }
+  #rwl-map { min-height: 250px; }
+}
+</style>
+
+{# RealWork Labs Map Widget #}
+{% raw %}
 <script type="text/javascript">
 (function(){
   var d = document, t = 'script',
@@ -291,30 +766,197 @@ description: Huntsville's top-rated gutter company. Seamless gutter installation
 }());
 </script>
 
-<style>
-.rwl-widgets {
-  padding: 3rem 0;
-  background: var(--cream);
-}
+{# Lead form handler — Courier #}
+<script>
+(function() {
+  const COURIER_API = 'https://email-bot-server.micaiah-tasks.workers.dev/api/subscribe';
+  const COURIER_LIST = 'blue-river-gutters-leads';
 
-.rwl-widgets-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-}
+  const form = document.getElementById('lead-form');
+  if (!form) return;
 
-.rwl-map-wrapper,
-.rwl-reviews-wrapper {
-  min-height: 350px;
-  background: var(--white);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
+  const submitBtn = document.getElementById('lead-form-submit');
+  const errorEl = document.getElementById('lead-form-error');
 
-@media (max-width: 768px) {
-  .rwl-widgets-grid {
-    grid-template-columns: 1fr;
+  function showError(msg) {
+    errorEl.textContent = msg;
+    errorEl.classList.add('active');
   }
+
+  function clearError() {
+    errorEl.classList.remove('active');
+  }
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    clearError();
+
+    const name = document.getElementById('lead-name').value.trim();
+    const email = document.getElementById('lead-email').value.trim();
+    const phone = document.getElementById('lead-phone').value.trim();
+    const zip = document.getElementById('lead-zip').value.trim();
+    const service = document.getElementById('lead-service').value;
+
+    if (!name || !email || !phone || !zip || !service) {
+      showError('Please fill out all fields.');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('Please enter a valid email address.');
+      return;
+    }
+
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    const payload = {
+      email: email,
+      name: name,
+      list: COURIER_LIST,
+      source: 'bluerivergutters.com',
+      funnel: 'homepage-hero-form',
+      metadata: {
+        phone: phone,
+        zip: zip,
+        service: service,
+        page: 'homepage'
+      }
+    };
+
+    try {
+      const resp = await fetch(COURIER_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await resp.json().catch(() => ({}));
+
+      if (resp.ok) {
+        // GA4 event
+        if (typeof gtag === 'function') {
+          gtag('event', 'generate_lead', {
+            event_category: 'engagement',
+            event_label: 'homepage_hero_form',
+            value: 1
+          });
+        }
+        document.getElementById('form-view').style.display = 'none';
+        document.getElementById('form-success').classList.add('active');
+      } else {
+        showError(data.error || 'Something went wrong. Please call us at (256) 616-6760.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    } catch (err) {
+      console.error('Form submission error:', err);
+      showError('Connection issue. Please call us at (256) 616-6760.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalText;
+    }
+  });
+})();
+</script>
+{% endraw %}
+
+{# Schema markup for LocalBusiness + FAQ #}
+{% raw %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Blue River Gutters",
+  "image": "https://res.cloudinary.com/dxzw1zwez/image/upload/logo_fih2rm.webp",
+  "@id": "https://bluerivergutters.com",
+  "url": "https://bluerivergutters.com",
+  "telephone": "+12566166760",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "3315 Memorial Pkwy SW Suite B13",
+    "addressLocality": "Huntsville",
+    "addressRegion": "AL",
+    "postalCode": "35801",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 34.7304,
+    "longitude": -86.5861
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "opens": "08:00",
+    "closes": "17:00"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.7",
+    "reviewCount": "240"
+  },
+  "areaServed": [
+    "Huntsville, AL", "Madison, AL", "Decatur, AL", "Athens, AL", "Hartselle, AL"
+  ]
 }
-</style>
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How fast can you come out for an inspection?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most homes are seen within 48 hours of your request. During peak storm season we're sometimes booked 2-3 weeks out for installs, but inspections are always free and fast."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you service my area?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We cover all of North Alabama — Huntsville, Madison, Decatur, Athens, Hartselle, Hampton Cove, Owens Cross Roads, Harvest, Toney, and surrounding areas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does a typical install take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most full-home gutter installs are done in a single day. We custom-cut your seamless gutters on-site, so there's no waiting around for parts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer a warranty?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. All of our installs come with a workmanship warranty, plus the manufacturer warranty on the materials."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are you licensed and insured?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — fully licensed and insured in the state of Alabama. We've been doing this for over 20 years."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does gutter installation cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Aluminum seamless gutters typically run $6-$12 per linear foot installed, copper runs $15-$30 per foot. Free inspection gets you an accurate written estimate."
+      }
+    }
+  ]
+}
+</script>
+{% endraw %}
