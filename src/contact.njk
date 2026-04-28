@@ -92,6 +92,12 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
       <div class="contact-form-wrapper">
         <h2>Send Us a Message</h2>
         <form id="contact-form" class="contact-form">
+          {# Honeypot — hidden from humans, bots fill it #}
+          <div class="hp-field" aria-hidden="true">
+            <label for="contact-website">Website (leave this blank)</label>
+            <input type="text" id="contact-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
           <div class="form-group">
             <label for="name">Your Name *</label>
             <input type="text" id="name" name="name" required>
@@ -295,6 +301,16 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
   border-color: var(--primary);
 }
 
+/* Honeypot — hide from humans */
+.hp-field {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -392,7 +408,7 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
 }
 </style>
 
-{# Courier Form Handler #}
+{# Courier Form Handler — with honeypot bot protection #}
 <script>
 (function() {
   const CONFIG = {
@@ -405,11 +421,29 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
   };
 
   const API_URL = 'https://email-bot-server.micaiah-tasks.workers.dev/api/subscribe';
+  const FORM_LOAD_TIME = Date.now();
 
   document.querySelector(CONFIG.formSelector)?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const form = e.target;
+
+    // Honeypot check #1: hidden field must be empty
+    const honeypot = form.querySelector('[name="website"]')?.value;
+    if (honeypot) {
+      console.warn('Honeypot triggered — silent reject');
+      window.location.href = CONFIG.redirectUrl; // Show success to bot
+      return;
+    }
+
+    // Honeypot check #2: form must take a human at least 3 seconds
+    const elapsed = Date.now() - FORM_LOAD_TIME;
+    if (elapsed < 3000) {
+      console.warn('Form filled too fast (' + elapsed + 'ms) — silent reject');
+      window.location.href = CONFIG.redirectUrl;
+      return;
+    }
+
     const btn = form.querySelector('button[type="submit"]');
     const originalText = btn?.textContent;
     
@@ -429,7 +463,7 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
     if (nameField?.value) payload.name = nameField.value;
 
     if (CONFIG.customFields.length > 0) {
-      payload.metadata = {};
+      payload.metadata = { time_to_fill_ms: elapsed };
       CONFIG.customFields.forEach(field => {
         const el = form.querySelector(`[name="${field}"]`);
         if (el?.value) payload.metadata[field] = el.value;
@@ -446,6 +480,13 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
       const data = await resp.json();
 
       if (resp.ok) {
+        if (typeof gtag === 'function') {
+          gtag('event', 'generate_lead', {
+            event_category: 'engagement',
+            event_label: 'contact_form',
+            value: 1
+          });
+        }
         window.location.href = CONFIG.redirectUrl;
       } else {
         showMessage(form, data.error || 'Something went wrong. Please try again.', 'error');
