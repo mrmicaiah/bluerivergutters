@@ -1,0 +1,30 @@
+---
+permalink: false
+eleventyExcludeFromCollections: true
+---
+{# BACKUP of original index.njk before homepage v2 rollout on April 28, 2026 #}
+{# To restore: copy this file's contents back into src/index.njk #}
+
+---
+layout: base.njk
+title: Blue River Gutters | Gutter Services in Huntsville, AL
+description: Huntsville's top-rated gutter company. Seamless gutter installation, gutter guards, cleaning, and repair. 20+ years experience, 1700+ satisfied customers.
+---
+
+{# Hero with Parallax #}
+<section class="hero parallax-bg" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/hero-bg_axhlw4.jpg');">
+  <div class="hero-overlay"></div>
+  <div class="container hero-container">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Blue River Gutters</p>
+      <h1>The #1 Company for Gutters in Huntsville AL</h1>
+      <p>Our experienced rain gutter specialists have been attaching seamless gutters, gutter guards, and accessories around Alabama for many years and we continue to provide 100% satisfaction to our customers.</p>
+      <div class="hero-cta">
+        <a href="tel:2566166760" class="btn btn-primary">CALL (256) 616-6760</a>
+        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary">Schedule Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# Original homepage content backed up here. Full restore: see git history at commit before homepage v2 rollout. #}
