@@ -1,0 +1,845 @@
+---
+permalink: /demo/homepage-v2/index.html
+eleventyExcludeFromCollections: true
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEMO: Blue River Gutters Homepage v2</title>
+  <meta name="robots" content="noindex,nofollow">
+
+  <link rel="icon" type="image/jpeg" sizes="60x60" href="https://res.cloudinary.com/dxzw1zwez/image/upload/Favicon_edited_vk3gls.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/navigation.css">
+  <link rel="stylesheet" href="/css/parallax.css">
+
+  <style>
+    .demo-banner {
+      background: #fbbf24;
+      color: #78350f;
+      text-align: center;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-v2 {
+      position: relative;
+      background-image:
+        linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.78)),
+        url('https://res.cloudinary.com/dxzw1zwez/image/upload/hero-bg_axhlw4.jpg');
+      background-size: cover;
+      background-position: center;
+      padding: 4rem 0 5rem;
+      color: var(--white);
+    }
+
+    .hero-v2-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .hero-v2-content h1 {
+      color: var(--white);
+      font-size: 3rem;
+      line-height: 1.1;
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-v2-content h1 .accent { color: #fbbf24; }
+
+    .hero-v2-sub {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      opacity: 0.92;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-v2-proof {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 0.85rem 1.25rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      width: fit-content;
+    }
+
+    .hero-v2-proof .stars {
+      color: #fbbf24;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+    }
+
+    .hero-v2-proof .proof-text { font-size: 0.95rem; font-weight: 500; }
+
+    .hero-v2-benefits {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .hero-v2-benefits li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1rem;
+    }
+
+    .hero-v2-benefits li::before {
+      content: '✓';
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: #10b981;
+      color: var(--white);
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .hero-v2-phone {
+      font-size: 0.95rem;
+      opacity: 0.85;
+      margin-top: 0.75rem;
+    }
+
+    .hero-v2-phone a {
+      color: var(--white);
+      font-weight: 700;
+      font-size: 1.1rem;
+      border-bottom: 1px dashed rgba(255,255,255,0.4);
+    }
+
+    .hero-form-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      color: var(--slate);
+    }
+
+    .hero-form-header {
+      text-align: center;
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.25rem;
+      border-bottom: 1px solid var(--light-gray);
+    }
+
+    .hero-form-eyebrow {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 0.35rem 0.75rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-form-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.35rem;
+      color: var(--navy);
+    }
+
+    .hero-form-card .form-sub {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .form-group { margin-bottom: 0.85rem; }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--slate);
+      margin-bottom: 0.35rem;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 1.5px solid var(--light-gray);
+      border-radius: 6px;
+      font-size: 1rem;
+      font-family: inherit;
+      color: var(--navy);
+      background: var(--white);
+      transition: border-color 0.15s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--blue-light);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .form-submit {
+      width: 100%;
+      padding: 1.1rem;
+      font-size: 1.05rem;
+      margin-top: 0.5rem;
+    }
+
+    .form-trust {
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--gray);
+      margin-top: 0.85rem;
+    }
+
+    .form-trust strong { color: var(--slate); }
+
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 1.5rem 0;
+    }
+
+    .form-success.active { display: block; }
+
+    .form-success-icon {
+      width: 60px;
+      height: 60px;
+      background: #10b981;
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 1rem;
+    }
+
+    .form-success h3 { color: var(--navy); margin-bottom: 0.5rem; }
+    .form-success p { color: var(--gray); margin: 0; }
+
+    .urgency-bar {
+      background: linear-gradient(135deg, #b91c1c, #991b1b);
+      color: var(--white);
+      padding: 0.85rem 1rem;
+      text-align: center;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .urgency-bar strong { font-weight: 700; }
+
+    .urgency-bar .pulse {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #fbbf24;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      animation: pulse 1.5s infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.4); }
+    }
+
+    .how-it-works { background: var(--cream); }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .step-card {
+      background: var(--white);
+      padding: 2rem 1.75rem;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .step-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+    }
+
+    .step-number {
+      width: 50px;
+      height: 50px;
+      background: var(--red);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0 auto 1.25rem;
+    }
+
+    .step-card h3 { color: var(--navy); margin-bottom: 0.75rem; }
+    .step-card p { color: var(--gray); font-size: 0.95rem; margin: 0; }
+
+    .sticky-cta {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--white);
+      box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
+      padding: 0.5rem;
+      z-index: 998;
+      gap: 0.5rem;
+    }
+
+    .sticky-cta a {
+      flex: 1;
+      padding: 0.85rem 0.5rem;
+      text-align: center;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+
+    .sticky-cta .sticky-call { background: var(--red); color: var(--white); }
+    .sticky-cta .sticky-form { background: var(--navy); color: var(--white); }
+
+    @media (max-width: 1024px) {
+      .hero-v2-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-v2-content h1 { font-size: 2.5rem; }
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .hero-v2 { padding: 2.5rem 0 3rem; }
+      .hero-v2-content h1 { font-size: 2rem; }
+      .hero-v2-sub { font-size: 1rem; }
+      .hero-form-card { padding: 1.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .sticky-cta { display: flex; }
+      body { padding-bottom: 70px; }
+      .urgency-bar { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="demo-banner">
+    🎨 DEMO PREVIEW — Homepage v2 — Not Live · <a href="/" style="color: #78350f; text-decoration: underline;">View Current Homepage</a>
+  </div>
+
+  <div class="top-banner">
+    <a href="https://BlueRiverGutters.as.me/">✉️ Schedule Your Free Estimate Today</a>
+  </div>
+
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo-link">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/logo_fih2rm.webp" alt="Blue River Gutters" class="logo">
+      </a>
+      <nav class="nav" role="navigation" aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/services/">Services</a>
+        <a href="/locations/">Locations</a>
+        <a href="/recent-projects/">Projects</a>
+        <a href="/reviews/">Reviews</a>
+        <a href="/blog/">Blog</a>
+        <a href="/about/">About</a>
+        <a href="tel:2566166760" class="nav-cta">📞 (256) 616-6760</a>
+      </nav>
+      <button class="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="urgency-bar">
+    <span class="pulse"></span>
+    <strong>Spring storm season:</strong> Booking 2–3 weeks out · Limited inspection slots this week
+  </div>
+
+  <section class="hero-v2">
+    <div class="container">
+      <div class="hero-v2-grid">
+
+        <div class="hero-v2-content">
+          <h1>Get Your <span class="accent">Free Gutter Inspection</span> in 24 Hours</h1>
+          <p class="hero-v2-sub">
+            Huntsville's most-trusted gutter team — over 1,700 homeowners served across North Alabama. No pressure, no surprises, just an honest look at your gutters.
+          </p>
+
+          <div class="hero-v2-proof">
+            <span class="stars">★★★★★</span>
+            <span class="proof-text"><strong>4.7 rating</strong> across 240+ verified reviews</span>
+          </div>
+
+          <ul class="hero-v2-benefits">
+            <li>Same-week inspection — most homes seen within 48 hours</li>
+            <li>Honest, written estimate — no high-pressure sales</li>
+            <li>20+ years protecting Alabama homes — licensed &amp; insured</li>
+          </ul>
+
+          <p class="hero-v2-phone">
+            Prefer to call? <a href="tel:2566166760">(256) 616-6760</a> · Mon–Fri 8AM–5PM
+          </p>
+        </div>
+
+        <div class="hero-form-card" id="lead-form-card">
+          <div id="form-view">
+            <div class="hero-form-header">
+              <span class="hero-form-eyebrow">100% Free · No Obligation</span>
+              <h2>Request Your Free Inspection</h2>
+              <p class="form-sub">Takes 30 seconds. We'll be in touch within 24 hours.</p>
+            </div>
+
+            <form id="lead-form" novalidate>
+              <div class="form-group">
+                <label for="lead-name">Your Name</label>
+                <input type="text" id="lead-name" name="name" required placeholder="Jane Smith">
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="lead-phone">Phone</label>
+                  <input type="tel" id="lead-phone" name="phone" required placeholder="(256) 555-0100">
+                </div>
+                <div class="form-group">
+                  <label for="lead-zip">Zip Code</label>
+                  <input type="text" id="lead-zip" name="zip" required maxlength="5" placeholder="35801">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="lead-service">What do you need?</label>
+                <select id="lead-service" name="service" required>
+                  <option value="">Select a service...</option>
+                  <option value="new-gutters">New Seamless Gutters</option>
+                  <option value="cleaning">Gutter Cleaning</option>
+                  <option value="repair">Gutter Repair / Rotten Wood</option>
+                  <option value="guards">Gutter Guards</option>
+                  <option value="drains">Underground Drains</option>
+                  <option value="not-sure">Not sure — need an inspection</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary form-submit">
+                Get My Free Inspection →
+              </button>
+
+              <p class="form-trust">
+                🔒 <strong>Your info stays private.</strong> We never spam, sell, or share.
+              </p>
+            </form>
+          </div>
+
+          <div id="form-success" class="form-success">
+            <div class="form-success-icon">✓</div>
+            <h3>Got it — we're on it!</h3>
+            <p>One of our team will reach out within 24 hours to schedule your free inspection.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats">
+        <div class="stat"><div class="stat-number">1,700+</div><div class="stat-label">Satisfied Customers</div></div>
+        <div class="stat"><div class="stat-number">20+</div><div class="stat-label">Years in Business</div></div>
+        <div class="stat"><div class="stat-number">10,000+</div><div class="stat-label">Projects Completed</div></div>
+        <div class="stat"><div class="stat-number">4+</div><div class="stat-label">Awards Won</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Simple. Honest. Fast.</p>
+        <h2>How It Works</h2>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3>Request Your Inspection</h3>
+          <p>Fill out the form or give us a call. We'll get back to you within 24 hours to schedule a time that works.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3>Free On-Site Inspection</h3>
+          <p>We come out, take a look, and give you a clear written estimate. No pressure, no surprises, no upsells.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3>Quality Install — Done Right</h3>
+          <p>Once you give the green light, our team handles the rest. Most jobs are completed in a single day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">What We Offer</p>
+        <h2>Our Services</h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-seamless-gutters_hcf6si.webp" alt="Seamless Gutters Installation">
+          <div class="service-card-content">
+            <h3>Seamless Gutters</h3>
+            <p>Custom-cut on-site to fit your home perfectly. Fewer seams means fewer leaks. Available in aluminum, copper, and steel.</p>
+            <a href="/services/seamless-gutters/" class="btn btn-dark">Learn More</a>
+          </div>
+        </div>
+        <div class="service-card">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-gutter-guards_csf0zo.webp" alt="Gutter Guards Installation">
+          <div class="service-card-content">
+            <h3>Gutter Guards</h3>
+            <p>Pine needles, leaves, and walnuts are no match. Our guards keep debris out so water flows where it should.</p>
+            <a href="/services/gutter-guards/" class="btn btn-dark">Learn More</a>
+          </div>
+        </div>
+        <div class="service-card">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-gutter-cleaning_kqfwes.webp" alt="Gutter Cleaning Services">
+          <div class="service-card-content">
+            <h3>Gutter Cleaning</h3>
+            <p>Clogged gutters cause water damage. We clear the inside, outside, and downspouts so your system actually works.</p>
+            <a href="/services/gutter-cleaning/" class="btn btn-dark">Learn More</a>
+          </div>
+        </div>
+        <div class="service-card">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-downspouts_iqkukv.webp" alt="Downspout Installation">
+          <div class="service-card-content">
+            <h3>Downspouts</h3>
+            <p>Huntsville gets 50+ inches of rain a year. Properly sized downspouts move that water far away from your foundation.</p>
+            <a href="/services/downspouts/" class="btn btn-dark">Learn More</a>
+          </div>
+        </div>
+        <div class="service-card">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-underground-drains_sbbgru.webp" alt="Underground Drain Installation">
+          <div class="service-card-content">
+            <h3>Underground Drains</h3>
+            <p>Red clay soil doesn't drain. We install underground systems that move water away from your home — for good.</p>
+            <a href="/services/underground-drains/" class="btn btn-dark">Learn More</a>
+          </div>
+        </div>
+        <div class="service-card">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/service-rotten-wood_jhfmim.webp" alt="Rotten Wood Repair">
+          <div class="service-card-content">
+            <h3>Rotten Wood Repair</h3>
+            <p>Sagging gutters? Often it's the fascia rotting underneath. We replace rotten wood and reinstall your gutters right.</p>
+            <a href="/services/rotten-wood-repair/" class="btn btn-dark">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="workmanship parallax-bg" id="about" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/quality-section-bg_u6ueuq.jpg');">
+    <div class="container">
+      <div class="workmanship-grid">
+        <div class="workmanship-image">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/fascia-boards_rszmd9.webp" alt="Quality Gutter Installation">
+        </div>
+        <div class="workmanship-content">
+          <h2>Quality Workmanship</h2>
+          <p>When you call, we pick up. We show up on time, in uniform, and walk you through everything — start to finish.</p>
+          <p>Two decades of doing this in North Alabama means we know the climate, the soil, and the homes. No guesswork.</p>
+          <div class="workmanship-cta">
+            <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
+            <a href="#lead-form-card" class="btn btn-dark">Get Free Inspection</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-eyebrow">Excellent Reviews</p>
+        <h2>What Our Customers Say</h2>
+      </div>
+      <div class="review-platforms">
+        <a href="https://g.co/kgs/oHV77L" class="review-platform" target="_blank" rel="noopener">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/icon-google_p6e6y8.png" alt="Google Reviews">
+          <div class="review-count">96 Reviews</div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-rating">4.7 Star Rating</div>
+        </a>
+        <a href="https://www.angi.com/companylist/us/al/hartselle/blue-river-gutters-reviews-8156246.htm" class="review-platform" target="_blank" rel="noopener">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/icon-angi_fzphgb.png" alt="Angi Reviews">
+          <div class="review-count">31 Reviews</div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-rating">4.7 Star Rating</div>
+        </a>
+        <div class="review-platform">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/icon-homeadvisor_jpa1lf.webp" alt="HomeAdvisor Reviews">
+          <div class="review-count">113 Reviews</div>
+          <div class="review-stars">★★★★★</div>
+          <div class="review-rating">4.6 Star Rating</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq">
+    <div class="container">
+      <div class="section-header">
+        <h2>Common Questions</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How fast can you come out for an inspection?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Most homes are seen within 48 hours of your request. During peak storm season we're sometimes booked 2–3 weeks out for installs, but inspections are always free and fast — we'll let you know your real timeline upfront.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Do you service my area?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>We cover all of North Alabama — Huntsville, Madison, Decatur, Athens, Hartselle, Hampton Cove, Owens Cross Roads, Harvest, Toney, and surrounding areas. If you're within about 45 minutes of Huntsville, we're there.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How long does a typical install take?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Most full-home gutter installs are done in a single day. We custom-cut your seamless gutters on-site, so there's no waiting around for parts. Larger or more complex jobs may take two days — we'll tell you the real timeline before you sign anything.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Do you offer a warranty?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes. All of our installs come with a workmanship warranty, plus the manufacturer warranty on the materials. We'll walk you through exactly what's covered when we give you your written estimate.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Are you licensed and insured?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Yes — fully licensed and insured in the state of Alabama. We're happy to provide proof of insurance before any work begins. We've been doing this for over 20 years and we don't cut corners.</p>
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>How much does gutter installation cost?</span>
+            <span class="faq-icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>It depends on the size of your home and the material you choose. Aluminum seamless gutters typically run $6–$12 per linear foot installed, copper runs $15–$30 per foot. The only way to get an accurate number for your home is a free inspection — we'll give you a written estimate, no pressure.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta parallax-bg" id="contact" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/cta-section-bg_bkom8q.png');">
+    <div class="container">
+      <h2>Ready to get those gutters handled?</h2>
+      <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Free inspection. Honest estimate. No pressure.</p>
+      <a href="#lead-form-card" class="btn btn-primary">Get My Free Inspection</a>
+      <p class="cta-phone"><a href="tel:2566166760">📞 (256) 616-6760</a></p>
+      <p class="cta-hours">MON–FRI 8:00AM–5:00PM</p>
+      <div class="trust-badges">
+        <div class="trust-badge"><span class="trust-badge-icon">✓</span><span>Licensed &amp; Insured</span></div>
+        <div class="trust-badge"><span class="trust-badge-icon">✓</span><span>20+ Years Experience</span></div>
+        <div class="trust-badge"><span class="trust-badge-icon">✓</span><span>Local Family Owned</span></div>
+        <div class="trust-badge"><span class="trust-badge-icon">★</span><span>4.7 Google Rating</span></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/logo_fih2rm.webp" alt="Blue River Gutters" class="footer-logo" style="filter: brightness(0) invert(1);">
+          <p>North Alabama's trusted gutter team. Seamless installs, repairs, cleanings, and guards across Huntsville and beyond.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="/services/seamless-gutters/">Seamless Gutters</a></li>
+            <li><a href="/services/gutter-guards/">Gutter Guards</a></li>
+            <li><a href="/services/gutter-cleaning/">Gutter Cleaning</a></li>
+            <li><a href="/services/downspouts/">Downspouts</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Locations</h4>
+          <ul>
+            <li><a href="/gutters-huntsville-al/">Huntsville</a></li>
+            <li><a href="/gutters-madison-al/">Madison</a></li>
+            <li><a href="/gutters-decatur-al/">Decatur</a></li>
+            <li><a href="/locations/">All Locations</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/reviews/">Reviews</a></li>
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/contact/">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-links footer-contact">
+          <h4>Get In Touch</h4>
+          <p style="font-size: 0.9rem;"><a href="tel:2566166760" style="color: #fbbf24; font-weight: 700;">(256) 616-6760</a></p>
+          <p class="footer-address">3315 Memorial Pkwy SW<br>Suite B13<br>Huntsville, AL 35801</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Blue River Gutters. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="sticky-cta">
+    <a href="tel:2566166760" class="sticky-call">📞 Call</a>
+    <a href="#lead-form-card" class="sticky-form">✉️ Get Quote</a>
+  </div>
+
+  {% raw %}
+  <script>
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const faqItem = button.parentElement;
+        const isOpen = faqItem.classList.contains('active');
+        document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('active'));
+        if (!isOpen) faqItem.classList.add('active');
+      });
+    });
+
+    (function() {
+      const counters = document.querySelectorAll('.stat-number');
+      if (!counters.length) return;
+      let animated = false;
+
+      function animateCounter(el) {
+        const text = el.textContent;
+        const match = text.match(/^([\d,]+)(.*)/);
+        if (!match) return;
+        const target = parseInt(match[1].replace(/,/g, ''));
+        const suffix = match[2] || '';
+        const duration = 1500;
+        const start = performance.now();
+
+        function update(now) {
+          const elapsed = now - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.floor(target * eased);
+          el.textContent = current.toLocaleString() + suffix;
+          if (progress < 1) requestAnimationFrame(update);
+          else el.textContent = target.toLocaleString() + suffix;
+        }
+        requestAnimationFrame(update);
+      }
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !animated) {
+              animated = true;
+              counters.forEach(counter => animateCounter(counter));
+              observer.disconnect();
+            }
+          });
+        }, { threshold: 0.3 });
+        const statsSection = document.querySelector('.stats-section');
+        if (statsSection) observer.observe(statsSection);
+      }
+    })();
+
+    document.getElementById('lead-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = {
+        name: document.getElementById('lead-name').value.trim(),
+        phone: document.getElementById('lead-phone').value.trim(),
+        zip: document.getElementById('lead-zip').value.trim(),
+        service: document.getElementById('lead-service').value,
+        timestamp: new Date().toISOString(),
+        source: 'homepage-v2-hero-form'
+      };
+
+      if (!formData.name || !formData.phone || !formData.zip || !formData.service) {
+        alert('Please fill out all fields.');
+        return;
+      }
+
+      console.log('Lead submitted (demo):', formData);
+
+      document.getElementById('form-view').style.display = 'none';
+      document.getElementById('form-success').classList.add('active');
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+  {% endraw %}
+
+</body>
+</html>
