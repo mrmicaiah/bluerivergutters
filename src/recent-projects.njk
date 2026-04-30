@@ -23,34 +23,43 @@ permalink: /recent-projects/
     <div class="section-header">
       <p class="section-eyebrow">Real Jobs · Real Homes</p>
       <h2>A Look at Some of Our Recent Work</h2>
-      <p class="section-intro">Here are a few of our recent gutter projects across North Alabama. Each one came with its own challenges — different roof lines, different climate problems, different customer needs. This is what 20+ years in the field looks like.</p>
+      <p class="section-intro">Here are our recent gutter projects across North Alabama — each one with its own challenges, different roof lines, different climate problems, different customer needs. This is what 20+ years in the field looks like.</p>
     </div>
 
-    <div class="projects-grid">
+    <div class="projects-grid" id="projects-grid">
       {% for project in projects %}
-        <article class="project-card">
+        <article class="project-card{% if loop.index > 24 %} project-card--hidden{% endif %}" data-index="{{ loop.index }}">
           <a href="{{ ('/projects/' + project.slug + '/') | url }}" class="project-card-image">
             <img src="{{ project.thumbnail }}" alt="{{ project.title }} in {{ project.city }}, AL" loading="lazy">
           </a>
           <div class="project-card-content">
             <div class="project-meta">
-              <span class="project-city">📍 {{ project.city }}, AL</span>
+              {% if project.cityHasPage %}
+                <a href="{{ ('/gutters-' + project.citySlug + '-al/') | url }}" class="project-city">📍 {{ project.city }}, AL</a>
+              {% else %}
+                <span class="project-city">📍 {{ project.city }}, AL</span>
+              {% endif %}
               <span class="project-service">{{ project.service }}</span>
             </div>
             <h3><a href="{{ ('/projects/' + project.slug + '/') | url }}">{{ project.title }}</a></h3>
-            <p class="project-description">{{ project.description }}</p>
-            {% if project.specs %}
-            <ul class="project-specs">
-              {% for key, value in project.specs %}
-                <li><strong>{{ key | replace('_', ' ') | replace('linearFeet', 'Linear feet') | replace('gutterSize', 'Gutter size') | replace('downspouts', 'Downspouts') | replace('guardType', 'Guard type') | replace('warranty', 'Warranty') | replace('pipeType', 'Pipe type') | replace('totalLength', 'Total length') | replace('emitters', 'Emitters') | replace('catchBasins', 'Catch basins') | replace('fasciaReplaced', 'Fascia replaced') | replace('cappingInstalled', 'Capping installed') | replace('newGutters', 'New gutters') | replace('material', 'Material') | replace('color', 'Color') | replace('guards', 'Guards') | replace('undergroundDrains', 'Underground drains') }}:</strong> {{ value }}</li>
-              {% endfor %}
-            </ul>
+            <p class="project-description">{{ project.description | truncate(160) }}</p>
+            {% if project.hasReview and project.review %}
+              <p class="project-review-snippet">⭐ <em>"{{ project.review.text | truncate(90) }}"</em> — {{ project.review.author }}</p>
             {% endif %}
             <a href="{{ ('/projects/' + project.slug + '/') | url }}" class="project-link">View Project Details →</a>
           </div>
         </article>
       {% endfor %}
     </div>
+
+    {# Load more button — only renders if there are more than 24 projects #}
+    {% if projects.length > 24 %}
+      <div class="projects-load-more">
+        <button type="button" id="load-more-btn" class="btn btn-dark">
+          Show all {{ projects.length }} projects
+        </button>
+      </div>
+    {% endif %}
 
     <div class="projects-cta">
       <p>Want a project like one of these for your home? We'd love to give you a free estimate.</p>
@@ -147,6 +156,19 @@ permalink: /recent-projects/
 }());
 </script>
 
+{# Load more toggle — reveals all hidden projects, no pagination #}
+<script>
+(function () {
+  var btn = document.getElementById('load-more-btn');
+  if (!btn) return;
+  btn.addEventListener('click', function () {
+    var hidden = document.querySelectorAll('.project-card--hidden');
+    hidden.forEach(function (el) { el.classList.remove('project-card--hidden'); });
+    btn.parentNode.removeChild(btn);
+  });
+}());
+</script>
+
 <style>
 .hero-short {
   min-height: 40vh;
@@ -183,7 +205,7 @@ permalink: /recent-projects/
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .project-card {
@@ -194,6 +216,10 @@ permalink: /recent-projects/
   display: flex;
   flex-direction: column;
   transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.project-card--hidden {
+  display: none;
 }
 
 .project-card:hover {
@@ -238,7 +264,9 @@ permalink: /recent-projects/
 .project-city {
   color: var(--blue);
   font-weight: 600;
+  text-decoration: none;
 }
+a.project-city:hover { text-decoration: underline; }
 
 .project-service {
   color: var(--gray);
@@ -268,27 +296,18 @@ permalink: /recent-projects/
   color: var(--slate);
   font-size: 0.95rem;
   line-height: 1.5;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
-.project-specs {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.25rem;
+.project-review-snippet {
   font-size: 0.85rem;
-  color: var(--slate);
-  border-top: 1px solid var(--light-gray);
-  padding-top: 1rem;
-}
-
-.project-specs li {
-  margin-bottom: 0.35rem;
-}
-
-.project-specs strong {
-  color: var(--navy);
-  display: inline-block;
-  min-width: 110px;
+  color: var(--gray);
+  margin: 0 0 1rem;
+  line-height: 1.4;
+  padding: 0.5rem 0.75rem;
+  background: var(--cream);
+  border-left: 3px solid #f5b400;
+  border-radius: 0 4px 4px 0;
 }
 
 .project-link {
@@ -301,6 +320,11 @@ permalink: /recent-projects/
 
 .project-link:hover {
   text-decoration: underline;
+}
+
+.projects-load-more {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .projects-cta {
@@ -405,9 +429,9 @@ permalink: /recent-projects/
       "position": {{ loop.index }},
       "item": {
         "@type": "CreativeWork",
-        "name": "{{ project.title }}",
-        "description": "{{ project.description }}",
-        "image": "{{ project.thumbnail }}",
+        "name": {{ project.title | dump | safe }},
+        "description": {{ project.description | dump | safe }},
+        "image": {{ project.thumbnail | dump | safe }},
         "url": "https://bluerivergutters.com/projects/{{ project.slug }}/",
         "locationCreated": {
           "@type": "Place",
