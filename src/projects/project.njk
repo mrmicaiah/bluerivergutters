@@ -5,11 +5,12 @@ pagination:
   size: 1
   alias: project
 permalink: "/projects/{{ project.slug }}/"
+eleventyComputed:
+  title: "{{ project.title }} | Blue River Gutters"
+  description: "{{ project.description | truncate(155) }}"
 ---
 
-{%- set title = project.title ~ " | Blue River Gutters" -%}
-{%- set description = project.description -%}
-
+{# Breadcrumb #}
 <nav class="breadcrumbs" aria-label="Breadcrumb">
   <div class="container">
     <ol class="breadcrumb-list" itemscope itemtype="https://schema.org/BreadcrumbList">
@@ -29,101 +30,112 @@ permalink: "/projects/{{ project.slug }}/"
   </div>
 </nav>
 
-<section class="hero hero-short" style="background-image: url('{{ project.images[0] if project.images and project.images[0] else project.thumbnail }}');">
-  <div class="hero-overlay"></div>
-  <div class="container hero-container">
-    <div class="hero-content">
-      <p class="hero-eyebrow">{{ project.service }} &bull; {{ project.city }}</p>
+{# Hero with project hero image #}
+<section class="project-hero" style="background-image: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url('{{ project.heroImage | default(project.thumbnail) }}');">
+  <div class="container">
+    <div class="project-hero-content">
+      <p class="project-hero-eyebrow">{{ project.service }} &nbsp;·&nbsp; {{ project.city }}, AL</p>
       <h1>{{ project.title }}</h1>
-      <p>{{ project.description }}</p>
+      <p class="project-hero-meta">Completed {{ project.date | dateFormat("MMMM YYYY") }}</p>
     </div>
   </div>
 </section>
 
+{# Main content #}
 <section class="project-details">
   <div class="container">
     <div class="project-layout">
       <div class="project-main">
-        <h2>Project Overview</h2>
-        <p class="project-story">{{ project.details }}</p>
-        {% if project.images and project.images.length > 0 %}
+
+        {# Description #}
+        <h2>About This Project</h2>
+        <p class="project-story">{{ project.description }}</p>
+
+        {# Photo gallery — only render if real photos exist #}
+        {% if project.hasPhotos and project.images.length > 0 %}
         <div class="project-gallery">
           <h3>Project Photos</h3>
           <div class="gallery-grid">
             {% for image in project.images %}
-            <a href="{{ image }}" class="gallery-item" target="_blank">
-              <img src="{{ image | replace('w_1200', 'w_600') }}" alt="{{ project.title }} - Photo {{ loop.index }}" loading="lazy">
+            <a href="{{ image }}" class="gallery-item" target="_blank" rel="noopener">
+              <img src="{{ image }}" alt="{{ project.title }} — Photo {{ loop.index }}" loading="lazy">
             </a>
             {% endfor %}
           </div>
         </div>
         {% endif %}
+
+        {# Customer review — only render if exists #}
+        {% if project.hasReview and project.review %}
+        <div class="project-review">
+          <h3>What the Customer Said</h3>
+          <blockquote class="review-card">
+            <div class="review-stars" aria-label="{{ project.review.rating }} out of 5 stars">
+              {% for i in range(0, project.review.rating) %}★{% endfor %}
+            </div>
+            <p class="review-text">{{ project.review.text }}</p>
+            <footer class="review-footer">
+              <cite>— {{ project.review.author }}, {{ project.city }}</cite>
+              {% if project.review.source %}<span class="review-source">via {{ project.review.source }}</span>{% endif %}
+            </footer>
+          </blockquote>
+        </div>
+        {% endif %}
+
       </div>
+
+      {# Sidebar #}
       <aside class="project-sidebar">
         <div class="specs-card">
-          <h3>Project Specifications</h3>
+          <h3>Project Details</h3>
           <dl class="specs-list">
-            <div class="spec-row"><dt>Location</dt><dd>{{ project.city }}, AL</dd></div>
             <div class="spec-row"><dt>Service</dt><dd>{{ project.service }}</dd></div>
+            <div class="spec-row"><dt>Location</dt><dd>{{ project.city }}, AL</dd></div>
+            {% if project.zip %}<div class="spec-row"><dt>Zip Code</dt><dd>{{ project.zip }}</dd></div>{% endif %}
             <div class="spec-row"><dt>Completed</dt><dd>{{ project.date | dateFormat("MMMM YYYY") }}</dd></div>
-            {% if project.specs.gutterSize %}<div class="spec-row"><dt>Gutter Size</dt><dd>{{ project.specs.gutterSize }}</dd></div>{% endif %}
-            {% if project.specs.material %}<div class="spec-row"><dt>Material</dt><dd>{{ project.specs.material }}</dd></div>{% endif %}
-            {% if project.specs.color %}<div class="spec-row"><dt>Color</dt><dd>{{ project.specs.color }}</dd></div>{% endif %}
-            {% if project.specs.linearFeet %}<div class="spec-row"><dt>Linear Feet</dt><dd>{{ project.specs.linearFeet }}</dd></div>{% endif %}
-            {% if project.specs.downspouts %}<div class="spec-row"><dt>Downspouts</dt><dd>{{ project.specs.downspouts }}</dd></div>{% endif %}
-            {% if project.specs.guardType %}<div class="spec-row"><dt>Guard Type</dt><dd>{{ project.specs.guardType }}</dd></div>{% endif %}
-            {% if project.specs.warranty %}<div class="spec-row"><dt>Warranty</dt><dd>{{ project.specs.warranty }}</dd></div>{% endif %}
-            {% if project.specs.pipeType %}<div class="spec-row"><dt>Pipe Type</dt><dd>{{ project.specs.pipeType }}</dd></div>{% endif %}
-            {% if project.specs.totalLength %}<div class="spec-row"><dt>Total Length</dt><dd>{{ project.specs.totalLength }}</dd></div>{% endif %}
+            {% if project.review %}<div class="spec-row"><dt>Customer Rating</dt><dd>{{ project.review.rating }}/5 ★</dd></div>{% endif %}
           </dl>
+
+          {% if project.cityHasPage %}
+          <a href="{{ ('/gutters-' + project.citySlug + '-al/') | url }}" class="city-link">
+            More gutter work in {{ project.city }} →
+          </a>
+          {% endif %}
         </div>
+
         <div class="sidebar-cta">
-          <h3>Ready for Your Project?</h3>
-          <p>Get a free estimate for your gutter needs.</p>
-          <a href="https://BlueRiverGutters.as.me/" class="btn btn-primary">Schedule Estimate</a>
-          <p class="sidebar-phone"><a href="tel:2566166760">&#128222; (256) 616-6760</a></p>
+          <h3>Need Similar Work Done?</h3>
+          <p>Free estimates for gutter installation, repair, and cleaning in {{ project.city }} and across North Alabama.</p>
+          <a href="https://BlueRiverGutters.as.me/" class="btn btn-primary">Schedule Free Estimate</a>
+          <p class="sidebar-phone"><a href="tel:2566166760">📞 (256) 616-6760</a></p>
         </div>
       </aside>
     </div>
   </div>
 </section>
 
+{# Related projects: same service or same city, max 3 #}
 <section class="related-projects">
   <div class="container">
     <div class="section-header">
       <p class="section-eyebrow">More Work</p>
       <h2>Related Projects</h2>
     </div>
-    <div class="projects-grid">
-      {% set relatedCount = 0 %}
-      {% for p in projects %}
-        {% if p.slug != project.slug and relatedCount < 3 and (p.service == project.service or p.city == project.city) %}
-          {% set relatedCount = relatedCount + 1 %}
-          <a href="{{ '/projects/' | url }}{{ p.slug }}/" class="project-card">
-            <div class="project-card-image"><img src="{{ p.thumbnail }}" alt="{{ p.title }}" loading="lazy"></div>
-            <div class="project-card-content">
-              <span class="project-tag">{{ p.service }}</span>
+    <div class="related-grid">
+      {%- set relatedCount = 0 -%}
+      {%- for p in projects -%}
+        {%- if p.slug != project.slug and relatedCount < 3 and (p.service == project.service or p.city == project.city) -%}
+          {%- set relatedCount = relatedCount + 1 -%}
+          <a href="{{ ('/projects/' + p.slug + '/') | url }}" class="related-card">
+            <div class="related-card-image"><img src="{{ p.thumbnail }}" alt="{{ p.title }}" loading="lazy"></div>
+            <div class="related-card-content">
+              <span class="related-tag">{{ p.service }}</span>
               <h3>{{ p.title }}</h3>
-              <p>{{ p.description }}</p>
-              <span class="project-location">&#128205; {{ p.city }}, AL</span>
+              <span class="related-location">📍 {{ p.city }}, AL</span>
             </div>
           </a>
-        {% endif %}
-      {% endfor %}
-      {% for p in projects %}
-        {% if p.slug != project.slug and p.featured and relatedCount < 3 %}
-          {% set relatedCount = relatedCount + 1 %}
-          <a href="{{ '/projects/' | url }}{{ p.slug }}/" class="project-card">
-            <div class="project-card-image"><img src="{{ p.thumbnail }}" alt="{{ p.title }}" loading="lazy"></div>
-            <div class="project-card-content">
-              <span class="project-tag">{{ p.service }}</span>
-              <h3>{{ p.title }}</h3>
-              <p>{{ p.description }}</p>
-              <span class="project-location">&#128205; {{ p.city }}, AL</span>
-            </div>
-          </a>
-        {% endif %}
-      {% endfor %}
+        {%- endif -%}
+      {%- endfor -%}
     </div>
     <div class="projects-all-link">
       <a href="{{ '/recent-projects/' | url }}" class="btn btn-dark">View All Projects</a>
@@ -131,22 +143,304 @@ permalink: "/projects/{{ project.slug }}/"
   </div>
 </section>
 
-<section class="cta" id="contact">
+{# Final CTA #}
+<section class="cta">
   <div class="container">
     <h2>Start Your Gutter Project</h2>
     <p>Get a free estimate for gutter installation, repair, or cleaning in {{ project.city }} and throughout North Alabama.</p>
     <a href="https://BlueRiverGutters.as.me/" class="btn btn-primary">Schedule Free Estimate</a>
-    <p class="cta-phone"><a href="tel:2566166760">&#128222; (256) 616-6760</a></p>
+    <p class="cta-phone"><a href="tel:2566166760">📞 (256) 616-6760</a></p>
     <p class="cta-hours">MON-FRI 8:00AM-5:00PM</p>
   </div>
 </section>
 
+{# Schema markup — Article + Place #}
 {% block schema %}
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"{{ project.title }}","description":"{{ project.description }}","image":"{{ project.images[0] if project.images and project.images[0] else project.thumbnail }}","datePublished":"{{ project.date }}","author":{"@type":"Organization","name":"Blue River Gutters"},"publisher":{"@type":"Organization","name":"Blue River Gutters","logo":{"@type":"ImageObject","url":"https://res.cloudinary.com/dxzw1zwez/image/upload/logo-horizontal-white_kzwl0f.png"}}}
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ project.title | dump | safe }},
+  "description": {{ project.description | dump | safe }},
+  "image": {{ (project.heroImage | default(project.thumbnail)) | dump | safe }},
+  "datePublished": "{{ project.date }}",
+  "author": {"@type": "Organization", "name": "Blue River Gutters"},
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blue River Gutters",
+    "logo": {"@type": "ImageObject", "url": "https://res.cloudinary.com/dxzw1zwez/image/upload/logo-horizontal-white_kzwl0f.png"}
+  },
+  "contentLocation": {
+    "@type": "Place",
+    "name": "{{ project.city }}, Alabama"{% if project.geolocation %},
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": {{ project.geolocation.lat }},
+      "longitude": {{ project.geolocation.lng }}
+    }{% endif %}
+  }
+}
 </script>
+{% if project.hasReview and project.review %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "itemReviewed": {
+    "@type": "LocalBusiness",
+    "name": "Blue River Gutters",
+    "telephone": "(256) 616-6760",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "3315 Memorial Pkwy SW Suite B13",
+      "addressLocality": "Huntsville",
+      "addressRegion": "AL",
+      "postalCode": "35801"
+    }
+  },
+  "reviewRating": {"@type": "Rating", "ratingValue": "{{ project.review.rating }}", "bestRating": "5"},
+  "author": {"@type": "Person", "name": "{{ project.review.author }}"},
+  "reviewBody": {{ project.review.text | dump | safe }}
+}
+</script>
+{% endif %}
 {% endblock %}
 
 <style>
-.hero-short{min-height:45vh;padding:4rem 0}.project-details{padding:3rem 0 4rem}.project-layout{display:grid;grid-template-columns:1fr 350px;gap:3rem;align-items:start}.project-main h2{margin-bottom:1rem}.project-story{font-size:1.1rem;line-height:1.8;color:var(--slate);margin-bottom:2rem}.project-gallery h3{margin-bottom:1rem;color:var(--navy)}.gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}.gallery-item{border-radius:8px;overflow:hidden;display:block}.gallery-item img{width:100%;height:200px;object-fit:cover;transition:transform .3s}.gallery-item:hover img{transform:scale(1.05)}.project-sidebar{display:flex;flex-direction:column;gap:1.5rem}.specs-card{background:var(--light-gray);border-radius:12px;padding:1.5rem}.specs-card h3{margin-bottom:1rem;font-size:1.1rem}.specs-list{display:flex;flex-direction:column;gap:.5rem}.spec-row{display:flex;justify-content:space-between;padding:.5rem 0;border-bottom:1px solid rgba(0,0,0,.06)}.spec-row:last-child{border-bottom:none}.spec-row dt{color:var(--gray);font-size:.9rem}.spec-row dd{color:var(--navy);font-weight:600;font-size:.9rem}.sidebar-cta{background:var(--navy);color:var(--white);border-radius:12px;padding:1.5rem;text-align:center}.sidebar-cta h3{color:var(--white);margin-bottom:.5rem}.sidebar-cta p{color:rgba(255,255,255,.8);margin-bottom:1rem}.sidebar-cta .btn{width:100%;margin-bottom:1rem}.sidebar-phone a{color:var(--white);font-weight:600}.related-projects{background:var(--cream);padding:4rem 0}.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}.project-card{background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 4px 6px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s;display:block;color:inherit}.project-card:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.1)}.project-card-image img{width:100%;height:180px;object-fit:cover}.project-card-content{padding:1.25rem}.project-tag{display:inline-block;background:var(--light-gray);color:var(--slate);padding:.25rem .75rem;border-radius:20px;font-size:.75rem;font-weight:600;margin-bottom:.5rem}.project-card h3{font-size:1rem;margin-bottom:.5rem;color:var(--navy)}.project-card p{font-size:.9rem;color:var(--gray);margin-bottom:.75rem;line-height:1.5}.project-location{font-size:.8rem;color:var(--gray)}.projects-all-link{text-align:center;margin-top:2rem}@media(max-width:1024px){.project-layout{grid-template-columns:1fr}.project-sidebar{flex-direction:row;flex-wrap:wrap}.specs-card,.sidebar-cta{flex:1;min-width:280px}.projects-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:768px){.gallery-grid{grid-template-columns:1fr}.project-sidebar{flex-direction:column}.specs-card,.sidebar-cta{min-width:auto}.projects-grid{grid-template-columns:1fr}}
+/* === Project Hero === */
+.project-hero {
+  background-size: cover;
+  background-position: center;
+  color: var(--white);
+  padding: 5rem 0 4rem;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+}
+.project-hero-content { max-width: 800px; }
+.project-hero-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  opacity: 0.95;
+}
+.project-hero h1 {
+  color: var(--white);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
+  margin: 0 0 0.75rem;
+  line-height: 1.15;
+}
+.project-hero-meta {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* === Layout === */
+.project-details { padding: 3rem 0 4rem; background: var(--cream); }
+.project-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 3rem;
+  align-items: start;
+}
+.project-main h2 { margin-bottom: 1rem; color: var(--navy); }
+.project-story {
+  font-size: 1.1rem;
+  line-height: 1.75;
+  color: var(--slate);
+  margin-bottom: 2.5rem;
+}
+
+/* === Gallery === */
+.project-gallery { margin-bottom: 2.5rem; }
+.project-gallery h3 { margin-bottom: 1rem; color: var(--navy); }
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+.gallery-item {
+  border-radius: 8px;
+  overflow: hidden;
+  display: block;
+  background: var(--light-gray);
+  aspect-ratio: 4/3;
+}
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+  display: block;
+}
+.gallery-item:hover img { transform: scale(1.05); }
+
+/* === Review === */
+.project-review { margin-bottom: 2rem; }
+.project-review h3 { margin-bottom: 1rem; color: var(--navy); }
+.review-card {
+  background: var(--white);
+  border-left: 4px solid var(--blue);
+  padding: 1.5rem 1.75rem;
+  border-radius: 8px;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.review-stars {
+  color: #f5b400;
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+.review-text {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--slate);
+  font-style: italic;
+  margin: 0 0 1rem;
+}
+.review-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+.review-footer cite {
+  color: var(--navy);
+  font-style: normal;
+  font-weight: 600;
+}
+.review-source {
+  color: var(--gray);
+  font-size: 0.85rem;
+}
+
+/* === Sidebar === */
+.project-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: sticky;
+  top: 100px;
+}
+.specs-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.specs-card h3 { margin-bottom: 1rem; font-size: 1.1rem; color: var(--navy); }
+.specs-list {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--light-gray);
+  margin: 0;
+}
+.spec-row:last-child { border-bottom: none; }
+.spec-row dt { color: var(--gray); font-size: 0.9rem; }
+.spec-row dd {
+  color: var(--navy);
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 0;
+  text-align: right;
+}
+.city-link {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--blue);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+.city-link:hover { text-decoration: underline; }
+
+.sidebar-cta {
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+}
+.sidebar-cta h3 { color: var(--white); margin-bottom: 0.5rem; }
+.sidebar-cta p { color: rgba(255,255,255,0.85); margin-bottom: 1.25rem; font-size: 0.95rem; }
+.sidebar-cta .btn { width: 100%; margin-bottom: 1rem; }
+.sidebar-phone a { color: var(--white); font-weight: 600; }
+
+/* === Related === */
+.related-projects { background: var(--white); padding: 4rem 0; }
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.related-card {
+  background: var(--cream);
+  border-radius: 12px;
+  overflow: hidden;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.related-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+}
+.related-card-image {
+  aspect-ratio: 4/3;
+  background: var(--light-gray);
+  overflow: hidden;
+}
+.related-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.related-card-content { padding: 1.25rem; }
+.related-tag {
+  display: inline-block;
+  background: var(--white);
+  color: var(--slate);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.related-card h3 {
+  font-size: 1rem;
+  margin: 0.25rem 0 0.5rem;
+  color: var(--navy);
+  line-height: 1.3;
+}
+.related-location {
+  font-size: 0.85rem;
+  color: var(--gray);
+}
+.projects-all-link { text-align: center; }
+
+/* === Responsive === */
+@media (max-width: 1024px) {
+  .project-layout { grid-template-columns: 1fr; }
+  .project-sidebar { position: static; }
+  .related-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .project-hero { padding: 3.5rem 0 2.5rem; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  .related-grid { grid-template-columns: 1fr; }
+}
 </style>
