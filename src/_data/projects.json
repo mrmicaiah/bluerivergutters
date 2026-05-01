@@ -1,106 +1,1234 @@
 [
   {
-    "title": "Seamless Gutter Installation - Hampton Cove",
-    "slug": "seamless-gutters-hampton-cove",
-    "date": "2024-12-15",
-    "city": "Hampton Cove",
-    "service": "Seamless Gutters",
-    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_800/v1769851938/seamless-gutter-detail_dsaj52.jpg",
-    "images": [
-      "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769851938/seamless-gutter-detail_dsaj52.jpg"
-    ],
-    "description": "Complete seamless gutter system for a two-story home with complex roofline.",
-    "details": "This Hampton Cove homeowner needed a complete gutter replacement. The original builder-grade gutters were failing at the seams after just 8 years. We installed 6-inch seamless aluminum gutters in bronze to complement the home's exterior.",
-    "specs": {
-      "gutterSize": "6-inch K-style",
-      "material": "0.032 gauge aluminum",
-      "color": "Bronze",
-      "linearFeet": 285,
-      "downspouts": 8
+    "id": "OvTCsdQbYD",
+    "slug": "owens-cross-roads-underground-drains-OvTCsdQbYD",
+    "title": "Underground Drains in Owens Cross Roads, AL",
+    "city": "Owens Cross Roads",
+    "citySlug": "owens-cross-roads",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35763",
+    "geolocation": {
+      "lat": 34.6235557,
+      "lng": -86.4364811
     },
-    "featured": true
-  },
-  {
-    "title": "Gutter Guards Installation - Madison",
-    "slug": "gutter-guards-madison",
-    "date": "2024-11-28",
-    "city": "Madison",
-    "service": "Gutter Guards",
-    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_800/v1769851937/gutter-cleaning-hero_xxyiwt.jpg",
-    "images": [
-      "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769851937/gutter-cleaning-hero_xxyiwt.jpg",
-      "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769851935/clean-gutter-result_j8fqtx.webp"
-    ],
-    "description": "Heavy-duty leaf guards installed on existing gutters surrounded by mature oaks.",
-    "details": "Located in a heavily wooded Madison subdivision, this homeowner was cleaning gutters 4-5 times per year. We installed micro-mesh gutter guards that handle both large oak leaves and small pine needles.",
-    "specs": {
-      "guardType": "Micro-mesh stainless steel",
-      "linearFeet": 210,
-      "warranty": "Lifetime clog-free guarantee"
-    },
-    "featured": true
-  },
-  {
-    "title": "Underground Drain System - Huntsville",
-    "slug": "underground-drains-huntsville",
-    "date": "2024-10-22",
-    "city": "Huntsville",
+    "date": "2026-04-24",
     "service": "Underground Drains",
-    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_800/v1769851932/downspouts-hero_velkgn.jpg",
+    "description": "A drainage issue prompted the need for a French drain pit construction. We successfully created a 4’x6’x10’ drain pit to effectively manage water problems, particularly surrounding gutter issues. This solution aims to improve water flow and reduce potential flooding, enhancing the property's overall drainage system.",
+    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_800,h_600,c_fill/v1769832696/gutter_being_prepared_bvglmy.webp",
+    "heroImage": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769832696/gutter_being_prepared_bvglmy.webp",
     "images": [
-      "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769851932/downspouts-hero_velkgn.jpg"
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769832696/gutter_being_prepared_bvglmy.webp"
     ],
-    "description": "Complete underground drainage solution for water pooling issues near foundation.",
-    "details": "This Huntsville home had serious water pooling near the foundation due to North Alabama's notorious red clay soil. We installed 4-inch corrugated drain pipe with pop-up emitters positioned 30 feet from the house.",
-    "specs": {
-      "pipeType": "4-inch corrugated",
-      "totalLength": "180 linear feet",
-      "emitters": 4,
-      "catchBasins": 2
+    "review": {
+      "rating": 5,
+      "author": "J. C.",
+      "text": "Recently had a dry well installed to address drainage issues in back yard. Adam was very responsive and provided several options to consider during the site survey. Quickly provided an estimate and schedule. Work was completed early and on budget. Would highly recommend Blue River Gutters.",
+      "source": "Google"
     },
-    "featured": false
+    "hasPhotos": false,
+    "hasReview": true
   },
   {
-    "title": "Rotten Fascia Repair - Decatur",
-    "slug": "fascia-repair-decatur",
-    "date": "2024-09-14",
-    "city": "Decatur",
-    "service": "Rotten Wood Repair",
-    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_800/v1769851927/rotten-fascia-damage_djh6bv.jpg",
-    "images": [
-      "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769851927/rotten-fascia-damage_djh6bv.jpg"
-    ],
-    "description": "Extensive fascia board replacement and aluminum capping to prevent future rot.",
-    "details": "Years of Alabama humidity and overflowing gutters had caused significant fascia damage. We replaced 45 feet of rotten fascia board with treated lumber and installed aluminum fascia capping for long-term protection.",
-    "specs": {
-      "fasciaReplaced": "45 linear feet",
-      "cappingInstalled": "Yes - aluminum",
-      "newGutters": "Yes - 5-inch white"
-    },
-    "featured": false
-  },
-  {
-    "title": "Complete Gutter System - Athens",
-    "slug": "complete-system-athens",
-    "date": "2024-08-30",
+    "id": "Q1dXTPZhBD",
+    "slug": "athens-seamless-gutters-Q1dXTPZhBD",
+    "title": "Seamless Gutters in Athens, AL",
     "city": "Athens",
-    "service": "Seamless Gutters",
-    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_800/v1769832696/gutter_being_prepared_bvglmy.webp",
-    "images": [
-      "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769832696/gutter_being_prepared_bvglmy.webp",
-      "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769851935/clean-gutter-result_j8fqtx.webp"
-    ],
-    "description": "New construction gutter installation with underground drainage.",
-    "details": "This new-build Athens home needed a complete gutter system. We installed 6-inch seamless gutters with leaf guards and ran underground drains to a drainage easement at the back of the property.",
-    "specs": {
-      "gutterSize": "6-inch K-style",
-      "material": "0.032 gauge aluminum",
-      "color": "White",
-      "linearFeet": 320,
-      "downspouts": 10,
-      "guards": "Micro-mesh",
-      "undergroundDrains": "220 feet"
+    "citySlug": "athens",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35611",
+    "geolocation": {
+      "lat": 34.7634429,
+      "lng": -86.9513865
     },
-    "featured": true
+    "date": "2026-04-24",
+    "service": "Seamless Gutters",
+    "description": "A need for new gutter installation was addressed in Athens. We installed a 6-inch K-style seamless gutter system, using metal with a thickness range of .027 to .032. We also fitted end caps, box outside miters, and spouts to manage water flow effectively, ensuring all joints were sealed with a durable tripolymer gutter sealer.",
+    "thumbnail": "https://app.realworklabs.com/media/41efb5e32c62333d3f572c5cca2ccbe6__note_file_attachments_b254-419046526_original_7667D4D2-63B1-4298-B74E-CFCC8C8B8326.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/41efb5e32c62333d3f572c5cca2ccbe6__note_file_attachments_b254-419046526_original_7667D4D2-63B1-4298-B74E-CFCC8C8B8326.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/41efb5e32c62333d3f572c5cca2ccbe6__note_file_attachments_b254-419046526_original_7667D4D2-63B1-4298-B74E-CFCC8C8B8326.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/775fe74330ef908978f874bd5b40b7da__note_file_attachments_c964-419046524_original_598BF0CA-161F-446F-A851-F460B61C7037.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/6ded30954cdb853e8b6c48665885d862__note_file_attachments_c19d-419046529_original_E0482006-C6B1-4A55-836A-5D1C622027C6.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "BYJCEkfXxq",
+    "slug": "madison-gutter-cleaning-BYJCEkfXxq",
+    "title": "Gutter Cleaning in Madison, AL",
+    "city": "Madison",
+    "citySlug": "madison",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35757",
+    "geolocation": {
+      "lat": 34.7658817,
+      "lng": -86.7681084
+    },
+    "date": "2026-04-23",
+    "service": "Gutter Cleaning",
+    "description": "To resolve ongoing plumbing issues, we conducted thorough gutter cleaning for the property situated in Madison. This service addressed the customer's gutter concerns effectively. We ensured the gutters were free of debris, promoting optimal water flow and preventing potential water damage. Adam was assigned to this task, ensuring a successful completion of the job.",
+    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_800,h_600,c_fill/v1769832696/gutter_being_prepared_bvglmy.webp",
+    "heroImage": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769832696/gutter_being_prepared_bvglmy.webp",
+    "images": [
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769832696/gutter_being_prepared_bvglmy.webp"
+    ],
+    "review": {
+      "rating": 5,
+      "author": "D. C.",
+      "text": "Gutter Cleaning",
+      "source": "Google"
+    },
+    "hasPhotos": false,
+    "hasReview": true
+  },
+  {
+    "id": "O1DZkUb9HE",
+    "slug": "elkmont-underground-drains-O1DZkUb9HE",
+    "title": "Underground Drains in Elkmont, AL",
+    "city": "Elkmont",
+    "citySlug": "elkmont",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35620",
+    "geolocation": {
+      "lat": 34.8940431,
+      "lng": -86.9609627
+    },
+    "date": "2026-04-17",
+    "service": "Underground Drains",
+    "description": "The homeowner's gutters required attention due to ongoing issues. We installed a new 6-inch K-style gutter system, complete with downspout extensions and underground drainage to effectively manage water flow and prevent foundation concerns. The installation included sealing joints and ensuring everything was fitted securely. This improvement will enhance the functionality of the drainage system in Elkmont.",
+    "thumbnail": "https://app.realworklabs.com/media/8d63036efba6488026ee07b44e2ba99a__note_file_attachments_d314-415229260_original_BB02F0E6-10D3-435A-8717-35F136176D5F.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/8d63036efba6488026ee07b44e2ba99a__note_file_attachments_d314-415229260_original_BB02F0E6-10D3-435A-8717-35F136176D5F.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/8d63036efba6488026ee07b44e2ba99a__note_file_attachments_d314-415229260_original_BB02F0E6-10D3-435A-8717-35F136176D5F.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/2860addc88204f3d566a553e3afb7397__note_file_attachments_577a-415229259_original_6D3BF59E-6A73-4B13-A0A6-853D2C2AEACB.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/aa968a059a3f681b534224ce60614ab4__note_file_attachments_c42f-415229261_original_3FCE8DDB-C1B3-46DE-8564-5DEC860D43FE.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "PMU54GAa9T",
+    "slug": "brownsboro-seamless-gutters-PMU54GAa9T",
+    "title": "Seamless Gutters in Brownsboro, AL",
+    "city": "Brownsboro",
+    "citySlug": "brownsboro",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35741",
+    "geolocation": {
+      "lat": 34.7494296,
+      "lng": -86.4792653
+    },
+    "date": "2026-04-17",
+    "service": "Seamless Gutters",
+    "description": "Gutter issues prompted a comprehensive service to ensure proper water drainage. We installed a new drip edge to direct water efficiently into the gutter trough, wrapped the garage door trim with custom bent aluminum cladding, and sealed roof gaps with a custom drip edge to prevent pest intrusion. The enhancements will protect the home from water damage effectively.",
+    "thumbnail": "https://app.realworklabs.com/media/54be178f8052b13bdb1ffde0c43cf2da__note_file_attachments_80c8-414867985_original_300203E7-E090-4089-A9DB-BD3C3DA5EC89.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/54be178f8052b13bdb1ffde0c43cf2da__note_file_attachments_80c8-414867985_original_300203E7-E090-4089-A9DB-BD3C3DA5EC89.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/54be178f8052b13bdb1ffde0c43cf2da__note_file_attachments_80c8-414867985_original_300203E7-E090-4089-A9DB-BD3C3DA5EC89.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/41843e1b8fc9b34c4b2c31d53046a9c6__note_file_attachments_6b55-414867984_original_B56B48EF-7866-4748-83B4-98BCD9DD0E06.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "kMgSK3CCRm",
+    "slug": "decatur-seamless-gutters-kMgSK3CCRm",
+    "title": "Seamless Gutters in Decatur, AL",
+    "city": "Decatur",
+    "citySlug": "decatur",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35601",
+    "geolocation": {
+      "lat": 34.61778,
+      "lng": -86.995981
+    },
+    "date": "2026-04-15",
+    "service": "Seamless Gutters",
+    "description": "To address drainage issues, we installed a 4\" above-ground black corrugated pipe alongside a poly splash block to effectively manage water runoff from the gutters. This solution helps to prevent water pooling around the property, ensuring proper drainage in Decatur. The work was completed efficiently, improving water flow and protecting the home from potential water damage.",
+    "thumbnail": "https://app.realworklabs.com/media/d30f66702ba3b808a9918944f45e2630__note_file_attachments_6330-414011558_original_08FFA3BC-6584-4BFC-811B-DF87254BE514.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/d30f66702ba3b808a9918944f45e2630__note_file_attachments_6330-414011558_original_08FFA3BC-6584-4BFC-811B-DF87254BE514.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/d30f66702ba3b808a9918944f45e2630__note_file_attachments_6330-414011558_original_08FFA3BC-6584-4BFC-811B-DF87254BE514.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "Pq2sBQjIlz",
+    "slug": "huntsville-seamless-gutters-Pq2sBQjIlz",
+    "title": "Seamless Gutters in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35802",
+    "geolocation": {
+      "lat": 34.6568677,
+      "lng": -86.53181889999999
+    },
+    "date": "2026-04-10",
+    "service": "Seamless Gutters",
+    "description": "A gutter repair project was undertaken to address issues affecting proper drainage. We installed a 5-inch K style gutter along with box inside miters, ensuring that all joints were securely sealed with high-quality tripolymer gutter narrow seam sealer. This installation aims to enhance the efficiency of the gutter system in Huntsville.",
+    "thumbnail": "https://app.realworklabs.com/media/0149b388cefed47f60afc7e3d9fdd2d3__note_file_attachments_4c79-405395225_original_photo_1774382179621.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/0149b388cefed47f60afc7e3d9fdd2d3__note_file_attachments_4c79-405395225_original_photo_1774382179621.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/0149b388cefed47f60afc7e3d9fdd2d3__note_file_attachments_4c79-405395225_original_photo_1774382179621.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": {
+      "rating": 5,
+      "author": "D. P.",
+      "text": "I recently had Blue River Gutters work on my home, and I couldn't be more pleased with their service. Blue River Gutters is a local, family-owned business. Adam Bussey, owner, responded promptly to my inquiry, and after a thorough inspection, Adam took the time to clearly explain the problem areas with my existing gutters. He gave me several options for repairs and additional gutter installations to improve water drainage. Adam also replaced the rotten fascia boards, and both he and his son did a wonderful job. Their professionalism, attention to detail, and competitive pricing truly set them apart. I wouldn’t hesitate to call them again and highly recommend Blue River Gutters for anyone seeking quality gutter work. You can’t go wrong with Blue River Gutters!",
+      "source": "Google"
+    },
+    "hasPhotos": true,
+    "hasReview": true
+  },
+  {
+    "id": "EUjg38dX5E",
+    "slug": "huntsville-seamless-gutters-EUjg38dX5E",
+    "title": "Seamless Gutters in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35801",
+    "geolocation": {
+      "lat": 34.7249891,
+      "lng": -86.56604990000001
+    },
+    "date": "2026-04-09",
+    "service": "Seamless Gutters",
+    "description": "A section of the gutter system required updates to improve functionality. We installed new 6-inch K-style gutters with hidden hangers, ensuring secure attachment and proper sealing. Additionally, we relocated the spout and adjusted the pitch to enhance water flow, while adding flashing to the roof edge for further water management. The job was completed in Huntsville, and we confirmed all aspects were in line with the project needs.",
+    "thumbnail": "https://app.realworklabs.com/media/edcbc4b44062b96b1153a697a90aa641__note_file_attachments_24e2-412658117_original_A5DE7858-2A60-4C2A-857A-9A7F89FADA4C.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/edcbc4b44062b96b1153a697a90aa641__note_file_attachments_24e2-412658117_original_A5DE7858-2A60-4C2A-857A-9A7F89FADA4C.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/edcbc4b44062b96b1153a697a90aa641__note_file_attachments_24e2-412658117_original_A5DE7858-2A60-4C2A-857A-9A7F89FADA4C.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/b522c03a28d1fa70a38eea50fdf66132__note_file_attachments_16c5-412658116_original_6FDB7F89-AD17-4DF2-9F9B-C48B173ED40D.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/ca6ead9e81fc67fd7f4bc44715c91833__note_file_attachments_7b93-412658115_original_D5B48095-53A2-4B04-901A-A40BBCB0D520.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "S4xfxou2Bt",
+    "slug": "huntsville-gutter-guards-S4xfxou2Bt",
+    "title": "Gutter Guards in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35802",
+    "geolocation": {
+      "lat": 34.6680933,
+      "lng": -86.54249349999999
+    },
+    "date": "2026-04-03",
+    "service": "Gutter Guards",
+    "description": "The homeowner needed gutter repairs and updates, including the installation of new sections and two-story guards. We removed and disposed of the old gutters, then installed new 5-inch K-style gutters complete with hidden hangers and sealed joints. We also added leaf guards to prevent debris buildup, ensuring proper water flow and protection for the home in Huntsville.",
+    "thumbnail": "https://app.realworklabs.com/media/b574f5c485cfd9aa5c797c42f0640eb7__note_file_attachments_24ee-407305292_original_41096797-3F3F-41C2-BFE8-852FF4BB7E89.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/b574f5c485cfd9aa5c797c42f0640eb7__note_file_attachments_24ee-407305292_original_41096797-3F3F-41C2-BFE8-852FF4BB7E89.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/b574f5c485cfd9aa5c797c42f0640eb7__note_file_attachments_24ee-407305292_original_41096797-3F3F-41C2-BFE8-852FF4BB7E89.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/12ab8e639725b21bdffee8a81f93dd9c__note_file_attachments_1a3b-407305288_original_1D5A26F6-F36D-4619-8D6E-6767BCEE0FE0.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/efa92b32016fe9eda5a64c32fbd54ebf__note_file_attachments_15e8-407305293_original_AFBF4750-D2D0-4BA7-A936-9EDA8B7B0FFA.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/407f477847d5006fbba5bbf484bad643__note_file_attachments_6d49-407305294_original_7AC874B6-7248-43CE-BAD1-918A25C59F31.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/91fd741ae202cc10125efac7e56d948f__note_file_attachments_83d4-407305295_original_8A32E2D7-6DB2-477F-AE15-49CB3F18D687.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/47ec6784bbda8f2b3446eacf5a00f2d4__note_file_attachments_a39f-407305301_original_73855E61-9071-4D8B-93EE-1AA2DC7DC332.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/0cdcc540845985bb36a02f341896d6ff__note_file_attachments_0de5-407305299_original_3E1506D7-3622-4736-BB8D-944226E10239.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/fbbf043b0af6a59aae51b6f014fc933d__note_file_attachments_88cb-407305291_original_37F31413-B78B-476A-ACBF-FCDE2910A5E5.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/326e250646d7b774d76c999d951e0e21__note_file_attachments_b30e-407305297_original_60F7B863-A8B8-4810-85B3-4E34165A136C.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/356e7b224fdee026472e5761a3cc8c38__note_file_attachments_400e-407305290_original_66F872CC-91D8-4CB8-81A5-6B7F6DAC98E3.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "rbGgXFiJqE",
+    "slug": "huntsville-gutter-guards-rbGgXFiJqE",
+    "title": "Gutter Guards in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35803",
+    "geolocation": {
+      "lat": 34.6273581,
+      "lng": -86.5660144
+    },
+    "date": "2026-03-27",
+    "service": "Gutter Guards",
+    "description": "A roof runoff issue prompted us to repair the gutters at a property in Huntsville. We sealed leaking joints and re-secured hangers, ensuring proper drainage. Additionally, we installed a 5-inch perforated aluminum gutter topper to prevent debris accumulation. To enhance functionality, we also fitted a drip edge, ensuring roof water flows effectively into the gutter trough.",
+    "thumbnail": "https://app.realworklabs.com/media/78852bee1e72e05871f0b7d241875115__note_file_attachments_e6fc-407181529_original_ADBC0618-1901-480C-922A-4E4A7715F48C.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/78852bee1e72e05871f0b7d241875115__note_file_attachments_e6fc-407181529_original_ADBC0618-1901-480C-922A-4E4A7715F48C.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/78852bee1e72e05871f0b7d241875115__note_file_attachments_e6fc-407181529_original_ADBC0618-1901-480C-922A-4E4A7715F48C.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/b564407b287d386f26ef6d7e9ba09913__note_file_attachments_de87-407181530_original_D3F3483A-635B-42E0-8246-79861F799629.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/70734ab0c99c284562c2c6366b8d2bdc__note_file_attachments_b2f9-407181528_original_CC9BDDA0-590A-4D40-A435-4A5BA82518B9.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "T6FyxnIG8d",
+    "slug": "brownsboro-seamless-gutters-T6FyxnIG8d",
+    "title": "Seamless Gutters in Brownsboro, AL",
+    "city": "Brownsboro",
+    "citySlug": "brownsboro",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35741",
+    "geolocation": {
+      "lat": 34.7494296,
+      "lng": -86.4792653
+    },
+    "date": "2026-03-26",
+    "service": "Seamless Gutters",
+    "description": "A recent project involved addressing gutter issues at a property in Brownsboro. We installed new 6-inch K-style gutters, along with standard spouts, end caps, and box outside miters. All joints were meticulously sealed to ensure long-lasting performance. This solution effectively resolved the customer's concerns, enhancing the property's drainage system for better moisture management.",
+    "thumbnail": "https://app.realworklabs.com/media/82433759be9fa7eca0adf0f475e8998c__note_file_attachments_4fbb-399231822_original_A29FCFC1-44C0-4378-977C-9A8DB516F69B.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/82433759be9fa7eca0adf0f475e8998c__note_file_attachments_4fbb-399231822_original_A29FCFC1-44C0-4378-977C-9A8DB516F69B.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/82433759be9fa7eca0adf0f475e8998c__note_file_attachments_4fbb-399231822_original_A29FCFC1-44C0-4378-977C-9A8DB516F69B.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/08b4067e1150ad1790f72e2e8edf9b7a__note_file_attachments_3bd4-407138489_original_78CBF2E5-69C2-43DC-9989-FC0D128FE2D3.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/a2ee46151ebd10366f49b4be3e2585b9__note_file_attachments_1f96-407138488_original_49933288-CBF3-4508-A985-877175BF41F4.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/aae20f33b82b2c5506fd56e5b3e47dab__note_file_attachments_6901-407138486_original_45D2453A-661B-4B08-9EAE-3AD7BFEE18D5.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/538686c92adf68792bf6698f83f99ad6__note_file_attachments_3647-407138487_original_2E16663D-4E5E-4CBF-B7C8-855507142E84.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/42f99c6e1715d2b054ab4068df4f5cd3__note_file_attachments_d77c-407138485_original_AAD61CD5-6DC3-4792-8AD4-9CC643B7DB8E.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "A0ECY9Oz2O",
+    "slug": "madison-gutter-cleaning-A0ECY9Oz2O",
+    "title": "Gutter Cleaning in Madison, AL",
+    "city": "Madison",
+    "citySlug": "madison",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35756",
+    "geolocation": {
+      "lat": 34.7063113,
+      "lng": -86.81608299999999
+    },
+    "date": "2026-03-26",
+    "service": "Gutter Cleaning",
+    "description": "To address gutter issues in Madison, we installed an end wall water diverter to ensure proper water flow away from the home. This installation prevents water from seeping between the gutter and the wall, particularly in areas near chimneys and porch beams. Additionally, we conducted thorough gutter cleaning to maintain functionality and keep the system clear. The job was completed efficiently and effectively.",
+    "thumbnail": "https://app.realworklabs.com/media/71c8f4f54430c29d7495105bfd71d456__note_file_attachments_2e82-406408322_original_D6219D48-C0D4-46EE-BE6C-FD91BAE7E764.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/71c8f4f54430c29d7495105bfd71d456__note_file_attachments_2e82-406408322_original_D6219D48-C0D4-46EE-BE6C-FD91BAE7E764.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/71c8f4f54430c29d7495105bfd71d456__note_file_attachments_2e82-406408322_original_D6219D48-C0D4-46EE-BE6C-FD91BAE7E764.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/074b7301fd55e189ee3801e96d526dc3__note_file_attachments_87db-406408307_original_0A8A99D0-4622-474D-929D-0F86CD7BA4B7.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/54abf1f456a69f1ccc20a6869b113bea__note_file_attachments_32bb-406408321_original_4A965006-99B8-4296-8314-A7F1C92ABD47.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/63eae5108e1a6aac3ba1d560925dc06a__note_file_attachments_2ec2-406408324_original_EAB2F3AE-33B4-4EB1-BBB3-24C5DB28A4D4.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/36478389a1dcef52f564724d0ea56e34__note_file_attachments_1ab3-406408313_original_EED17588-7A38-43B6-8853-C435C7888D44.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/4d7df792541f0e44d072ade5b6fb5216__note_file_attachments_715e-406408323_original_BBF03E8D-41CD-4418-9BAA-725763074DCC.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/b3fba8376e8a2f905bff08112c628040__note_file_attachments_de2d-406408315_original_FE1CC016-A69E-4F5B-B428-220605C7D7F0.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/c3ce357484fbb0acee79bd90dc8c37c7__note_file_attachments_d524-406408318_original_ED7CB313-61E2-4F7F-B9A5-31F2B98E4E47.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/b2b4a653bb218d1578f274855967ef78__note_file_attachments_71e9-406408314_original_38FE13CE-5C4B-4E45-8957-4D16A8338237.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/ae4641e98f8a8e3e41e1130b8d3a5936__note_file_attachments_deb9-406408310_original_FC9FD318-1EC3-4821-8E0D-5D8350F45FB1.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "gDHIwAhPoW",
+    "slug": "huntsville-underground-drains-gDHIwAhPoW",
+    "title": "Underground Drains in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35803",
+    "geolocation": {
+      "lat": 34.6156584,
+      "lng": -86.57834559999999
+    },
+    "date": "2026-03-19",
+    "service": "Underground Drains",
+    "description": "To address gutter issues, we installed a 4\" underground drain pipe to effectively direct water away from the foundation. The system included a water surface emitter at the termination point of the drain pipe, ensuring optimal water management. This installation will help prevent water-related problems in the future.",
+    "thumbnail": "https://app.realworklabs.com/media/0a8bdc50b5efdd7d1222ca3e2050aacc__note_file_attachments_2f02-404114665_original_673F53E9-3C0A-4DA1-8BA2-97F7C89C572E.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/0a8bdc50b5efdd7d1222ca3e2050aacc__note_file_attachments_2f02-404114665_original_673F53E9-3C0A-4DA1-8BA2-97F7C89C572E.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/0a8bdc50b5efdd7d1222ca3e2050aacc__note_file_attachments_2f02-404114665_original_673F53E9-3C0A-4DA1-8BA2-97F7C89C572E.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/298597c50b4f46b8211c633f8aa390dc__note_file_attachments_2c51-404114663_original_033C3D12-FB94-4401-A1A8-4741D8D812F7.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/e11026281ec2f4e35e2c534ed8ef6d1d__note_file_attachments_9028-404114667_original_35D3C0AE-FCE9-4D79-A279-C3D046E42CC4.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/c822b224b0d90401e5ca010beb04c05d__note_file_attachments_94c5-404114670_original_0C1F4F07-99F7-4F45-81A9-F7C8B6E044F0.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/cb2e2bf3cea8a8e655f78b989332dd4a__note_file_attachments_1aab-404114669_original_F1C01319-9F16-46B7-AB11-3D177A414298.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "BUeZOkBe69",
+    "slug": "athens-seamless-gutters-BUeZOkBe69",
+    "title": "Seamless Gutters in Athens, AL",
+    "city": "Athens",
+    "citySlug": "athens",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35611",
+    "geolocation": {
+      "lat": 34.7582166,
+      "lng": -86.9546838
+    },
+    "date": "2026-03-13",
+    "service": "Seamless Gutters",
+    "description": "Gutter issues prompted us to undertake necessary repairs in Athens. We sealed leaking joints, re-pitched gutters to ensure proper flow, and re-secured hangers as needed. This work effectively resolved the customer's gutter problems, allowing for proper water drainage.",
+    "thumbnail": "https://app.realworklabs.com/media/dc23f9694b12652bffde843d45188719__note_file_attachments_74a4-401078498_original_photo_1773416570648.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/dc23f9694b12652bffde843d45188719__note_file_attachments_74a4-401078498_original_photo_1773416570648.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/dc23f9694b12652bffde843d45188719__note_file_attachments_74a4-401078498_original_photo_1773416570648.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "tPLzhXNbri",
+    "slug": "huntsville-gutter-guards-tPLzhXNbri",
+    "title": "Gutter Guards in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35803",
+    "geolocation": {
+      "lat": 34.6349682,
+      "lng": -86.5359048
+    },
+    "date": "2026-03-10",
+    "service": "Gutter Guards",
+    "description": "To address gutter issues effectively, we removed the existing gutters and safely disposed of them. We installed a new 6-inch K-style gutter system with secure hidden hangers and sealed joints for durability. Additionally, we equipped the gutters with perforated aluminum leaf toppers to ensure high flow capacity, while also including outside miters and end caps to enhance functionality. This job improved the overall water management system for the home in Huntsville.",
+    "thumbnail": "https://app.realworklabs.com/media/0674ecf0690be5ffd5d1486891b9d5a6__note_file_attachments_1be8-386804661_original_5C69405E-0C37-45D4-9B6E-500B091D98B1.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/0674ecf0690be5ffd5d1486891b9d5a6__note_file_attachments_1be8-386804661_original_5C69405E-0C37-45D4-9B6E-500B091D98B1.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/0674ecf0690be5ffd5d1486891b9d5a6__note_file_attachments_1be8-386804661_original_5C69405E-0C37-45D4-9B6E-500B091D98B1.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "L0MxtpNdnO",
+    "slug": "falkville-seamless-gutters-L0MxtpNdnO",
+    "title": "Seamless Gutters in Falkville, AL",
+    "city": "Falkville",
+    "citySlug": "falkville",
+    "cityHasPage": false,
+    "state": "AL",
+    "zip": "35622",
+    "geolocation": {
+      "lat": 34.3800813,
+      "lng": -86.9113203
+    },
+    "date": "2026-03-10",
+    "service": "Seamless Gutters",
+    "description": "Gutter issues were resolved efficiently to ensure proper drainage and functionality. We installed a standard spout and a 5-inch K style gutter with sealed joints using tripolymer gutter sealer for durability. We also added end caps to enhance the system's integrity. Adam coordinated the installation, ensuring everything met the required standards.",
+    "thumbnail": "https://app.realworklabs.com/media/1c9e79ab51034193b6c1c502227e9dba__note_file_attachments_8fb6-400540371_original_4C813DD8-751B-4CD6-AB43-C353EA6BAB21.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/1c9e79ab51034193b6c1c502227e9dba__note_file_attachments_8fb6-400540371_original_4C813DD8-751B-4CD6-AB43-C353EA6BAB21.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/1c9e79ab51034193b6c1c502227e9dba__note_file_attachments_8fb6-400540371_original_4C813DD8-751B-4CD6-AB43-C353EA6BAB21.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/ccc927de983103650469732f704ab34f__note_file_attachments_6073-400540370_original_photo_1773329115859.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "OFh6Mc3FwA",
+    "slug": "decatur-gutter-cleaning-OFh6Mc3FwA",
+    "title": "Gutter Cleaning in Decatur, AL",
+    "city": "Decatur",
+    "citySlug": "decatur",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35603",
+    "geolocation": {
+      "lat": 34.5772488,
+      "lng": -87.02674549999999
+    },
+    "date": "2026-03-03",
+    "service": "Gutter Cleaning",
+    "description": "We conducted a thorough gutter cleaning for a property in Decatur. This involved unclogging and removing debris from the gutter trough and downspouts to ensure proper water flow. Our efforts effectively resolved the homeowner's gutter issues.",
+    "thumbnail": "https://app.realworklabs.com/media/cfc28415f1242a23e0114076a4c65360__note_file_attachments_f81b-397430828_original_photo_1772648763543.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/cfc28415f1242a23e0114076a4c65360__note_file_attachments_f81b-397430828_original_photo_1772648763543.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/cfc28415f1242a23e0114076a4c65360__note_file_attachments_f81b-397430828_original_photo_1772648763543.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "GeQ0lAkgrV",
+    "slug": "meridianville-rotten-wood-repair-GeQ0lAkgrV",
+    "title": "Rotten Wood Repair in Meridianville, AL",
+    "city": "Meridianville",
+    "citySlug": "meridianville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35759",
+    "geolocation": {
+      "lat": 34.8572328,
+      "lng": -86.5768291
+    },
+    "date": "2026-02-17",
+    "service": "Rotten Wood Repair",
+    "description": "A deteriorating condition of rotten overhangs prompted us to handle repairs at the property in Meridianville. We replaced the wood fascia with durable PVC materials and, if necessary, added to the rafter tails to ensure long-lasting results. This work effectively resolved the gutter issues for the homeowner.",
+    "thumbnail": "https://app.realworklabs.com/media/58e66f4c145979901cd6bfdf2c309522__note_file_attachments_0a9e-392066780_original_B49DD1FD-45AD-4AF7-8F3E-E30A52BEB643.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/58e66f4c145979901cd6bfdf2c309522__note_file_attachments_0a9e-392066780_original_B49DD1FD-45AD-4AF7-8F3E-E30A52BEB643.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/58e66f4c145979901cd6bfdf2c309522__note_file_attachments_0a9e-392066780_original_B49DD1FD-45AD-4AF7-8F3E-E30A52BEB643.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/e7367b6da498fd67adf34b182f0a026b__note_file_attachments_1342-392066778_original_C463E635-6DBA-4BE2-BB2D-8C6ECC9E993E.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/d30e02b48e2896edc809362a70ed9d42__note_file_attachments_7d14-392066781_original_2291F7B7-3AE3-4910-8E03-5848D24F1DDC.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/26f71e8cff44c427804a2ee9449294a4__note_file_attachments_834c-392066779_original_55FF9A7C-FD3C-497C-BE57-AAA7D7939BAB.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/c55cf8b49afbb488b28afb77dc0838f2__note_file_attachments_878d-392066782_original_B33898AB-9012-4CBB-8283-A05F18FF5726.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": {
+      "rating": 5,
+      "author": "M. K.",
+      "text": "Did a great job! Thanks",
+      "source": "Google"
+    },
+    "hasPhotos": true,
+    "hasReview": true
+  },
+  {
+    "id": "e77cFO1A7j",
+    "slug": "owens-cross-roads-gutter-guards-e77cFO1A7j",
+    "title": "Gutter Guards in Owens Cross Roads, AL",
+    "city": "Owens Cross Roads",
+    "citySlug": "owens-cross-roads",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35763",
+    "geolocation": {
+      "lat": 34.6232241,
+      "lng": -86.4351837
+    },
+    "date": "2026-02-17",
+    "service": "Gutter Guards",
+    "description": "A drainage improvement was needed due to overflow issues caused by insufficient gutter reveal from longer shingles. We removed the existing gutter guards to enhance water flow, allowing for better drainage performance. This solution was practical, considering the absence of surrounding trees, ensuring effective gutter functionality for the homeowner in Owen’s Cross Roads.",
+    "thumbnail": "https://app.realworklabs.com/media/bbaba6c5c7d48ebac728478fe3e49b22__note_file_attachments_6a1f-392165788_original_57EC803E-C132-406C-A76C-13F426646D9B.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/bbaba6c5c7d48ebac728478fe3e49b22__note_file_attachments_6a1f-392165788_original_57EC803E-C132-406C-A76C-13F426646D9B.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/bbaba6c5c7d48ebac728478fe3e49b22__note_file_attachments_6a1f-392165788_original_57EC803E-C132-406C-A76C-13F426646D9B.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/9ce2b28f9bdceb11feac3c3802897664__note_file_attachments_70a6-392165789_original_FB94F1F2-30F6-45F3-9EF7-C6985954BF56.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/78caa4ccad0e0a9f3be8e14e284846f4__note_file_attachments_a00e-392165784_original_1A4593B3-3DDD-402A-A8D0-5952D90D474A.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/95d423d1c9f9be0365ef19b278be5014__note_file_attachments_0dba-392165785_original_86510A3F-C606-4DFC-9865-7021E88EBF0A.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/566e6653de16b2bd63aa8aa12c040303__note_file_attachments_3ad1-392165787_original_81E15A22-185F-4A9B-96F0-433BDC26F45B.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/474bbb849170334dc7ae8039894fca93__note_file_attachments_71a6-392165782_original_B4B2A619-31EE-4F02-AC6C-A3DDC45470F4.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/c695e26a4b20db757d0add303d07bc70__note_file_attachments_4d94-392165786_original_2BF6AE6E-3991-4521-A4EE-1E596BD5A97C.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/31d14e4a682231a5e17290ae98b0db0e__note_file_attachments_fe1a-392165790_original_83E28DBA-885A-4242-92D1-AE2C31D8266F.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/2f898ced164ab2596980a54a020d759a__note_file_attachments_65a0-392165783_original_12F52C04-C5F6-4430-A46C-14CC12784450.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "JuH98I0lac",
+    "slug": "huntsville-underground-drains-JuH98I0lac",
+    "title": "Underground Drains in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35824",
+    "geolocation": {
+      "lat": 34.6405778,
+      "lng": -86.7303483
+    },
+    "date": "2026-02-13",
+    "service": "Underground Drains",
+    "description": "To enhance the water management on the property, we installed a comprehensive 6-inch gutter system along with underground drains. Our process involved removing the existing gutters and safely disposing of them. We then fitted new 2-story K-style gutters, which included the installation of box outside and inside miters, along with end caps. A water diverter was integrated to ensure effective redirection of roof water around the chimney into the gutter system. This setup significantly improves drainage and protects the integrity of the home.",
+    "thumbnail": "https://app.realworklabs.com/media/d44baa3ac6e2f30aa7cbcf1ccd077e7a__note_file_attachments_d5a3-391204170_original_8D8FFD16-46A4-46C6-A468-229CC4BD8346.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/d44baa3ac6e2f30aa7cbcf1ccd077e7a__note_file_attachments_d5a3-391204170_original_8D8FFD16-46A4-46C6-A468-229CC4BD8346.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/d44baa3ac6e2f30aa7cbcf1ccd077e7a__note_file_attachments_d5a3-391204170_original_8D8FFD16-46A4-46C6-A468-229CC4BD8346.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/f8a69f9e1568319350b94c188e996007__note_file_attachments_f3bc-391204429_original_00A7196E-EBCA-4B0F-8185-57EE0837C367.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/56e9bdb4799945188f572b19a1a7fcb2__note_file_attachments_5630-391204491_original_56CA3146-4B37-4ADD-9FC9-BE8FCEC4714C.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/3c787c30e35002f043a14e87b32506c4__note_file_attachments_4cf5-391204174_original_E6F1EC1A-64E9-488D-8CE3-51106D542505.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/451e11ea52fcfe9ee14dd6c5bd9f4850__note_file_attachments_ab12-391204421_original_E6F1EC1A-64E9-488D-8CE3-51106D542505.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/480ca9b69ec1460bc9217ac0bc524981__note_file_attachments_5bda-391204180_original_BAE07FEB-B343-4E95-AB68-B577E9019DFE.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/13524f0b7b2baf3e49ad5da0ec988b91__note_file_attachments_3898-391204171_original_17BD7797-D532-4DDA-8988-0170B034BF71.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/30fc5c6414735ab5de0823b6559eaf9e__note_file_attachments_7af5-391204425_original_6B2C6C8D-EF39-4853-BC5E-E53E372D2746.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/098faf96b201021d72419bb40a755b95__note_file_attachments_d953-391204179_original_6B2C6C8D-EF39-4853-BC5E-E53E372D2746.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/943b7cda40a9c0044b75ec7c2eb3aec3__note_file_attachments_8a41-391204422_original_C2BBB3AC-D5F8-4DD4-AB03-CCF7024C2BFB.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "LT9iopiIgX",
+    "slug": "hartselle-seamless-gutters-LT9iopiIgX",
+    "title": "Seamless Gutters in Hartselle, AL",
+    "city": "Hartselle",
+    "citySlug": "hartselle",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35640",
+    "geolocation": {
+      "lat": 34.4487254,
+      "lng": -86.87297960000001
+    },
+    "date": "2026-02-07",
+    "service": "Seamless Gutters",
+    "description": "Water runoff concerns prompted us to install a new 6-inch K style gutter system in Hartselle. This included utilizing cold-formed hangers and sealing joints with specialized tripolymer sealer to ensure durability. We ensured the gutters were installed correctly, positioned under the drip edge to prevent water from running behind them.",
+    "thumbnail": "https://app.realworklabs.com/media/342ccda99a21f06be9b4051744e28ad1__note_file_attachments_01c6-388948848_original_A57AE573-CD33-4D56-A6E0-6CC71F6B4F6D.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/342ccda99a21f06be9b4051744e28ad1__note_file_attachments_01c6-388948848_original_A57AE573-CD33-4D56-A6E0-6CC71F6B4F6D.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/342ccda99a21f06be9b4051744e28ad1__note_file_attachments_01c6-388948848_original_A57AE573-CD33-4D56-A6E0-6CC71F6B4F6D.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/191eb30f25c1886025cb5801538ea6c0__note_file_attachments_e840-388948849_original_4E877B80-4B70-4E52-B1DF-1E24E4459CE6.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/2a0befcb1f6bf2bae24a9e402ca74d75__note_file_attachments_f2c3-388948850_original_AAF5223B-9E9D-452D-B6D9-759577E48F91.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "DMA2RHFomf",
+    "slug": "huntsville-seamless-gutters-DMA2RHFomf",
+    "title": "Seamless Gutters in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35803",
+    "geolocation": {
+      "lat": 34.6346284,
+      "lng": -86.5432783
+    },
+    "date": "2026-02-06",
+    "service": "Seamless Gutters",
+    "description": "A new gutter installation was required for a home in Huntsville. We installed a 6-inch K-style gutter using durable metal, complete with cold-formed hidden hangers and sealed joints for optimum water flow. Additionally, we fitted standard spouts and end caps, ensuring all components were securely sealed. The installation enhances the property's drainage efficiency.",
+    "thumbnail": "https://app.realworklabs.com/media/1b8a676944896cf69e178a542ae1523c__note_file_attachments_41dc-388722001_original_A2ECE824-0E4F-4AED-BD08-843203678E7D.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/1b8a676944896cf69e178a542ae1523c__note_file_attachments_41dc-388722001_original_A2ECE824-0E4F-4AED-BD08-843203678E7D.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/1b8a676944896cf69e178a542ae1523c__note_file_attachments_41dc-388722001_original_A2ECE824-0E4F-4AED-BD08-843203678E7D.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/0b9af7f698f094332050a7596c70f3ab__note_file_attachments_6eac-388721999_original_D16C532A-7EE2-4C9A-A0D1-1BFC24564F62.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/e2f073fca504ddf9a24b2c391243eefe__note_file_attachments_1d17-388722000_original_7BE9A680-8DF7-4F62-8E0A-2F2CBD1E9593.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": {
+      "rating": 5,
+      "author": "K. C.",
+      "text": "They priced the job out one day and performed the service the next day. They were quick and professional, and did a great job",
+      "source": "Google"
+    },
+    "hasPhotos": true,
+    "hasReview": true
+  },
+  {
+    "id": "NwoK4RXGEs",
+    "slug": "huntsville-seamless-gutters-NwoK4RXGEs",
+    "title": "Seamless Gutters in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35803",
+    "geolocation": {
+      "lat": 34.6357691,
+      "lng": -86.56191609999999
+    },
+    "date": "2026-02-06",
+    "service": "Seamless Gutters",
+    "description": "A gutter removal and disposal task was successfully completed at a residence in Huntsville. We carefully removed the existing gutters and ensured their safe disposal. We then installed new 5-inch K-style gutters that are durable and fit securely with hidden hangers. The joints were sealed using high-quality tripolymer gutter sealer for enhanced performance. This upgrade ensures effective water management for the property.",
+    "thumbnail": "https://app.realworklabs.com/media/41abe8fde887b2eff1991a64e2e316ae__note_file_attachments_655f-388851129_original_E11AD753-592C-4780-A027-7D63B5BEA981.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/41abe8fde887b2eff1991a64e2e316ae__note_file_attachments_655f-388851129_original_E11AD753-592C-4780-A027-7D63B5BEA981.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/41abe8fde887b2eff1991a64e2e316ae__note_file_attachments_655f-388851129_original_E11AD753-592C-4780-A027-7D63B5BEA981.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/71b11cc28b6f39934b3f1391177e3011__note_file_attachments_df36-388851130_original_ECAAAE40-FBFD-45C4-B2F4-C5C4604054C6.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/f81cc4a15067f9cdc428b125761a067b__note_file_attachments_7c26-388851131_original_999B5349-50FE-4293-BCD3-CC5DA1594B2D.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "I5xWlR6BzY",
+    "slug": "falkville-seamless-gutters-I5xWlR6BzY",
+    "title": "Seamless Gutters in Falkville, AL",
+    "city": "Falkville",
+    "citySlug": "falkville",
+    "cityHasPage": false,
+    "state": "AL",
+    "zip": "35622",
+    "geolocation": {
+      "lat": 34.3788126,
+      "lng": -86.8787536
+    },
+    "date": "2026-01-30",
+    "service": "Seamless Gutters",
+    "description": "A new gutter installation was performed in Falkville to enhance the home's drainage system. We installed a standard one-story spout along with a 6-inch K-style gutter made of durable metal. The installation included properly sealed joints with tripolymer gutter sealer to ensure longevity. Additionally, we fitted end caps for added protection against water leaks.",
+    "thumbnail": "https://app.realworklabs.com/media/18ef03275e8acccd2f8f70cac3737c38__note_file_attachments_7bbb-386116680_original_6F64554C-47F4-4B0C-B1C4-D183035FA7B0.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/18ef03275e8acccd2f8f70cac3737c38__note_file_attachments_7bbb-386116680_original_6F64554C-47F4-4B0C-B1C4-D183035FA7B0.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/18ef03275e8acccd2f8f70cac3737c38__note_file_attachments_7bbb-386116680_original_6F64554C-47F4-4B0C-B1C4-D183035FA7B0.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/0b5382874b328a725f497f323e115466__note_file_attachments_1648-386116679_original_A1385D25-DC4C-4B03-9BE2-526F06E9D534.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "1yU80j5ZT7",
+    "slug": "huntsville-seamless-gutters-1yU80j5ZT7",
+    "title": "Seamless Gutters in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35801",
+    "geolocation": {
+      "lat": 34.7138079,
+      "lng": -86.59308190000002
+    },
+    "date": "2025-12-17",
+    "service": "Seamless Gutters",
+    "description": "A request for new gutters and downspouts was addressed by installing 6-inch K-style gutters around the property in Huntsville. We utilized high-quality materials, including .027 to .032 metal thickness and secure mounting techniques with hidden hangers. Additionally, we installed four-inch above-ground downspout piping to ensure efficient water drainage. This setup enhances the property's protection against water damage.",
+    "thumbnail": "https://app.realworklabs.com/media/c1992aa9f3bd8814b3e53cdbfe4aad19__note_file_attachments_25fc-373659651_original_A32234FC-7527-46A3-AA7F-40EC0F30F0FE.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/c1992aa9f3bd8814b3e53cdbfe4aad19__note_file_attachments_25fc-373659651_original_A32234FC-7527-46A3-AA7F-40EC0F30F0FE.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/c1992aa9f3bd8814b3e53cdbfe4aad19__note_file_attachments_25fc-373659651_original_A32234FC-7527-46A3-AA7F-40EC0F30F0FE.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/f826216c227bd9b5bc20e9976eb00825__note_file_attachments_c925-373659650_original_C19D8714-CB09-4592-8AB3-279A1F1FD67D.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/c6d753f989ef94ed3284a19efbd0d386__note_file_attachments_349a-373659649_original_B62D37B2-DF90-4031-AB09-7D54D60F4D63.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/eb314e660cc6187569e373c57add0c0c__note_file_attachments_5c2b-373659648_original_E222E7C0-07C4-466D-B8C8-5331138B8054.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/8302da0c4be6f0f4ea8533a57dc9d675__note_file_attachments_5f26-373659647_original_2603624C-0341-40FF-8E1B-99037498E6C6.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/732b5c856c5b74cef8259c5dd179a2e1__note_file_attachments_9948-373659646_original_2F2907F9-0F23-44AC-82A2-1C6092460613.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/910609ecda171983d653693f26c596ab__note_file_attachments_df53-373659645_original_982AB567-2242-4E03-9F44-BCC1EC53B044.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/01f21efc648b10b38e8c9e5cf02fb69d__note_file_attachments_2eac-373659644_original_856D5C90-39E4-4483-A107-2D709F76F2E3.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/e74cfcdf7781237b14b9689813f0bda7__note_file_attachments_b4ab-373659643_original_C186B1E3-4DA6-4480-B6F2-B9CA14067334.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "Rd2lGywH2M",
+    "slug": "huntsville-seamless-gutters-Rd2lGywH2M",
+    "title": "Seamless Gutters in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35803",
+    "geolocation": {
+      "lat": 34.6135824,
+      "lng": -86.5227656
+    },
+    "date": "2025-12-12",
+    "service": "Seamless Gutters",
+    "description": "A comprehensive gutter installation was performed in Huntsville to enhance rainwater management. We added various components, including a standard K-style gutter system, inside and outside miters, and end caps, all sealed properly to ensure durability. This system will effectively guide water away from the home, preventing potential water damage and ensuring optimal performance. Adam was assigned for this project.",
+    "thumbnail": "https://app.realworklabs.com/media/0b6c7f6f9930dad70a6b3bd849383dc1__note_file_attachments_7cc9-363889757_original_C28067ED-C1DC-4424-8670-E2F4858F420A.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/0b6c7f6f9930dad70a6b3bd849383dc1__note_file_attachments_7cc9-363889757_original_C28067ED-C1DC-4424-8670-E2F4858F420A.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/0b6c7f6f9930dad70a6b3bd849383dc1__note_file_attachments_7cc9-363889757_original_C28067ED-C1DC-4424-8670-E2F4858F420A.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/efbe5e141423781aa878264e512d8370__note_file_attachments_76de-363889759_original_20326E92-ED42-45D2-8F6D-4BC14297C1CF.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/448e08f79af58f58fa6558c23f3eb0ea__note_file_attachments_2fd3-363889756_original_CBE8C42E-3192-430D-A511-AC4A075D3F58.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/d2b772ddb3672711de5201c351f32b6a__note_file_attachments_12b1-363889760_original_6DE5BF26-8FA2-46DB-A62C-D2DC455E1352.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "5eu3Rmalj2",
+    "slug": "madison-rotten-wood-repair-5eu3Rmalj2",
+    "title": "Rotten Wood Repair in Madison, AL",
+    "city": "Madison",
+    "citySlug": "madison",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35758",
+    "geolocation": {
+      "lat": 34.702116,
+      "lng": -86.7302687
+    },
+    "date": "2025-11-21",
+    "service": "Rotten Wood Repair",
+    "description": "To enhance the overall appearance and function of the property in Madison, we performed extensive woodwork, including the removal and replacement of 1x6 fascia boards. We utilized high-quality white paint to ensure a cohesive look. Additionally, we installed a new 5-inch K-style gutter system with features like sealed joints and inside miters, ensuring optimal water drainage for the home. Adam also handled the setup fee for the woodwork project efficiently.",
+    "thumbnail": "https://app.realworklabs.com/media/ac00c4f6b714a3316e9ef317ea5cd6ec__note_file_attachments_e15c-365337870_original_EAFC6AD3-FAD3-4D27-A721-76EAEA58F606.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/ac00c4f6b714a3316e9ef317ea5cd6ec__note_file_attachments_e15c-365337870_original_EAFC6AD3-FAD3-4D27-A721-76EAEA58F606.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/ac00c4f6b714a3316e9ef317ea5cd6ec__note_file_attachments_e15c-365337870_original_EAFC6AD3-FAD3-4D27-A721-76EAEA58F606.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/ea7b551f86415176da067465e1533eee__note_file_attachments_6f04-365337868_original_26F18705-9729-4236-A902-28028F29FFF5.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/a36bd5ad6fc1020ff4266b3157159ef1__note_file_attachments_5bf8-365337865_original_016D616D-B4F6-484F-8963-78BCB77478A0.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/3ecda95f862ed37c254ebfc9cc77a23e__note_file_attachments_9c31-365337871_original_29D767D1-5700-4443-B450-D6A6DF43D5AD.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/8e66e60f82bf8c131013201b1df0051b__note_file_attachments_4ae1-365337869_original_9045A640-EEB9-4E6D-ACE6-E55CFF195500.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/a0563663309e2c8763dd05dc6457f048__note_file_attachments_124f-365337872_original_99E1473D-3C98-44F2-A352-B8DD8392F586.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/7e9b62faab1909980678a563a7a4e43b__note_file_attachments_08ae-365337864_original_566862C4-A3B4-4805-84CE-DB0A543C4842.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/782acd3050e8c1fd168247f6fb6abdf9__note_file_attachments_9570-365337867_original_D7F7FFAC-7789-45EF-A28F-05F8C94F4F33.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/f83bdec30072dc19aa217f0ad0a815ec__note_file_attachments_f953-365337866_original_FF046DA8-3ED9-4AFD-9B21-C7356DF54AA1.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "ird4a6yrwR",
+    "slug": "huntsville-rotten-wood-repair-ird4a6yrwR",
+    "title": "Rotten Wood Repair in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35811",
+    "geolocation": {
+      "lat": 34.7679147,
+      "lng": -86.58734220000001
+    },
+    "date": "2025-11-14",
+    "service": "Rotten Wood Repair",
+    "description": "A significant gutter renovation was completed to enhance the home's drainage system. We removed the existing gutters safely and replaced damaged fascia boards while ensuring the sub-fascia and rafter tails were adequately repaired. We then installed a new 5-inch K style gutter, including sealed joints and end caps, which will effectively manage water flow.",
+    "thumbnail": "https://app.realworklabs.com/media/afa50fd87f44c49f82e274f389c38b2b__note_file_attachments_dcfc-362867156_original_4629D092-125A-4E89-8E6A-01D75F0EB320.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/afa50fd87f44c49f82e274f389c38b2b__note_file_attachments_dcfc-362867156_original_4629D092-125A-4E89-8E6A-01D75F0EB320.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/afa50fd87f44c49f82e274f389c38b2b__note_file_attachments_dcfc-362867156_original_4629D092-125A-4E89-8E6A-01D75F0EB320.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "YuY6ZBh5t0",
+    "slug": "huntsville-seamless-gutters-YuY6ZBh5t0",
+    "title": "Seamless Gutters in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35811",
+    "geolocation": {
+      "lat": 34.7679147,
+      "lng": -86.58734220000001
+    },
+    "date": "2025-11-14",
+    "service": "Seamless Gutters",
+    "description": "A new gutter system installation was completed in Huntsville. We installed a 5-inch K style gutter, ensuring proper support with cold-formed hidden hangers and sealing all joints with a durable tripolymer gutter sealer. Additionally, we fitted pairs of end caps to secure the system. This work will help prevent water damage and maintain the integrity of the property.",
+    "thumbnail": "https://app.realworklabs.com/media/9aee0ede572d09b85f9b574b55608029__note_file_attachments_605b-362867789_original_1B88512F-DE5F-48DC-A57B-2A242D340089.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/9aee0ede572d09b85f9b574b55608029__note_file_attachments_605b-362867789_original_1B88512F-DE5F-48DC-A57B-2A242D340089.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/9aee0ede572d09b85f9b574b55608029__note_file_attachments_605b-362867789_original_1B88512F-DE5F-48DC-A57B-2A242D340089.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/e0f439bee3466a8448108cdf074fa413__note_file_attachments_85c1-362867790_original_DAC1CAA4-76D6-4121-A838-9AE530050E84.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/7a2c1117e402a6c0e3ff34321bd0f25f__note_file_attachments_5ae7-362867788_original_0AB48E87-C0CB-45D1-A05F-BD3E3AEDE9CD.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/0e3f10e79c6532d300fd0d8b50759f7e__note_file_attachments_69be-358828487_original_F9C6FCC7-E7AF-4948-A0CB-E37342B59646.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "UcBQupbbIA",
+    "slug": "huntsville-seamless-gutters-UcBQupbbIA",
+    "title": "Seamless Gutters in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35811",
+    "geolocation": {
+      "lat": 34.8329322,
+      "lng": -86.48862690000001
+    },
+    "date": "2025-11-13",
+    "service": "Seamless Gutters",
+    "description": "A thorough installation of 6-inch gutters and spouts was completed to enhance water drainage for the property in Huntsville. We installed a combination of standard spouts, a K-style gutter system, outside miters, end caps, and upgraded the downspouts to a more efficient 4-inch round design. This solution will improve water flow and provide effective protection against potential water damage.",
+    "thumbnail": "https://app.realworklabs.com/media/13ff901202880c702ebabd49ccac8aa8__note_file_attachments_7c16-355951018_original_6675FCC9-1754-42DD-B273-D701360D519F.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/13ff901202880c702ebabd49ccac8aa8__note_file_attachments_7c16-355951018_original_6675FCC9-1754-42DD-B273-D701360D519F.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/13ff901202880c702ebabd49ccac8aa8__note_file_attachments_7c16-355951018_original_6675FCC9-1754-42DD-B273-D701360D519F.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/9f01299eda0499fc1c52f95153aecab0__note_file_attachments_d943-362600820_original_65EE0BA5-CCB5-499E-B9A1-80977C10460A.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/0be43aad791a9328b75fb6b95698d7cf__note_file_attachments_824c-362600815_original_14BABAC6-6D44-444C-B099-084D9441C3EE.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/4bea153f6e689c95beb0278bde36ab85__note_file_attachments_f5db-355951017_original_79CE27FF-FB42-4F48-9396-BC62DF5B9928.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/a13fdad7ed9db47150fff29f770b7579__note_file_attachments_51c2-355951019_original_4B750914-BE53-47DA-B540-63CBF916FC90.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/2e379d5c617ad6fb9c4ac4a8c5c44b67__note_file_attachments_8762-362600813_original_12440397-E806-4AF1-AEAE-C9D9A82C589D.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/fc5805bb47ce9e8641bceb1355f32146__note_file_attachments_4241-362600822_original_1675D84B-843E-47B2-BF97-0EF6A95B4482.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/1eb2d8984984a232066e250c5b190ddd__note_file_attachments_bc12-362600814_original_87BA5171-C1B5-43DA-BAC5-FAB0E5B61638.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/ec5417db9cceeab357214dc4f86a2dc3__note_file_attachments_c6a6-362600817_original_84F1DD0E-5A96-472C-9A20-8A78084B7A03.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/76cf615f18ec4eb6ff2af3b62572861b__note_file_attachments_ea24-362600821_original_75F9822D-8196-40BF-912C-7F0BF542EDC8.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "diCApjEUZt",
+    "slug": "huntsville-gutter-guards-diCApjEUZt",
+    "title": "Gutter Guards in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35801",
+    "geolocation": {
+      "lat": 34.7079495,
+      "lng": -86.57102139999999
+    },
+    "date": "2025-11-13",
+    "service": "Gutter Guards",
+    "description": "A thorough gutter cleaning was performed to ensure proper drainage and prevent water damage. We removed debris from the gutters and downspouts. Additionally, we installed 6-inch leaf dog gutter guards for enhanced performance on high flow roofs. After completing the work, we ensured the area was clean and ready for the tenants.",
+    "thumbnail": "https://app.realworklabs.com/media/cc8985e8bd00fc9010217c8986d28ebc__note_file_attachments_6163-362308356_original_695E1F37-3E24-4BC6-A591-36A5F542F658.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/cc8985e8bd00fc9010217c8986d28ebc__note_file_attachments_6163-362308356_original_695E1F37-3E24-4BC6-A591-36A5F542F658.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/cc8985e8bd00fc9010217c8986d28ebc__note_file_attachments_6163-362308356_original_695E1F37-3E24-4BC6-A591-36A5F542F658.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/63897d3d546711c1483746d01ce004a1__note_file_attachments_ae07-362308355_original_A2E600E4-5E9A-4029-84C6-05EA63D3CCED.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/ce584cc54277bdc63aad6cf79881ca0f__note_file_attachments_ae75-362308354_original_8C757F74-AFF2-4602-9D66-7DF4842EEB60.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "ExZmDx9tGP",
+    "slug": "huntsville-rotten-wood-repair-ExZmDx9tGP",
+    "title": "Rotten Wood Repair in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35802",
+    "geolocation": {
+      "lat": 34.6625987,
+      "lng": -86.5580311
+    },
+    "date": "2025-11-07",
+    "service": "Rotten Wood Repair",
+    "description": "A significant renovation involved the installation of new gutters at a home in Huntsville. We fitted a 5-inch K-style gutter system along with aluminum gutter toppers designed for high flow roofs. Additionally, we replaced the 1x6 fascia boards to improve the overall function and appearance of the home. Gutter removal and disposal were also executed to ensure a clean job site, alongside repairing any existing gutter issues. Adam was assigned to this project, ensuring a smooth process from start to finish.",
+    "thumbnail": "https://app.realworklabs.com/media/4d93aa9208fff887d5e85d538588809b__note_file_attachments_c4b1-360442079_original_1B36F7FC-F251-4FDB-A9CB-9D3A9B8F80B0.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/4d93aa9208fff887d5e85d538588809b__note_file_attachments_c4b1-360442079_original_1B36F7FC-F251-4FDB-A9CB-9D3A9B8F80B0.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/4d93aa9208fff887d5e85d538588809b__note_file_attachments_c4b1-360442079_original_1B36F7FC-F251-4FDB-A9CB-9D3A9B8F80B0.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/de7bfc3620d2cf561f737e3dc1c60eb6__note_file_attachments_a13e-360442078_original_3EBFA50E-DE52-4457-B5CB-B3660839F799.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/5cbc25ce0679ef2b56cda9e65e3f3976__note_file_attachments_07fc-360442077_original_A822FCE4-10F3-4489-BE3B-D5372C745999.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/b762e5fa7cd4b59f7e951e871272fffc__note_file_attachments_2e5b-360442076_original_497D3198-2E82-431E-8881-9DE32BCB71BE.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/611e9e7901a2a2b436a3ff3d63d1dfc6__note_file_attachments_4410-360442075_original_3EEB8EEC-E400-4CEC-A7F1-86A32AB6EBD3.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "WzJ6sgkzBI",
+    "slug": "decatur-seamless-gutters-WzJ6sgkzBI",
+    "title": "Seamless Gutters in Decatur, AL",
+    "city": "Decatur",
+    "citySlug": "decatur",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35601",
+    "geolocation": {
+      "lat": 34.61778,
+      "lng": -86.995981
+    },
+    "date": "2025-10-24",
+    "service": "Seamless Gutters",
+    "description": "To enhance the property's drainage system, we installed 6-inch gutters and spouts in Decatur. This included a combination of standard and alternative exit spouts, along with K-style gutters. We utilized durable materials, ensuring all joints were expertly sealed for reliability. The project aimed to promote efficient water flow and protect the structure from potential water damage.",
+    "thumbnail": "https://app.realworklabs.com/media/b9f055f0fb1f48ae788aaa5e73c3059b__note_file_attachments_2224-345831587_original_80B97DB8-78FE-4D5C-B41C-09D0D907C9C0.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/b9f055f0fb1f48ae788aaa5e73c3059b__note_file_attachments_2224-345831587_original_80B97DB8-78FE-4D5C-B41C-09D0D907C9C0.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/b9f055f0fb1f48ae788aaa5e73c3059b__note_file_attachments_2224-345831587_original_80B97DB8-78FE-4D5C-B41C-09D0D907C9C0.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/3ca493797d35e42af2aaf1b23afb2912__note_file_attachments_4fab-345831586_original_2C5184C5-2639-4CB2-8344-52C9C1327EA3.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/cfea75a6c4623c6f2b58d453f4d5fcfb__note_file_attachments_eb12-345831585_original_C8C3AD9D-A361-4FF8-A17B-DB2A127F2FE3.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/fb118eaf2ed7b1103d002aefedfb4017__note_file_attachments_7e6e-345831584_original_CB6A15C0-4B98-4276-B7DF-91F7C1BB20CE.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "H6esUbQuHf",
+    "slug": "huntsville-gutter-guards-H6esUbQuHf",
+    "title": "Gutter Guards in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35801",
+    "geolocation": {
+      "lat": 34.7253663,
+      "lng": -86.566245
+    },
+    "date": "2025-10-23",
+    "service": "Gutter Guards",
+    "description": "A thorough gutter installation was performed in Huntsville. We installed 6-inch K-style gutters, ensuring proper drainage with metal thickness and sealed joints using high-quality tripolymer sealer. Additionally, we included box inside and outside miters, end caps, and a leaf guard for enhanced functionality. The existing gutters were safely removed and disposed of, leaving the site in optimal condition.",
+    "thumbnail": "https://app.realworklabs.com/media/c383b6bf9ab53ce6a9ce7fa0bd58208c__note_file_attachments_35a0-348296642_original_70FE2DF3-03D5-42D1-9719-E9A8DFD16D42.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/c383b6bf9ab53ce6a9ce7fa0bd58208c__note_file_attachments_35a0-348296642_original_70FE2DF3-03D5-42D1-9719-E9A8DFD16D42.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/c383b6bf9ab53ce6a9ce7fa0bd58208c__note_file_attachments_35a0-348296642_original_70FE2DF3-03D5-42D1-9719-E9A8DFD16D42.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/3f485480194e5aedf572481250f22314__note_file_attachments_0bba-348296641_original_7E05245B-2A6C-4B06-82A9-8B9E841F6B1B.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/dc724eb9be1a1ea896bfddbbe21fceae__note_file_attachments_25c8-348296640_original_CB259470-4D60-48DE-8AE9-1A9A45C9AC30.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/bd5b5770990d89a582b8fb8b74b9b49e__note_file_attachments_9886-348296639_original_3B7D8AB8-77FC-417C-A799-BC7A23E75F9F.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/a9e2ac66bfd6076da4c214654e8981e0__note_file_attachments_fdf1-348296638_original_B8647372-CD6A-4F40-965C-9DB61C0C3B75.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/61aa91437c9657b363a642878d212fa0__note_file_attachments_d4f4-348296637_original_3AAEB577-066A-440A-B729-06C7812E835A.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "hoNpHFw9yM",
+    "slug": "huntsville-seamless-gutters-hoNpHFw9yM",
+    "title": "Seamless Gutters in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35810",
+    "geolocation": {
+      "lat": 34.7924757,
+      "lng": -86.5961044
+    },
+    "date": "2025-10-10",
+    "service": "Seamless Gutters",
+    "description": "A comprehensive gutter installation project was completed in Huntsville, involving the installation of 5-inch K-style gutters and corresponding downspouts. We removed the old gutters and fascia, ensuring proper disposal. The new installation included sealing all joints with tripolymer sealer for durability, and we finished by painting the fascia boards with white paint. Adam handled the project efficiently, ensuring all aspects were up to standard.",
+    "thumbnail": "https://app.realworklabs.com/media/b45455c533b14e6c1fe728f3a8ca4917__note_file_attachments_7b8c-340373436_original_FA7B4CF1-3942-464B-8882-BC64F1C67B49.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/b45455c533b14e6c1fe728f3a8ca4917__note_file_attachments_7b8c-340373436_original_FA7B4CF1-3942-464B-8882-BC64F1C67B49.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/b45455c533b14e6c1fe728f3a8ca4917__note_file_attachments_7b8c-340373436_original_FA7B4CF1-3942-464B-8882-BC64F1C67B49.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/15313d731a7763f4c1818c9a3765e0c3__note_file_attachments_7858-340373437_original_B2934352-2C3C-4396-B077-8EEDAE510116.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "ZRpBupKfZF",
+    "slug": "huntsville-gutter-guards-ZRpBupKfZF",
+    "title": "Gutter Guards in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35801",
+    "geolocation": {
+      "lat": 34.7231118,
+      "lng": -86.540854
+    },
+    "date": "2025-10-03",
+    "service": "Gutter Guards",
+    "description": "A need for enhanced gutter functionality led us to install a six-inch K style gutter system on a one-story home in Huntsville. We effectively secured the gutters with cold-formed hidden hangers, ensuring proper flow and durability. Additionally, we applied a perforated aluminum gutter topper for optimal performance and wrapped the fascia boards with custom-bent aluminum cladding to provide a seamless finish. Adam executed the project successfully, ensuring every detail was attended to.",
+    "thumbnail": "https://app.realworklabs.com/media/85299307a77688b796b0936d77e3303c__note_file_attachments_afa7-339680907_original_D22DCDCD-1D06-42A6-9BFD-6A414004038A.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/85299307a77688b796b0936d77e3303c__note_file_attachments_afa7-339680907_original_D22DCDCD-1D06-42A6-9BFD-6A414004038A.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/85299307a77688b796b0936d77e3303c__note_file_attachments_afa7-339680907_original_D22DCDCD-1D06-42A6-9BFD-6A414004038A.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "SP4cv5gVRC",
+    "slug": "new-market-seamless-gutters-SP4cv5gVRC",
+    "title": "Seamless Gutters in New Market, AL",
+    "city": "New Market",
+    "citySlug": "new-market",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35761",
+    "geolocation": {
+      "lat": 34.90670910000001,
+      "lng": -86.530717
+    },
+    "date": "2025-10-03",
+    "service": "Seamless Gutters",
+    "description": "A need for new gutters prompted a full installation of several types. We installed standard spouts with different exit options, 5-inch K style gutters, and multiple miter and end cap configurations. Each joint was expertly sealed with a durable tripolymer sealer to ensure long-lasting performance. This installation in New Market enhances the property's drainage efficiency.",
+    "thumbnail": "https://app.realworklabs.com/media/7e572f69fb212e49ba82f1e213e00a9c__note_file_attachments_8d79-347604446_original_5806308B-613D-45F7-BA53-4086E176A9A1.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/7e572f69fb212e49ba82f1e213e00a9c__note_file_attachments_8d79-347604446_original_5806308B-613D-45F7-BA53-4086E176A9A1.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/7e572f69fb212e49ba82f1e213e00a9c__note_file_attachments_8d79-347604446_original_5806308B-613D-45F7-BA53-4086E176A9A1.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/9afaf318b7db26e7a64c676b5e840353__note_file_attachments_9ef1-347604445_original_78173E22-4EB8-4F32-9A82-D2AB4160C963.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/a18b01065032c26f1c62cdc814694875__note_file_attachments_f49d-347604444_original_4F704ABD-87DC-4B89-9BB8-1F4A2A852B61.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/4468d8c5831a84c42368cda16bcb4237__note_file_attachments_763a-347604443_original_63D4B276-B2F5-4DCF-A571-D961C153D67D.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/1eb1e6132c430fd30a8519a8bdfccf74__note_file_attachments_245c-347604442_original_224CD35E-430C-4107-A1E9-B562D257147D.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "2kHPWQ5OkR",
+    "slug": "huntsville-rotten-wood-repair-2kHPWQ5OkR",
+    "title": "Rotten Wood Repair in Huntsville, AL",
+    "city": "Huntsville",
+    "citySlug": "huntsville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35805",
+    "geolocation": {
+      "lat": 34.71579699999999,
+      "lng": -86.6240787
+    },
+    "date": "2025-10-03",
+    "service": "Rotten Wood Repair",
+    "description": "A thorough evaluation of the gutters revealed the need for replacement and wood repair. We removed the existing gutters and fascia, replacing damaged sections with new wood materials. We installed a new 5\" K-style gutter system equipped with effective sealing at the joints. The repairs restored the functionality of the drainage system, ensuring proper water flow and protection for the property in Huntsville.",
+    "thumbnail": "https://app.realworklabs.com/media/90882c83bde16a6e6b639dc102002f0e__note_file_attachments_3caa-332790771_original_7A9E2ADA-D469-4D68-B3A4-86A3C82E0401.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/90882c83bde16a6e6b639dc102002f0e__note_file_attachments_3caa-332790771_original_7A9E2ADA-D469-4D68-B3A4-86A3C82E0401.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/90882c83bde16a6e6b639dc102002f0e__note_file_attachments_3caa-332790771_original_7A9E2ADA-D469-4D68-B3A4-86A3C82E0401.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/979b4d1d4e951392e824970a1045e7ac__note_file_attachments_6f0e-332790772_original_FC045E59-CCF9-4BA7-8F75-460DC43808AC.jpg?w=1200&h=900&f=webp",
+      "https://app.realworklabs.com/media/c30bc3a2ca863a3d076a01abd305a1a0__note_file_attachments_58e7-332790769_original_E2F57DC0-02AB-4157-BB69-934303200F33.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "SxBPu2X8zy",
+    "slug": "owens-cross-roads-gutter-guards-SxBPu2X8zy",
+    "title": "Gutter Guards in Owens Cross Roads, AL",
+    "city": "Owens Cross Roads",
+    "citySlug": "owens-cross-roads",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35763",
+    "geolocation": {
+      "lat": 34.6337204,
+      "lng": -86.5026907
+    },
+    "date": "2025-09-26",
+    "service": "Gutter Guards",
+    "description": "A complete gutter installation was performed for a residential property in Owens Cross Roads. We installed a 1 story alternative spout with a standard exit along with a 6-inch K style gutter and gutter toppers to enhance drainage. End caps were securely sealed to ensure functionality, providing a reliable system that can handle heavy rainfall effectively.",
+    "thumbnail": "https://app.realworklabs.com/media/e2eb6b263d9285e58a3e97f35cac8aa7__note_file_attachments_14bf-335319231_original_54156AE8-58FE-448D-B01E-0E00D755FB78.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/e2eb6b263d9285e58a3e97f35cac8aa7__note_file_attachments_14bf-335319231_original_54156AE8-58FE-448D-B01E-0E00D755FB78.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/e2eb6b263d9285e58a3e97f35cac8aa7__note_file_attachments_14bf-335319231_original_54156AE8-58FE-448D-B01E-0E00D755FB78.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "o02A2IiXr9",
+    "slug": "meridianville-downspouts-o02A2IiXr9",
+    "title": "Downspouts in Meridianville, AL",
+    "city": "Meridianville",
+    "citySlug": "meridianville",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35759",
+    "geolocation": {
+      "lat": 34.8613373,
+      "lng": -86.5911837
+    },
+    "date": "2025-08-28",
+    "service": "Downspouts",
+    "description": "To improve water drainage for the property, we added a new downspout along with an above-ground drain in Meridianville. This setup included a standard spout and a 4-inch black corrugated pipe, ensuring effective flow management. A coupler was also installed to enhance connectivity within the drainage system.",
+    "thumbnail": "https://app.realworklabs.com/media/f2b2382a095130479904246bd64cb1e5__note_file_attachments_6fed-332941775_original_CC0E59AF-C613-4461-9134-6F5409EABC62.jpg?w=800&h=600&f=webp",
+    "heroImage": "https://app.realworklabs.com/media/f2b2382a095130479904246bd64cb1e5__note_file_attachments_6fed-332941775_original_CC0E59AF-C613-4461-9134-6F5409EABC62.jpg?w=1600&h=900&f=webp",
+    "images": [
+      "https://app.realworklabs.com/media/f2b2382a095130479904246bd64cb1e5__note_file_attachments_6fed-332941775_original_CC0E59AF-C613-4461-9134-6F5409EABC62.jpg?w=1200&h=900&f=webp"
+    ],
+    "review": null,
+    "hasPhotos": true,
+    "hasReview": false
+  },
+  {
+    "id": "2nm5krEwIv",
+    "slug": "owens-cross-roads-seamless-gutters-2nm5krEwIv",
+    "title": "Seamless Gutters in Owens Cross Roads, AL",
+    "city": "Owens Cross Roads",
+    "citySlug": "owens-cross-roads",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35763",
+    "geolocation": {
+      "lat": 34.6487142,
+      "lng": -86.4861636
+    },
+    "date": "2025-06-17",
+    "service": "Seamless Gutters",
+    "description": "To ensure proper drainage and protect the foundation of the small home addition, we expertly installed new gutters and downspouts. This crucial enhancement directs rainwater away from the structure, reducing the risk of water damage and flooding in the future. The installation was tailored to blend seamlessly with the home’s exterior.",
+    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_800,h_600,c_fill/v1769832696/gutter_being_prepared_bvglmy.webp",
+    "heroImage": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769832696/gutter_being_prepared_bvglmy.webp",
+    "images": [
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769832696/gutter_being_prepared_bvglmy.webp"
+    ],
+    "review": {
+      "rating": 5,
+      "author": "B. P.",
+      "text": "Adam  replaced a gutter for us that a contractor left off our new patio. It wasn't a huge job, but Adam treated it with as much care as if it had been. He was reliable, easy to work with, and reasonably priced. What more can you ask for?",
+      "source": "Google"
+    },
+    "hasPhotos": false,
+    "hasReview": true
+  },
+  {
+    "id": "yWcJqfPE4m",
+    "slug": "madison-rotten-wood-repair-yWcJqfPE4m",
+    "title": "Rotten Wood Repair in Madison, AL",
+    "city": "Madison",
+    "citySlug": "madison",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35758",
+    "geolocation": {
+      "lat": 34.7069969,
+      "lng": -86.7098043
+    },
+    "date": "2024-10-11",
+    "service": "Rotten Wood Repair",
+    "description": "To enhance the aesthetic appeal of a custom home, we bent metal to create unique architectural features that perfectly complemented the overall design. Each piece was meticulously crafted to ensure durability and visual harmony in the space. The result was a stunning integration of metal elements that elevated the home's exterior and interior design.",
+    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_800,h_600,c_fill/v1769832696/gutter_being_prepared_bvglmy.webp",
+    "heroImage": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769832696/gutter_being_prepared_bvglmy.webp",
+    "images": [
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769832696/gutter_being_prepared_bvglmy.webp"
+    ],
+    "review": {
+      "rating": 5,
+      "author": "T. S.",
+      "text": "Super helpful. Did what I asked and got it done quickly. I’ll definitely use Blue River Gutters again next time I need some metal bent.",
+      "source": "Google"
+    },
+    "hasPhotos": false,
+    "hasReview": true
+  },
+  {
+    "id": "qYArwbNXb5",
+    "slug": "laceys-spring-gutter-guards-qYArwbNXb5",
+    "title": "Gutter Guards in Laceys Spring, AL",
+    "city": "Laceys Spring",
+    "citySlug": "laceys-spring",
+    "cityHasPage": true,
+    "state": "AL",
+    "zip": "35754",
+    "geolocation": {
+      "lat": 34.5272347,
+      "lng": -86.5836365
+    },
+    "date": "2024-04-26",
+    "service": "Gutter Guards",
+    "description": "Clogged gutters can lead to water damage and other issues, so we thoroughly cleaned out the gutters to ensure proper drainage. After that, we installed a reliable gutter guard system to prevent future debris buildup and maintain optimal performance. This effective solution enhances the longevity of the gutters and protects the home from water-related problems.",
+    "thumbnail": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_800,h_600,c_fill/v1769832696/gutter_being_prepared_bvglmy.webp",
+    "heroImage": "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769832696/gutter_being_prepared_bvglmy.webp",
+    "images": [
+      "https://res.cloudinary.com/dxzw1zwez/image/upload/q_auto,f_auto,w_1600/v1769832696/gutter_being_prepared_bvglmy.webp"
+    ],
+    "review": {
+      "rating": 5,
+      "author": "N. H.",
+      "text": "Blue River Gutters (Adam) did an excellent job at an excellent price installing gutter guard’s front and back of the house as well as replaced rotted fascia boards. Highly recommend them. They don’t come any better!",
+      "source": "Google"
+    },
+    "hasPhotos": false,
+    "hasReview": true
   }
 ]
