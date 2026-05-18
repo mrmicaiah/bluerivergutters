@@ -25,15 +25,13 @@
   <meta property="og:url" content="https://bluerivergutters.com{{ page.url }}">
   <meta property="og:image" content="{{ ogImage | default("https://res.cloudinary.com/dxzw1zwez/image/upload/hero-bg_axhlw4.jpg") }}">
   
-  {# Fonts - Source Sans 3 #}
+  {# Fonts - Source Sans 3 with display=swap to avoid render blocking #}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
   
-  {# Styles #}
-  <link rel="stylesheet" href="{{ '/css/styles.css' | url }}">
-  <link rel="stylesheet" href="{{ '/css/navigation.css' | url }}">
-  <link rel="stylesheet" href="{{ '/css/parallax.css' | url }}">
+  {# Combined Stylesheet (styles + navigation + parallax merged for perf) #}
+  <link rel="stylesheet" href="{{ '/css/main.css' | url }}">
   {% if extraCss %}
   <link rel="stylesheet" href="{{ '/css/' | url }}{{ extraCss }}">
   {% endif %}
