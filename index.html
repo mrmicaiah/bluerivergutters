@@ -493,20 +493,6 @@
 </section>
 
 
-<section class="service-area-map">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-eyebrow">Where We Work</p>
-      <h2>Recent Jobs Across North Alabama</h2>
-      <p>We've installed gutters across the entire region. Find your neighborhood on the map.</p>
-    </div>
-    <div class="map-wrapper">
-      <div id="rwl-map"></div>
-    </div>
-  </div>
-</section>
-
-
 <section class="faq">
   <div class="container">
     <div class="section-header">
@@ -906,27 +892,6 @@
 .step-card h3 { color: var(--navy); margin-bottom: 0.75rem; }
 .step-card p { color: var(--gray); font-size: 0.95rem; margin: 0; }
 
-.service-area-map {
-  background: var(--cream);
-  padding: 3rem 0;
-}
-.service-area-map .section-header { margin-bottom: 1.5rem; }
-.service-area-map .section-header p {
-  color: var(--gray);
-  font-size: 1rem;
-  max-width: 600px;
-  margin: 0.5rem auto 0;
-}
-.map-wrapper {
-  max-width: 800px;
-  margin: 0 auto;
-  background: var(--white);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-#rwl-map { min-height: 300px; }
-
 .sticky-cta {
   display: none;
   position: fixed;
@@ -969,24 +934,9 @@
   .sticky-cta { display: flex; }
   body { padding-bottom: 70px; }
   .urgency-bar { font-size: 0.85rem; }
-  #rwl-map { min-height: 250px; }
 }
 </style>
 
-
-
-<script type="text/javascript">
-(function(){
-  var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-      o.src = 'https://app.realworklabs.com/static/plugin/loader.js?v=' + new Date().getTime();
-      window.addEventListener('rwlPluginReady', function () {
-          window.rwlPlugin.init('https://app.realworklabs.com', 'RlomFVKLymXtpSXg');
-      }, false);
-      s.parentNode.insertBefore(o, s);
-}());
-</script>
 
 <!-- Lead form handler — Courier — with honeypot bot protection -->
 <script>
