@@ -68,21 +68,6 @@ permalink: /recent-projects/
   </div>
 </section>
 
-{# Live Job Feed — RealWork Labs widget, loads after page render so Googlebot doesn't depend on it #}
-<section class="live-feed-section">
-  <div class="container">
-    <div class="section-header">
-      <p class="section-eyebrow">Updated Daily</p>
-      <h2>Live Job Feed</h2>
-      <p class="section-intro">Want to see what we're working on right now? This feed pulls from our active job tracking system and shows projects across the service area as they're completed. Click any pin or tile for photos and details.</p>
-    </div>
-
-    <div class="rwl-container">
-      <div id="rwl-output"></div>
-    </div>
-  </div>
-</section>
-
 {# Stats Section #}
 <section class="stats-section">
   <div class="container">
@@ -140,21 +125,6 @@ permalink: /recent-projects/
     <p class="cta-hours">MON-FRI 8:00AM-5:00PM</p>
   </div>
 </section>
-
-{# RealWork Labs Script — loads with defer so it doesn't block initial render #}
-<script type="text/javascript" defer>
-(function(){
-  var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-      o.src = 'https://app.realworklabs.com/static/plugin/loader.js?v=' + new Date().getTime();
-      o.defer = true;
-      window.addEventListener('rwlPluginReady', function () {
-          window.rwlPlugin.init('https://app.realworklabs.com', 'RlomFVKLymXtpSXg');
-      }, false);
-      s.parentNode.insertBefore(o, s);
-}());
-</script>
 
 {# Load more toggle — reveals all hidden projects, no pagination #}
 <script>
@@ -339,33 +309,6 @@ a.project-city:hover { text-decoration: underline; }
   font-size: 1.05rem;
 }
 
-/* Live Job Feed (RWL widget) */
-.live-feed-section {
-  padding: 4rem 0;
-  background: var(--white);
-  border-top: 1px solid var(--light-gray);
-}
-
-.rwl-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  min-height: 400px;
-  background: var(--cream);
-  border-radius: 12px;
-  padding: 1.5rem;
-  position: relative;
-}
-
-.rwl-container:empty::before,
-.rwl-container #rwl-output:empty::before {
-  content: 'Loading live job feed...';
-  display: block;
-  text-align: center;
-  color: var(--gray);
-  padding: 4rem 0;
-  font-size: 0.95rem;
-}
-
 .service-area-section {
   padding: 3rem 0 4rem;
   background: var(--light-gray);
@@ -403,12 +346,6 @@ a.project-city:hover { text-decoration: underline; }
 @media (max-width: 768px) {
   .projects-grid {
     grid-template-columns: 1fr;
-  }
-  .live-feed-section {
-    padding: 3rem 0;
-  }
-  .rwl-container {
-    padding: 1rem;
   }
 }
 </style>
