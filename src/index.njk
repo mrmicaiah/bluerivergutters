@@ -1,7 +1,7 @@
 ---
 layout: base.njk
-title: Blue River Gutters | Free Gutter Inspection in 24 Hours · Huntsville AL
-description: Get a free gutter inspection in 24 hours from Huntsville's most-trusted gutter team. Seamless gutters, guards, cleaning, and repair across North Alabama. 1,700+ satisfied customers, 4.7 stars.
+title: Gutter Installation, Repair & Cleaning in Huntsville, AL | Blue River Gutters
+description: "Huntsville's trusted gutter company since 2005. Seamless gutters, guards, cleaning, and repair across Madison, Decatur, Athens & all of North Alabama. 240+ verified 5-star reviews. Free estimates."
 ---
 
 {# Preload hero LCP image for faster paint #}
@@ -21,9 +21,9 @@ description: Get a free gutter inspection in 24 hours from Huntsville's most-tru
     <div class="hero-v2-grid">
 
       <div class="hero-v2-content">
-        <h1>Get Your <span class="accent">Free Gutter Inspection</span> in 24 Hours</h1>
+        <h1>Huntsville's Gutter <span class="accent">Installation, Repair &amp; Cleaning</span> Experts</h1>
         <p class="hero-v2-sub">
-          Huntsville's most-trusted gutter team — over 1,700 homeowners served across North Alabama. No pressure, no surprises, just an honest look at your gutters.
+          Seamless gutters, guards, cleaning, and repair across Huntsville, Madison, Decatur, Athens &amp; all of North Alabama. Get a free, no-pressure inspection — most homes seen within 24 hours.
         </p>
 
         <div class="hero-v2-proof">
@@ -48,7 +48,7 @@ description: Get a free gutter inspection in 24 hours from Huntsville's most-tru
           <div class="hero-form-header">
             <span class="hero-form-eyebrow">100% Free · No Obligation</span>
             <h2>Request Your Free Inspection</h2>
-            <p class="form-sub">Takes 30 seconds. We'll be in touch within 24 hours.</p>
+            <p class="form-sub">Takes 15 seconds. We'll be in touch within 24 hours.</p>
           </div>
 
           <form id="lead-form" novalidate>
@@ -64,32 +64,13 @@ description: Get a free gutter inspection in 24 hours from Huntsville's most-tru
             </div>
 
             <div class="form-group">
-              <label for="lead-email">Email</label>
-              <input type="email" id="lead-email" name="email" required placeholder="you@example.com">
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label for="lead-phone">Phone</label>
-                <input type="tel" id="lead-phone" name="phone" required placeholder="(256) 555-0100">
-              </div>
-              <div class="form-group">
-                <label for="lead-zip">Zip Code</label>
-                <input type="text" id="lead-zip" name="zip" required maxlength="5" placeholder="35801">
-              </div>
+              <label for="lead-phone">Phone</label>
+              <input type="tel" id="lead-phone" name="phone" required placeholder="(256) 555-0100">
             </div>
 
             <div class="form-group">
-              <label for="lead-service">What do you need?</label>
-              <select id="lead-service" name="service" required>
-                <option value="">Select a service...</option>
-                <option value="new-gutters">New Seamless Gutters</option>
-                <option value="cleaning">Gutter Cleaning</option>
-                <option value="repair">Gutter Repair / Rotten Wood</option>
-                <option value="guards">Gutter Guards</option>
-                <option value="drains">Underground Drains</option>
-                <option value="not-sure">Not sure — need an inspection</option>
-              </select>
+              <label for="lead-email">Email</label>
+              <input type="email" id="lead-email" name="email" required placeholder="you@example.com">
             </div>
 
             <button type="submit" class="btn btn-primary form-submit" id="lead-form-submit">
@@ -118,6 +99,26 @@ description: Get a free gutter inspection in 24 hours from Huntsville's most-tru
       </div>
 
     </div>
+  </div>
+</section>
+
+{# Service Area band — local signal + internal links to city pages #}
+<section class="service-band">
+  <div class="container">
+    <p class="service-band-text">
+      <span class="service-band-icon" aria-hidden="true">📍</span>
+      <span class="service-band-label">Serving</span>
+      <a href="{{ '/gutters-huntsville-al/' | url }}">Huntsville</a> ·
+      <a href="{{ '/gutters-madison-al/' | url }}">Madison</a> ·
+      <a href="{{ '/gutters-decatur-al/' | url }}">Decatur</a> ·
+      <a href="{{ '/gutters-athens-al/' | url }}">Athens</a> ·
+      <a href="{{ '/gutters-hartselle-al/' | url }}">Hartselle</a> ·
+      <a href="{{ '/gutters-hampton-cove-al/' | url }}">Hampton Cove</a> ·
+      <a href="{{ '/gutters-owens-cross-roads-al/' | url }}">Owens Cross Roads</a> ·
+      <a href="{{ '/gutters-harvest-al/' | url }}">Harvest</a> ·
+      <a href="{{ '/gutters-toney-al/' | url }}">Toney</a> ·
+      <span class="service-band-tail">and surrounding North Alabama</span>
+    </p>
   </div>
 </section>
 
@@ -238,6 +239,61 @@ description: Get a free gutter inspection in 24 hours from Huntsville's most-tru
   </div>
 </section>
 
+{# Recent Local Projects — pulled from projects.json (review + photos prioritized) #}
+{% set featuredSlugs = [
+  "huntsville-seamless-gutters-Pq2sBQjIlz",
+  "huntsville-seamless-gutters-DMA2RHFomf",
+  "owens-cross-roads-underground-drains-OvTCsdQbYD",
+  "owens-cross-roads-seamless-gutters-2nm5krEwIv",
+  "madison-rotten-wood-repair-yWcJqfPE4m",
+  "laceys-spring-gutter-guards-qYArwbNXb5"
+] %}
+<section class="local-projects">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-eyebrow">Real Homes · Real Reviews</p>
+      <h2>Recent Projects Across North Alabama</h2>
+      <p class="section-intro">Here's some of our work from neighborhoods near you. Real homes, real reviews, real homeowners.</p>
+    </div>
+
+    <div class="local-projects-grid">
+      {% for slug in featuredSlugs %}
+        {% for project in projects %}
+          {% if project.slug == slug %}
+            <article class="lp-card">
+              <a href="{{ ('/projects/' + project.slug + '/') | url }}" class="lp-card-image">
+                <img src="{{ project.thumbnail }}" alt="{{ project.service }} in {{ project.city }}, {{ project.state }}" loading="lazy" width="400" height="300">
+              </a>
+              <div class="lp-card-content">
+                <div class="lp-meta">
+                  {% if project.cityHasPage %}
+                    <a href="{{ ('/gutters-' + project.citySlug + '-al/') | url }}" class="lp-city">📍 {{ project.city }}, {{ project.state }}</a>
+                  {% else %}
+                    <span class="lp-city">📍 {{ project.city }}, {{ project.state }}</span>
+                  {% endif %}
+                  <span class="lp-service">{{ project.service }}</span>
+                </div>
+                {% if project.review and project.review.text %}
+                  <blockquote class="lp-review">
+                    <span class="lp-stars" aria-hidden="true">★★★★★</span>
+                    <p>"{{ project.review.text | truncate(160) }}"</p>
+                    <cite>— {{ project.review.author }}</cite>
+                  </blockquote>
+                {% endif %}
+                <a href="{{ ('/projects/' + project.slug + '/') | url }}" class="lp-link">View Project Details →</a>
+              </div>
+            </article>
+          {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+
+    <div class="local-projects-footer">
+      <a href="{{ '/recent-projects/' | url }}" class="btn btn-dark">See all 43 projects →</a>
+    </div>
+  </div>
+</section>
+
 {# Quality Workmanship #}
 <section class="workmanship parallax-bg" id="about" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/quality-section-bg_u6ueuq.jpg');">
   <div class="container">
@@ -258,35 +314,43 @@ description: Get a free gutter inspection in 24 hours from Huntsville's most-tru
   </div>
 </section>
 
-{# Reviews — non-linked trust badges #}
-<section class="reviews">
+{# What Customers Say — real verified Google reviews from projects.json #}
+<section class="reviews-quotes">
   <div class="container">
     <div class="section-header">
-      <p class="section-eyebrow">Excellent Reviews</p>
-      <h2>What Our Customers Say</h2>
+      <p class="section-eyebrow">Verified 5-Star Reviews</p>
+      <h2>What Customers Say</h2>
+      <p class="section-intro">Real reviews from real North Alabama homeowners — part of our 4.7★ rating across 240+ verified reviews.</p>
     </div>
 
-    <div class="review-platforms">
-      <div class="review-platform">
-        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_210/icon-google_p6e6y8.png" alt="Google Reviews" loading="lazy" width="105" height="105">
-        <div class="review-count">96 Reviews</div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-rating">4.7 Star Rating</div>
-      </div>
+    <div class="reviews-quotes-grid">
+      <blockquote class="rq-card">
+        <span class="rq-stars" aria-hidden="true">★★★★★</span>
+        <p class="rq-text">I recently had Blue River Gutters work on my home, and I couldn't be more pleased. Adam, the owner, responded promptly, and after a thorough inspection took the time to clearly explain the problem areas with my existing gutters. He gave me several options to improve water drainage and also replaced the rotten fascia boards. Professionalism, attention to detail, and competitive pricing truly set them apart. You can't go wrong with Blue River Gutters!</p>
+        <cite class="rq-author">— D. P. <span>· Huntsville, AL</span></cite>
+      </blockquote>
 
-      <div class="review-platform">
-        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_210/icon-angi_fzphgb.png" alt="Angi Reviews" loading="lazy" width="105" height="105">
-        <div class="review-count">31 Reviews</div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-rating">4.7 Star Rating</div>
-      </div>
+      <blockquote class="rq-card">
+        <span class="rq-stars" aria-hidden="true">★★★★★</span>
+        <p class="rq-text">Recently had a dry well installed to address drainage issues in the back yard. Adam was very responsive and provided several options to consider during the site survey. Quickly provided an estimate and schedule. Work was completed early and on budget. Would highly recommend Blue River Gutters.</p>
+        <cite class="rq-author">— J. C. <span>· Owens Cross Roads, AL</span></cite>
+      </blockquote>
 
-      <div class="review-platform">
-        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_210/icon-homeadvisor_jpa1lf.webp" alt="HomeAdvisor Reviews" loading="lazy" width="105" height="105">
-        <div class="review-count">113 Reviews</div>
-        <div class="review-stars">★★★★★</div>
-        <div class="review-rating">4.6 Star Rating</div>
-      </div>
+      <blockquote class="rq-card">
+        <span class="rq-stars" aria-hidden="true">★★★★★</span>
+        <p class="rq-text">Blue River Gutters (Adam) did an excellent job at an excellent price installing gutter guards front and back of the house, as well as replaced rotted fascia boards. Highly recommend them. They don't come any better!</p>
+        <cite class="rq-author">— N. H. <span>· Laceys Spring, AL</span></cite>
+      </blockquote>
+
+      <blockquote class="rq-card">
+        <span class="rq-stars" aria-hidden="true">★★★★★</span>
+        <p class="rq-text">They priced the job out one day and performed the service the next day. They were quick and professional, and did a great job.</p>
+        <cite class="rq-author">— K. C. <span>· Huntsville, AL</span></cite>
+      </blockquote>
+    </div>
+
+    <div class="reviews-quotes-footer">
+      <a href="https://g.co/kgs/oHV77L" target="_blank" rel="noopener">Read all our reviews on Google →</a>
     </div>
   </div>
 </section>
@@ -718,10 +782,158 @@ description: Get a free gutter inspection in 24 hours from Huntsville's most-tru
 .sticky-cta .sticky-call { background: var(--red); color: var(--white); }
 .sticky-cta .sticky-form { background: var(--navy); color: var(--white); }
 
+/* Service area band */
+.service-band {
+  background: var(--navy);
+  color: var(--white);
+  padding: 0.85rem 0;
+}
+.service-band-text {
+  margin: 0;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+.service-band-icon { margin-right: 0.35rem; }
+.service-band-label { font-weight: 700; margin-right: 0.25rem; }
+.service-band-text a {
+  color: var(--white);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(255,255,255,0.45);
+  white-space: nowrap;
+}
+.service-band-text a:hover { border-bottom-style: solid; }
+.service-band-tail { opacity: 0.8; }
+
+/* Recent local projects */
+.local-projects { padding: 4rem 0; }
+.local-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+  margin-bottom: 2.5rem;
+}
+.lp-card {
+  background: var(--white);
+  border: 1px solid var(--light-gray);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.lp-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.1);
+}
+.lp-card-image {
+  display: block;
+  height: 200px;
+  overflow: hidden;
+  background: var(--light-gray);
+}
+.lp-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+.lp-card:hover .lp-card-image img { transform: scale(1.05); }
+.lp-card-content {
+  padding: 1.25rem 1.35rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.lp-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  margin-bottom: 0.85rem;
+  flex-wrap: wrap;
+}
+.lp-city { color: var(--blue); font-weight: 600; text-decoration: none; }
+a.lp-city:hover { text-decoration: underline; }
+.lp-service {
+  color: var(--gray);
+  background: var(--light-gray);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-weight: 500;
+}
+.lp-review {
+  margin: 0 0 1rem;
+  padding: 0;
+  border: 0;
+}
+.lp-review .lp-stars { color: #f5b400; font-size: 0.95rem; letter-spacing: 1px; }
+.lp-review p {
+  margin: 0.35rem 0 0.5rem;
+  color: var(--slate);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  font-style: italic;
+}
+.lp-review cite {
+  color: var(--gray);
+  font-size: 0.82rem;
+  font-style: normal;
+  font-weight: 600;
+}
+.lp-link {
+  margin-top: auto;
+  color: var(--blue);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.lp-link:hover { text-decoration: underline; }
+.local-projects-footer { text-align: center; }
+
+/* What customers say — review quotes */
+.reviews-quotes { padding: 4rem 0; background: var(--cream); }
+.reviews-quotes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
+  align-items: start;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.rq-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1.75rem;
+  margin: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border-left: 4px solid #f5b400;
+}
+.rq-stars { color: #f5b400; font-size: 1.1rem; letter-spacing: 2px; }
+.rq-text {
+  color: var(--slate);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  margin: 0.6rem 0 1rem;
+}
+.rq-author {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--navy);
+  font-size: 0.95rem;
+}
+.rq-author span { font-weight: 500; color: var(--gray); }
+.reviews-quotes-footer { text-align: center; margin-top: 2.25rem; }
+.reviews-quotes-footer a { color: var(--blue); font-weight: 600; }
+
 @media (max-width: 1024px) {
   .hero-v2-grid { grid-template-columns: 1fr; gap: 2rem; }
   .hero-v2-content h1 { font-size: 2.5rem; }
   .steps-grid { grid-template-columns: 1fr; }
+  .local-projects-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
@@ -733,6 +945,9 @@ description: Get a free gutter inspection in 24 hours from Huntsville's most-tru
   .sticky-cta { display: flex; }
   body { padding-bottom: 70px; }
   .urgency-bar { font-size: 0.85rem; }
+  .local-projects-grid { grid-template-columns: 1fr; }
+  .reviews-quotes-grid { grid-template-columns: 1fr; }
+  .service-band-text { font-size: 0.82rem; }
 }
 </style>
 
@@ -786,12 +1001,10 @@ description: Get a free gutter inspection in 24 hours from Huntsville's most-tru
     }
 
     const name = document.getElementById('lead-name').value.trim();
-    const email = document.getElementById('lead-email').value.trim();
     const phone = document.getElementById('lead-phone').value.trim();
-    const zip = document.getElementById('lead-zip').value.trim();
-    const service = document.getElementById('lead-service').value;
+    const email = document.getElementById('lead-email').value.trim();
 
-    if (!name || !email || !phone || !zip || !service) {
+    if (!name || !phone || !email) {
       showError('Please fill out all fields.');
       return;
     }
@@ -810,11 +1023,10 @@ description: Get a free gutter inspection in 24 hours from Huntsville's most-tru
       name: name,
       list: COURIER_LIST,
       source: 'bluerivergutters.com',
-      funnel: 'homepage-hero-form',
+      funnel: 'homepage-hero-form-v2',
       metadata: {
         phone: phone,
-        zip: zip,
-        service: service,
+        service: 'not specified',
         page: 'homepage',
         time_to_fill_ms: elapsed
       }
@@ -951,6 +1163,54 @@ description: Get a free gutter inspection in 24 hours from Huntsville's most-tru
       }
     }
   ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "itemReviewed": { "@type": "LocalBusiness", "name": "Blue River Gutters" },
+  "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+  "author": { "@type": "Person", "name": "D. P." },
+  "reviewBody": "I recently had Blue River Gutters work on my home, and I couldn't be more pleased. Adam, the owner, responded promptly, and after a thorough inspection took the time to clearly explain the problem areas with my existing gutters. He gave me several options to improve water drainage and also replaced the rotten fascia boards. Professionalism, attention to detail, and competitive pricing truly set them apart. You can't go wrong with Blue River Gutters!",
+  "locationCreated": { "@type": "Place", "name": "Huntsville, AL" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "itemReviewed": { "@type": "LocalBusiness", "name": "Blue River Gutters" },
+  "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+  "author": { "@type": "Person", "name": "J. C." },
+  "reviewBody": "Recently had a dry well installed to address drainage issues in the back yard. Adam was very responsive and provided several options to consider during the site survey. Quickly provided an estimate and schedule. Work was completed early and on budget. Would highly recommend Blue River Gutters.",
+  "locationCreated": { "@type": "Place", "name": "Owens Cross Roads, AL" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "itemReviewed": { "@type": "LocalBusiness", "name": "Blue River Gutters" },
+  "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+  "author": { "@type": "Person", "name": "N. H." },
+  "reviewBody": "Blue River Gutters (Adam) did an excellent job at an excellent price installing gutter guards front and back of the house, as well as replaced rotted fascia boards. Highly recommend them. They don't come any better!",
+  "locationCreated": { "@type": "Place", "name": "Laceys Spring, AL" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Review",
+  "itemReviewed": { "@type": "LocalBusiness", "name": "Blue River Gutters" },
+  "reviewRating": { "@type": "Rating", "ratingValue": "5", "bestRating": "5" },
+  "author": { "@type": "Person", "name": "K. C." },
+  "reviewBody": "They priced the job out one day and performed the service the next day. They were quick and professional, and did a great job.",
+  "locationCreated": { "@type": "Place", "name": "Huntsville, AL" }
 }
 </script>
 {% endraw %}
