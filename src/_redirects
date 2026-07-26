@@ -2,6 +2,8 @@
 # Format: /old-path /new-path [status]
 # All redirects are 301 (permanent) unless specified
 # Updated: June 23, 2026 - Forced www to non-www redirect with ! (was serving static / instead of redirecting)
+# Updated: July 26, 2026 - REMOVED self-referencing redirect on /gutters-huntsville-al/ that caused an infinite
+#   redirect loop, blocking Google from indexing the Huntsville landing page entirely.
 
 # ===========================================
 # WWW TO NON-WWW REDIRECT (Priority 0)
@@ -154,7 +156,6 @@ https://www.bluerivergutters.com/* https://bluerivergutters.com/:splat 301!
 # OLD WORDPRESS URLs (Priority 6)
 # ===========================================
 /gutter-protection/ /services/gutter-guards/ 301
-/gutters-huntsville-al/ /gutters-huntsville-al/ 301
 /how-to-unclog-your-downspout-or-underground-drain-system/ /blog/underground-drain-clogged/ 301
 
 # ===========================================
