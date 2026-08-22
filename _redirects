@@ -4,6 +4,8 @@
 # Updated: June 23, 2026 - Forced www to non-www redirect with ! (was serving static / instead of redirecting)
 # Updated: July 26, 2026 - REMOVED self-referencing redirect on /gutters-huntsville-al/ that caused an infinite
 #   redirect loop, blocking Google from indexing the Huntsville landing page entirely.
+# Updated: August 22, 2026 - Added /blog-grid/page/* wildcard + /blog-grid/* catch-all. GA4 showed
+#   /blog-grid/page/2 and /page/3 taking ~79 views per quarter at 2s engagement (unredirected Wix pagination).
 
 # ===========================================
 # WWW TO NON-WWW REDIRECT (Priority 0)
@@ -159,7 +161,10 @@ https://www.bluerivergutters.com/* https://bluerivergutters.com/:splat 301!
 /how-to-unclog-your-downspout-or-underground-drain-system/ /blog/underground-drain-clogged/ 301
 
 # ===========================================
-# CATCH-ALL FOR BLOG CATEGORY/TAG WILDCARDS
+# CATCH-ALL FOR BLOG CATEGORY/TAG/PAGINATION WILDCARDS
+# Order matters: specific rules above fire first, these sweep up the rest.
 # ===========================================
+/blog-grid/page/* /blog/ 301
 /blog-grid/categories/* /blog/ 301
 /blog-grid/tags/* /blog/ 301
+/blog-grid/* /blog/ 301
