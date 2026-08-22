@@ -150,6 +150,17 @@ permalink: /reviews/
   </div>
 </section>
 
+{#
+  NOTE (Aug 22, 2026): Removed "aggregateRating" and the "review" array from this
+  LocalBusiness schema. Both were self-serving review markup — reviews about Blue River
+  Gutters, published by Blue River Gutters. Google disallows this: it generates no rich
+  result and carries manual-action risk.
+
+  Star ratings in search results for a local business come from the Google Business
+  Profile, not from markup on our own site. There is no version of this markup that works.
+
+  Do not re-add Review or AggregateRating markup about Blue River Gutters on our own pages.
+#}
 {% block schema %}
 <script type="application/ld+json">
 {
@@ -157,36 +168,16 @@ permalink: /reviews/
   "@type": "LocalBusiness",
   "name": "Blue River Gutters",
   "image": "https://res.cloudinary.com/dxzw1zwez/image/upload/logo-horizontal-white_kzwl0f.png",
+  "url": "https://bluerivergutters.com/",
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "3315 Memorial Pkwy SW Suite B13",
     "addressLocality": "Huntsville",
     "addressRegion": "AL",
-    "postalCode": "35801"
+    "postalCode": "35801",
+    "addressCountry": "US"
   },
-  "telephone": "(256) 616-6760",
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "{{ reviews.business.averageRating }}",
-    "reviewCount": "{{ reviews.business.totalReviews }}"
-  },
-  "review": [
-    {% for review in reviews.reviews | slice(0, 5) %}
-    {
-      "@type": "Review",
-      "author": {
-        "@type": "Person",
-        "name": "{{ review.author }}"
-      },
-      "datePublished": "{{ review.date }}",
-      "reviewRating": {
-        "@type": "Rating",
-        "ratingValue": "{{ review.rating }}"
-      },
-      "reviewBody": "{{ review.text | replace('"', '\\"') }}"
-    }{% if not loop.last %},{% endif %}
-    {% endfor %}
-  ]
+  "telephone": "(256) 616-6760"
 }
 </script>
 {% endblock %}
