@@ -155,6 +155,14 @@ eleventyComputed:
 </section>
 
 {# Schema markup — Article + Place #}
+{#
+  NOTE (Aug 22, 2026): Removed the Review JSON-LD block that previously rendered here.
+  It marked up reviews with itemReviewed = Blue River Gutters (our own LocalBusiness),
+  which is self-serving review markup. Google disallows this — it produces no rich result
+  and carries manual-action risk. The customer review still displays on-page as normal
+  content above; it is simply no longer wrapped in Review schema.
+  Do not re-add Review or AggregateRating markup about Blue River Gutters on our own pages.
+#}
 {% block schema %}
 <script type="application/ld+json">
 {
@@ -181,29 +189,6 @@ eleventyComputed:
   }
 }
 </script>
-{% if project.hasReview and project.review %}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Review",
-  "itemReviewed": {
-    "@type": "LocalBusiness",
-    "name": "Blue River Gutters",
-    "telephone": "(256) 616-6760",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "3315 Memorial Pkwy SW Suite B13",
-      "addressLocality": "Huntsville",
-      "addressRegion": "AL",
-      "postalCode": "35801"
-    }
-  },
-  "reviewRating": {"@type": "Rating", "ratingValue": "{{ project.review.rating }}", "bestRating": "5"},
-  "author": {"@type": "Person", "name": "{{ project.review.author }}"},
-  "reviewBody": {{ project.review.text | dump | safe }}
-}
-</script>
-{% endif %}
 {% endblock %}
 
 <style>
