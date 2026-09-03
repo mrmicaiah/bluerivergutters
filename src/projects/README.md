@@ -1,3 +1,9 @@
+---
+# Internal note — build it, but never publish it.
+permalink: false
+eleventyExcludeFromCollections: true
+---
+
 # This file is intentionally NOT a data source.
 #
 # Eleventy reads project data from src/_data/projects.json (the official location).

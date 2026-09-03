@@ -1,3 +1,9 @@
+---
+# Internal reference doc — build it, but never publish it.
+permalink: false
+eleventyExcludeFromCollections: true
+---
+
 # Blue River Gutters Site Standards
 
 **Reference this document before creating any new pages.**
