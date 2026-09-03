@@ -145,8 +145,8 @@ Always include these for performance:
 | Layout | Purpose | Location |
 |--------|---------|----------|
 | `base.njk` | Base HTML wrapper | `src/_includes/layouts/` |
-| `service.njk` | Service + city pages | `src/_includes/layouts/` |
-| `city.njk` | City landing pages | `src/_includes/layouts/` |
+| `service.njk` | Service + city pages (pass-through; sections in `partials/service-body.njk`) | `src/_includes/layouts/` |
+| `city.njk` | City landing pages (pass-through; sections in `partials/city-body.njk`) | `src/_includes/layouts/` |
 | `article.njk` | Blog posts | `src/_includes/layouts/` |
 
 ### Using Layouts
@@ -160,6 +160,57 @@ description: Professional seamless gutter installation...
 ```
 
 **Don't create new layout files unless absolutely necessary.** Existing layouts handle all current use cases.
+
+{% raw %}
+### Content Blocks on Service and City Pages — REQUIRED PATTERN
+
+Service and city pages write their long-form prose into `{% set %}` blocks (`local_problem`,
+`service_explanation`, `why_us` on service pages; `local_problems`, `why_local`,
+`local_deep_dive`, `homeowner_guide`, `local_spotlight` on city pages).
+
+**A `{% set %}` variable is NOT visible to an Eleventy layout.** Eleventy renders the page and
+its layout as two separate passes — only frontmatter data and `content` cross that boundary. A
+page that just defines set-blocks and stops renders *nothing*: the sections silently disappear
+and the page ships frontmatter-only. (This is exactly what happened site-wide before Sept 2026 —
+81,000 words across 192 pages were written but never published.)
+
+So the page markup lives in a partial that the page itself includes, which keeps the set-blocks
+in scope. **Every service and city page must end with its include line:**
+
+```njk
+---
+layout: service.njk
+...
+---
+
+{% set local_problem %}
+<p>...</p>
+{% endset %}
+
+{% set service_explanation %}
+<p>...</p>
+{% endset %}
+
+{% set why_us %}
+<p>...</p>
+{% endset %}
+
+{% include "partials/service-body.njk" %}
+```
+
+City pages use `{% include "partials/city-body.njk" %}` instead. The include goes **last**, after
+every set-block — Nunjucks evaluates top to bottom, so anything defined below the include is
+invisible to it.
+
+**After adding or editing one of these pages, always confirm your prose is actually in the
+output:**
+
+```bash
+npm run build && grep -c "a distinctive phrase from your set-block" _site/<your-page>/index.html
+```
+
+A count of 0 means the include line is missing or misplaced.
+{% endraw %}
 
 ---
 
@@ -179,7 +230,7 @@ description: Professional seamless gutter installation...
 
 ### Schema is Handled by Layouts
 
-The `service.njk` and `city.njk` layouts automatically generate schema markup based on frontmatter data. Don't manually add schema unless the layout doesn't cover your case.
+The `service.njk` and `city.njk` body partials automatically generate schema markup based on frontmatter data. Don't manually add schema unless the layout doesn't cover your case.
 
 ---
 
@@ -276,7 +327,10 @@ cta_subhead: Subheading text
 3. **Wrong permalink format** — Must start and end with `/`
 4. **Missing trailing slash** — `/services/huntsville/seamless-gutters/` not `/services/huntsville/seamless-gutters`
 5. **Hardcoding content in layouts** — Use frontmatter variables instead
-6. **Creating duplicate layouts** — Extend existing layouts with content blocks
+6. **Creating duplicate layouts** — Reuse the existing layouts; add content via {% raw %}`{% set %}`{% endraw %} blocks
+7. **Omitting the body include** — A service or city page without its trailing
+   {% raw %}`{% include "partials/service-body.njk" %}`{% endraw %} (or `city-body.njk`) renders
+   with *no* content sections at all, silently. See "Content Blocks on Service and City Pages" above.
 
 ---
 
