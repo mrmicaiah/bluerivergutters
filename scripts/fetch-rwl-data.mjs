@@ -7,7 +7,7 @@
  * project pages server-side (SEO-friendly, no JS dependency).
  *
  * Usage:
- *   node scripts/fetch-rwl-data.mjs            # fetches live RWL endpoint
+ *   RWL_KEY=<key> node scripts/fetch-rwl-data.mjs   # fetches live RWL endpoint
  *   node scripts/fetch-rwl-data.mjs --from=path/to/sample.json  # uses local file
  *
  * Run from repo root. Overwrites src/_data/projects.json.
@@ -21,12 +21,27 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, "..");
 const OUTPUT_PATH = path.join(REPO_ROOT, "src", "_data", "projects.json");
 
-const RWL_KEY = "RlomFVKLymXtpSXg";
-const RWL_URL =
-  `https://app.realworklabs.com/plugin/data?key=${RWL_KEY}` +
-  `&contentType=Default&limit=200&contentFilters=${encodeURIComponent(
-    JSON.stringify({ labels: [] })
-  )}`;
+// Read from the environment — never commit the key. See .env.example.
+const RWL_KEY = process.env.RWL_KEY;
+
+function buildRwlUrl() {
+  if (!RWL_KEY) {
+    console.error(
+      "Missing RWL_KEY.\n" +
+        "  The live RealWork feed needs an API key, read from the environment.\n" +
+        "  Run it as:  RWL_KEY=<key> node scripts/fetch-rwl-data.mjs\n" +
+        "  See .env.example for the variable name.\n" +
+        "  To work without the live feed, pass --from=path/to/sample.json instead."
+    );
+    process.exit(1);
+  }
+  return (
+    `https://app.realworklabs.com/plugin/data?key=${RWL_KEY}` +
+    `&contentType=Default&limit=200&contentFilters=${encodeURIComponent(
+      JSON.stringify({ labels: [] })
+    )}`
+  );
+}
 
 // A real Blue River Gutters job photo, used as the fallback when a project
 // has only a review with no images. Looks better than a "no image" gray box.
@@ -324,8 +339,10 @@ function transform(workSites) {
 }
 
 async function fetchRWL() {
-  console.log(`Fetching: ${RWL_URL}`);
-  const res = await fetch(RWL_URL, {
+  const url = buildRwlUrl();
+  // Redact the key — this line ends up in CI logs and terminal scrollback.
+  console.log(`Fetching: ${url.replace(/key=[^&]*/, "key=***")}`);
+  const res = await fetch(url, {
     headers: {
       Origin: "https://bluerivergutters.com",
       Referer: "https://bluerivergutters.com/",
