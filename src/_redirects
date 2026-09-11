@@ -168,3 +168,10 @@ https://www.bluerivergutters.com/* https://bluerivergutters.com/:splat 301!
 /blog-grid/categories/* /blog/ 301
 /blog-grid/tags/* /blog/ 301
 /blog-grid/* /blog/ 301
+
+# ===========================================
+# OLD WORDPRESS CATEGORY/TAG URLs
+# Found leaking in GA4, Sept 2026
+# ===========================================
+/category/* /blog/ 301
+/tag/* /blog/ 301
