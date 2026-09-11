@@ -20,6 +20,29 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, "..");
 const OUTPUT_PATH = path.join(REPO_ROOT, "src", "_data", "projects.json");
+const MIRROR_MAP_PATH = path.join(__dirname, "realwork-cloudinary-map.json");
+
+// Our own Cloudinary account. Project photos are mirrored off RealWork Labs
+// into it by scripts/mirror-project-images.mjs, which writes the map below.
+// Reading the map here is what makes the mirror survive a feed re-sync: without
+// it, every run of this script would happily rewrite the URLs back to RWL.
+const CLOUD_NAME = "dxzw1zwez";
+
+// RealWork source URL (query stripped) -> Cloudinary public_id, or null when
+// the photo is dead at source and cannot be mirrored at all.
+let MIRROR = {};
+try {
+  MIRROR = JSON.parse(await fs.readFile(MIRROR_MAP_PATH, "utf8")).mappings || {};
+  const dead = Object.values(MIRROR).filter((v) => v === null).length;
+  console.log(
+    `Cloudinary mirror map: ${Object.keys(MIRROR).length - dead} mirrored, ${dead} dead at source`
+  );
+} catch {
+  console.warn(
+    "\u26a0\ufe0f  No scripts/realwork-cloudinary-map.json \u2014 image URLs will point at RealWork Labs.\n" +
+      "   Run scripts/mirror-project-images.mjs to mirror them into Cloudinary."
+  );
+}
 
 // Read from the environment — never commit the key. See .env.example.
 const RWL_KEY = process.env.RWL_KEY;
@@ -188,13 +211,34 @@ function generateTitle(service, city) {
   return `${service} in ${city}, AL`;
 }
 
-function buildSizedUrl(sourceUrl, w, h) {
-  // RWL serves transformed images at /media/{hash}.jpg?w=W&h=H&f=webp.
+/** The RealWork /media/ base URL a source resolves to — the mirror map's key. */
+function mirrorKey(sourceUrl) {
   // The /ugc/ path serves originals (often 3-5MB) — too heavy for browsers.
+  return String(sourceUrl).replace("/ugc/", "/media/").split("?")[0];
+}
+
+/** True when the photo is dead at RealWork. Callers drop it from the gallery. */
+function isDropped(sourceUrl) {
+  if (!sourceUrl) return false;
+  const key = mirrorKey(sourceUrl);
+  return key in MIRROR && MIRROR[key] === null;
+}
+
+function buildSizedUrl(sourceUrl, w, h) {
   if (!sourceUrl) return null;
-  const mediaUrl = sourceUrl.replace("/ugc/", "/media/");
-  const base = mediaUrl.split("?")[0];
-  return `${base}?w=${w}&h=${h}&f=webp`;
+  const key = mirrorKey(sourceUrl);
+
+  if (key in MIRROR) {
+    // null = dead at source, nothing to serve. isDropped() has already removed
+    // these upstream; returning null here keeps the invariant if one slips by.
+    if (MIRROR[key] === null) return null;
+    return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/` +
+      `q_auto,f_auto,w_${w},h_${h},c_fill/${MIRROR[key]}`;
+  }
+
+  // Not mirrored — a photo added to the feed since the last mirror run. Serve
+  // it from RWL as before, and re-run the mirror script to bring it over.
+  return `${mirrorKey(sourceUrl)}?w=${w}&h=${h}&f=webp`;
 }
 
 function buildThumbnail(sourceUrl) {
@@ -213,6 +257,7 @@ function buildFull(sourceUrl) {
 function transform(workSites) {
   const seenSlugs = new Set();
   const unknownCities = new Set();
+  let droppedPhotos = 0;
 
   const projects = workSites
     .map((entry) => {
@@ -224,6 +269,15 @@ function transform(workSites) {
         if (item.type === "Checkin" && item.media && item.media.length > 0) {
           for (const m of item.media) {
             if (m.type === "photo" && m.sourceUrl) {
+              // Dead at RealWork: the URL still answers 200 but returns an S3
+              // NoSuchKey body, not an image. Drop it rather than ship a broken
+              // <img>. Because the cover sort and thumbnail/hero selection both
+              // read photos[0] below, dropping a dead cover here automatically
+              // promotes the first surviving photo in its place.
+              if (isDropped(m.sourceUrl)) {
+                droppedPhotos++;
+                continue;
+              }
               photos.push({
                 full: buildFull(m.sourceUrl) || m.sourceUrl,
                 thumb: buildThumbnail(m.sourceUrl) || m.sourceUrl,
@@ -335,7 +389,7 @@ function transform(workSites) {
   // Sort by date descending (newest first)
   projects.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 
-  return { projects, unknownCities: [...unknownCities] };
+  return { projects, unknownCities: [...unknownCities], droppedPhotos };
 }
 
 async function fetchRWL() {
@@ -377,7 +431,7 @@ async function main() {
   const workSites = raw.workSites || [];
   console.log(`Loaded ${workSites.length} raw entries from RWL`);
 
-  const { projects, unknownCities } = transform(workSites);
+  const { projects, unknownCities, droppedPhotos } = transform(workSites);
 
   console.log(`Transformed → ${projects.length} valid projects`);
   console.log(
@@ -406,6 +460,10 @@ async function main() {
     .sort((a, b) => b[1] - a[1])
     .slice(0, 15)) {
     console.log(`  ${c}: ${count}`);
+  }
+
+  if (droppedPhotos) {
+    console.log(`\nDropped ${droppedPhotos} photo(s) that are dead at RealWork Labs.`);
   }
 
   if (unknownCities.length) {
