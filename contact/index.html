@@ -333,19 +333,27 @@
             </div>
           </div>
           
-          <div class="form-group">
-            <label for="city">City/Area</label>
-            <select id="city" name="city">
-              <option value="">Select your city...</option>
-              <option value="Huntsville">Huntsville</option>
-              <option value="Madison">Madison</option>
-              <option value="Decatur">Decatur</option>
-              <option value="Athens">Athens</option>
-              <option value="Hartselle">Hartselle</option>
-              <option value="Other">Other (specify in message)</option>
-            </select>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="zip">Zip Code *</label>
+              <input type="text" id="zip" name="zip" required inputmode="numeric"
+                     pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code"
+                     placeholder="35801">
+            </div>
+            <div class="form-group">
+              <label for="city">City/Area</label>
+              <select id="city" name="city">
+                <option value="">Select your city...</option>
+                <option value="Huntsville">Huntsville</option>
+                <option value="Madison">Madison</option>
+                <option value="Decatur">Decatur</option>
+                <option value="Athens">Athens</option>
+                <option value="Hartselle">Hartselle</option>
+                <option value="Other">Other (specify in message)</option>
+              </select>
+            </div>
           </div>
-          
+
           <div class="form-group">
             <label for="service">Service Needed</label>
             <select id="service" name="service">
@@ -633,14 +641,95 @@
   const CONFIG = {
     list: 'blue-river-gutters-leads',
     source: 'bluerivergutters.com',
-    funnel: 'contact-form',
+    // v2 marks the hardened form (required zip). The old 'contact-form' value
+    // stays in Courier's history so the dashboard can tell the eras apart.
+    funnel: 'contact-form-v2',
     formSelector: '#contact-form',
-    customFields: ['phone', 'city', 'service', 'message'],
+    customFields: ['phone', 'zip', 'city', 'service', 'message'],
     redirectUrl: '/thank-you/'
   };
 
   const API_URL = 'https://email-bot-server.micaiah-tasks.workers.dev/api/subscribe';
   const FORM_LOAD_TIME = Date.now();
+
+  // Bump when the marker list or zip allowlist changes, so a later recount can
+  // tell which filter era a lead arrived under.
+  const SCAN_VERSION = 2;
+
+  // Service area: the 30 cities in src/locations/. All of Huntsville proper is
+  // 358xx, so that whole block is accepted by prefix; everything else is listed
+  // explicitly. Deliberately generous — a wrong rejection turns away a paying
+  // customer, while a wrong acceptance only lets through a lead we can triage.
+  const SERVICE_AREA_PREFIXES = ['358']; // Huntsville (incl. Monrovia, Redstone)
+
+  const SERVICE_AREA_ZIPS = [
+    '35756', '35757', '35758', // Madison (35756 also covers Triana)
+    '35749',                   // Harvest / Monrovia
+    '35750',                   // Hazel Green
+    '35759',                   // Meridianville
+    '35760',                   // New Hope
+    '35761',                   // New Market
+    '35763',                   // Owens Cross Roads / Hampton Cove
+    '35764',                   // Paint Rock
+    '35773',                   // Toney
+    '35741',                   // Brownsboro
+    '35748',                   // Gurley
+    '35754',                   // Laceys Spring
+    '35739',                   // Ardmore
+    '35620',                   // Elkmont
+    '35611', '35612', '35613', '35614', // Athens
+    '35671',                   // Tanner
+    '35601', '35602', '35603', // Decatur (35603 also covers Priceville)
+    '35673',                   // Trinity
+    '35640',                   // Hartselle
+    '35670',                   // Somerville
+    '35055', '35056', '35057', '35058', // Cullman
+    '35016',                   // Arab
+    '35950', '35951',          // Albertville
+    '35976',                   // Guntersville
+    '35768', '35769'           // Scottsboro
+  ];
+
+  // Conservative on purpose: a homeowner describing a gutter problem never
+  // writes any of these. Phrases are matched as substrings.
+  const OUTREACH_PHRASES = [
+    'search ranking', 'virtual assistant', 'outsourc', 'backlink',
+    'guest post', 'web design services', 'digital marketing',
+    'lead generation', 'increase your revenue', 'grow your business',
+    'marketing agency', 'appointment setter'
+  ];
+
+  // Matched as whole words only. 'seo' as a bare substring would fire on any
+  // longer word that happens to contain it.
+  const OUTREACH_WORDS = ['seo'];
+
+  function inServiceArea(zip) {
+    if (SERVICE_AREA_PREFIXES.some(function(p) { return zip.indexOf(p) === 0; })) return true;
+    return SERVICE_AREA_ZIPS.indexOf(zip) !== -1;
+  }
+
+  // 15 of the 18 junk submissions on record put a bare phone number in the
+  // message box — no letters at all, median 10 characters. Genuine enquiries run
+  // 200+ characters of prose. Requiring a few real words is the single most
+  // effective filter this form has, and unlike the marker scan it is visible, so
+  // anyone caught by mistake is told how to fix it.
+  const MIN_MESSAGE_WORDS = 4;
+
+  function hasSubstantiveMessage(message) {
+    const words = String(message || '').trim().split(/\s+/).filter(function(w) {
+      return /[A-Za-z]/.test(w);
+    });
+    return words.length >= MIN_MESSAGE_WORDS;
+  }
+
+  function looksLikeOutreach(message) {
+    const text = String(message || '').toLowerCase();
+    if (!text) return false;
+    if (OUTREACH_PHRASES.some(function(phrase) { return text.indexOf(phrase) !== -1; })) return true;
+    return OUTREACH_WORDS.some(function(word) {
+      return new RegExp('\\b' + word + '\\b').test(text);
+    });
+  }
 
   document.querySelector(CONFIG.formSelector)?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -663,6 +752,44 @@
       return;
     }
 
+    // Required 5-digit zip. Every genuine submission in the lead history that
+    // was asked for a zip supplied one; none of the marketing spam ever did.
+    const zip = form.querySelector('[name="zip"]')?.value.trim() || '';
+    if (!/^[0-9]{5}$/.test(zip)) {
+      showMessage(form, 'Please enter your 5-digit zip code so we know the area.', 'error');
+      form.querySelector('[name="zip"]')?.focus();
+      return;
+    }
+
+    const messageText = form.querySelector('[name="message"]')?.value || '';
+
+    // Visible, never silent: a real customer who typed too little needs to be
+    // told, not quietly dropped.
+    if (!hasSubstantiveMessage(messageText)) {
+      showMessage(form, 'Please tell us a bit about the work you need — ' +
+        'even a sentence helps us come prepared.', 'error');
+      form.querySelector('[name="message"]')?.focus();
+      return;
+    }
+
+    // Outreach scan runs BEFORE the service-area check on purpose. Both would
+    // stop a pitch, but only this one is silent — checking it first means a
+    // spammer never sees the zip message and so never learns the zip rule.
+    if (looksLikeOutreach(messageText)) {
+      console.warn('Outreach markers matched — silent reject');
+      window.location.href = CONFIG.redirectUrl; // Show success, same as honeypot
+      return;
+    }
+
+    // Out of area gets a visible message, never a silent fail: a real customer
+    // who fat-fingers their zip needs a way back in.
+    if (!inServiceArea(zip)) {
+      showMessage(form, "Looks like you're outside our North Alabama service area. " +
+        "If you think that's wrong, call us at (256) 616-6760", 'error');
+      form.querySelector('[name="zip"]')?.focus();
+      return;
+    }
+
     const btn = form.querySelector('button[type="submit"]');
     const originalText = btn?.textContent;
     
@@ -682,7 +809,7 @@
     if (nameField?.value) payload.name = nameField.value;
 
     if (CONFIG.customFields.length > 0) {
-      payload.metadata = { time_to_fill_ms: elapsed };
+      payload.metadata = { time_to_fill_ms: elapsed, scan_version: SCAN_VERSION };
       CONFIG.customFields.forEach(field => {
         const el = form.querySelector(`[name="${field}"]`);
         if (el?.value) payload.metadata[field] = el.value;

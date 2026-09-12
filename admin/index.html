@@ -399,6 +399,25 @@
       font-size: 0.75rem;
       font-weight: 600;
     }
+
+    /* Marketing/VA outreach, flagged by sender domain. Muted on purpose —
+       it is a note on the row, not a warning. */
+    .lead-spam-tag {
+      display: inline-block;
+      margin-left: 0.4rem;
+      padding: 0.15rem 0.45rem;
+      background: #f3e6e6;
+      color: #9b5c5c;
+      border: 1px solid #e3cdcd;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      vertical-align: middle;
+    }
+
+    tr.lead-row-spam td { opacity: 0.6; }
     
     /* EMPTY/LOADING */
     .empty-state { text-align: center; padding: 3rem 2rem; color: var(--gray); }
@@ -1108,7 +1127,9 @@
       const max = entries[0][1];
       const funnelLabels = {
         'homepage-hero-form': 'Homepage Hero Form',
-        'contact-form': 'Contact Page Form'
+        'homepage-hero-form-v2': 'Homepage Hero Form (v2)',
+        'contact-form': 'Contact Page Form',
+        'contact-form-v2': 'Contact Page Form (v2)'
       };
       
       list.innerHTML = entries.map(([key, count], i) => {
@@ -1143,8 +1164,13 @@
       leads.forEach(lead => {
         const date = lead.timestamp ? new Date(lead.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '--';
         const service = serviceLabels[lead.service] || lead.service || '--';
-        const sourceLabel = lead.funnel === 'homepage-hero-form' ? 'Homepage' : 'Contact';
-        html += '<tr><td>' + date + '</td><td><strong>' + (lead.name || '—') + '</strong></td><td><span class="lead-service-tag">' + service + '</span></td><td>' + (lead.zip || '—') + '</td><td>' + sourceLabel + '</td></tr>';
+        // v2 is a homepage form too — without this it fell through to 'Contact'.
+        const sourceLabel = lead.funnel === 'homepage-hero-form-v2' ? 'Homepage (v2)'
+          : lead.funnel === 'homepage-hero-form' ? 'Homepage'
+          : lead.funnel === 'contact-form-v2' ? 'Contact (v2)' : 'Contact';
+        const spamBadge = lead.spam ? '<span class="lead-spam-tag">spam</span>' : '';
+        const rowClass = lead.spam ? ' class="lead-row-spam"' : '';
+        html += '<tr' + rowClass + '><td>' + date + '</td><td><strong>' + (lead.name || '—') + '</strong>' + spamBadge + '</td><td><span class="lead-service-tag">' + service + '</span></td><td>' + (lead.zip || '—') + '</td><td>' + sourceLabel + '</td></tr>';
       });
       html += '</tbody></table>';
       container.innerHTML = html;
