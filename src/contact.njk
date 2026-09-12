@@ -114,19 +114,27 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
             </div>
           </div>
           
-          <div class="form-group">
-            <label for="city">City/Area</label>
-            <select id="city" name="city">
-              <option value="">Select your city...</option>
-              <option value="Huntsville">Huntsville</option>
-              <option value="Madison">Madison</option>
-              <option value="Decatur">Decatur</option>
-              <option value="Athens">Athens</option>
-              <option value="Hartselle">Hartselle</option>
-              <option value="Other">Other (specify in message)</option>
-            </select>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="zip">Zip Code *</label>
+              <input type="text" id="zip" name="zip" required inputmode="numeric"
+                     pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code"
+                     placeholder="35801">
+            </div>
+            <div class="form-group">
+              <label for="city">City/Area</label>
+              <select id="city" name="city">
+                <option value="">Select your city...</option>
+                <option value="Huntsville">Huntsville</option>
+                <option value="Madison">Madison</option>
+                <option value="Decatur">Decatur</option>
+                <option value="Athens">Athens</option>
+                <option value="Hartselle">Hartselle</option>
+                <option value="Other">Other (specify in message)</option>
+              </select>
+            </div>
           </div>
-          
+
           <div class="form-group">
             <label for="service">Service Needed</label>
             <select id="service" name="service">
@@ -414,9 +422,11 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
   const CONFIG = {
     list: 'blue-river-gutters-leads',
     source: 'bluerivergutters.com',
-    funnel: 'contact-form',
+    // v2 marks the hardened form (required zip). The old 'contact-form' value
+    // stays in Courier's history so the dashboard can tell the eras apart.
+    funnel: 'contact-form-v2',
     formSelector: '#contact-form',
-    customFields: ['phone', 'city', 'service', 'message'],
+    customFields: ['phone', 'zip', 'city', 'service', 'message'],
     redirectUrl: '/thank-you/'
   };
 
@@ -441,6 +451,15 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
     if (elapsed < 3000) {
       console.warn('Form filled too fast (' + elapsed + 'ms) — silent reject');
       window.location.href = CONFIG.redirectUrl;
+      return;
+    }
+
+    // Required 5-digit zip. Every genuine submission in the lead history that
+    // was asked for a zip supplied one; none of the marketing spam ever did.
+    const zip = form.querySelector('[name="zip"]')?.value.trim() || '';
+    if (!/^[0-9]{5}$/.test(zip)) {
+      showMessage(form, 'Please enter your 5-digit zip code so we know the area.', 'error');
+      form.querySelector('[name="zip"]')?.focus();
       return;
     }
 
