@@ -1,44 +1,132 @@
 {
-  "lastUpdated": "2026-04-29T12:30:00Z",
+  "lastUpdated": "2026-09-12T00:34:47Z",
   "totals": {
-    "allTime": 2,
-    "last30Days": 2,
-    "last7Days": 2,
+    "allTime": 41,
+    "last30Days": 7,
+    "last7Days": 0,
     "last24Hours": 0
   },
   "byService": {
-    "new-gutters": 0,
+    "new-gutters": 1,
     "cleaning": 1,
-    "repair": 0,
-    "guards": 0,
+    "repair": 4,
+    "guards": 1,
     "drains": 0,
-    "not-sure": 1
+    "not-sure": 13
   },
   "byFunnel": {
-    "homepage-hero-form": 2,
-    "contact-form": 0
+    "homepage-hero-form": 9,
+    "homepage-hero-form-v2": 10,
+    "contact-form": 1
   },
+  "byServiceAll": {
+    "new-gutters": 15,
+    "cleaning": 1,
+    "repair": 5,
+    "guards": 1,
+    "drains": 1,
+    "not-sure": 18
+  },
+  "byFunnelAll": {
+    "homepage-hero-form": 9,
+    "homepage-hero-form-v2": 14,
+    "contact-form": 18
+  },
+  "spamFlagged": 21,
+  "genuineTotal": 20,
   "recentLeads": [
     {
-      "name": "Micaiah Bussey",
-      "email": "wstranzaction@gmail.com",
-      "service": "cleaning",
-      "zip": "35640",
-      "funnel": "homepage-hero-form",
-      "timestamp": "2026-04-28T18:56:00Z"
+      "date": "2026-09-03",
+      "timestamp": "2026-09-03T18:54:05.371Z",
+      "service": "new-gutters",
+      "funnel": "contact-form",
+      "spam": true
     },
     {
-      "name": "Micaiah Bussey - Testing",
-      "email": "mrmicaiah@gmail.com",
+      "date": "2026-09-01",
+      "timestamp": "2026-09-01T13:58:43.748Z",
+      "service": "new-gutters",
+      "funnel": "contact-form",
+      "spam": true
+    },
+    {
+      "date": "2026-08-28",
+      "timestamp": "2026-08-28T20:23:01.640Z",
       "service": "not-sure",
-      "zip": "—",
-      "funnel": "homepage-hero-form",
-      "timestamp": "2026-04-28T18:50:00Z"
+      "funnel": "homepage-hero-form-v2",
+      "spam": false
+    },
+    {
+      "date": "2026-08-24",
+      "timestamp": "2026-08-24T19:22:47.283Z",
+      "service": "not-sure",
+      "funnel": "homepage-hero-form-v2",
+      "spam": false
+    },
+    {
+      "date": "2026-08-21",
+      "timestamp": "2026-08-21T17:59:28.865Z",
+      "service": "not-sure",
+      "funnel": "contact-form",
+      "spam": true
+    },
+    {
+      "date": "2026-08-19",
+      "timestamp": "2026-08-19T16:15:41.791Z",
+      "service": "not-sure",
+      "funnel": "homepage-hero-form-v2",
+      "spam": true
+    },
+    {
+      "date": "2026-08-18",
+      "timestamp": "2026-08-18T14:24:34.078Z",
+      "service": "new-gutters",
+      "funnel": "contact-form",
+      "spam": true
+    },
+    {
+      "date": "2026-08-11",
+      "timestamp": "2026-08-11T18:08:28.517Z",
+      "service": "new-gutters",
+      "funnel": "contact-form",
+      "spam": true
+    },
+    {
+      "date": "2026-08-03",
+      "timestamp": "2026-08-03T18:45:25.922Z",
+      "service": "new-gutters",
+      "funnel": "contact-form",
+      "spam": true
+    },
+    {
+      "date": "2026-07-30",
+      "timestamp": "2026-07-30T22:10:12.869Z",
+      "service": "new-gutters",
+      "funnel": "contact-form",
+      "spam": true
     }
   ],
-  "dailyCounts": [
-    { "date": "2026-04-28", "leads": 2 },
-    { "date": "2026-04-29", "leads": 0 }
+  "monthlyCounts": [
+    {
+      "month": "2026-05",
+      "leads": 3
+    },
+    {
+      "month": "2026-06",
+      "leads": 15
+    },
+    {
+      "month": "2026-07",
+      "leads": 14
+    },
+    {
+      "month": "2026-08",
+      "leads": 7
+    },
+    {
+      "month": "2026-09",
+      "leads": 2
+    }
   ],
-  "notes": "Both leads from April 28 are test submissions (Micaiah). Honeypot active, notification routing to brgappt@gmail.com. Awaiting first real customer lead."
+  "notes": "Rebuilt from the Courier source database (email-bot-db, list blue-river-gutters-leads) on 2026-09-12. 41 subscriptions, all active. 21 are marketing/VA cold outreach, flagged by sender domain and corroborated by their signature of arriving via the contact form with a pitch in the message body and no zip code, leaving 20 genuine inquiries. byService and byFunnel are genuine-only; byServiceAll and byFunnelAll cover all 41. This file is served publicly at /data/conversions.json, so it carries no names, email addresses, zips or phone numbers. Courier remains the system of record for contact details."
 }

@@ -1108,6 +1108,7 @@
       const max = entries[0][1];
       const funnelLabels = {
         'homepage-hero-form': 'Homepage Hero Form',
+        'homepage-hero-form-v2': 'Homepage Hero Form (v2)',
         'contact-form': 'Contact Page Form'
       };
       
@@ -1143,7 +1144,9 @@
       leads.forEach(lead => {
         const date = lead.timestamp ? new Date(lead.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '--';
         const service = serviceLabels[lead.service] || lead.service || '--';
-        const sourceLabel = lead.funnel === 'homepage-hero-form' ? 'Homepage' : 'Contact';
+        // v2 is a homepage form too — without this it fell through to 'Contact'.
+        const sourceLabel = lead.funnel === 'homepage-hero-form-v2' ? 'Homepage (v2)'
+          : lead.funnel === 'homepage-hero-form' ? 'Homepage' : 'Contact';
         html += '<tr><td>' + date + '</td><td><strong>' + (lead.name || '—') + '</strong></td><td><span class="lead-service-tag">' + service + '</span></td><td>' + (lead.zip || '—') + '</td><td>' + sourceLabel + '</td></tr>';
       });
       html += '</tbody></table>';
