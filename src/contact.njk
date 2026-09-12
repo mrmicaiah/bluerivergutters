@@ -435,7 +435,7 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
 
   // Bump when the marker list or zip allowlist changes, so a later recount can
   // tell which filter era a lead arrived under.
-  const SCAN_VERSION = 1;
+  const SCAN_VERSION = 2;
 
   // Service area: the 30 cities in src/locations/. All of Huntsville proper is
   // 358xx, so that whole block is accepted by prefix; everything else is listed
@@ -489,6 +489,20 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
     return SERVICE_AREA_ZIPS.indexOf(zip) !== -1;
   }
 
+  // 15 of the 18 junk submissions on record put a bare phone number in the
+  // message box — no letters at all, median 10 characters. Genuine enquiries run
+  // 200+ characters of prose. Requiring a few real words is the single most
+  // effective filter this form has, and unlike the marker scan it is visible, so
+  // anyone caught by mistake is told how to fix it.
+  const MIN_MESSAGE_WORDS = 4;
+
+  function hasSubstantiveMessage(message) {
+    const words = String(message || '').trim().split(/\s+/).filter(function(w) {
+      return /[A-Za-z]/.test(w);
+    });
+    return words.length >= MIN_MESSAGE_WORDS;
+  }
+
   function looksLikeOutreach(message) {
     const text = String(message || '').toLowerCase();
     if (!text) return false;
@@ -528,10 +542,20 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
       return;
     }
 
+    const messageText = form.querySelector('[name="message"]')?.value || '';
+
+    // Visible, never silent: a real customer who typed too little needs to be
+    // told, not quietly dropped.
+    if (!hasSubstantiveMessage(messageText)) {
+      showMessage(form, 'Please tell us a bit about the work you need — ' +
+        'even a sentence helps us come prepared.', 'error');
+      form.querySelector('[name="message"]')?.focus();
+      return;
+    }
+
     // Outreach scan runs BEFORE the service-area check on purpose. Both would
     // stop a pitch, but only this one is silent — checking it first means a
     // spammer never sees the zip message and so never learns the zip rule.
-    const messageText = form.querySelector('[name="message"]')?.value || '';
     if (looksLikeOutreach(messageText)) {
       console.warn('Outreach markers matched — silent reject');
       window.location.href = CONFIG.redirectUrl; // Show success, same as honeypot
