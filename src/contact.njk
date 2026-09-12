@@ -433,6 +433,71 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
   const API_URL = 'https://email-bot-server.micaiah-tasks.workers.dev/api/subscribe';
   const FORM_LOAD_TIME = Date.now();
 
+  // Bump when the marker list or zip allowlist changes, so a later recount can
+  // tell which filter era a lead arrived under.
+  const SCAN_VERSION = 1;
+
+  // Service area: the 30 cities in src/locations/. All of Huntsville proper is
+  // 358xx, so that whole block is accepted by prefix; everything else is listed
+  // explicitly. Deliberately generous — a wrong rejection turns away a paying
+  // customer, while a wrong acceptance only lets through a lead we can triage.
+  const SERVICE_AREA_PREFIXES = ['358']; // Huntsville (incl. Monrovia, Redstone)
+
+  const SERVICE_AREA_ZIPS = [
+    '35756', '35757', '35758', // Madison (35756 also covers Triana)
+    '35749',                   // Harvest / Monrovia
+    '35750',                   // Hazel Green
+    '35759',                   // Meridianville
+    '35760',                   // New Hope
+    '35761',                   // New Market
+    '35763',                   // Owens Cross Roads / Hampton Cove
+    '35764',                   // Paint Rock
+    '35773',                   // Toney
+    '35741',                   // Brownsboro
+    '35748',                   // Gurley
+    '35754',                   // Laceys Spring
+    '35739',                   // Ardmore
+    '35620',                   // Elkmont
+    '35611', '35612', '35613', '35614', // Athens
+    '35671',                   // Tanner
+    '35601', '35602', '35603', // Decatur (35603 also covers Priceville)
+    '35673',                   // Trinity
+    '35640',                   // Hartselle
+    '35670',                   // Somerville
+    '35055', '35056', '35057', '35058', // Cullman
+    '35016',                   // Arab
+    '35950', '35951',          // Albertville
+    '35976',                   // Guntersville
+    '35768', '35769'           // Scottsboro
+  ];
+
+  // Conservative on purpose: a homeowner describing a gutter problem never
+  // writes any of these. Phrases are matched as substrings.
+  const OUTREACH_PHRASES = [
+    'search ranking', 'virtual assistant', 'outsourc', 'backlink',
+    'guest post', 'web design services', 'digital marketing',
+    'lead generation', 'increase your revenue', 'grow your business',
+    'marketing agency', 'appointment setter'
+  ];
+
+  // Matched as whole words only. 'seo' as a bare substring would fire on any
+  // longer word that happens to contain it.
+  const OUTREACH_WORDS = ['seo'];
+
+  function inServiceArea(zip) {
+    if (SERVICE_AREA_PREFIXES.some(function(p) { return zip.indexOf(p) === 0; })) return true;
+    return SERVICE_AREA_ZIPS.indexOf(zip) !== -1;
+  }
+
+  function looksLikeOutreach(message) {
+    const text = String(message || '').toLowerCase();
+    if (!text) return false;
+    if (OUTREACH_PHRASES.some(function(phrase) { return text.indexOf(phrase) !== -1; })) return true;
+    return OUTREACH_WORDS.some(function(word) {
+      return new RegExp('\\b' + word + '\\b').test(text);
+    });
+  }
+
   document.querySelector(CONFIG.formSelector)?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -463,6 +528,25 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
       return;
     }
 
+    // Outreach scan runs BEFORE the service-area check on purpose. Both would
+    // stop a pitch, but only this one is silent — checking it first means a
+    // spammer never sees the zip message and so never learns the zip rule.
+    const messageText = form.querySelector('[name="message"]')?.value || '';
+    if (looksLikeOutreach(messageText)) {
+      console.warn('Outreach markers matched — silent reject');
+      window.location.href = CONFIG.redirectUrl; // Show success, same as honeypot
+      return;
+    }
+
+    // Out of area gets a visible message, never a silent fail: a real customer
+    // who fat-fingers their zip needs a way back in.
+    if (!inServiceArea(zip)) {
+      showMessage(form, "Looks like you're outside our North Alabama service area. " +
+        "If you think that's wrong, call us at (256) 616-6760", 'error');
+      form.querySelector('[name="zip"]')?.focus();
+      return;
+    }
+
     const btn = form.querySelector('button[type="submit"]');
     const originalText = btn?.textContent;
     
@@ -482,7 +566,7 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
     if (nameField?.value) payload.name = nameField.value;
 
     if (CONFIG.customFields.length > 0) {
-      payload.metadata = { time_to_fill_ms: elapsed };
+      payload.metadata = { time_to_fill_ms: elapsed, scan_version: SCAN_VERSION };
       CONFIG.customFields.forEach(field => {
         const el = form.querySelector(`[name="${field}"]`);
         if (el?.value) payload.metadata[field] = el.value;
