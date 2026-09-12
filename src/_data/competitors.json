@@ -1,27 +1,40 @@
 {
-  "lastUpdated": "2026-02-04",
+  "lastUpdated": "2026-09-11",
   "rankings": {
     "gutter installation huntsville alabama": {
-      "blueRiverPosition": 6,
-      "totalResults": 206000,
+      "blueRiverPosition": 9,
+      "totalResults": 104,
       "topCompetitors": [
-        { "position": 1, "name": "Mr Gutter Of Huntsville", "url": "https://mrgutter.com/" },
-        { "position": 2, "name": "The Brothers that just do Gutters", "url": "https://huntsville.brothersgutters.com/" },
-        { "position": 3, "name": "Hello Gutters", "url": "https://hellogutters.com/" },
-        { "position": 4, "name": "BBB Directory", "url": "https://www.bbb.org/us/al/huntsville/category/gutters/accredited" },
-        { "position": 5, "name": "Yelp", "url": "https://www.yelp.com/search?cflt=gutterservices&find_loc=Huntsville%2C+AL" },
-        { "position": 6, "name": "Blue River Gutters", "url": "https://bluerivergutters.com/" }
+        { "position": 1, "name": "Reddit r/HuntsvilleAlabama", "url": "https://www.reddit.com/r/HuntsvilleAlabama/comments/11qdd89/gutters_recommendation/" },
+        { "position": 2, "name": "Yelp", "url": "https://www.yelp.com/search?cflt=gutterservices&find_loc=Huntsville%2C+AL" },
+        { "position": 3, "name": "Mr Gutter Of Huntsville", "url": "https://mrgutter.com/" },
+        { "position": 4, "name": "Gutter Gliders (Facebook)", "url": "https://www.facebook.com/GutterGliders/" },
+        { "position": 5, "name": "LJ Roofing", "url": "https://www.ljroofinghsv.com/gutters" },
+        { "position": 6, "name": "The Brothers that just do Gutters", "url": "https://huntsville.brothersgutters.com/" },
+        { "position": 9, "name": "Blue River Gutters", "url": "https://bluerivergutters.com/" }
       ]
     },
     "seamless gutters huntsville": {
       "blueRiverPosition": 3,
-      "totalResults": 43500,
+      "totalResults": 114,
       "topCompetitors": [
-        { "position": 1, "name": "Huntsville Seamless Gutters", "url": "https://huntsvilleseamlessgutters.com/" },
-        { "position": 2, "name": "Mr Gutter Of Huntsville", "url": "https://mrgutter.com/" },
+        { "position": 1, "name": "Mr Gutter Of Huntsville", "url": "https://mrgutter.com/" },
+        { "position": 2, "name": "Rainmasters 2002 (Huntsville TX — wrong state)", "url": "https://rainmasters2002.com/" },
         { "position": 3, "name": "Blue River Gutters", "url": "https://bluerivergutters.com/" },
         { "position": 4, "name": "The Brothers that just do Gutters", "url": "https://huntsville.brothersgutters.com/" },
-        { "position": 5, "name": "Hello Gutters", "url": "https://hellogutters.com/" }
+        { "position": 5, "name": "Gutter Gliders (Facebook)", "url": "https://www.facebook.com/GutterGliders/" }
+      ]
+    },
+    "seamless gutters madison al": {
+      "blueRiverPosition": 5,
+      "totalResults": 109,
+      "topCompetitors": [
+        { "position": 1, "name": "The Brothers that just do Gutters", "url": "https://huntsville.brothersgutters.com/" },
+        { "position": 2, "name": "Facebook group post", "url": "https://www.facebook.com/groups/992130641143812/posts/2762909244065934/" },
+        { "position": 3, "name": "Mr Gutter Of Huntsville", "url": "https://mrgutter.com/" },
+        { "position": 4, "name": "Yelp", "url": "https://www.yelp.com/search?cflt=gutterservices&find_loc=Madison%2C+AL+35758" },
+        { "position": 5, "name": "Blue River Gutters (article-madison-al)", "url": "https://bluerivergutters.com/article-madison-al/" },
+        { "position": 6, "name": "Flow Rite Gutter Systems", "url": "https://flowriteguttersystems.com/" }
       ]
     }
   },
@@ -29,45 +42,44 @@
     {
       "name": "Mr Gutter Of Huntsville",
       "url": "https://mrgutter.com/",
-      "description": "Long-established seamless gutter provider in Huntsville",
-      "strengths": ["25+ years in business", "Strong brand recognition", "Top organic rankings"],
-      "weaknesses": ["Older website design", "Limited local city pages"]
+      "description": "25+ years in business, the incumbent to beat. Currently #1 for seamless gutters huntsville and #3 for gutter installation huntsville alabama.",
+      "strengths": ["Domain age and authority", "Strong brand recognition", "Consistent top-3 rankings on head terms"],
+      "weaknesses": ["Generic statewide content, little city-specific depth", "Homepage does all the ranking work", "Weaker on long-tail city terms"]
     },
     {
       "name": "The Brothers that just do Gutters",
       "url": "https://huntsville.brothersgutters.com/",
-      "description": "National franchise with Huntsville location",
-      "strengths": ["National brand backing", "Professional marketing", "Consistent rankings"],
-      "weaknesses": ["Franchise model less local", "Generic content"]
+      "description": "National franchise with a Huntsville subdomain. #1 for seamless gutters madison al. Franchise SEO playbook, heavy directory presence.",
+      "strengths": ["Franchise domain authority", "Professional site", "Ranks across many city terms"],
+      "weaknesses": ["Franchise-generic content", "No genuine local voice", "Subdomain dilutes some authority"]
     },
     {
       "name": "Hello Gutters",
       "url": "https://hellogutters.com/",
-      "description": "Local competitor with voted best gutter company positioning",
-      "strengths": ["Local awards", "Wide color selection", "Heavy-duty materials focus"],
-      "weaknesses": ["Less established online presence"]
+      "description": "Local competitor, present on page 1 for several Huntsville terms but slipping from earlier positions.",
+      "strengths": ["Clean modern site", "Service-focused pages"],
+      "weaknesses": ["Thin local content", "Fewer reviews than Blue River", "Less visible in fall 2026 SERPs than February"]
     },
     {
       "name": "Gutter Gliders",
       "url": "https://guttergliders.com/",
-      "description": "Full-service gutter company, gutter-only focus",
-      "strengths": ["Specialized focus", "In-house team", "Service variety"],
-      "weaknesses": ["Smaller geographic reach"]
+      "description": "Family-owned local operator. Interesting: their Facebook page now outranks their website on head terms.",
+      "strengths": ["Strong service/repair keyword presence", "Active social proof"],
+      "weaknesses": ["Website underperforms their brand", "Facebook page carrying their rankings"]
     },
     {
       "name": "Huntsville Seamless Gutters",
       "url": "https://huntsvilleseamlessgutters.com/",
-      "description": "Domain-matched competitor for seamless gutters keyword",
-      "strengths": ["Exact match domain for seamless gutters", "Top ranking for key term"],
-      "weaknesses": ["Unknown service quality", "Limited online reviews"]
+      "description": "Exact-match domain player. Dropped out of the top 10 for seamless gutters huntsville since February.",
+      "strengths": ["Exact-match domain"],
+      "weaknesses": ["Falling rankings", "Minimal content depth"]
+    },
+    {
+      "name": "Flow Rite Gutter Systems",
+      "url": "https://flowriteguttersystems.com/",
+      "description": "NEW ENTRANT (first seen Sept 2026). Appearing on page 1 for both Huntsville and Madison terms with a clean multi-city service pitch. Watch this one.",
+      "strengths": ["Fresh site ranking quickly", "Multi-city targeting (Huntsville, Madison, Athens, Decatur)", "Clear 5-inch/6-inch product positioning"],
+      "weaknesses": ["New domain, little authority yet", "No review moat established"]
     }
-  ],
-  "blueRiverAdvantages": [
-    "20+ years experience",
-    "1700+ satisfied customers",
-    "96 Google reviews (4.7★)",
-    "Hyper-local content strategy (30+ city pages)",
-    "Family-owned authenticity",
-    "North Alabama soil/climate expertise"
   ]
 }
