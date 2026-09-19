@@ -597,6 +597,13 @@ description: Contact Blue River Gutters for a free estimate. Call (256) 616-6760
       });
     }
 
+    // Past every guard: honeypot, 3s timing floor, 5-digit zip, substantive
+    // message, outreach-marker scan, service-area check. This is the genuine
+    // send — the only branch where the Courier payload (with scan_version) is
+    // dispatched. Fired here, before the /thank-you/ redirect below, because
+    // events queued after navigation starts can be lost.
+    window.brgTrack && window.brgTrack('form_submit_contact');
+
     try {
       const resp = await fetch(API_URL, {
         method: 'POST',

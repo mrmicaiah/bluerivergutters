@@ -1094,6 +1094,10 @@ a.lp-city:hover { text-decoration: underline; }
       }
     };
 
+    // Past honeypot, 3s timing floor, required-fields and email-format checks.
+    // Genuine submission point — the only branch that dispatches to Courier.
+    window.brgTrack && window.brgTrack('form_submit_homepage');
+
     try {
       const resp = await fetch(COURIER_API, {
         method: 'POST',
