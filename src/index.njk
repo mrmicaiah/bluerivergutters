@@ -955,7 +955,13 @@ a.lp-city:hover { text-decoration: underline; }
   .hero-v2-sub { font-size: 1rem; }
   .hero-form-card { padding: 1.5rem; }
   .form-row { grid-template-columns: 1fr; }
-  .sticky-cta { display: flex; }
+  /* Superseded by the sitewide .mobile-sticky-footer in footer.njk, which now
+     carries the same two labeled actions. Both bars are position:fixed bottom:0,
+     and the navy sitewide bar (z-index 1000) sat on top of this one (z-index 998),
+     so this bar was already fully occluded on mobile. Keeping it visible after the
+     sitewide bar shrank from ~70px to 52px would expose a ~15px white sliver above
+     it. One bar per page instead. */
+  .sticky-cta { display: none; }
   body { padding-bottom: 70px; }
   .urgency-bar { font-size: 0.85rem; }
   .local-projects-grid { grid-template-columns: 1fr; }
