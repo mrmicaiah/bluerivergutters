@@ -31,6 +31,43 @@
     })(window, document, "clarity", "script", "wxpmxnmcqn");
   </script>
   
+
+  
+  
+  <script>
+    (function () {
+      function brgTrack(name) {
+        try {
+          if (window.clarity) window.clarity('event', name);
+        } catch (err) { /* analytics must never break the page */ }
+      }
+      window.brgTrack = brgTrack;
+
+      // Phone clicks, delegated from document so it covers the hero, both
+      // sticky bars, inline CTA boxes, headers, footers — and anything added
+      // later — without needing to be re-wired. Capture phase so a handler
+      // that stops propagation can't swallow it.
+      document.addEventListener('click', function (e) {
+        var t = e.target;
+        if (!t || typeof t.closest !== 'function') return;
+        if (t.closest('a[href^="tel:"]')) brgTrack('phone_click');
+      }, true);
+
+      // Form starts: first focus into either lead form, once per page load.
+      document.addEventListener('DOMContentLoaded', function () {
+        var forms = [
+          ['lead-form', 'form_start_homepage'],
+          ['contact-form', 'form_start_contact']
+        ];
+        forms.forEach(function (pair) {
+          var el = document.getElementById(pair[0]);
+          if (!el) return;
+          el.addEventListener('focusin', function () { brgTrack(pair[1]); }, { once: true });
+        });
+      });
+    })();
+  </script>
+  
   
   
   <meta property="og:title" content="Contact Blue River Gutters | Get a Free Estimate in North Alabama">
@@ -815,6 +852,13 @@
         if (el?.value) payload.metadata[field] = el.value;
       });
     }
+
+    // Past every guard: honeypot, 3s timing floor, 5-digit zip, substantive
+    // message, outreach-marker scan, service-area check. This is the genuine
+    // send — the only branch where the Courier payload (with scan_version) is
+    // dispatched. Fired here, before the /thank-you/ redirect below, because
+    // events queued after navigation starts can be lost.
+    window.brgTrack && window.brgTrack('form_submit_contact');
 
     try {
       const resp = await fetch(API_URL, {
