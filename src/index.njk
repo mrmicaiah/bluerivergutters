@@ -22,6 +22,13 @@ description: "Huntsville's top-rated gutter company — 4.7★ across 240+ verif
 
       <div class="hero-v2-content">
         <h1>Huntsville's Gutter <span class="accent">Installation, Repair &amp; Cleaning</span> Experts</h1>
+
+        {# Mobile-only quick actions — desktop already has the form above the fold #}
+        <div class="hero-mobile-actions">
+          <a href="tel:2566166760" class="btn btn-primary hero-mobile-btn">📞 Call (256) 616-6760</a>
+          <a href="#lead-form-card" class="btn btn-secondary hero-mobile-btn">Get Free Estimate</a>
+        </div>
+
         <p class="hero-v2-sub">
           Seamless gutters, guards, cleaning, and repair across Huntsville, Madison, Decatur, Athens &amp; all of North Alabama. Get a free, no-pressure inspection — most homes seen within 24 hours.
         </p>
@@ -38,7 +45,7 @@ description: "Huntsville's top-rated gutter company — 4.7★ across 240+ verif
         </ul>
 
         <p class="hero-v2-phone">
-          Prefer to call? <a href="tel:2566166760">(256) 616-6760</a> · Mon–Fri 8AM–5PM<br>
+          Prefer to call? <a href="tel:2566166760" class="hero-phone-link">(256) 616-6760</a> · Mon–Fri 8AM–5PM<br>
           Want to pick a time? <a href="https://BlueRiverGutters.as.me/" target="_blank" rel="noopener">Schedule online →</a>
         </p>
       </div>
@@ -954,6 +961,49 @@ a.lp-city:hover { text-decoration: underline; }
   .local-projects-grid { grid-template-columns: 1fr; }
   .reviews-quotes-grid { grid-template-columns: 1fr; }
   .service-band-text { font-size: 0.82rem; }
+}
+
+/* === Mobile hero quick actions (≤768px only) === */
+.hero-mobile-actions { display: none; }
+
+/* === Clickable service cards (stretched-link overlay, no nested anchors) === */
+#services .service-card { position: relative; cursor: pointer; }
+#services .service-card .btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+}
+#services .service-card:focus-within {
+  box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.35);
+}
+
+@media (max-width: 768px) {
+  .hero-mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 1.25rem 0 0.25rem;
+  }
+  .hero-mobile-actions .hero-mobile-btn {
+    width: 100%;
+    padding: 0.95rem 1rem;
+    font-size: 1.05rem;
+    text-decoration: none;
+  }
+  /* "Prefer to call?" number reads as a tappable control, not body copy */
+  .hero-v2-phone .hero-phone-link {
+    display: inline-block;
+    margin: 0.35rem 0;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid rgba(255,255,255,0.55);
+    border-bottom: 1px solid rgba(255,255,255,0.55);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.12);
+    font-size: 1.1rem;
+    line-height: 1.2;
+  }
 }
 </style>
 

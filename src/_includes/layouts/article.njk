@@ -104,7 +104,10 @@ extraCss: article.css
       </ul>
     </aside>
     {% endif %}
-    
+
+    {# Inline conversion CTA — sits at roughly the 20% scroll mark on every article #}
+    {% include "partials/cta-inline.njk" %}
+
     {# Main Content #}
     <div class="article-content">
       {{ content | safe }}
