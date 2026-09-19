@@ -1,0 +1,92 @@
+---
+layout: base.njk
+permalink: /404.html
+title: Page Not Found | Blue River Gutters
+description: That page doesn't exist. Find gutter installation, repair, and cleaning services across North Alabama, or call (256) 616-6760.
+sitemap: false
+eleventyExcludeFromCollections: true
+---
+
+<section class="notfound-section">
+  <div class="container">
+    <div class="notfound-content">
+      <p class="notfound-code">404</p>
+      <h1>That page took a wrong turn.</h1>
+      <p class="notfound-message">The page you're looking for isn't here — it may have moved or the link may be out of date. Here's where most folks are headed:</p>
+
+      <div class="notfound-links">
+        <a href="{{ '/' | url }}">Home</a>
+        <a href="{{ '/services/' | url }}">Our Services</a>
+        <a href="{{ '/locations/' | url }}">Service Areas</a>
+        <a href="{{ '/contact/' | url }}">Contact Us</a>
+      </div>
+
+      <p class="notfound-help">Need a hand right now? Call us — we answer.</p>
+      <a href="tel:2566166760" class="btn btn-primary">📞 (256) 616-6760</a>
+      <p class="notfound-hours">MON-FRI 8:00AM-5:00PM</p>
+    </div>
+  </div>
+</section>
+
+<style>
+.notfound-section {
+  padding: 6rem 0;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+}
+.notfound-content {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+.notfound-code {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--blue);
+  margin: 0 0 1rem;
+  letter-spacing: 0.05em;
+}
+.notfound-content h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin-bottom: 1rem;
+  color: var(--navy);
+}
+.notfound-message {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--slate);
+  margin-bottom: 2rem;
+}
+.notfound-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+.notfound-links a {
+  background: var(--cream);
+  color: var(--navy);
+  padding: 0.6rem 1.25rem;
+  border-radius: 24px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+.notfound-links a:hover {
+  background: var(--blue);
+  color: var(--white);
+}
+.notfound-help {
+  color: var(--slate);
+  margin-bottom: 1rem;
+}
+.notfound-hours {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--gray);
+}
+</style>

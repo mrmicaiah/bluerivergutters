@@ -16,6 +16,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Full history is required for Eleventy's "git Last Modified" dates
+          # (directory data files in src/locations, src/services, src/articles,
+          # src/blog). A shallow clone has no per-file commit dates, so sitemap
+          # lastmod would collapse to the build time.
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
