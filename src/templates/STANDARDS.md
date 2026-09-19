@@ -38,13 +38,13 @@ src/
 **Always use 11ty's url filter for paths:**
 
 ```njk
-<link rel="stylesheet" href="{{ '/css/styles.css' | url }}">
+<link rel="stylesheet" href="{{ '/css/main.css' | url }}">
 ```
 
-This outputs root-relative paths (`/css/styles.css`) that work from any folder depth.
+This outputs root-relative paths (`/css/main.css`) that work from any folder depth.
 
 **NEVER use:**
-- Relative paths: `../css/styles.css`
+- Relative paths: `../css/main.css`
 - Hardcoded absolute paths without the url filter
 
 The base layout (`_includes/layouts/base.njk`) already handles CSS loading — new pages should extend it.
@@ -328,7 +328,7 @@ cta_subhead: Subheading text
 
 ## Common Mistakes to Avoid
 
-1. **Using relative CSS paths** — Always use `{{ '/css/styles.css' | url }}`
+1. **Using relative CSS paths** — Always use `{{ '/css/main.css' | url }}`
 2. **Broken image URLs** — Always copy exact Cloudinary URLs from this doc
 3. **Wrong permalink format** — Must start and end with `/`
 4. **Missing trailing slash** — `/services/huntsville/seamless-gutters/` not `/services/huntsville/seamless-gutters`
