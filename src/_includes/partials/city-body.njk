@@ -136,7 +136,7 @@
         <div class="stat-label">Google Rating</div>
       </div>
       <div class="stat">
-        <div class="stat-number">{{ distance | default("15") }} min</div>
+        <div class="stat-number">{% if distance == "Local" %}Local{% else %}{{ distance | default("15") }} mi{% endif %}</div>
         <div class="stat-label">From {{ city }}</div>
       </div>
     </div>
