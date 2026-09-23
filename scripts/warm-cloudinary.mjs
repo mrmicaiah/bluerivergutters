@@ -16,6 +16,10 @@
  * Derivation is global (once per URL + format); the Fastly edge cache is
  * per-POP, so this warms the POP nearest to wherever it runs plus the origin.
  *
+ * Post-deploy convention: always run with --all (~350 URLs, a couple of
+ * minutes). The default set is heroes + cldAuto images only and skips new
+ * content images; --all can't miss anything.
+ *
  * Usage (run `npm run build` first so _site/ matches what was deployed):
  *   node scripts/warm-cloudinary.mjs --dry-run      list URLs, no requests
  *   node scripts/warm-cloudinary.mjs                heroes + cldAuto images
