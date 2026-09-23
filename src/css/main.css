@@ -197,7 +197,7 @@ section { padding: 4rem 0; }
 .checkmarks { list-style: none; margin: 1.5rem 0; }
 .checkmarks li { padding: 0.5rem 0; color: var(--slate); font-weight: 500; }
 .why-local-cta { margin-top: 2rem; }
-.why-local-image img { width: 100%; border-radius: 12px; }
+.why-local-image img { width: 100%; height: auto; border-radius: 12px; }
 
 /* Neighborhoods */
 .neighborhoods { background: var(--cream); }
@@ -254,7 +254,7 @@ section { padding: 4rem 0; }
 /* Footer */
 .footer { background: var(--navy); color: rgba(255,255,255,0.7); padding: 3rem 0 1.5rem; font-size: 0.8rem; }
 .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 2rem; align-items: start; }
-.footer-logo { height: 40px; margin-bottom: 0.75rem; }
+.footer-logo { height: 40px; width: auto; margin-bottom: 0.75rem; }
 .footer-brand p { font-size: 0.8rem; opacity: 0.7; margin-bottom: 0; line-height: 1.5; }
 .social-links { display: flex; gap: 0.5rem; margin-top: 1rem; }
 .social-links a { background: rgba(255,255,255,0.08); padding: 0.4rem; border-radius: 4px; color: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; transition: all 0.2s; }

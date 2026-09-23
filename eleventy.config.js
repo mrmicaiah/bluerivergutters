@@ -58,6 +58,18 @@ module.exports = function(eleventyConfig) {
     return base + "/upload/" + parts.join("/");
   });
 
+  // Ensure a Cloudinary URL has f_auto,q_auto. Frontmatter image URLs are
+  // sometimes bare (/upload/<id>), which serves the original file — ~100 KB
+  // instead of ~14 KB for the 400x300 service images. URLs that already carry
+  // a transformation are left alone.
+  eleventyConfig.addFilter("cldAuto", function(url) {
+    if (!url || url.indexOf("res.cloudinary.com/") === -1 || url.indexOf("/upload/") === -1) return url;
+    const [base, rest] = url.split("/upload/");
+    const first = rest.split("/")[0];
+    const hasTransform = rest.indexOf("/") !== -1 && !/^v\d+$/.test(first);
+    return hasTransform ? url : base + "/upload/f_auto,q_auto/" + rest;
+  });
+
   // Blog collection - all posts in /blog/ folder with tags: blog
   eleventyConfig.addCollection("blog", function(collectionApi) {
     return collectionApi.getFilteredByTag("blog").sort((a, b) => {

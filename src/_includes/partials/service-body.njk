@@ -165,7 +165,8 @@
       </div>
       
       <div class="explanation-image">
-        <img src="{{ service_image | default('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_500/service-seamless-gutters_hcf6si') }}" alt="{{ service }} in {{ city }}" loading="lazy">
+        {# service_image frontmatter URLs are bare /upload/ links (original file); cldAuto adds f_auto,q_auto. All service images are 4:3. #}
+        <img src="{{ service_image | default('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_500/service-seamless-gutters_hcf6si') | cldAuto }}" alt="{{ service }} in {{ city }}" loading="lazy" width="400" height="300">
       </div>
     </div>
   </div>
@@ -216,7 +217,7 @@
       </div>
       
       <div class="why-local-image">
-        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/cleaning_composite_facia_ekqfke" alt="Blue River Gutters professional installation" loading="lazy">
+        <img src="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_600/cleaning_composite_facia_ekqfke" alt="Blue River Gutters professional installation" loading="lazy" width="600" height="400">
       </div>
     </div>
   </div>
