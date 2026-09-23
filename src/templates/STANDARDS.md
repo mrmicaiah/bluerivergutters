@@ -254,7 +254,12 @@ A count of 0 means the include line is missing or misplaced.
 
 The `service.njk` and `city.njk` body partials automatically generate schema markup based on frontmatter data. Don't manually add schema unless the layout doesn't cover your case.
 
-**Frontmatter titles, descriptions, city names and FAQ text must never contain markup or `</script>`.** Schema output uses `| dump | safe` (so apostrophes and `&` reach Google as real characters, not `&#39;`/`&amp;`) and trusts these strings unescaped. If you add a new text field to a JSON-LD block, use `{{ value | dump | safe }}` with no surrounding quotes, not `"{{ value }}"`.
+Schema output uses `| dump | safe` (so apostrophes and `&` reach Google as real characters, not `&#39;`/`&amp;`) and trusts frontmatter strings unescaped:
+
+- **Titles, descriptions, service and city names** reach schema *without* `striptags` — they must never contain markup or `</script>`.
+- **FAQ questions and answers** may use the established `<p>` / `<a href='…'>` pattern — the partials run `striptags` before `dump | safe`, so schema gets plain prose. Still never write `</script>`: malformed enough, it can survive `striptags`.
+
+If you add a new text field to a JSON-LD block, use `{{ value | dump | safe }}` with no surrounding quotes, not `"{{ value }}"` — and add `| striptags` first if the field may hold HTML.
 
 ---
 
