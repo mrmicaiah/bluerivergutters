@@ -103,7 +103,7 @@
 
 {# Hero Section #}
 {% set city_hero = hero_image | default(heroes.city) %}
-<section class="hero city-hero rsp-bg" style="background-image: url('{{ city_hero }}'); --bg-sm: url('{{ city_hero | mobileBg('tall') }}');">
+<section class="hero city-hero rsp-bg" style="--bg-lg: url('{{ city_hero }}'); --bg-sm: url('{{ city_hero | mobileBg('tall') }}');">
   <div class="hero-overlay"></div>
   <div class="container hero-container">
     <div class="hero-content">

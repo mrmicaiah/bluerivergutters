@@ -11,7 +11,7 @@
   
   {# LCP hero preload — must come BEFORE other resource hints.
      The hero is a CSS background, so the browser can't discover it until the
-     stylesheet/inline style is parsed. Paired media preloads match the .rsp-bg
+     stylesheet is parsed. Paired media preloads match the .rsp-bg
      768px breakpoint in main.css, so each device fetches only the variant it
      will paint. Pages set lcp_hero (+ lcp_hero_crop) in frontmatter; article,
      city and service layouts derive it from hero_kind + hero_image. #}

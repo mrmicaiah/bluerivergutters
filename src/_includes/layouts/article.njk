@@ -73,7 +73,7 @@ hero_crop: wide
 
 {# Article Hero #}
 {% set article_hero = hero_image | default(heroes.article) %}
-<section class="article-hero rsp-bg" style="background-image: url('{{ article_hero }}'); --bg-sm: url('{{ article_hero | mobileBg(hero_crop) }}');">
+<section class="article-hero rsp-bg" style="--bg-lg: url('{{ article_hero }}'); --bg-sm: url('{{ article_hero | mobileBg(hero_crop) }}');">
   <div class="article-hero-overlay"></div>
   <div class="container">
     <div class="article-hero-content">
