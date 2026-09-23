@@ -1,6 +1,8 @@
 ---
 layout: base.njk
 extraCss: article.css
+hero_kind: article
+hero_crop: wide
 ---
 
 {# Schema Markup #}
@@ -70,7 +72,8 @@ extraCss: article.css
 </nav>
 
 {# Article Hero #}
-<section class="article-hero" style="background-image: url('{{ hero_image | default('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/corner_of_a_roof_gutters_yd8zzf.jpg') }}');">
+{% set article_hero = hero_image | default(heroes.article) %}
+<section class="article-hero rsp-bg" style="background-image: url('{{ article_hero }}'); --bg-sm: url('{{ article_hero | mobileBg(hero_crop) }}');">
   <div class="article-hero-overlay"></div>
   <div class="container">
     <div class="article-hero-content">

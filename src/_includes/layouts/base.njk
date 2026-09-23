@@ -9,8 +9,24 @@
   {# Favicon #}
   <link rel="icon" type="image/jpeg" sizes="60x60" href="https://res.cloudinary.com/dxzw1zwez/image/upload/Favicon_edited_vk3gls.jpg">
   
-  {# Page-specific preload slot (for LCP image, etc) — must come BEFORE other resource hints #}
-  {% block preload %}{% endblock %}
+  {# LCP hero preload — must come BEFORE other resource hints.
+     The hero is a CSS background, so the browser can't discover it until the
+     stylesheet/inline style is parsed. Paired media preloads match the .rsp-bg
+     768px breakpoint in main.css, so each device fetches only the variant it
+     will paint. Pages set lcp_hero (+ lcp_hero_crop) in frontmatter; article,
+     city and service layouts derive it from hero_kind + hero_image. #}
+  {% set lcpHero = lcp_hero %}
+  {% set lcpCrop = lcp_hero_crop | default(hero_crop) | default('tall') %}
+  {% if not lcpHero %}
+    {% if hero_kind == 'article' %}{% set lcpHero = hero_image | default(heroes.article) %}
+    {% elif hero_kind == 'city' %}{% set lcpHero = hero_image | default(heroes.city) %}
+    {% elif hero_kind == 'service' %}{% set lcpHero = hero_image | default(heroes.services[service_slug] | default(heroes.service)) %}
+    {% endif %}
+  {% endif %}
+  {% if lcpHero %}
+  <link rel="preload" as="image" fetchpriority="high" href="{{ lcpHero | mobileBg(lcpCrop) }}" media="(max-width: 768px)">
+  <link rel="preload" as="image" fetchpriority="high" href="{{ lcpHero }}" media="(min-width: 769px)">
+  {% endif %}
   
   {# Google Analytics #}
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GT8EBK75TK"></script>

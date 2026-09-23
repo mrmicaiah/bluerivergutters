@@ -2,12 +2,12 @@
 layout: base.njk
 title: Gutters Huntsville AL | 4.7★ 240+ Reviews | Blue River Gutters
 description: "Huntsville's top-rated gutter company — 4.7★ across 240+ verified reviews. Seamless gutters, guards, cleaning & repair. Free inspection, most homes seen within 48 hours. Call (256) 616-6760."
+# LCP hero, preloaded from base.njk (w_1920 desktop / 3:4 w_828 phones).
+# Keep in sync with the .hero-v2 background below.
+lcp_hero: https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/hero-bg_axhlw4.jpg
+lcp_hero_crop: tall
 ---
 
-{# Preload hero LCP image for faster paint #}
-{% block preload %}
-<link rel="preload" as="image" fetchpriority="high" href="https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/hero-bg_axhlw4.jpg">
-{% endblock %}
 
 {# Urgency Bar #}
 <div class="urgency-bar">
@@ -308,7 +308,7 @@ description: "Huntsville's top-rated gutter company — 4.7★ across 240+ verif
 </section>
 
 {# Quality Workmanship #}
-<section class="workmanship parallax-bg" id="about" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/quality-section-bg_u6ueuq.jpg');">
+<section class="workmanship parallax-bg rsp-bg" id="about" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/quality-section-bg_u6ueuq.jpg'); --bg-sm: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_828/quality-section-bg_u6ueuq.jpg');">
   <div class="container">
     <div class="workmanship-grid">
       <div class="workmanship-image">
@@ -440,7 +440,7 @@ description: "Huntsville's top-rated gutter company — 4.7★ across 240+ verif
 </section>
 
 {# Final CTA #}
-<section class="cta parallax-bg" id="contact" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/cta-section-bg_bkom8q.png');">
+<section class="cta parallax-bg rsp-bg" id="contact" style="background-image: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/cta-section-bg_bkom8q.png'); --bg-sm: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_828/cta-section-bg_bkom8q.png');">
   <div class="container">
     <h2>Ready to get those gutters handled?</h2>
     <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">Free inspection. Honest estimate. No pressure.</p>
@@ -497,6 +497,15 @@ description: "Huntsville's top-rated gutter company — 4.7★ across 240+ verif
   background-position: center;
   padding: 4rem 0 5rem;
   color: var(--white);
+}
+@media (max-width: 768px) {
+  /* Phone variant of the hero (3:4 crop, w_828) — matches lcp_hero_crop above
+     so it's the same URL base.njk preloads. */
+  .hero-v2 {
+    background-image:
+      linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.78)),
+      url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,c_fill,g_auto,ar_3:4,w_828/hero-bg_axhlw4.jpg');
+  }
 }
 .hero-v2-grid {
   display: grid;

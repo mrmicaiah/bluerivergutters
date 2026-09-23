@@ -102,7 +102,8 @@
 </nav>
 
 {# Hero Section #}
-<section class="hero city-hero" style="background-image: url('{{ hero_image | default('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/corner_of_a_roof_gutters_yd8zzf.jpg') }}');">
+{% set city_hero = hero_image | default(heroes.city) %}
+<section class="hero city-hero rsp-bg" style="background-image: url('{{ city_hero }}'); --bg-sm: url('{{ city_hero | mobileBg('tall') }}');">
   <div class="hero-overlay"></div>
   <div class="container hero-container">
     <div class="hero-content">

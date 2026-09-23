@@ -1,16 +1,7 @@
 
-{# Service-specific hero image mapping #}
-{# NOTE: Do not include file extensions when using f_auto - Cloudinary handles format negotiation #}
-{% set service_hero_images = {
-  "seamless-gutters": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/corner_of_a_roof_gutters_yd8zzf",
-  "gutter-guards": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/gutter_guards_metal_roof_hnrqoc",
-  "gutter-cleaning": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/dirty_gutter_v8f4cm",
-  "downspouts": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/gutter_on_house_zbvhii",
-  "underground-drains": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/french_drains_peqnfn",
-  "rotten-wood-repair": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/rotten_wood_hero_r1dtrh"
-} %}
-{% set default_hero = "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/corner_of_a_roof_gutters_yd8zzf" %}
-{% set computed_hero = hero_image | default(service_hero_images[service_slug] | default(default_hero)) %}
+{# Service-specific hero image: frontmatter hero_image, else the per-service
+   default in _data/heroes.json (also read by base.njk for the LCP preload). #}
+{% set computed_hero = hero_image | default(heroes.services[service_slug] | default(heroes.service)) %}
 
 {# Schema Markup #}
 {% block schema %}
@@ -105,7 +96,7 @@
 </nav>
 
 {# Hero Section - Uses service-specific hero images #}
-<section class="hero" style="background-image: url('{{ computed_hero }}');">
+<section class="hero rsp-bg" style="background-image: url('{{ computed_hero }}'); --bg-sm: url('{{ computed_hero | mobileBg('tall') }}');">
   <div class="hero-overlay"></div>
   <div class="container hero-container">
     <div class="hero-content">
