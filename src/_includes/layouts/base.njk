@@ -78,11 +78,10 @@
   <meta property="og:url" content="https://bluerivergutters.com{{ page.url }}">
   <meta property="og:image" content="{{ ogImage | default("https://res.cloudinary.com/dxzw1zwez/image/upload/hero-bg_axhlw4.jpg") }}">
   
-  {# Fonts - Source Sans 3 with display=swap to avoid render blocking #}
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap">
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  {# Fonts - Source Sans 3, self-hosted (variable 400–700, @font-face in main.css).
+     Preloading the latin file lets it download in parallel with main.css
+     instead of waiting for the stylesheet to be parsed. #}
+  <link rel="preload" as="font" type="font/woff2" href="{{ '/fonts/source-sans-3-latin.woff2' | url }}" crossorigin>
   
   {# Combined Stylesheet (styles + navigation + parallax merged for perf) #}
   <link rel="stylesheet" href="{{ '/css/main.css' | url }}">
