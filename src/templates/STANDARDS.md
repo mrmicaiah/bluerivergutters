@@ -95,6 +95,22 @@ Always include these for performance:
 
 **Example:** `f_auto,q_auto,w_1920` for hero images
 
+### Hero Images — REQUIRED SYSTEM (do not hand-roll)
+
+Every hero background serves `w_1920` to desktop and a phone-sized variant to ≤768px, and is preloaded from `<head>`. Four pieces do this; new pages plug into them rather than writing their own hero CSS or `<link rel="preload">`.
+
+| Piece | What it does |
+|-------|--------------|
+| `src/_data/heroes.json` | Default hero URLs (desktop, `w_1920`): `article`, `city`, `service`, plus `services` — the per-service map (`seamless-gutters`, `gutter-guards`, …) that service-city pages fall back to. The Service Hero Images table above now lives here; edit the JSON, not the partials. |
+| `mobileBg` filter (`eleventy.config.js`) | Rewrites a Cloudinary URL for phones. `mobileBg('tall')` → `c_fill,g_auto,ar_3:4,w_828` (content-aware 3:4 crop) for heroes that run tall on phones: `.hero` (80vh), city, service, homepage. No argument / `'wide'` → plain `w_828` for short landscape heroes: articles, `.hero-short`. Non-Cloudinary URLs pass through. |
+| `.rsp-bg` (main.css) | The section carries **both** URLs as inline custom properties — `style="--bg-lg: url('…w_1920…'); --bg-sm: url('…mobile…');"` — and CSS picks one at the 768px breakpoint. **Never** put the URL in an inline `background-image`: Chrome can apply it before main.css loads and phones download both sizes. |
+| Preload (base.njk `<head>`) | Emits a paired mobile/desktop `<link rel="preload" fetchpriority="high" media=…>`. Article, city and service layouts set `hero_kind` and derive the URL from `hero_image` (else heroes.json) automatically. Standalone pages set `lcp_hero: <w_1920 URL>` and `lcp_hero_crop: tall` or `wide` in frontmatter. |
+
+**What this means in practice:**
+- **Article / city / service-city page:** just set `hero_image:` (a `w_1920` Cloudinary URL) in frontmatter, or omit it for the default. The layout handles the mobile variant and the preload.
+- **Standalone page with its own hero section:** use `class="… rsp-bg"` with `--bg-lg` / `--bg-sm` (derive `--bg-sm` with `{{ url | mobileBg('tall') }}`), and add `lcp_hero` + `lcp_hero_crop` to frontmatter. Copy `src/services/gutter-guards.njk` as the reference.
+- **Don't:** write a hero `background-image` inline, add your own image preload, or put a hero URL without `f_auto,q_auto,w_1920`. Bare `/upload/<id>` URLs serve the original file (the /services/ hero was 3.5 MB this way).
+
 ---
 
 ## Navigation Links
