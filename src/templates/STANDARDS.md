@@ -254,6 +254,8 @@ A count of 0 means the include line is missing or misplaced.
 
 The `service.njk` and `city.njk` body partials automatically generate schema markup based on frontmatter data. Don't manually add schema unless the layout doesn't cover your case.
 
+**Frontmatter titles, descriptions, city names and FAQ text must never contain markup or `</script>`.** Schema output uses `| dump | safe` (so apostrophes and `&` reach Google as real characters, not `&#39;`/`&amp;`) and trusts these strings unescaped. If you add a new text field to a JSON-LD block, use `{{ value | dump | safe }}` with no surrounding quotes, not `"{{ value }}"`.
+
 ---
 
 ## Frontmatter Reference (Service Pages)
