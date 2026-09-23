@@ -3,10 +3,13 @@ layout: base.njk
 extraCss: blog.css
 ---
 
-{# Last-modified date: frontmatter only. Not page.date — production builds from a
-   shallow clone, where "git Last Modified" resolves to the latest commit for
-   every page. #}
-{% set modifiedDate = modified_date or update_date or publish_date %}
+{# Last-modified date: explicit frontmatter first, then the file's last git
+   commit (page.date), then the publish date. page.date is used only when
+   gitHistoryComplete — eleventy.config.js unshallows the Cloudflare Pages
+   clone; in a shallow clone every file would carry the deploy date. #}
+{% set modifiedDate = modified_date or update_date %}
+{% if not modifiedDate and gitHistoryComplete %}{% set modifiedDate = page.date | isoDate %}{% endif %}
+{% if not modifiedDate or (publish_date and modifiedDate < publish_date) %}{% set modifiedDate = publish_date %}{% endif %}
 
 {# Schema Markup #}
 {% block schema %}

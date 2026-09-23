@@ -1,4 +1,39 @@
+const { execSync } = require("child_process");
+
+// "git Last Modified" dates (sitemap lastmod, schema dateModified) need full
+// history. Cloudflare Pages builds from a shallow clone, where every file's
+// last commit is the tip, so every page would stamp with the deploy date.
+// Unshallow here so it works whatever build command the dashboard runs.
+// Returns false (and warns loudly) if full history couldn't be obtained;
+// templates then skip git dates instead of emitting deploy-date stamps.
+function ensureFullGitHistory() {
+  const git = (args) => execSync("git " + args, { stdio: ["ignore", "pipe", "pipe"], timeout: 120000 }).toString().trim();
+  const isShallow = () => git("rev-parse --is-shallow-repository") === "true";
+  try {
+    if (!isShallow()) return true;
+  } catch (e) {
+    console.warn("[git-dates] WARNING: not a git checkout — git dates disabled, sitemap lastmod omitted.");
+    return false;
+  }
+  for (const source of ["", "https://github.com/mrmicaiah/bluerivergutters.git"]) {
+    try {
+      git("fetch --unshallow --quiet " + source);
+      if (!isShallow()) {
+        console.log("[git-dates] Shallow clone unshallowed — per-file git dates enabled.");
+        return true;
+      }
+    } catch (e) {
+      // try the next source
+    }
+  }
+  console.warn("[git-dates] WARNING: could not unshallow the clone — git dates disabled, sitemap lastmod omitted.");
+  return false;
+}
+
 module.exports = function(eleventyConfig) {
+  // True only when per-file git dates are trustworthy (see ensureFullGitHistory).
+  eleventyConfig.addGlobalData("gitHistoryComplete", ensureFullGitHistory());
+
   // Passthrough copy for static assets - map src/css to /css in output
   eleventyConfig.addPassthroughCopy({"src/css": "css"});
   eleventyConfig.addPassthroughCopy({"src/js": "js"});
