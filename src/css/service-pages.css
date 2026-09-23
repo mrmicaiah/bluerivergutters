@@ -30,6 +30,8 @@
   margin-bottom: 0;
 }
 
+/* .problem-image had no rule, so its 800px image overflowed phones (824px page width at 412px). */
+.problem-image img,
 .explanation-image img {
   width: 100%;
   height: auto;
