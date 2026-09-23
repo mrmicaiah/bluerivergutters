@@ -43,11 +43,13 @@
 }
 
 .blog-meta time,
+.blog-updated,
 .blog-read-time {
   display: inline-flex;
   align-items: center;
 }
 
+.blog-updated::before,
 .blog-read-time::before {
   content: "•";
   margin-right: 1.5rem;
@@ -274,6 +276,7 @@
     gap: 0.25rem;
   }
   
+  .blog-updated::before,
   .blog-read-time::before {
     display: none;
   }
