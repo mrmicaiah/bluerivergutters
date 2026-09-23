@@ -8,7 +8,7 @@ Professional gutter services website for Blue River Gutters, serving Huntsville,
 - **Templating:** Nunjucks
 - **CSS:** Custom stylesheet (no framework)
 - **Images:** Cloudinary CDN
-- **Hosting:** GitHub Pages (auto-deploy from gh-pages branch)
+- **Hosting:** Cloudflare Pages (auto-deploys from `main`)
 
 ## Project Structure
 
@@ -50,8 +50,6 @@ Professional gutter services website for Blue River Gutters, serving Huntsville,
 │   │       └── rotten-wood-repair.njk
 │   ├── blog/                 # Blog posts (future)
 │   └── index.njk             # Homepage
-├── .github/workflows/
-│   └── build.yml             # Auto-build and deploy
 ├── _site/                    # Built output (gitignored)
 ├── eleventy.config.js        # 11ty configuration
 ├── package.json
@@ -82,20 +80,9 @@ Dev server runs at `http://localhost:8080` with live reload.
 
 ## Deployment
 
-Site auto-deploys to GitHub Pages via GitHub Actions on push to `main`:
+Cloudflare Pages builds and deploys the site on every push to `main` and serves bluerivergutters.com (preview: bluerivergutters.pages.dev).
 
-1. Push triggers `.github/workflows/build.yml`
-2. Action runs `npm install` and `npx eleventy`
-3. Built `_site/` folder deploys to `gh-pages` branch
-4. GitHub Pages serves from `gh-pages` branch
-
-**Preview site:** [mrmicaiah.github.io/bluerivergutters](https://mrmicaiah.github.io/bluerivergutters)
-
-### Manual Deploy
-
-1. Go to **Actions** tab
-2. Select "Build and Deploy 11ty Site"
-3. Click "Run workflow"
+Cloudflare clones the repo shallow; `eleventy.config.js` unshallows it at build start so "git Last Modified" dates (sitemap lastmod, schema dateModified) are real. Check the build log for the `[git-dates]` line.
 
 ## Image Handling
 
