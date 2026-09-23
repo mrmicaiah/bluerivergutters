@@ -9,8 +9,8 @@ extraCss: blog.css
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "{{ title }}",
-  "description": "{{ description }}",
+  "headline": {{ title | dump | safe }},
+  "description": {{ description | dump | safe }},
   "image": "{{ featured_image | default('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1200/corner_of_a_roof_gutters_yd8zzf.jpg') }}",
   "author": {
     "@type": "Organization",
@@ -54,7 +54,7 @@ extraCss: blog.css
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "{{ title }}",
+      "name": {{ title | dump | safe }},
       "item": "https://bluerivergutters.com{{ page.url }}"
     }
   ]

@@ -375,7 +375,7 @@ a.project-city:hover { text-decoration: underline; }
         "url": "https://bluerivergutters.com/projects/{{ project.slug }}/",
         "locationCreated": {
           "@type": "Place",
-          "name": "{{ project.city }}, Alabama"
+          "name": {{ (project.city + ", Alabama") | dump | safe }}
         }
       }
     }{% if not loop.last %},{% endif %}

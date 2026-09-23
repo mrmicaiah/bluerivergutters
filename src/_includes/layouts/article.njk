@@ -11,8 +11,8 @@ hero_crop: wide
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "{{ title }}",
-  "description": "{{ description }}",
+  "headline": {{ title | dump | safe }},
+  "description": {{ description | dump | safe }},
   "image": "{{ hero_image | default('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1200/corner_of_a_roof_gutters_yd8zzf.jpg') }}",
   "author": {
     "@type": "Organization",
@@ -52,7 +52,7 @@ hero_crop: wide
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "{{ title }}",
+      "name": {{ title | dump | safe }},
       "item": "https://bluerivergutters.com{{ page.url }}"
     }
   ]

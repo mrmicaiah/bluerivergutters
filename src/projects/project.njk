@@ -181,7 +181,7 @@ eleventyComputed:
   },
   "contentLocation": {
     "@type": "Place",
-    "name": "{{ project.city }}, Alabama"{% if project.geolocation %},
+    "name": {{ (project.city + ", Alabama") | dump | safe }}{% if project.geolocation %},
     "geo": {
       "@type": "GeoCoordinates",
       "latitude": {{ project.geolocation.lat }},

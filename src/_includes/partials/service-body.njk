@@ -9,8 +9,8 @@
 {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "{{ service }} in {{ city }}, {{ state }}",
-  "description": "{{ description }}",
+  "name": {{ (service + " in " + city + ", " + state) | dump | safe }},
+  "description": {{ description | dump | safe }},
   "provider": {
     "@type": "LocalBusiness",
     "name": "Blue River Gutters",
@@ -30,7 +30,7 @@
   },
   "areaServed": {
     "@type": "City",
-    "name": "{{ city }}, Alabama"
+    "name": {{ (city + ", Alabama") | dump | safe }}
   }
 }
 </script>
@@ -49,13 +49,13 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "{{ city }}, AL",
+      "name": {{ (city + ", AL") | dump | safe }},
       "item": "https://bluerivergutters.com/gutters-{{ city_slug }}-al/"
     },
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "{{ service }}",
+      "name": {{ service | dump | safe }},
       "item": "https://bluerivergutters.com/services/{{ city_slug }}/{{ service_slug }}/"
     }
   ]
@@ -70,10 +70,10 @@
   "mainEntity": [
     {% for faq in faqs %}{
       "@type": "Question",
-      "name": "{{ faq.question | striptags }}",
+      "name": {{ faq.question | striptags | dump | safe }},
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "{{ faq.answer | striptags | trim }}"
+        "text": {{ faq.answer | striptags | trim | dump | safe }}
       }
     }{% if not loop.last %},{% endif %}
     {% endfor %}

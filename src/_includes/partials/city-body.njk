@@ -26,7 +26,7 @@
   },
   "areaServed": {
     "@type": "City",
-    "name": "{{ city }}, Alabama"
+    "name": {{ (city + ", Alabama") | dump | safe }}
   },
   "openingHoursSpecification": {
     "@type": "OpeningHoursSpecification",
@@ -62,7 +62,7 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "{{ city }}, AL",
+      "name": {{ (city + ", AL") | dump | safe }},
       "item": "https://bluerivergutters.com/gutters-{{ city_slug }}-al/"
     }
   ]
@@ -77,10 +77,10 @@
   "mainEntity": [
     {% for faq in faqs %}{
       "@type": "Question",
-      "name": "{{ faq.question | striptags }}",
+      "name": {{ faq.question | striptags | dump | safe }},
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "{{ faq.answer | striptags | trim }}"
+        "text": {{ faq.answer | striptags | trim | dump | safe }}
       }
     }{% if not loop.last %},{% endif %}
     {% endfor %}
