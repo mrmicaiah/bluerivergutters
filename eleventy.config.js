@@ -24,6 +24,10 @@ module.exports = function(eleventyConfig) {
       return months[date.getMonth()] + " " + date.getFullYear();
     } else if (format === "MMM YYYY") {
       return monthsShort[date.getMonth()] + " " + date.getFullYear();
+    } else if (format === "MMMM D, YYYY") {
+      // UTC: a bare "2026-08-02" parses as UTC midnight, which is the previous
+      // day in Central time.
+      return months[date.getUTCMonth()] + " " + date.getUTCDate() + ", " + date.getUTCFullYear();
     }
     return dateString;
   });

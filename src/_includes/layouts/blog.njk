@@ -3,6 +3,11 @@ layout: base.njk
 extraCss: blog.css
 ---
 
+{# Last-modified date: frontmatter only. Not page.date — production builds from a
+   shallow clone, where "git Last Modified" resolves to the latest commit for
+   every page. #}
+{% set modifiedDate = modified_date or update_date or publish_date %}
+
 {# Schema Markup #}
 {% block schema %}
 <script type="application/ld+json">
@@ -26,7 +31,7 @@ extraCss: blog.css
     }
   },
   "datePublished": "{{ publish_date | default('2026-01-30') }}",
-  "dateModified": "{{ modified_date | default(publish_date) | default('2026-01-30') }}",
+  "dateModified": "{{ modifiedDate | default('2026-01-30') }}",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://bluerivergutters.com{{ page.url }}"
@@ -82,6 +87,7 @@ extraCss: blog.css
     <h1>{{ headline | default(title) }}</h1>
     <div class="blog-meta">
       {% if publish_date %}<time datetime="{{ publish_date }}">{{ publish_date }}</time>{% endif %}
+      {% if modifiedDate and modifiedDate != publish_date %}<span class="blog-updated">Updated <time datetime="{{ modifiedDate }}">{{ modifiedDate }}</time></span>{% endif %}
       {% if read_time %}<span class="blog-read-time">{{ read_time }} min read</span>{% endif %}
     </div>
   </div>

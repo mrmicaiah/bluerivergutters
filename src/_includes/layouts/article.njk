@@ -5,6 +5,11 @@ hero_kind: article
 hero_crop: wide
 ---
 
+{# Last-modified date: frontmatter only. Not page.date — production builds from a
+   shallow clone, where "git Last Modified" resolves to the latest commit for
+   every page. #}
+{% set modifiedDate = date_modified or date_published %}
+
 {# Schema Markup #}
 {% block schema %}
 <script type="application/ld+json">
@@ -28,7 +33,7 @@ hero_crop: wide
     }
   },
   "datePublished": "{{ date_published | default('2026-01-30') }}",
-  "dateModified": "{{ date_modified | default(date_published) | default('2026-01-30') }}"
+  "dateModified": "{{ modifiedDate | default('2026-01-30') }}"
 }
 </script>
 
@@ -87,6 +92,7 @@ hero_crop: wide
       <div class="article-meta">
         {% if read_time %}<span class="read-time">📖 {{ read_time }} min read</span>{% endif %}
         {% if date_display %}<span class="publish-date">{{ date_display }}</span>{% endif %}
+        {% if date_modified and date_modified != date_published %}<span class="publish-date">Updated <time datetime="{{ date_modified }}">{{ date_modified | dateFormat("MMMM D, YYYY") }}</time></span>{% endif %}
       </div>
     </div>
   </div>
