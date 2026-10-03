@@ -4,9 +4,15 @@ title: Underground Drains in North Alabama | Blue River Gutters
 description: Professional underground gutter drainage for Huntsville, Madison, Decatur & North Alabama. Buried downspout drains, pop-up emitters, discharge to daylight. Foundation protection for red clay soil. Free estimates. (256) 616-6760.
 permalink: /services/underground-drains/
 extraCss: service-pages.css
-# LCP hero, preloaded from base.njk — keep in sync with the hero section below.
-lcp_hero: https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/underground-drains-hero_viyxp7.webp
+# Hero: partials/service-hero.njk. Photo = _data/heroes.json hubs[service_slug];
+# lcp_hero reads the same key so base.njk's preload always matches the hero.
+service_slug: underground-drains
+hero_eyebrow: "The Premium Solution"
+hero_headline: "Underground Drains for North Alabama Homes"
+hero_intro: "Surface extensions work—until you trip over them mowing the lawn, forget to reconnect them after moving them, or get tired of looking at corrugated tubes snaking across your yard. Underground drains solve the problem permanently: buried pipe routes water far from your foundation, completely out of sight."
 lcp_hero_crop: tall
+eleventyComputed:
+  lcp_hero: "{{ heroes.hubs[service_slug] }}"
 ---
 
 {# Schema Markup #}
@@ -178,20 +184,7 @@ lcp_hero_crop: tall
 </nav>
 
 {# Hero Section #}
-<section class="hero rsp-bg" style="--bg-lg: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/underground-drains-hero_viyxp7.webp'); --bg-sm: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,c_fill,g_auto,ar_3:4,w_828/underground-drains-hero_viyxp7.webp');">
-  <div class="hero-overlay"></div>
-  <div class="container hero-container">
-    <div class="hero-content">
-      <p class="hero-eyebrow">The Premium Solution</p>
-      <h1>Underground Drains for North Alabama Homes</h1>
-      <p>Surface extensions work—until you trip over them mowing the lawn, forget to reconnect them after moving them, or get tired of looking at corrugated tubes snaking across your yard. Underground drains solve the problem permanently: buried pipe routes water far from your foundation, completely out of sight.</p>
-      <div class="hero-cta">
-        <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
-        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary">✉️ Get Free Estimate</a>
-      </div>
-    </div>
-  </div>
-</section>
+{% include "partials/service-hero.njk" %}
 
 {# Stats #}
 <section class="stats-section">
@@ -224,6 +217,8 @@ lcp_hero_crop: tall
       <div class="problem-content">
         <p class="section-eyebrow">The Local Reality</p>
         <h2>Why Underground Drains Matter in North Alabama</h2>
+        
+        <p>{{ hero_intro | hookRest }}</p>
         
         <p>The Tennessee Valley gets 54 inches of rain annually. A typical 2,000 square foot roof collects over 33,000 gallons of water in a year. That's a lot of water that needs to go somewhere—and in North Alabama, "somewhere" better not be near your foundation.</p>
         

@@ -222,11 +222,11 @@
 }
 
 /* ==========================================================================
-   Service-hub hero (partials/hub-hero.njk). The photo reads in the top
+   Service hero (partials/service-hero.njk — hubs + service-city pages). The photo reads in the top
    ~40%; the scrim darkens only behind the bottom-anchored text block.
    ========================================================================== */
-.hero--hub { align-items: flex-end; padding: 15rem 0 3rem; }
-.hero--hub .hero-overlay {
+.hero--service { align-items: flex-end; padding: 15rem 0 3rem; }
+.hero--service .hero-overlay {
   background: linear-gradient(to bottom,
     rgba(15, 23, 42, 0) 0%,
     rgba(15, 23, 42, 0) 25%,
@@ -234,22 +234,22 @@
     rgba(15, 23, 42, 0.82) 55%,
     rgba(15, 23, 42, 0.9) 100%);
 }
-.hero--hub .hero-content { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45); }
-.hero--hub .hero-eyebrow { font-weight: 600; letter-spacing: 0.02em; }
-.hero--hub h1 { margin-bottom: 0.75rem; }
-.hero--hub .hero-intro { font-size: 1.1rem; line-height: 1.5; opacity: 1; margin-bottom: 1rem; }
+.hero--service .hero-content { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45); }
+.hero--service .hero-eyebrow { font-weight: 600; letter-spacing: 0.02em; }
+.hero--service h1 { margin-bottom: 0.75rem; }
+.hero--service .hero-intro { font-size: 1.1rem; line-height: 1.5; opacity: 1; margin-bottom: 1rem; }
 .hero-trust { display: flex; flex-wrap: wrap; gap: 0.25rem 0; list-style: none; margin: 0 0 0.5rem; padding: 0; font-size: 0.95rem; font-weight: 600; }
 .hero-trust li + li::before { content: "·"; margin: 0 0.5rem; opacity: 0.7; }
-.hero--hub .hero-price { font-size: 1.05rem; font-weight: 700; opacity: 1; margin-bottom: 1.25rem; }
-.hero--hub .hero-areas { font-size: 0.95rem; line-height: 1.5; opacity: 1; margin: 1rem 0 0; }
+.hero--service .hero-price { font-size: 1.05rem; font-weight: 700; opacity: 1; margin-bottom: 1.25rem; }
+.hero--service .hero-areas { font-size: 0.95rem; line-height: 1.5; opacity: 1; margin: 1rem 0 0; }
 .hero-areas a { color: var(--white); text-decoration: underline; text-underline-offset: 2px; }
 @media (min-width: 769px) {
-  .hero--hub .hero-cta { flex-direction: row; }
+  .hero--service .hero-cta { flex-direction: row; }
 }
 
 @media (max-width: 768px) {
-  .hero--hub { min-height: 0; padding: 9rem 0 1.75rem; }
-  .hero--hub .hero-overlay {
+  .hero--service { min-height: 0; padding: 9rem 0 1.75rem; }
+  .hero--service .hero-overlay {
     background: linear-gradient(to bottom,
       rgba(15, 23, 42, 0) 0%,
       rgba(15, 23, 42, 0) 16%,
@@ -257,14 +257,14 @@
       rgba(15, 23, 42, 0.85) 45%,
       rgba(15, 23, 42, 0.9) 100%);
   }
-  .hero--hub h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
-  .hero--hub .hero-eyebrow { font-size: 0.9rem; margin-bottom: 0.25rem; }
-  .hero--hub .hero-price { margin-bottom: 1rem; }
-  .hero--hub .hero-cta { gap: 0.625rem; }
-  .hero--hub .hero-cta .btn { padding: 0.8rem 1.25rem; }
-  .hero--hub .hero-intro { font-size: 1rem; }
+  .hero--service h1 { font-size: 1.75rem; margin-bottom: 0.5rem; }
+  .hero--service .hero-eyebrow { font-size: 0.9rem; margin-bottom: 0.25rem; }
+  .hero--service .hero-price { margin-bottom: 1rem; }
+  .hero--service .hero-cta { gap: 0.625rem; }
+  .hero--service .hero-cta .btn { padding: 0.8rem 1.25rem; }
+  .hero--service .hero-intro { font-size: 1rem; }
   /* Too long for one line at phone width: wrap on spacing, not on a dangling dot. */
   .hero-trust { font-size: 0.85rem; gap: 0.15rem 1rem; }
   .hero-trust li + li::before { content: none; }
-  .hero--hub .hero-areas { font-size: 0.875rem; }
+  .hero--service .hero-areas { font-size: 0.875rem; }
 }

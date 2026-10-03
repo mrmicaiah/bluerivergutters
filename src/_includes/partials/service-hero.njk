@@ -1,0 +1,51 @@
+{# Service hero — shared by the 6 hubs (/services/<slug>/) and every service-city
+   page (partials/service-body.njk). First screen, in order: eyebrow, H1, hook,
+   trust strip, canon price anchor, CTAs, location routing line.
+
+   Reads page data:
+     service_slug                — required; keys heroes.json + servicePricing.json
+     city, city_slug             — set on service-city pages; absent on hubs
+     hero_eyebrow, hero_headline — optional (city pages default to "<City>, Alabama"
+                                   and "<Service> in <City>, AL")
+     short_hook                  — optional one-liner; else hero_intro | hookLead.
+                                   The caller renders the rest (hookRest) below the fold.
+     hero_image                  — optional photo override (w_1920 Cloudinary URL)
+   Photo: hubs read heroes.hubs[service_slug]; city pages hero_image, else
+   heroes.services[service_slug]. base.njk preloads the same URL. #}
+{% if city %}
+  {% set svcHeroImg = hero_image | default(heroes.services[service_slug] | default(heroes.service)) %}
+  {% set svcEyebrow = hero_eyebrow | default(city + ", Alabama") %}
+  {% set svcHeadline = hero_headline | default(service + " in " + city + ", AL") %}
+{% else %}
+  {% set svcHeroImg = hero_image | default(heroes.hubs[service_slug]) %}
+  {% set svcEyebrow = hero_eyebrow %}
+  {% set svcHeadline = hero_headline %}
+{% endif %}
+{% set svcHook = short_hook | default(hero_intro | hookLead) %}
+{% set svcPrice = servicePricing[service_slug] %}
+<section class="hero hero--service rsp-bg" style="--bg-lg: url('{{ svcHeroImg }}'); --bg-sm: url('{{ svcHeroImg | mobileBg('tall') }}');">
+  <div class="hero-overlay"></div>
+  <div class="container hero-container">
+    <div class="hero-content">
+      {% if svcEyebrow %}<p class="hero-eyebrow">{{ svcEyebrow }}</p>{% endif %}
+      <h1>{{ svcHeadline }}</h1>
+      {% if svcHook %}<p class="hero-intro">{{ svcHook }}</p>{% endif %}
+      <ul class="hero-trust">
+        <li>★ {{ reviews.business.averageRating }} on Google</li>
+        <li>20+ years in North Alabama</li>
+        <li>Licensed &amp; insured</li>
+      </ul>
+      {% if svcPrice %}<p class="hero-price">{{ svcPrice }}</p>{% endif %}
+      <div class="hero-cta">
+        <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
+        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary">✉️ Get Free Estimate</a>
+      </div>
+      {% if city %}
+      {% set svcCounty = cityCounties[city_slug] %}
+      <p class="hero-areas">Serving <a href="{{ ('/gutters-' + city_slug + '-al/') | url }}">{{ city }}</a> and surrounding {% if svcCounty %}{{ svcCounty }} County{% else %}North Alabama{% endif %}</p>
+      {% else %}
+      <p class="hero-areas">Serving Huntsville, Madison, <a href="{{ ('/services/decatur/' + service_slug + '/') | url }}">Decatur</a>, Athens &amp; <a href="{{ '/locations/' | url }}">20+ North Alabama towns</a></p>
+      {% endif %}
+    </div>
+  </div>
+</section>

@@ -4,19 +4,15 @@ title: Seamless Gutters in North Alabama | Blue River Gutters
 description: Custom seamless gutter installation for Huntsville, Madison, Decatur & North Alabama. 6-inch aluminum gutters, hidden hangers, 20+ years experience. Free estimates. (256) 616-6760.
 permalink: /services/seamless-gutters/
 extraCss: service-pages.css
-# Hero: partials/hub-hero.njk, photo from _data/heroes.json hubs[hub_slug].
+# Hero: partials/service-hero.njk. Photo = _data/heroes.json hubs[service_slug];
 # lcp_hero reads the same key so base.njk's preload always matches the hero.
-hub_slug: seamless-gutters
-hub_hero:
-  eyebrow: Custom Gutter Solutions
-  headline: Seamless Gutters for North Alabama Homes
-  intro: "When one of those afternoon storms rolls through the Valley—you know the ones, where it's sunny on Bailey Cove but pouring in Jones Valley—that's when you find out if your gutters are working."
-  price: "$1,200–$3,000 installed"
-  city_links:
-    Decatur: /services/decatur/seamless-gutters/
+service_slug: seamless-gutters
+hero_eyebrow: "Custom Gutter Solutions"
+hero_headline: "Seamless Gutters for North Alabama Homes"
+hero_intro: "When one of those afternoon storms rolls through the Valley—you know the ones, where it's sunny on Bailey Cove but pouring in Jones Valley—that's when you find out if your gutters are working. If water's spilling over the edges or pooling at your foundation, it's time to talk about seamless gutters."
 lcp_hero_crop: tall
 eleventyComputed:
-  lcp_hero: "{{ heroes.hubs[hub_slug] }}"
+  lcp_hero: "{{ heroes.hubs[service_slug] }}"
 ---
 
 {# Schema Markup #}
@@ -189,7 +185,7 @@ eleventyComputed:
 </nav>
 
 {# Hero Section #}
-{% include "partials/hub-hero.njk" %}
+{% include "partials/service-hero.njk" %}
 
 {# Stats #}
 <section class="stats-section">
@@ -223,7 +219,7 @@ eleventyComputed:
         <p class="section-eyebrow">The Local Reality</p>
         <h2>Why Seamless Gutters Work Better in North Alabama</h2>
         
-        <p>If water's spilling over the edges or pooling at your foundation during those storms, it's time to talk about seamless gutters.</p>
+        <p>{{ hero_intro | hookRest }}</p>
         
         <p>The Tennessee Valley gets 54 inches of rain annually—well above the national average. And it doesn't fall as gentle drizzle. When those afternoon thunderstorms roll through Madison County, they dump two inches in twenty minutes. Standard 5-inch gutters with 2x3 downspouts can't handle that kind of volume.</p>
         

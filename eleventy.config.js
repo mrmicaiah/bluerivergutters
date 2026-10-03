@@ -81,6 +81,27 @@ module.exports = function(eleventyConfig) {
   //   phones (80vh+). A landscape 1920 cover-scaled into a portrait box gets
   //   upscaled anyway, so the crop is both smaller and sharper.
   // Non-Cloudinary URLs pass through untouched.
+  // Service-hero hook: the above-the-fold lead is the first sentence of
+  // hero_intro (extended to a second when the first is under 60 chars —
+  // "Gutters collect water." is not a hook); hookRest is the remainder, which
+  // the templates render below the fold so no copy is lost.
+  const HOOK_ABBR = /\b(?:Mr|Mrs|Ms|Dr|St|Mt|Ft|Jr|Sr|vs|etc|Inc|Co|No|approx|U\.S|a\.m|p\.m)\.$/i;
+  function splitHook(text) {
+    text = String(text || "").trim();
+    const re = /[.!?]["\u201d\u2019)]?(?=\s+["\u201c(]?[A-Z0-9])/g;
+    let m;
+    while ((m = re.exec(text))) {
+      const end = m.index + m[0].length;
+      const head = text.slice(0, end);
+      if (HOOK_ABBR.test(head.replace(/["\u201d\u2019)]$/, ""))) continue;
+      if (head.length < 60) continue;
+      return [head, text.slice(end).trim()];
+    }
+    return [text, ""];
+  }
+  eleventyConfig.addFilter("hookLead", text => splitHook(text)[0]);
+  eleventyConfig.addFilter("hookRest", text => splitHook(text)[1]);
+
   eleventyConfig.addFilter("mobileBg", function(url, crop) {
     if (!url || url.indexOf("res.cloudinary.com/") === -1 || url.indexOf("/upload/") === -1) return url;
     const mobile = crop === "tall" ? "c_fill,g_auto,ar_3:4,w_828" : "w_828";

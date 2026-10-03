@@ -1,8 +1,4 @@
 
-{# Service-specific hero image: frontmatter hero_image, else the per-service
-   default in _data/heroes.json (also read by base.njk for the LCP preload). #}
-{% set computed_hero = hero_image | default(heroes.services[service_slug] | default(heroes.service)) %}
-
 {# Schema Markup #}
 {% block schema %}
 <script type="application/ld+json">
@@ -95,23 +91,8 @@
   </div>
 </nav>
 
-{# Hero Section - Uses service-specific hero images #}
-<section class="hero rsp-bg" style="--bg-lg: url('{{ computed_hero }}'); --bg-sm: url('{{ computed_hero | mobileBg('tall') }}');">
-  <div class="hero-overlay"></div>
-  <div class="container hero-container">
-    <div class="hero-content">
-      <p class="hero-eyebrow">{{ city }}, Alabama</p>
-      <h1>{{ hero_headline | default(service + " in " + city + ", AL") }}</h1>
-      
-      <p>{{ hero_intro }}</p>
-      
-      <div class="hero-cta">
-        <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
-        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary">✉️ Get Free Estimate</a>
-      </div>
-    </div>
-  </div>
-</section>
+{# Hero — shared with the service hubs; see partials/service-hero.njk #}
+{% include "partials/service-hero.njk" %}
 
 {# Trust Indicators / Stats #}
 <section class="stats-section">
@@ -146,6 +127,9 @@
     </div>
     
     <div class="local-content">
+      {# The hero shows only the hook; the rest of hero_intro leads this section. #}
+      {% set heroRest = hero_intro if short_hook else (hero_intro | hookRest) %}
+      {% if heroRest %}<p>{{ heroRest }}</p>{% endif %}
       {{ local_problem | safe }}
     </div>
   </div>

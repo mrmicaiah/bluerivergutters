@@ -108,7 +108,8 @@ Every hero background serves `w_1920` to desktop and a phone-sized variant to �
 
 **What this means in practice:**
 - **Article / city / service-city page:** just set `hero_image:` (a `w_1920` Cloudinary URL) in frontmatter, or omit it for the default. The layout handles the mobile variant and the preload.
-- **Standalone page with its own hero section:** use `class="… rsp-bg"` with `--bg-lg` / `--bg-sm` (derive `--bg-sm` with `{{ url | mobileBg('tall') }}`), and add `lcp_hero` + `lcp_hero_crop` to frontmatter. Copy `src/services/gutter-guards.njk` as the reference.
+- **Service pages (the 6 hubs + every service-city page):** the hero is `partials/service-hero.njk` — don't hand-roll it. First screen: eyebrow → H1 → hook → trust strip → price anchor → CTAs → location line, over a bottom-weighted scrim (`.hero--service`, service-pages.css). The hook is `short_hook`, else the first sentence of `hero_intro` (`hookLead` filter); the rest (`hookRest`) renders below the fold. The price anchor comes only from `src/_data/servicePricing.json` (canon lines; a service with no entry shows no anchor). The city-page location line names the county from the city landing page's `county:`, via `src/_data/cityCounties.js`. Hubs set `service_slug`, `hero_eyebrow`, `hero_headline`, `hero_intro`, `lcp_hero_crop: tall` and `eleventyComputed.lcp_hero: "{{ heroes.hubs[service_slug] }}"`, and the photo lives in heroes.json `hubs`. Copy `src/services/gutter-guards.njk` as the hub reference.
+- **Other standalone page with its own hero section:** use `class="… rsp-bg"` with `--bg-lg` / `--bg-sm` (derive `--bg-sm` with `{{ url | mobileBg('tall') }}`), and add `lcp_hero` + `lcp_hero_crop` to frontmatter.
 - **Don't:** write a hero `background-image` inline, add your own image preload, or put a hero URL without `f_auto,q_auto,w_1920`. Bare `/upload/<id>` URLs serve the original file (the /services/ hero was 3.5 MB this way).
 
 ---

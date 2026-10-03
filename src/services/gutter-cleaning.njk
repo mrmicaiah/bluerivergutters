@@ -4,9 +4,15 @@ title: Gutter Cleaning in Huntsville, AL | Blue River Gutters
 description: Professional gutter cleaning for Huntsville and North Alabama. Pricing from $150-$350. Clear debris, flush downspouts, inspect for damage. Call (256) 616-6760.
 permalink: /services/gutter-cleaning/
 extraCss: service-pages.css
-# LCP hero, preloaded from base.njk — keep in sync with the hero section below.
-lcp_hero: https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/gutter-cleaning-hero_xxyiwt.jpg
+# Hero: partials/service-hero.njk. Photo = _data/heroes.json hubs[service_slug];
+# lcp_hero reads the same key so base.njk's preload always matches the hero.
+service_slug: gutter-cleaning
+hero_eyebrow: "Maintenance That Prevents Problems"
+hero_headline: "Gutter Cleaning for North Alabama Homes"
+hero_intro: "You probably don't think about your gutters much. Maybe you notice them when you're mowing and see water stains on the fascia. Or when it rains and there's a waterfall pouring off the corner of your roof instead of flowing through the downspout. That's when you know it's time for a cleaning."
 lcp_hero_crop: tall
+eleventyComputed:
+  lcp_hero: "{{ heroes.hubs[service_slug] }}"
 ---
 
 {# Schema Markup #}
@@ -167,20 +173,7 @@ lcp_hero_crop: tall
 </nav>
 
 {# Hero Section #}
-<section class="hero rsp-bg" style="--bg-lg: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/gutter-cleaning-hero_xxyiwt.jpg'); --bg-sm: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,c_fill,g_auto,ar_3:4,w_828/gutter-cleaning-hero_xxyiwt.jpg');">
-  <div class="hero-overlay"></div>
-  <div class="container hero-container">
-    <div class="hero-content">
-      <p class="hero-eyebrow">Maintenance That Prevents Problems</p>
-      <h1>Gutter Cleaning for North Alabama Homes</h1>
-      <p>You probably don't think about your gutters much. Maybe you notice them when you're mowing and see water stains on the fascia. Or when it rains and there's a waterfall pouring off the corner of your roof instead of flowing through the downspout. That's when you know it's time for a cleaning.</p>
-      <div class="hero-cta">
-        <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
-        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary">✉️ Schedule Cleaning</a>
-      </div>
-    </div>
-  </div>
-</section>
+{% include "partials/service-hero.njk" %}
 
 {# Stats #}
 <section class="stats-section">
@@ -213,6 +206,8 @@ lcp_hero_crop: tall
       <div class="problem-content">
         <p class="section-eyebrow">The Local Reality</p>
         <h2>Why Gutter Cleaning Matters More Here</h2>
+        
+        <p>{{ hero_intro | hookRest }}</p>
         
         <p>Here's the deal: North Alabama gets 54 inches of rain annually. That's a lot of water moving through your gutters every year. When those gutters are clogged with pine needles, leaves, and debris, the water has nowhere to go except over the edge—right down against your foundation.</p>
         

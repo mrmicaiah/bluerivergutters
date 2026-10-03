@@ -4,9 +4,15 @@ title: Gutter Repair & Rotten Wood Repair | Huntsville AL
 description: "Gutter repair that starts with the wood: sagging gutters, pulling hangers, and rotted fascia fixed across Huntsville & North Alabama. Free estimates."
 permalink: /services/rotten-wood-repair/
 extraCss: service-pages.css
-# LCP hero, preloaded from base.njk — keep in sync with the hero section below.
-lcp_hero: https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/rotten-wood-repair-hero_bnu7fd.jpg
+# Hero: partials/service-hero.njk. Photo = _data/heroes.json hubs[service_slug];
+# lcp_hero reads the same key so base.njk's preload always matches the hero.
+service_slug: rotten-wood-repair
+hero_eyebrow: "Fix the Foundation First"
+hero_headline: "Gutter & Rotten Wood Repair in North Alabama"
+hero_intro: "Your gutters can only be as good as the wood they're attached to. When a gutter sags or pulls away from the house, the repair it really needs is often the fascia behind it. If that wood is soft, spongy, or crumbling, re-hung or new gutters will just pull away within a year or two. We fix the rotten wood first—then install gutters that actually stay put."
 lcp_hero_crop: tall
+eleventyComputed:
+  lcp_hero: "{{ heroes.hubs[service_slug] }}"
 ---
 
 {# Schema Markup #}
@@ -217,20 +223,7 @@ lcp_hero_crop: tall
 </nav>
 
 {# Hero Section #}
-<section class="hero rsp-bg" style="--bg-lg: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/rotten-wood-repair-hero_bnu7fd.jpg'); --bg-sm: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,c_fill,g_auto,ar_3:4,w_828/rotten-wood-repair-hero_bnu7fd.jpg');">
-  <div class="hero-overlay"></div>
-  <div class="container hero-container">
-    <div class="hero-content">
-      <p class="hero-eyebrow">Fix the Foundation First</p>
-      <h1>Gutter & Rotten Wood Repair in North Alabama</h1>
-      <p>Your gutters can only be as good as the wood they're attached to. When a gutter sags or pulls away from the house, the repair it really needs is often the fascia behind it. If that wood is soft, spongy, or crumbling, re-hung or new gutters will just pull away within a year or two. We fix the rotten wood first—then install gutters that actually stay put.</p>
-      <div class="hero-cta">
-        <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
-        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary">✉️ Get Free Estimate</a>
-      </div>
-    </div>
-  </div>
-</section>
+{% include "partials/service-hero.njk" %}
 
 {# Stats #}
 <section class="stats-section">
@@ -263,6 +256,8 @@ lcp_hero_crop: tall
       <div class="problem-content">
         <p class="section-eyebrow">The Local Reality</p>
         <h2>Why Fascia Rots Faster in North Alabama</h2>
+        
+        <p>{{ hero_intro | hookRest }}</p>
         
         <p>The Tennessee Valley is hard on exterior wood. Summer humidity averages 70-80%, and it doesn't drop much at night. Wood absorbs that moisture, and in our climate, it rarely gets a chance to fully dry out. Paint eventually fails. Moisture gets in. Rot follows.</p>
         

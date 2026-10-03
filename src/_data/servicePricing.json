@@ -1,0 +1,8 @@
+{
+  "_note": "One canon price line per service, shown as the price anchor in the service hero (partials/service-hero.njk) on both the hubs and every service-city page. These are THE canon figures — do not add or change a line without sign-off. downspouts is deliberately absent: no canon figure exists, and the template omits the anchor when a service has no entry.",
+  "seamless-gutters": "Most homes: $1,200–$3,000 installed",
+  "gutter-cleaning": "$150–$250 single-story · $200–$350 two-story",
+  "gutter-guards": "Most homes: $1,050–$3,000 installed",
+  "rotten-wood-repair": "Fascia repair: $5–$15 per linear foot",
+  "underground-drains": "$500–$1,500 per downspout connection"
+}

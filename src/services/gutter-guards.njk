@@ -4,9 +4,15 @@ title: Gutter Guards in Huntsville, AL | Pine Needle Protection | Blue River Gut
 description: Micro-mesh gutter guards for Huntsville and North Alabama. Stop pine needles, leaves & debris. Honest comparison of guard types. Free estimates. (256) 616-6760.
 permalink: /services/gutter-guards/
 extraCss: service-pages.css
-# LCP hero, preloaded from base.njk — keep in sync with the hero section below.
-lcp_hero: https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/gutter-guards-hero_qfxe9z.jpg
+# Hero: partials/service-hero.njk. Photo = _data/heroes.json hubs[service_slug];
+# lcp_hero reads the same key so base.njk's preload always matches the hero.
+service_slug: gutter-guards
+hero_eyebrow: "Protection for North Alabama Gutters"
+hero_headline: "Gutter Guards That Actually Stop Pine Needles"
+hero_intro: "If you've got Loblolly pines anywhere near your home, you know the drill. Every fall, those needles pile up on your roof and slide right into your gutters. By October, you've got a brown, soggy mess that blocks everything. Standard gutter guards don't help—the needles slip right through. That's why micro-mesh matters around here."
 lcp_hero_crop: tall
+eleventyComputed:
+  lcp_hero: "{{ heroes.hubs[service_slug] }}"
 ---
 
 {# Schema Markup #}
@@ -179,20 +185,7 @@ lcp_hero_crop: tall
 </nav>
 
 {# Hero Section #}
-<section class="hero rsp-bg" style="--bg-lg: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/gutter-guards-hero_qfxe9z.jpg'); --bg-sm: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,c_fill,g_auto,ar_3:4,w_828/gutter-guards-hero_qfxe9z.jpg');">
-  <div class="hero-overlay"></div>
-  <div class="container hero-container">
-    <div class="hero-content">
-      <p class="hero-eyebrow">Protection for North Alabama Gutters</p>
-      <h1>Gutter Guards That Actually Stop Pine Needles</h1>
-      <p>If you've got Loblolly pines anywhere near your home, you know the drill. Every fall, those needles pile up on your roof and slide right into your gutters. By October, you've got a brown, soggy mess that blocks everything. Standard gutter guards don't help—the needles slip right through. That's why micro-mesh matters around here.</p>
-      <div class="hero-cta">
-        <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
-        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary">✉️ Get Free Estimate</a>
-      </div>
-    </div>
-  </div>
-</section>
+{% include "partials/service-hero.njk" %}
 
 {# Stats #}
 <section class="stats-section">
@@ -225,6 +218,8 @@ lcp_hero_crop: tall
       <div class="problem-content">
         <p class="section-eyebrow">The Local Reality</p>
         <h2>The Pine Needle Problem in North Alabama</h2>
+        
+        <p>{{ hero_intro | hookRest }}</p>
         
         <p>Here's what national gutter guard companies don't tell you: most guards don't work for pine needles. The screens and perforated covers they sell are designed for leaves. Pine needles are a different animal entirely.</p>
         
