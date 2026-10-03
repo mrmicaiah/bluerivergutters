@@ -1,5 +1,5 @@
 {
-  "_note": "Default hero backgrounds, shared by the layouts/partials that render them and by base.njk's LCP preload. Desktop URLs at w_1920; the mobileBg filter derives the phone variant. No file extensions on service heroes — f_auto negotiates the format.",
+  "_note": "Default hero backgrounds, shared by the layouts/partials that render them and by base.njk's LCP preload. Desktop URLs at w_1920; the mobileBg filter derives the phone variant. No file extensions on service heroes — f_auto negotiates the format. `hubs` = heroes for the standalone service hubs (/services/<slug>/) that use partials/hub-hero.njk; keyed by hub_slug, kept separate from `services` so a hub swap doesn't change every service-city fallback.",
   "article": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/corner_of_a_roof_gutters_yd8zzf.jpg",
   "city": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/corner_of_a_roof_gutters_yd8zzf.jpg",
   "service": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/corner_of_a_roof_gutters_yd8zzf",
@@ -10,5 +10,8 @@
     "downspouts": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/gutter_on_house_zbvhii",
     "underground-drains": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/french_drains_peqnfn",
     "rotten-wood-repair": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/rotten_wood_hero_r1dtrh"
+  },
+  "hubs": {
+    "seamless-gutters": "https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/blueriver-projects/huntsville-seamless-gutters-38dX5E-2"
   }
 }

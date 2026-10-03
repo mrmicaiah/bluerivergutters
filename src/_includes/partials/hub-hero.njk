@@ -1,0 +1,34 @@
+{# Service-hub hero (/services/<slug>/). Mobile-first first screen: eyebrow, H1,
+   one-sentence intro, trust strip, canon price anchor, CTAs, location routing.
+   Photo: heroes.hubs[hub_slug] in _data/heroes.json — the page also sets
+   eleventyComputed.lcp_hero from the same key so base.njk preloads it.
+   Page frontmatter supplies hub_slug and hub_hero:
+     eyebrow, headline, intro  — copy
+     price                     — canon "Most homes" install range for this service
+     city_links                — { City: /services/<city>/<slug>/ } for any of the
+                                 four named cities with a localized page #}
+{% set hubHeroImg = heroes.hubs[hub_slug] %}
+{% set hubCityLinks = hub_hero.city_links or {} %}
+<section class="hero hero--hub rsp-bg" style="--bg-lg: url('{{ hubHeroImg }}'); --bg-sm: url('{{ hubHeroImg | mobileBg('tall') }}');">
+  <div class="hero-overlay"></div>
+  <div class="container hero-container">
+    <div class="hero-content">
+      <p class="hero-eyebrow">{{ hub_hero.eyebrow }}</p>
+      <h1>{{ hub_hero.headline }}</h1>
+      <p class="hero-intro">{{ hub_hero.intro }}</p>
+      <ul class="hero-trust">
+        <li>★ {{ reviews.business.averageRating }} on Google</li>
+        <li>20+ years in North Alabama</li>
+        <li>Licensed &amp; insured</li>
+      </ul>
+      <p class="hero-price">Most homes: {{ hub_hero.price }}</p>
+      <div class="hero-cta">
+        <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
+        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary">✉️ Get Free Estimate</a>
+      </div>
+      <p class="hero-areas">Serving {% for city in ['Huntsville', 'Madison', 'Decatur', 'Athens'] -%}
+        {%- if hubCityLinks[city] %}<a href="{{ hubCityLinks[city] | url }}">{{ city }}</a>{% else %}{{ city }}{% endif %}{% if not loop.last %}, {% endif %}
+      {%- endfor %} &amp; <a href="{{ '/locations/' | url }}">20+ North Alabama towns</a></p>
+    </div>
+  </div>
+</section>

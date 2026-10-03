@@ -4,9 +4,19 @@ title: Seamless Gutters in North Alabama | Blue River Gutters
 description: Custom seamless gutter installation for Huntsville, Madison, Decatur & North Alabama. 6-inch aluminum gutters, hidden hangers, 20+ years experience. Free estimates. (256) 616-6760.
 permalink: /services/seamless-gutters/
 extraCss: service-pages.css
-# LCP hero, preloaded from base.njk — keep in sync with the hero section below.
-lcp_hero: https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/seamless-gutters-hero_yvw4fe.jpg
+# Hero: partials/hub-hero.njk, photo from _data/heroes.json hubs[hub_slug].
+# lcp_hero reads the same key so base.njk's preload always matches the hero.
+hub_slug: seamless-gutters
+hub_hero:
+  eyebrow: Custom Gutter Solutions
+  headline: Seamless Gutters for North Alabama Homes
+  intro: "When one of those afternoon storms rolls through the Valley—you know the ones, where it's sunny on Bailey Cove but pouring in Jones Valley—that's when you find out if your gutters are working."
+  price: "$1,200–$3,000 installed"
+  city_links:
+    Decatur: /services/decatur/seamless-gutters/
 lcp_hero_crop: tall
+eleventyComputed:
+  lcp_hero: "{{ heroes.hubs[hub_slug] }}"
 ---
 
 {# Schema Markup #}
@@ -179,20 +189,7 @@ lcp_hero_crop: tall
 </nav>
 
 {# Hero Section #}
-<section class="hero rsp-bg" style="--bg-lg: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/seamless-gutters-hero_yvw4fe.jpg'); --bg-sm: url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,c_fill,g_auto,ar_3:4,w_828/seamless-gutters-hero_yvw4fe.jpg');">
-  <div class="hero-overlay"></div>
-  <div class="container hero-container">
-    <div class="hero-content">
-      <p class="hero-eyebrow">Custom Gutter Solutions</p>
-      <h1>Seamless Gutters for North Alabama Homes</h1>
-      <p>When one of those afternoon storms rolls through the Valley—you know the ones, where it's sunny on Bailey Cove but pouring in Jones Valley—that's when you find out if your gutters are working. If water's spilling over the edges or pooling at your foundation, it's time to talk about seamless gutters.</p>
-      <div class="hero-cta">
-        <a href="tel:2566166760" class="btn btn-primary">📞 CALL (256) 616-6760</a>
-        <a href="https://BlueRiverGutters.as.me/" class="btn btn-secondary">✉️ Get Free Estimate</a>
-      </div>
-    </div>
-  </div>
-</section>
+{% include "partials/hub-hero.njk" %}
 
 {# Stats #}
 <section class="stats-section">
@@ -225,6 +222,8 @@ lcp_hero_crop: tall
       <div class="problem-content">
         <p class="section-eyebrow">The Local Reality</p>
         <h2>Why Seamless Gutters Work Better in North Alabama</h2>
+        
+        <p>If water's spilling over the edges or pooling at your foundation during those storms, it's time to talk about seamless gutters.</p>
         
         <p>The Tennessee Valley gets 54 inches of rain annually—well above the national average. And it doesn't fall as gentle drizzle. When those afternoon thunderstorms roll through Madison County, they dump two inches in twenty minutes. Standard 5-inch gutters with 2x3 downspouts can't handle that kind of volume.</p>
         
