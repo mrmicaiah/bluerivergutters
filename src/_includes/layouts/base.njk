@@ -28,8 +28,23 @@
   <link rel="preload" as="image" fetchpriority="high" href="{{ lcpHero }}" media="(min-width: 769px)">
   {% endif %}
   
-  {# Google Analytics #}
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-GT8EBK75TK"></script>
+  {# Google Analytics — idle-loaded. gtag.js evaluation is a 120–230ms main-thread
+     task on mobile; loaded eagerly it collides with early taps (INP). It now
+     loads 3s after window load, in idle time. The gtag() calls below queue in
+     dataLayer and are replayed when gtag.js arrives. Never trigger the load
+     from a user interaction: that moves the cost onto the first tap. #}
+  <script>
+    addEventListener('load', function () {
+      setTimeout(function () {
+        (window.requestIdleCallback || setTimeout)(function () {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-GT8EBK75TK';
+          document.head.appendChild(s);
+        }, { timeout: 2000 });
+      }, 3000);
+    });
+  </script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
