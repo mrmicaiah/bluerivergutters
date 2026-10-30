@@ -7,6 +7,19 @@
    blog posts. Uses the shared .btn classes and :root CSS vars so it inherits
    the site's design without adding anything to the global stylesheets.
    =========================================================================== #}
+{# "Local reader" variant: set cta_inline_local = true before the include on
+   DIY-research pages whose readers mostly aren't shopping yet. #}
+{% if cta_inline_local %}
+<aside class="cta-inline">
+  <p class="cta-inline-copy">
+    Reading this from North Alabama? <strong>We do this for a living.</strong>
+    Free estimates in <a href="{{ '/locations/' | url }}">Huntsville, Madison, Decatur and 20+ towns</a> — call <a href="tel:2566166760">(256) 616-6760</a>.
+  </p>
+  <div class="cta-inline-actions">
+    <a href="tel:2566166760" class="btn btn-primary cta-inline-btn">Call (256) 616-6760</a>
+  </div>
+</aside>
+{% else %}
 <aside class="cta-inline">
   <p class="cta-inline-copy">
     Gutter problems in Huntsville or North Alabama?
@@ -17,6 +30,7 @@
     <a href="https://BlueRiverGutters.as.me/" class="btn btn-dark cta-inline-btn" target="_blank" rel="noopener">Get Free Inspection</a>
   </div>
 </aside>
+{% endif %}
 
 <style>
 .cta-inline {

@@ -27,6 +27,7 @@ takeaways:
 # CTA
 cta_headline: Not Sure What Size Downspouts You Need?
 cta_text: We've been installing gutters across North Alabama for over 20 years. Happy to look at your setup and give you a straight answer.
+inline_cta_in_body: true
 ---
 
 <p>A couple in <a href="{{ '/gutters-hampton-cove-al/' | url }}">Hampton Cove</a> called us last fall because water was pooling at their foundation every time it stormed. Their house was only four years old — nice place, about 2,800 square feet, well-maintained. They'd assumed the gutters were fine because they'd never seen water going over the sides.</p>
@@ -89,6 +90,8 @@ cta_text: We've been installing gutters across North Alabama for over 20 years. 
 <p><em>*Capacity assumes 1 inch of rainfall per hour, proper gutter outlet sizing, and no obstructions. Actual capacity varies with rainfall intensity — more on that below.</em></p>
 
 <p>Notice those "actual" cross-section numbers. A 2x3 downspout isn't really 6 square inches inside — the walls take up space. The actual internal area is closer to 4.8 square inches. Same deal with 3x4 — nominal vs actual matters when you're calculating flow capacity.</p>
+
+{% set cta_inline_local = true %}{% include "partials/cta-inline.njk" %}
 
 <h2>Why Downspout Size Matters More Than Gutter Size</h2>
 

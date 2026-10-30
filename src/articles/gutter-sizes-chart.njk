@@ -26,6 +26,7 @@ takeaways:
 # CTA
 cta_headline: Not Sure What Size You Need?
 cta_text: We've been sizing and installing gutters across North Alabama for over 20 years. Happy to take a look at your place and tell you what actually makes sense.
+inline_cta_in_body: true
 ---
 
 <p>A homeowner in <a href="{{ '/gutters-madison-al/' | url }}">Madison</a> called us last spring about water pouring over his gutters every time it rained. Not a drizzle — any real rain, and water was shooting right past the gutters onto the ground below.</p>
@@ -86,6 +87,8 @@ cta_text: We've been sizing and installing gutters across North Alabama for over
 </table>
 
 <p><em>*Assumes proper downspout sizing, moderate roof pitch, and average rainfall intensity. Keep reading — these assumptions matter.</em></p>
+
+{% set cta_inline_local = true %}{% include "partials/cta-inline.njk" %}
 
 <h2>Why That One Inch Matters More Than You Think</h2>
 

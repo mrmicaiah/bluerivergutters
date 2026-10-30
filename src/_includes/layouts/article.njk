@@ -117,8 +117,11 @@ hero_crop: wide
     </aside>
     {% endif %}
 
-    {# Inline conversion CTA — sits at roughly the 20% scroll mark on every article #}
+    {# Inline conversion CTA — sits at roughly the 20% scroll mark on every article.
+       Pages that place their own mid-article CTA set inline_cta_in_body: true. #}
+    {% if not inline_cta_in_body %}
     {% include "partials/cta-inline.njk" %}
+    {% endif %}
 
     {# Main Content #}
     <div class="article-content">
