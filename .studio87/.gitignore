@@ -3,3 +3,6 @@ print-*.md
 inbox-*.md
 outbox-*.md
 *.md.tmp
+# Mailbox-1 — file-based dispatch handoff.
+*
+!.gitignore

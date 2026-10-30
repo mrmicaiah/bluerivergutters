@@ -19,3 +19,5 @@ npm-debug.log*
 # Environment
 .env
 .env.local
+# Studio87 dispatch handoff artefacts — local only, not for commit.
+.studio87/
