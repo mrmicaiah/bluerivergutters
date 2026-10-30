@@ -167,6 +167,8 @@
       <p class="section-intro">From new installations to repairs and maintenance, Blue River Gutters has {{ city }} covered.</p>
     </div>
     
+    {# Triana, Gurley and Paint Rock have city hubs but no service pages yet — link the service hubs #}
+    {% set svc_base = '/services/' if city_slug in ['triana', 'gurley', 'paint-rock'] else '/services/' + city_slug + '/' %}
     <div class="services-grid">
       
       {# Seamless Gutters #}
@@ -175,7 +177,7 @@
         <div class="service-card-content">
           <h3>Seamless Gutters</h3>
           <p>Custom-fabricated on-site for a perfect fit. No seams means fewer leaks and less maintenance for your {{ city }} home.</p>
-          <a href="{{ ('/services/' + city_slug + '/seamless-gutters/') | url }}" class="btn btn-dark">Learn More</a>
+          <a href="{{ (svc_base + 'seamless-gutters/') | url }}" class="btn btn-dark">Learn More</a>
         </div>
       </div>
       
@@ -185,7 +187,7 @@
         <div class="service-card-content">
           <h3>Gutter Guards</h3>
           <p>Keep pine needles, oak leaves, and debris out of your gutters. Essential for {{ city }}'s tree-lined neighborhoods.</p>
-          <a href="{{ ('/services/' + city_slug + '/gutter-guards/') | url }}" class="btn btn-dark">Learn More</a>
+          <a href="{{ (svc_base + 'gutter-guards/') | url }}" class="btn btn-dark">Learn More</a>
         </div>
       </div>
       
@@ -195,7 +197,7 @@
         <div class="service-card-content">
           <h3>Gutter Cleaning</h3>
           <p>Professional cleaning inside and out. We clear clogs, flush downspouts, and inspect for damage — so you don't have to climb that ladder.</p>
-          <a href="{{ ('/services/' + city_slug + '/gutter-cleaning/') | url }}" class="btn btn-dark">Learn More</a>
+          <a href="{{ (svc_base + 'gutter-cleaning/') | url }}" class="btn btn-dark">Learn More</a>
         </div>
       </div>
       
@@ -205,7 +207,7 @@
         <div class="service-card-content">
           <h3>Downspouts</h3>
           <p>Properly sized and positioned downspouts ensure water flows away from your foundation — critical for {{ city }}'s clay soil.</p>
-          <a href="{{ ('/services/' + city_slug + '/downspouts/') | url }}" class="btn btn-dark">Learn More</a>
+          <a href="{{ (svc_base + 'downspouts/') | url }}" class="btn btn-dark">Learn More</a>
         </div>
       </div>
       
@@ -215,7 +217,7 @@
         <div class="service-card-content">
           <h3>Underground Drains</h3>
           <p>Route water far from your foundation with buried drainage systems. The ultimate solution for {{ city }}'s drainage challenges.</p>
-          <a href="{{ ('/services/' + city_slug + '/underground-drains/') | url }}" class="btn btn-dark">Learn More</a>
+          <a href="{{ (svc_base + 'underground-drains/') | url }}" class="btn btn-dark">Learn More</a>
         </div>
       </div>
       
@@ -225,7 +227,7 @@
         <div class="service-card-content">
           <h3>Rotten Wood Repair</h3>
           <p>Alabama humidity accelerates wood rot. We repair fascia and soffit damage before installing new gutters.</p>
-          <a href="{{ ('/services/' + city_slug + '/rotten-wood-repair/') | url }}" class="btn btn-dark">Learn More</a>
+          <a href="{{ (svc_base + 'rotten-wood-repair/') | url }}" class="btn btn-dark">Learn More</a>
         </div>
       </div>
       
