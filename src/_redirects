@@ -1,16 +1,12 @@
 # Blue River Gutters - Cloudflare Pages Redirects
 # Format: /old-path /new-path [status]
 # All redirects are 301 (permanent) unless specified
+# NOTE: static rules first, every splat/placeholder rule at the bottom (see CATCH-ALL).
 # Updated: June 23, 2026 - Forced www to non-www redirect with ! (was serving static / instead of redirecting)
 # Updated: July 26, 2026 - REMOVED self-referencing redirect on /gutters-huntsville-al/ that caused an infinite
 #   redirect loop, blocking Google from indexing the Huntsville landing page entirely.
 # Updated: August 22, 2026 - Added /blog-grid/page/* wildcard + /blog-grid/* catch-all. GA4 showed
 #   /blog-grid/page/2 and /page/3 taking ~79 views per quarter at 2s engagement (unredirected Wix pagination).
-
-# ===========================================
-# WWW TO NON-WWW REDIRECT (Priority 0)
-# ===========================================
-https://www.bluerivergutters.com/* https://bluerivergutters.com/:splat 301!
 
 # ===========================================
 # SERVICE PAGES (Priority 1)
@@ -148,11 +144,6 @@ https://www.bluerivergutters.com/* https://bluerivergutters.com/:splat 301!
 /blog-grid/tags/gutter-installation-huntsville /gutters-huntsville-al/ 301
 /blog-grid/tags/fascia-capping /services/rotten-wood-repair/ 301
 /blog-grid/tags/gutter-maintenance /services/gutter-cleaning/ 301
-
-# ===========================================
-# ARCHIVE PAGES (redirect to blog)
-# ===========================================
-/blog-grid/archive/* /blog/ 301
 
 # ===========================================
 # OLD WORDPRESS URLs (Priority 6)
@@ -668,7 +659,11 @@ https://www.bluerivergutters.com/* https://bluerivergutters.com/:splat 301!
 # ===========================================
 # CATCH-ALL FOR BLOG CATEGORY/TAG/PAGINATION WILDCARDS
 # Order matters: specific rules above fire first, these sweep up the rest.
+# Every dynamic (splat) rule must sit below ALL static rules: with splats
+# interleaved above them, Cloudflare silently dropped every rule past ~190
+# (Oct 30, 2026: /about-us/, the Wix slugs and these catch-alls all 404'd).
 # ===========================================
+/blog-grid/archive/* /blog/ 301
 /blog-grid/page/* /blog/ 301
 /blog-grid/categories/* /blog/ 301
 /blog-grid/tags/* /blog/ 301
@@ -680,3 +675,8 @@ https://www.bluerivergutters.com/* https://bluerivergutters.com/:splat 301!
 # ===========================================
 /category/* /blog/ 301
 /tag/* /blog/ 301
+
+# ===========================================
+# WWW TO NON-WWW (also handled by the zone rule; kept as a backstop)
+# ===========================================
+https://www.bluerivergutters.com/* https://bluerivergutters.com/:splat 301!
