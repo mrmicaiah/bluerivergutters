@@ -1,12 +1,12 @@
 {
   "_note": "REAL customer reviews only. Sourced from Google via RealWorkLabs job records (src/_data/projects.json). Do not add invented or placeholder reviews to this file. The eight placeholder reviews that lived here until Aug 22, 2026 (Jennifer M., Robert T., Sarah K., Mike D., Lisa H., David R., Patricia W., James C.) were build scaffolding and were never real customers.",
-  "_todo": "1) VERIFY totalReviews — homepage claims 240+, this file says 96. Pick the true Google number and make it consistent sitewide. 2) Fill in the real googlePlaceId. 3) The 'date' on each review is the JOB completion date from the work order, not the date the review was posted. Replace with actual Google review dates when available.",
+  "_todo": "1) totalReviews is 60: the publicly verifiable Google count (checked via Places API 2026-10-03). Google displays 4.8; we claim 4.7, so the schema matches or underclaims on both axes, which is the safe direction. The client may have a duplicate GBP listing holding about 36 more reviews; when he reconciles it, update totalReviews here and every aggregateRating sitewide follows. Visible copy carries no count by design. 2) Fill in the real googlePlaceId. 3) The 'date' on each review is the JOB completion date from the work order, not the date the review was posted. Replace with actual Google review dates when available.",
   "business": {
     "name": "Blue River Gutters",
     "averageRating": 4.7,
-    "totalReviews": 96,
+    "totalReviews": 60,
     "googlePlaceId": null,
-    "lastUpdated": "2026-08-22"
+    "lastUpdated": "2026-10-30"
   },
   "reviews": [
     {
