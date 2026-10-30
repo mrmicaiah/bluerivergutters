@@ -359,3 +359,10 @@ section { padding: 4rem 0; }
 @media (max-width: 768px) {
   .rsp-bg { background-image: var(--bg-sm); }
 }
+
+/* Local-only content (North Alabama visitors). Hidden until window.brgLocal
+   (base.njk) resolves true and adds .brg-local-show to each block. The helper
+   only reveals blocks that are still below the viewport, so nothing on screen
+   moves (no CLS). The class goes on the blocks, not <html>, so revealing them
+   restyles only them. */
+[data-local-only]:not(.brg-local-show) { display: none !important; }

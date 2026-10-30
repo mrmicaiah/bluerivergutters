@@ -237,6 +237,60 @@
     })();
   </script>
   
+  {# Local-visitor check: window.brgLocal resolves true for Alabama/Tennessee
+     visitors (via /geo.json, a Pages Function reading Cloudflare's edge geo).
+     Fetched after load in idle time so it costs nothing at load; the answer is
+     cached for the session. If the fetch fails, a Central-time timezone counts
+     as local — over-broad on purpose: better to show the local box to a Texan
+     than hide it from Huntsville. On true, [data-local-only] blocks still below
+     the viewport are revealed; any the visitor has already scrolled past stay
+     hidden, so on-screen content never shifts. #}
+  <script>
+    window.brgLocal = new Promise(function (resolve) {
+      var KEY = 'brgLocal', LOCAL = ['Alabama', 'Tennessee'];
+      function tzGuess() {
+        try { return Intl.DateTimeFormat().resolvedOptions().timeZone === 'America/Chicago'; }
+        catch (err) { return false; }
+      }
+      function done(isLocal) {
+        try { sessionStorage.setItem(KEY, isLocal ? '1' : '0'); } catch (err) {}
+        resolve(isLocal);
+      }
+      function check() {
+        var cached = null;
+        try { cached = sessionStorage.getItem(KEY); } catch (err) {}
+        if (cached !== null) return resolve(cached === '1');
+        fetch('/geo.json', { cache: 'no-store' })
+          .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+          .then(function (geo) { done(geo.country === 'US' && LOCAL.indexOf(geo.region) !== -1); })
+          .catch(function () { done(tzGuess()); });
+      }
+      function idle() { (window.requestIdleCallback || setTimeout)(check, { timeout: 2000 }); }
+      if (document.readyState === 'complete') idle(); else addEventListener('load', idle);
+    });
+
+    window.brgLocal.then(function (isLocal) {
+      if (!isLocal) return;
+      var els = document.querySelectorAll('[data-local-only]');
+      if (!els.length) return;
+      // Where a hidden block would appear: the bottom of the nearest earlier
+      // sibling that renders a box (skipping scripts and other hidden blocks),
+      // else the top of its parent.
+      function slotTop(el) {
+        for (var prev = el.previousElementSibling; prev; prev = prev.previousElementSibling) {
+          if (prev.getClientRects().length) return prev.getBoundingClientRect().bottom;
+        }
+        return el.parentElement.getBoundingClientRect().top;
+      }
+      // Reads first, then writes: one layout, one style recalc.
+      var fold = window.innerHeight, show = [];
+      els.forEach(function (el) {
+        if (slotTop(el) >= fold) show.push(el);
+      });
+      show.forEach(function (el) { el.classList.add('brg-local-show'); });
+    });
+  </script>
+
   {# Additional scripts slot #}
   {% block scripts %}{% endblock %}
   
