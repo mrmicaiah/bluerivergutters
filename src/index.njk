@@ -1,8 +1,8 @@
 ---
 layout: base.njk
 date: git Last Modified
-title: Gutters Huntsville AL | 4.7★ 240+ Reviews | Blue River Gutters
-description: "Huntsville's top-rated gutter company — 4.7★ across 240+ verified reviews. Seamless gutters, guards, cleaning & repair. Free inspection, most homes seen within 48 hours. Call (256) 616-6760."
+title: Gutters Huntsville AL | 4.7★ Google Rating | Blue River Gutters
+description: "Huntsville's top-rated gutter company — 4.7★ Google rating. Seamless gutters, guards, cleaning & repair. Free inspection, most homes seen within 48 hours. Call (256) 616-6760."
 # LCP hero, preloaded from base.njk (w_1920 desktop / 3:4 w_828 phones).
 # Keep in sync with the .hero-v2 background below.
 lcp_hero: https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/hero-bg_axhlw4.jpg
@@ -36,7 +36,7 @@ lcp_hero_crop: tall
 
         <div class="hero-v2-proof">
           <span class="stars">★★★★★</span>
-          <span class="proof-text"><strong>4.7 rating</strong> across 240+ verified reviews</span>
+          <span class="proof-text"><strong>4.7★</strong> Google rating</span>
         </div>
 
         <ul class="hero-v2-benefits">
@@ -334,7 +334,7 @@ lcp_hero_crop: tall
     <div class="section-header">
       <p class="section-eyebrow">Verified 5-Star Reviews</p>
       <h2>What Customers Say</h2>
-      <p class="section-intro">Real reviews from real North Alabama homeowners — part of our 4.7★ rating across 240+ verified reviews.</p>
+      <p class="section-intro">Real reviews from real North Alabama homeowners — part of our 4.7★ Google rating.</p>
     </div>
 
     <div class="reviews-quotes-grid">
@@ -1192,9 +1192,9 @@ a.lp-city:hover { text-decoration: underline; }
   ],
   "aggregateRating": {
     "@type": "AggregateRating",
-    "ratingValue": "4.7",
+    "ratingValue": "{% endraw %}{{ reviews.business.averageRating }}{% raw %}",
     "bestRating": "5",
-    "reviewCount": "240"
+    "reviewCount": "{% endraw %}{{ reviews.business.totalReviews }}{% raw %}"
   },
   "review": [
     {
