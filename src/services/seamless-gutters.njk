@@ -548,6 +548,10 @@ eleventyComputed:
   </div>
 </section>
 
+{# Lead form — after the FAQ, before related links #}
+{% set lead_form_kind = "service" %}{% set lead_form_service = "Seamless Gutters" %}
+{% include "partials/lead-form.njk" %}
+
 {# Related Services #}
 <section class="related-services">
   <div class="container">

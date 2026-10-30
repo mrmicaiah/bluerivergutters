@@ -1,0 +1,156 @@
+{# ===========================================================================
+   Lead form — name / phone / zip, for service and city pages.
+
+   Set before the include:
+     lead_form_kind     "service" or "city" — names the Clarity events
+                        (form_start_<kind> / form_submit_<kind>) and the
+                        Courier funnel (<kind>-page-form)
+     lead_form_service  optional service name, sent with the lead
+   An addition to the page's call buttons and booking link, never a
+   replacement. Guards and submit logic live in /js/lead-form.js; the zip
+   allowlist and zip -> city map come from src/_data/serviceArea.js.
+   The email field renders only while leadForm.emailRequired is true (see
+   src/_data/leadForm.js).
+   =========================================================================== #}
+<section class="lead-form-section">
+  <div class="container">
+    <div class="lead-form-card">
+      <div class="lead-form-view">
+        <span class="lead-form-eyebrow">100% Free · No Obligation</span>
+        <h2>Get a Free Estimate{% if city %} in {{ city }}{% endif %}</h2>
+        <p class="lead-form-sub">Takes 15 seconds. We'll be in touch within 24 hours.</p>
+
+        <form class="lead-form" data-form-kind="{{ lead_form_kind }}"{% if lead_form_service %} data-service="{{ lead_form_service }}"{% endif %} data-email-required="{{ 'true' if leadForm.emailRequired else 'false' }}" novalidate>
+          {# Honeypot — hidden from humans, bots fill it #}
+          <div class="hp-field" aria-hidden="true">
+            <label for="lf-website">Website (leave this blank)</label>
+            <input type="text" id="lf-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="lead-form-fields">
+            <div class="lead-form-group">
+              <label for="lf-name">Your Name</label>
+              <input type="text" id="lf-name" name="name" required autocomplete="name" placeholder="Jane Smith">
+            </div>
+            <div class="lead-form-group">
+              <label for="lf-phone">Phone</label>
+              <input type="tel" id="lf-phone" name="phone" required autocomplete="tel" placeholder="(256) 555-0100">
+            </div>
+            <div class="lead-form-group">
+              <label for="lf-zip">Zip Code <span class="lead-form-zip-city" aria-live="polite"></span></label>
+              <input type="text" id="lf-zip" name="zip" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="35801">
+              <input type="hidden" name="city" value="">
+            </div>
+            {% if leadForm.emailRequired %}
+            <div class="lead-form-group">
+              <label for="lf-email">Email</label>
+              <input type="email" id="lf-email" name="email" required autocomplete="email" placeholder="you@example.com">
+            </div>
+            {% endif %}
+          </div>
+
+          <button type="submit" class="btn btn-primary lead-form-submit">Get My Free Estimate →</button>
+          <p class="lead-form-error" role="alert"></p>
+        </form>
+      </div>
+
+      <div class="lead-form-success" hidden>
+        <p class="lead-form-success-title">Thanks — we've got it.</p>
+        <p>We'll be in touch within 24 hours. Need us sooner? Call <a href="tel:2566166760">(256) 616-6760</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="{{ '/js/service-area.js' | url }}" defer></script>
+<script src="{{ '/js/lead-form.js' | url }}" defer></script>
+
+<style>
+.lead-form-section {
+  padding: 3rem 0;
+  background: var(--cream);
+}
+.lead-form-card {
+  max-width: 760px;
+  margin: 0 auto;
+  background: var(--white);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-top: 4px solid var(--red);
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+}
+.lead-form-eyebrow {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 0.35rem;
+}
+.lead-form-card h2 {
+  margin: 0 0 0.35rem;
+  color: var(--navy);
+}
+.lead-form-sub {
+  margin: 0 0 1.25rem;
+  color: var(--slate);
+}
+.lead-form-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.lead-form-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--navy);
+  margin-bottom: 0.35rem;
+}
+.lead-form-group input {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+.lead-form-zip-city {
+  font-weight: 400;
+  color: var(--slate);
+  font-size: 0.85rem;
+}
+.lead-form .lead-form-submit {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  font-size: 1.05rem;
+}
+.lead-form-error {
+  display: none;
+  margin: 0.75rem 0 0;
+  color: #b91c1c;
+  font-size: 0.95rem;
+}
+.lead-form-error.active { display: block; }
+.lead-form .hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.lead-form-success { text-align: center; }
+.lead-form-success-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+@media (max-width: 768px) {
+  .lead-form-section { padding: 2rem 0; }
+  .lead-form-card { padding: 1.4rem 1.25rem; }
+}
+</style>

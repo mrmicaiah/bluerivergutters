@@ -458,6 +458,10 @@
 </section>
 {% endif %}
 
+{# Lead form — after the FAQ, before the final call-to-action #}
+{% set lead_form_kind = "city" %}
+{% include "partials/lead-form.njk" %}
+
 {# Final CTA #}
 <section class="cta" id="contact">
   <div class="container">
