@@ -146,6 +146,9 @@
     <div class="explanation-grid">
       <div class="explanation-content">
         {{ service_explanation | safe }}
+        {% if service_slug == "downspouts" %}
+        <p>If you'd like to run the numbers on your own house first, here's <a href="{{ '/articles/gutter-downspout-sizes/' | url }}">how to size downspouts by roof area</a>.</p>
+        {% endif %}
       </div>
       
       <div class="explanation-image">
