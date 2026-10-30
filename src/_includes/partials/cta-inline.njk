@@ -9,9 +9,10 @@
    =========================================================================== #}
 {# "Local reader" variant: set cta_inline_local = true before the include on
    DIY-research pages whose readers mostly aren't shopping yet.
-   Geo-gated: data-local-only is the hook for the brgLocal helper (base.njk),
-   which adds .brg-local to <html> for plausibly-local visitors. Until then
-   it takes no space. #}
+   Geo-gated: data-local-only is the hook for the brgLocal helper (base.njk).
+   main.css hides it until the helper adds .brg-local-show for
+   plausibly-local visitors. Don't add a hide rule here, because one keyed
+   to anything else outlives the reveal. #}
 {% if cta_inline_local %}
 <aside class="cta-inline cta-inline--local" data-local-only>
   <p class="cta-inline-copy">
@@ -50,9 +51,6 @@
   gap: 1.5rem;
   flex-wrap: wrap;
 }
-/* Same hide rule as main.css's [data-local-only] block, scoped here so the
-   box stays hidden even if this partial ships before the brgLocal helper */
-html:not(.brg-local) .cta-inline--local { display: none; }
 .cta-inline-photo {
   flex: 1 1 100%;
   margin: 0;
