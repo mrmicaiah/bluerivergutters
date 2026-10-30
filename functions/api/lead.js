@@ -20,7 +20,7 @@ const FIELDS = ['name', 'phone', 'zip', 'city', 'email', 'message', 'service', '
 // Keys only the pre-/api/lead Courier-era forms sent: a payload carrying them
 // is a replay of an old capture, not one of our current forms.
 const LEGACY_KEYS = ['metadata', 'list', 'website'];
-const KNOWN_FUNNELS = ['contact-form-v3', 'service-page-form', 'city-page-form'];
+const KNOWN_FUNNELS = ['contact-form-v3', 'service-page-form', 'city-page-form', 'homepage-form'];
 const MIN_FILL_MS = 3000;
 const CALL_US = 'Something went wrong sending your request. Please call us at (256) 616-6760.';
 
