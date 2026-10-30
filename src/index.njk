@@ -71,14 +71,23 @@ lcp_hero_crop: tall
               <input type="text" id="lead-name" name="name" required placeholder="Jane Smith">
             </div>
 
-            <div class="form-group">
-              <label for="lead-phone">Phone</label>
-              <input type="tel" id="lead-phone" name="phone" required placeholder="(256) 555-0100">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="lead-phone">Phone</label>
+                <input type="tel" id="lead-phone" name="phone" required autocomplete="tel" placeholder="(256) 555-0100">
+              </div>
+
+              <div class="form-group">
+                <label for="lead-zip">Zip Code <span class="zip-city" aria-live="polite"></span></label>
+                <input type="text" id="lead-zip" name="zip" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="35801">
+                {# Filled from the zip by /js/lead-form.js — src/_data/serviceArea.js is the map #}
+                <input type="hidden" id="lead-city" name="city" value="">
+              </div>
             </div>
 
             <div class="form-group">
-              <label for="lead-email">Email</label>
-              <input type="email" id="lead-email" name="email" required placeholder="you@example.com">
+              <label for="lead-email">Email <span class="form-optional">(optional)</span></label>
+              <input type="email" id="lead-email" name="email" autocomplete="email" placeholder="you@example.com">
             </div>
 
             <button type="submit" class="btn btn-primary form-submit" id="lead-form-submit">
@@ -621,6 +630,11 @@ lcp_hero_crop: tall
   margin: 0;
 }
 .form-group { margin-bottom: 0.85rem; }
+.form-group .zip-city,
+.form-group .form-optional {
+  font-weight: 400;
+  color: var(--gray);
+}
 .form-group label {
   display: block;
   font-size: 0.8rem;
@@ -1023,31 +1037,36 @@ a.lp-city:hover { text-decoration: underline; }
 }
 </style>
 
+{# Lead form handler — posts to /api/lead. Guards, zip allowlist and
+   zip -> city come from /js/lead-form.js (window.BRGLeadGuards), fed by
+   src/_data/serviceArea.js — one guard chain for every form on the site. #}
+<script src="{{ '/js/service-area.js' | url }}"></script>
+<script src="{{ '/js/lead-form.js' | url }}"></script>
 {% raw %}
-<!-- Lead form handler — Courier — with honeypot bot protection -->
 <script>
 (function() {
-  const COURIER_API = 'https://email-bot-server.micaiah-tasks.workers.dev/api/subscribe';
-  const COURIER_LIST = 'blue-river-gutters-leads';
+  const G = window.BRGLeadGuards;
   const FORM_LOAD_TIME = Date.now();
 
   const form = document.getElementById('lead-form');
-  if (!form) return;
+  if (!form || !G) return;
 
   const submitBtn = document.getElementById('lead-form-submit');
   const errorEl = document.getElementById('lead-form-error');
 
-  function showError(msg) {
+  G.bindZipCity(document.getElementById('lead-zip'), document.getElementById('lead-city'), form.querySelector('.zip-city'));
+
+  function showError(msg, field) {
     errorEl.textContent = msg;
     errorEl.classList.add('active');
+    if (field) field.focus();
   }
 
   function clearError() {
     errorEl.classList.remove('active');
   }
 
-  function fakeSuccess() {
-    // Show success to bot so it doesn't try a different attack
+  function showSuccess() {
     document.getElementById('form-view').style.display = 'none';
     document.getElementById('form-success').classList.add('active');
   }
@@ -1057,10 +1076,9 @@ a.lp-city:hover { text-decoration: underline; }
     clearError();
 
     // Honeypot check #1: hidden field must be empty
-    const honeypot = document.getElementById('lead-website').value;
-    if (honeypot) {
+    if (document.getElementById('lead-website').value) {
       console.warn('Honeypot triggered — silent reject');
-      fakeSuccess();
+      showSuccess(); // Show success to bot so it doesn't try a different attack
       return;
     }
 
@@ -1068,22 +1086,33 @@ a.lp-city:hover { text-decoration: underline; }
     const elapsed = Date.now() - FORM_LOAD_TIME;
     if (elapsed < 3000) {
       console.warn('Form filled too fast (' + elapsed + 'ms) — silent reject');
-      fakeSuccess();
+      showSuccess();
       return;
     }
 
-    const name = document.getElementById('lead-name').value.trim();
-    const phone = document.getElementById('lead-phone').value.trim();
-    const email = document.getElementById('lead-email').value.trim();
+    const nameField = document.getElementById('lead-name');
+    const phoneField = document.getElementById('lead-phone');
+    const zipField = document.getElementById('lead-zip');
+    const emailField = document.getElementById('lead-email');
+    const name = nameField.value.trim();
+    const phone = phoneField.value.trim();
+    const zip = zipField.value.trim();
+    const email = emailField.value.trim();
 
-    if (!name || !phone || !email) {
-      showError('Please fill out all fields.');
-      return;
-    }
+    if (!name) return showError('Please tell us your name.', nameField);
+    if (!G.isPhone(phone)) return showError('Please enter a phone number we can reach you at.', phoneField);
+    // /api/lead rejects any lead without a zip, so this one is load-bearing.
+    if (!/^[0-9]{5}$/.test(zip)) return showError('Please enter your 5-digit zip code so we know the area.', zipField);
+    if (email && !G.isEmail(email)) return showError('Please enter a valid email address.', emailField);
 
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showError('Please enter a valid email address.');
-      return;
+    // No message box on this form, so the message-shape and outreach guards
+    // have nothing to check.
+
+    // Out of area gets a visible message, never a silent fail: a real customer
+    // who fat-fingers their zip needs a way back in.
+    if (!G.inServiceArea(zip)) {
+      return showError("Looks like you're outside our North Alabama service area. " +
+        "If you think that's wrong, call us at (256) 616-6760", zipField);
     }
 
     const originalText = submitBtn.textContent;
@@ -1091,25 +1120,25 @@ a.lp-city:hover { text-decoration: underline; }
     submitBtn.textContent = 'Sending...';
 
     const payload = {
-      email: email,
       name: name,
-      list: COURIER_LIST,
+      phone: phone,
+      zip: zip,
+      city: G.cityForZip(zip),
+      email: email,
+      message: '',
+      service: '',
       source: 'bluerivergutters.com',
-      funnel: 'homepage-hero-form-v2',
-      metadata: {
-        phone: phone,
-        service: 'not specified',
-        page: 'homepage',
-        time_to_fill_ms: elapsed
-      }
+      funnel: 'homepage-form',
+      time_to_fill_ms: elapsed
     };
 
-    // Past honeypot, 3s timing floor, required-fields and email-format checks.
-    // Genuine submission point — the only branch that dispatches to Courier.
+    // Past honeypot, 3s timing floor, name/phone/zip/email checks and the
+    // service-area check. Genuine submission point — the only branch that
+    // posts to /api/lead.
     window.brgTrack && window.brgTrack('form_submit_homepage');
 
     try {
-      const resp = await fetch(COURIER_API, {
+      const resp = await fetch(G.LEAD_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -1125,8 +1154,7 @@ a.lp-city:hover { text-decoration: underline; }
             value: 1
           });
         }
-        document.getElementById('form-view').style.display = 'none';
-        document.getElementById('form-success').classList.add('active');
+        showSuccess();
       } else {
         showError(data.error || 'Something went wrong. Please call us at (256) 616-6760.');
         submitBtn.disabled = false;
