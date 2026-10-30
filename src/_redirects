@@ -166,6 +166,15 @@
 /blog/leaves-stuck-in-Their-gutters/ /blog/leaves-stuck-in-gutters/ 301
 /articles/what-seamless-gutters-really-caps /articles/what-seamless-gutters-really-means/ 301
 /articles/what-seamless-gutters-really-caps/ /articles/what-seamless-gutters-really-means/ 301
+/projects/painting /recent-projects/ 301
+/projects/painting/ /recent-projects/ 301
+/projects /recent-projects/ 301
+/projects/ /recent-projects/ 301
+# Retired homepage-v2 demos (were meta-refresh stubs in src/demo/)
+/demo/homepage-v2 / 301
+/demo/homepage-v2/ / 301
+/demo/homepage-v2-old / 301
+/demo/homepage-v2-old/ / 301
 
 # Old Wix {service}-{city}-al pages -> current service-city page
 /seamless-gutters-albertville-al /services/albertville/seamless-gutters/ 301
