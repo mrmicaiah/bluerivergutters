@@ -93,6 +93,7 @@ extraCss: blog.css
       {% if modifiedDate and modifiedDate != publish_date %}<span class="blog-updated">Updated <time datetime="{{ modifiedDate }}">{{ modifiedDate }}</time></span>{% endif %}
       {% if read_time %}<span class="blog-read-time">{{ read_time }} min read</span>{% endif %}
     </div>
+    {% include "partials/local-note.njk" %}
   </div>
 </header>
 

@@ -1,0 +1,9 @@
+{# Top-of-article local note: one line under the byline/date on every
+   article and blog post (layouts/article.njk, layouts/blog.njk). Always
+   visible, not geo-gated. Both headers are dark, so it inherits their muted
+   white. #}
+<p class="local-note"><em>Written by the crew at <a href="{{ '/' | url }}">Blue River Gutters</a> — we install and service gutters across Huntsville and North Alabama.</em></p>
+<style>
+.local-note { margin: 0.75rem 0 0; font-size: 0.9rem; line-height: 1.5; color: rgba(255, 255, 255, 0.8); }
+.local-note a { color: var(--white); text-decoration: underline; }
+</style>

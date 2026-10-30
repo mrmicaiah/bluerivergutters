@@ -8,9 +8,12 @@
    the site's design without adding anything to the global stylesheets.
    =========================================================================== #}
 {# "Local reader" variant: set cta_inline_local = true before the include on
-   DIY-research pages whose readers mostly aren't shopping yet. #}
+   DIY-research pages whose readers mostly aren't shopping yet.
+   Geo-gated: data-local-only is the hook for the brgLocal helper (base.njk),
+   which adds .brg-local to <html> for plausibly-local visitors. Until then
+   it takes no space. #}
 {% if cta_inline_local %}
-<aside class="cta-inline">
+<aside class="cta-inline cta-inline--local" data-local-only>
   <p class="cta-inline-copy">
     Reading this from North Alabama? <strong>We do this for a living.</strong>
     Free estimates in <a href="{{ '/locations/' | url }}">Huntsville, Madison, Decatur and 20+ towns</a> — call <a href="tel:2566166760">(256) 616-6760</a>.
@@ -18,6 +21,7 @@
   <div class="cta-inline-actions">
     <a href="tel:2566166760" class="btn btn-primary cta-inline-btn">Call (256) 616-6760</a>
   </div>
+  {% include "partials/photo-offer-channel.njk" %}
 </aside>
 {% else %}
 <aside class="cta-inline">
@@ -46,6 +50,19 @@
   gap: 1.5rem;
   flex-wrap: wrap;
 }
+/* Same hide rule as main.css's [data-local-only] block, scoped here so the
+   box stays hidden even if this partial ships before the brgLocal helper */
+html:not(.brg-local) .cta-inline--local { display: none; }
+.cta-inline-photo {
+  flex: 1 1 100%;
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px dashed rgba(15, 23, 42, 0.15);
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--slate);
+}
+.cta-inline-photo a { font-weight: 600; text-decoration: underline; }
 .cta-inline-copy {
   margin: 0;
   flex: 1 1 280px;
@@ -64,6 +81,10 @@
   flex-wrap: wrap;
   flex-shrink: 0;
 }
+/* When the box sits inside .blog-content / .article-content, their link
+   color (0,1,1) beats .btn-primary's white (0,1,0): blue text on red */
+.cta-inline .cta-inline-btn,
+.cta-inline .cta-inline-btn:hover { color: var(--white); }
 .cta-inline .cta-inline-btn {
   padding: 0.8rem 1.4rem;
   font-size: 0.95rem;
@@ -79,6 +100,7 @@
     gap: 1.1rem;
   }
   .cta-inline-copy { flex: none; font-size: 1rem; }
+  .cta-inline-photo { flex: none; }
   .cta-inline-copy strong { display: inline; }
   .cta-inline-actions { flex-direction: column; gap: 0.6rem; }
   .cta-inline .cta-inline-btn {

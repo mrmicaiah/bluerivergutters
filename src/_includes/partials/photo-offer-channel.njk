@@ -1,0 +1,18 @@
+{# ===========================================================================
+   Photo offer, the channel line. Shared by every local CTA box
+   (partials/cta-inline.njk), so the channel is set here and only here.
+
+   GATED: the sms: link assumes (256) 616-6760 receives texts. Micaiah has
+   not confirmed that yet. If the number is voice-only, change photo_channel
+   to "email". That one line is the whole swap.
+
+   sms:+1...?&body= is the form both iOS and Android prefill from.
+   =========================================================================== #}
+{% set photo_channel = "sms" %}
+<p class="cta-inline-photo">
+{% if photo_channel == "sms" %}
+  Not sure what size you need? <a href="sms:+12566166760?&amp;body=Gutter%20photo%20for%20sizing%20%E2%80%94%20">Text us a photo</a> and we'll tell you free, or <a href="mailto:service@bluerivergutters.com?subject=Gutter%20photo%20for%20sizing">email it</a>.
+{% else %}
+  Not sure what size you need? <a href="mailto:service@bluerivergutters.com?subject=Gutter%20photo%20for%20sizing">Email us a photo</a> and we'll tell you free.
+{% endif %}
+</p>

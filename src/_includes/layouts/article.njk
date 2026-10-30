@@ -97,6 +97,7 @@ hero_crop: wide
         {% if date_display %}<span class="publish-date">{{ date_display }}</span>{% endif %}
         {% if modifiedDate and modifiedDate != date_published %}<span class="publish-date">Updated <time datetime="{{ modifiedDate }}">{{ modifiedDate | dateFormat("MMMM D, YYYY") }}</time></span>{% endif %}
       </div>
+      {% include "partials/local-note.njk" %}
     </div>
   </div>
 </section>
