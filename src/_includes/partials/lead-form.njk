@@ -4,12 +4,12 @@
    Set before the include:
      lead_form_kind     "service" or "city" — names the Clarity events
                         (form_start_<kind> / form_submit_<kind>) and the
-                        Courier funnel (<kind>-page-form)
+                        lead funnel (<kind>-page-form)
      lead_form_service  optional service name, sent with the lead
    An addition to the page's call buttons and booking link, never a
    replacement. Guards and submit logic live in /js/lead-form.js; the zip
    allowlist and zip -> city map come from src/_data/serviceArea.js.
-   The email field renders only while leadForm.emailRequired is true (see
+   Email is optional unless leadForm.emailRequired is true (see
    src/_data/leadForm.js).
    =========================================================================== #}
 <section class="lead-form-section">
@@ -41,12 +41,10 @@
               <input type="text" id="lf-zip" name="zip" required inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="35801">
               <input type="hidden" name="city" value="">
             </div>
-            {% if leadForm.emailRequired %}
             <div class="lead-form-group">
-              <label for="lf-email">Email</label>
-              <input type="email" id="lf-email" name="email" required autocomplete="email" placeholder="you@example.com">
+              <label for="lf-email">Email{% if not leadForm.emailRequired %} <span class="lead-form-optional">(optional)</span>{% endif %}</label>
+              <input type="email" id="lf-email" name="email" autocomplete="email" placeholder="you@example.com"{% if leadForm.emailRequired %} required{% endif %}>
             </div>
-            {% endif %}
           </div>
 
           <button type="submit" class="btn btn-primary lead-form-submit">Get My Free Estimate →</button>
@@ -118,7 +116,8 @@
   font-size: 1rem;
   font-family: inherit;
 }
-.lead-form-zip-city {
+.lead-form-zip-city,
+.lead-form-optional {
   font-weight: 400;
   color: var(--slate);
   font-size: 0.85rem;

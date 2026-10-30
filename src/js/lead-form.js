@@ -18,8 +18,10 @@
  * event fire.
  */
 (function () {
-  var COURIER_API = 'https://email-bot-server.micaiah-tasks.workers.dev/api/subscribe';
-  var COURIER_LIST = 'blue-river-gutters-leads';
+  // Same-origin Pages Function. It re-checks the timing floor server-side and
+  // forwards email-bearing leads to Courier, so the subscriber list is fed as
+  // before.
+  var LEAD_API = '/api/lead';
 
   // Bump when the marker list or zip allowlist changes, so a later recount can
   // tell which filter era a lead arrived under.
@@ -90,8 +92,7 @@
 
   window.BRGLeadGuards = {
     SCAN_VERSION: SCAN_VERSION,
-    COURIER_API: COURIER_API,
-    COURIER_LIST: COURIER_LIST,
+    LEAD_API: LEAD_API,
     cityForZip: cityForZip,
     inServiceArea: inServiceArea,
     hasSubstantiveMessage: hasSubstantiveMessage,
@@ -189,20 +190,16 @@
 
       var payload = {
         name: name,
-        list: COURIER_LIST,
+        phone: phone,
+        zip: zip,
+        city: cityForZip(zip),
+        email: email,
+        message: '',
+        service: form.getAttribute('data-service') || '',
         source: 'bluerivergutters.com',
         funnel: kind + '-page-form',
-        metadata: {
-          phone: phone,
-          zip: zip,
-          city: cityForZip(zip),
-          service: form.getAttribute('data-service') || 'not specified',
-          page: window.location.pathname,
-          time_to_fill_ms: elapsed,
-          scan_version: SCAN_VERSION
-        }
+        time_to_fill_ms: elapsed
       };
-      if (email) payload.email = email;
 
       // Past every guard — the genuine send, and the only branch that fires the
       // submit event. Fired before the request so it can't be lost to a slow
@@ -210,7 +207,7 @@
       track('form_submit_' + kind);
 
       try {
-        var resp = await fetch(COURIER_API, {
+        var resp = await fetch(LEAD_API, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)

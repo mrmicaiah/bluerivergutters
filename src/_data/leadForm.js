@@ -1,8 +1,9 @@
 // Lead-form settings shared by the contact form and partials/lead-form.njk.
 //
-// emailRequired: true while Courier's /api/subscribe still needs an email on
-// every lead. Flip to false ONLY after Micaiah confirms the worker accepts
-// email-less leads — the client change must never deploy ahead of the server.
+// Both forms post to /api/lead (functions/api/lead.js), which accepts leads
+// without an email and forwards the email-bearing ones to Courier itself.
+// emailRequired: false makes email optional on every form (format-checked only
+// when filled). Never set it false on a deploy that lacks /api/lead.
 module.exports = {
-  emailRequired: true
+  emailRequired: false
 };

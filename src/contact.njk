@@ -414,19 +414,18 @@ lcp_hero_crop: wide
 }
 </style>
 
-{# Courier Form Handler — guards, zip allowlist and zip -> city come from
+{# Lead Form Handler (posts to /api/lead) — guards, zip allowlist and zip -> city come from
    /js/lead-form.js (window.BRGLeadGuards), fed by src/_data/serviceArea.js #}
 <script src="{{ '/js/service-area.js' | url }}"></script>
 <script src="{{ '/js/lead-form.js' | url }}"></script>
 <script>
 (function() {
   const CONFIG = {
-    // v3 marks the shortened form (phone required, message optional, city
+    // v3 marks the shortened form (phone required, email and message optional, city
     // filled from zip). Earlier funnel values stay in Courier's history so the
     // dashboard can tell the eras apart.
     funnel: 'contact-form-v3',
     formSelector: '#contact-form',
-    customFields: ['phone', 'zip', 'city', 'service', 'message'],
     redirectUrl: '/thank-you/'
   };
 
@@ -512,27 +511,27 @@ lcp_hero_crop: wide
 
     const payload = {
       name: name,
-      list: G.COURIER_LIST,
+      phone: phone,
+      zip: zip,
+      city: field('city')?.value || G.cityForZip(zip),
+      email: email,
+      message: messageText,
+      service: field('service')?.value || '',
       source: 'bluerivergutters.com',
       funnel: CONFIG.funnel,
-      metadata: { time_to_fill_ms: elapsed, scan_version: G.SCAN_VERSION }
+      time_to_fill_ms: elapsed
     };
-    if (email) payload.email = email;
-    CONFIG.customFields.forEach(name => {
-      const value = field(name)?.value.trim();
-      if (value) payload.metadata[name] = value;
-    });
 
     // Past every guard: honeypot, 3s timing floor, required name/phone/zip,
     // email rules, message shape (when given), outreach-marker scan,
-    // service-area check. This is the genuine send — the only branch where the
-    // Courier payload (with scan_version) is dispatched. Fired here, before the
+    // service-area check. This is the genuine send — the only branch that
+    // posts to /api/lead. Fired here, before the
     // /thank-you/ redirect below, because events queued after navigation
     // starts can be lost.
     window.brgTrack && window.brgTrack('form_submit_contact');
 
     try {
-      const resp = await fetch(G.COURIER_API, {
+      const resp = await fetch(G.LEAD_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
