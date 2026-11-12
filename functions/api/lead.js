@@ -86,7 +86,17 @@ export async function onRequestPost({ request, env, waitUntil }) {
   const extra = Object.keys(body).filter((k) => !FIELDS.includes(k));
   if (extra.length) notes.push('Unexpected fields ignored: ' + extra.join(', '));
 
-  const subject = ('New lead: ' + lead.name + ' — ' + (lead.service || 'general') +
+  // Cloudflare geo for the submitter's IP. Flag, never reject: foreign spam
+  // types valid service-area zips, but a real lead can come from anywhere.
+  // request.cf is absent in some local dev setups — degrade to "unknown".
+  const cf = request.cf || {};
+  const geo = (v) => (typeof v === 'string' && v.trim()) ? v.trim() : 'unknown';
+  const country = geo(cf.country);
+  const geoLine = 'Submitted from: ' + geo(cf.city) + ', ' + geo(cf.region) + ', ' + country + ' (Cloudflare geo)';
+  // Tag leads the subject: phone mail clients truncate from the tail.
+  const foreignTag = (country !== 'unknown' && country !== 'US') ? '[submitted from ' + country + '] ' : '';
+
+  const subject = (foreignTag + 'New lead: ' + lead.name + ' — ' + (lead.service || 'general') +
     ' (' + lead.zip + '/' + lead.city + ')').replace(/[\r\n]+/g, ' ');
   const text = [
     'Name:     ' + lead.name,
@@ -100,7 +110,8 @@ export async function onRequestPost({ request, env, waitUntil }) {
     'Funnel:   ' + lead.funnel,
     'Source:   ' + lead.source,
     'Time to fill: ' + Math.round(fillMs / 1000) + 's',
-    'Received: ' + new Date().toISOString()
+    'Received: ' + new Date().toISOString(),
+    geoLine
   ].concat(notes.length ? ['', 'Notes:'].concat(notes.map((n) => '- ' + n)) : []).join('\n');
 
   const mail = {
