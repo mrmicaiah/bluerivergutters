@@ -14,8 +14,15 @@
  *   4. message shape (only if a message was given)        -> visible
  *   5. outreach markers in the message                    -> silent
  *   6. zip outside the service area                       -> visible
- * Only a submission past all six is sent, and only then does the submit
- * event fire.
+ * Only a submission past all six is sent.
+ *
+ * Clarity instrumentation lives here too, one path for all four forms
+ * (homepage, service, city, contact) via BRGLeadGuards.instrument():
+ *   form_start_<kind>   once, on the first real interaction with the form
+ *   form_submit_<kind>  once, only after /api/lead answers OK — never on a
+ *                       silent reject, a visible reject, or a failed send
+ * Both also set the Clarity tag  form = <funnel>  (the same string the payload
+ * carries), so funnels can be split per form without reading recordings.
  */
 (function () {
   // Same-origin Pages Function. It re-checks the timing floor server-side and
@@ -86,8 +93,53 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || ''));
   }
 
-  function track(name) {
-    window.brgTrack && window.brgTrack(name);
+  // Every Clarity call goes through here. If the tag hasn't defined
+  // window.clarity yet, install Clarity's own queue stub — the same
+  // clarity.q array its script drains on load — so an early call is held, not
+  // dropped. If Clarity is blocked the queue just sits there. Never throws.
+  function clarityCall() {
+    try {
+      if (typeof window.clarity !== 'function') {
+        window.clarity = function () {
+          (window.clarity.q = window.clarity.q || []).push(arguments);
+        };
+      }
+      window.clarity.apply(window, arguments);
+    } catch (err) { /* analytics must never break a form */ }
+  }
+
+  // Once per event name per page load: a retry after a visible error, a
+  // double-click, or a second success can't double-count.
+  var fired = {};
+  function fireOnce(eventName, funnel) {
+    if (fired[eventName]) return;
+    fired[eventName] = true;
+    clarityCall('set', 'form', funnel);
+    clarityCall('event', eventName);
+  }
+
+  // kind:   homepage | service | city | contact   -> form_start_/form_submit_<kind>
+  // funnel: the payload's funnel string           -> Clarity tag form=<funnel>
+  // Returns { submitted() } — call it on the OK response from /api/lead and
+  // nowhere else.
+  function instrument(form, kind, funnel) {
+    var started = false;
+    var START_EVENTS = ['pointerdown', 'keydown', 'input', 'change'];
+    function start() {
+      if (started) return;
+      started = true;
+      START_EVENTS.forEach(function (type) { form.removeEventListener(type, start, true); });
+      fireOnce('form_start_' + kind, funnel);
+    }
+    // Real interaction only: a tap or click, a key, typing, or autofill (which
+    // fires input/change). Not focusin — a programmatic focus() isn't a person.
+    START_EVENTS.forEach(function (type) { form.addEventListener(type, start, true); });
+    return {
+      submitted: function () {
+        start(); // a submit is never reported without its start
+        fireOnce('form_submit_' + kind, funnel);
+      }
+    };
   }
 
   window.BRGLeadGuards = {
@@ -98,7 +150,8 @@
     hasSubstantiveMessage: hasSubstantiveMessage,
     looksLikeOutreach: looksLikeOutreach,
     isPhone: isPhone,
-    isEmail: isEmail
+    isEmail: isEmail,
+    instrument: instrument
   };
 
   // Shows the detected city next to the zip field, and keeps the hidden city
@@ -126,7 +179,8 @@
     var emailRequired = form.getAttribute('data-email-required') === 'true';
     var loadTime = Date.now();
 
-    form.addEventListener('focusin', function () { track('form_start_' + kind); }, { once: true });
+    var funnel = kind + '-page-form';
+    var analytics = instrument(form, kind, funnel);
 
     window.BRGLeadGuards.bindZipCity(
       form.querySelector('[name="zip"]'),
@@ -197,14 +251,9 @@
         message: '',
         service: form.getAttribute('data-service') || '',
         source: 'bluerivergutters.com',
-        funnel: kind + '-page-form',
+        funnel: funnel,
         time_to_fill_ms: elapsed
       };
-
-      // Past every guard — the genuine send, and the only branch that fires the
-      // submit event. Fired before the request so it can't be lost to a slow
-      // or failed fetch.
-      track('form_submit_' + kind);
 
       try {
         var resp = await fetch(LEAD_API, {
@@ -215,6 +264,7 @@
         var data = await resp.json().catch(function () { return {}; });
 
         if (resp.ok) {
+          analytics.submitted();
           if (typeof gtag === 'function') {
             gtag('event', 'generate_lead', {
               event_category: 'engagement',

@@ -1051,6 +1051,10 @@ a.lp-city:hover { text-decoration: underline; }
   const form = document.getElementById('lead-form');
   if (!form || !G) return;
 
+  // Clarity form_start_homepage / form_submit_homepage + tag form=homepage-form.
+  // Guarded so a stale cached lead-form.js can never break the submit.
+  const analytics = G.instrument ? G.instrument(form, 'homepage', 'homepage-form') : { submitted: function () {} };
+
   const submitBtn = document.getElementById('lead-form-submit');
   const errorEl = document.getElementById('lead-form-error');
 
@@ -1134,8 +1138,7 @@ a.lp-city:hover { text-decoration: underline; }
 
     // Past honeypot, 3s timing floor, name/phone/zip/email checks and the
     // service-area check. Genuine submission point — the only branch that
-    // posts to /api/lead.
-    window.brgTrack && window.brgTrack('form_submit_homepage');
+    // posts to /api/lead. The submit event fires on its OK answer, below.
 
     try {
       const resp = await fetch(G.LEAD_API, {
@@ -1147,6 +1150,7 @@ a.lp-city:hover { text-decoration: underline; }
       const data = await resp.json().catch(() => ({}));
 
       if (resp.ok) {
+        analytics.submitted();
         if (typeof gtag === 'function') {
           gtag('event', 'generate_lead', {
             event_category: 'engagement',

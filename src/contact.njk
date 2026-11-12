@@ -426,13 +426,20 @@ lcp_hero_crop: wide
     // dashboard can tell the eras apart.
     funnel: 'contact-form-v3',
     formSelector: '#contact-form',
-    redirectUrl: '/thank-you/'
+    redirectUrl: '/thank-you/',
+    // After a genuine success, hold the redirect this long so the Clarity
+    // submit event and tag can leave the page before navigation tears it down.
+    redirectDelayMs: 400
   };
 
   const G = window.BRGLeadGuards;
   const FORM_LOAD_TIME = Date.now();
   const form = document.querySelector(CONFIG.formSelector);
   if (!form || !G) return;
+
+  // Clarity form_start_contact / form_submit_contact + tag form=contact-form-v3.
+  // Guarded so a stale cached lead-form.js can never break the submit.
+  const analytics = G.instrument ? G.instrument(form, 'contact', CONFIG.funnel) : { submitted: function () {} };
 
   const emailRequired = form.getAttribute('data-email-required') === 'true';
   G.bindZipCity(form.querySelector('[name="zip"]'), form.querySelector('[name="city"]'), form.querySelector('.zip-city'));
@@ -525,10 +532,7 @@ lcp_hero_crop: wide
     // Past every guard: honeypot, 3s timing floor, required name/phone/zip,
     // email rules, message shape (when given), outreach-marker scan,
     // service-area check. This is the genuine send — the only branch that
-    // posts to /api/lead. Fired here, before the
-    // /thank-you/ redirect below, because events queued after navigation
-    // starts can be lost.
-    window.brgTrack && window.brgTrack('form_submit_contact');
+    // posts to /api/lead. The submit event fires on its OK answer, below.
 
     try {
       const resp = await fetch(G.LEAD_API, {
@@ -547,7 +551,11 @@ lcp_hero_crop: wide
             value: 1
           });
         }
-        window.location.href = CONFIG.redirectUrl;
+        // Event first, then navigate after a beat: an event fired as the page
+        // unloads is lost in flight. Button stays disabled through the wait.
+        analytics.submitted();
+        setTimeout(() => { window.location.href = CONFIG.redirectUrl; }, CONFIG.redirectDelayMs);
+        return;
       } else {
         showMessage(form, data.error || 'Something went wrong. Please try again.', 'error');
       }

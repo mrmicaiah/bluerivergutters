@@ -63,7 +63,7 @@
   </script>
   {% endraw %}
 
-  {# Clarity custom events — phone clicks + form starts.
+  {# Clarity custom events — phone clicks. Form events live in /js/lead-form.js.
      Every call goes through brgTrack, which no-ops if Clarity is blocked,
      ad-filtered, or simply hasn't loaded yet. Never call clarity() bare. #}
   {% raw %}
@@ -86,18 +86,8 @@
         if (t.closest('a[href^="tel:"]')) brgTrack('phone_click');
       }, true);
 
-      // Form starts: first focus into either lead form, once per page load.
-      document.addEventListener('DOMContentLoaded', function () {
-        var forms = [
-          ['lead-form', 'form_start_homepage'],
-          ['contact-form', 'form_start_contact']
-        ];
-        forms.forEach(function (pair) {
-          var el = document.getElementById(pair[0]);
-          if (!el) return;
-          el.addEventListener('focusin', function () { brgTrack(pair[1]); }, { once: true });
-        });
-      });
+      // Form starts and submits are not wired here: /js/lead-form.js owns
+      // all four forms' Clarity events (BRGLeadGuards.instrument).
     })();
   </script>
   {% endraw %}
