@@ -11,9 +11,11 @@
  * UPLOAD. Per photo, in order, one at a time:
  *   POST /api/live/sign {token, params_to_sign} -> {signature, api_key, cloud_name, timestamp}
  *   POST https://api.cloudinary.com/v1_1/<cloud>/image/upload (XHR, for progress)
- * Signed params: timestamp, folder "live/", tags "brg-live", the incoming
- * size cap c_limit,w_2000,h_2000,q_auto:good, and context
- * town | taken_at | comment | gps. A failure on one photo doesn't stop the
+ * Signed params: folder "live/", tags "brg-live", the incoming size cap
+ * c_limit,w_2000,h_2000,q_auto:good, and context town | taken_at | comment |
+ * gps. No timestamp is sent: the server picks one (so a phone clock that's
+ * off can't get a photo refused) and the upload uses the RETURNED timestamp,
+ * which the signature covers. Post stays disabled until a town is set. A failure on one photo doesn't stop the
  * rest; Post then retries only the failed ones. A 403 anywhere means the link
  * is dead: show the "link not valid" screen.
  *
@@ -228,7 +230,7 @@
     }
 
     function baseParams() {
-      return { timestamp: Math.floor(Date.now() / 1000), folder: FOLDER, tags: TAG, transformation: TRANSFORMATION };
+      return { folder: FOLDER, tags: TAG, transformation: TRANSFORMATION };
     }
 
     // Probe the link once on load so a dead link says so before he picks
@@ -245,7 +247,8 @@
       els.town.value = t || '';
       townSource = t ? source : '';
       var notes = { photo: 'From the photo location — change it if that’s wrong.', device: 'From your location just now.', remembered: 'Same as last time.', picked: '' };
-      els.townNote.textContent = notes[townSource] || '';
+      els.townNote.textContent = t ? (notes[townSource] || '') : 'Pick the town to post.';
+      updatePostButton();
     }
     els.town.addEventListener('change', function () { setTown(els.town.value, 'picked'); clearError(); });
 
@@ -341,7 +344,7 @@
     function updatePostButton() {
       var failed = batch.filter(function (i) { return i.state === 'failed'; }).length;
       var left = pending().length;
-      els.post.disabled = !left || posting;
+      els.post.disabled = !left || posting || !els.town.value;
       if (failed) els.post.textContent = 'Retry ' + failed + ' failed';
       else els.post.textContent = left > 1 ? 'Post ' + left + ' photos' : 'Post';
     }
@@ -392,7 +395,9 @@
       params.context = contextString(ctx);
       setState(item, 'signing', 'Starting…', 0);
       return api('/api/live/sign', { token: token, params_to_sign: params }).then(function (sig) {
-        if (sig.timestamp) params.timestamp = sig.timestamp;
+        // The signature covers the server's timestamp: upload with exactly that.
+        if (!sig.timestamp || !sig.signature) throw new Error('bad sign response');
+        params.timestamp = sig.timestamp;
         return upload(item, params, sig);
       }).then(function (res) {
         setState(item, 'done', 'Posted', 100);
