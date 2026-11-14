@@ -24,6 +24,9 @@
  * reuses it, so a partial failure never splits a driveway into two posts; a
  * new selection gets a new one. Recent posts group by batch (one row, "+N",
  * per-photo Remove inside; removing the last photo removes the post).
+ * At most MAX_PER_POST (20) photos per post, matching the feed: a bigger
+ * selection posts the first 20 and offers "Post the other N" afterwards as a
+ * separate post — said up front, never split or uploaded silently.
  *
  * CAPTURE CHAIN, per batch:
  *   taken_at  EXIF DateTimeOriginal (+ OffsetTimeOriginal when present).
@@ -43,6 +46,9 @@
   var TAG = 'brg-live';
   var TRANSFORMATION = 'c_limit,w_2000,h_2000,q_auto:good';
   var MAX_TOWN_KM = 25;
+  // The feed shows at most 20 photos per post; anything past that would upload
+  // and never render. So one press of Post never carries more than 20.
+  var MAX_PER_POST = 20;
   var EXIF_READ_BYTES = 256 * 1024;
   var LS_TOKEN = 'brgLiveToken';
   var LS_TOWN = 'brgLiveTown';
@@ -214,7 +220,7 @@
       invalid: $('lp-invalid'), files: $('lp-files'), items: $('lp-items'), compose: $('lp-compose'),
       town: $('lp-town'), townNote: $('lp-town-note'), locate: $('lp-locate'), comment: $('lp-comment'),
       post: $('lp-post'), error: $('lp-error'), success: $('lp-success'), successText: $('lp-success-text'),
-      again: $('lp-again'), recent: $('lp-recent'), recentEmpty: $('lp-recent-empty')
+      again: $('lp-again'), capNote: $('lp-cap-note'), recent: $('lp-recent'), recentEmpty: $('lp-recent-empty')
     };
 
     // Token: fragment first (then remembered), else stored from an earlier visit.
@@ -283,10 +289,29 @@
     var batch = [];   // {file, exif, el, state}
     var batchId = null; // set on the first Post press for this selection; kept for retries
 
+    var leftover = [];  // picked past the 20-photo cap, waiting for "Post the other N"
+    var carried = false; // the comment field still holds the last job's comment, kept for its leftover
+
     els.files.addEventListener('change', function () {
       var files = Array.prototype.slice.call(els.files.files || []);
       if (!files.length) return;
+      // A fresh pick instead of "Post the other N" is a new job: drop the
+      // comment that was only kept for the leftover.
+      if (carried) { els.comment.value = ''; carried = false; }
+      loadSelection(files);
+    });
+
+    function loadSelection(files) {
       resetBatch();
+      leftover = files.slice(MAX_PER_POST);
+      files = files.slice(0, MAX_PER_POST);
+      if (leftover.length) {
+        els.capNote.textContent = MAX_PER_POST + ' photos per post \u2014 posting the first ' + MAX_PER_POST +
+          ' now. The other ' + leftover.length + ' go up next as their own post.';
+        els.capNote.hidden = false;
+      } else {
+        els.capNote.hidden = true;
+      }
       els.success.hidden = true;
       els.compose.hidden = false;
       files.forEach(function (file) {
@@ -304,7 +329,7 @@
         });
       })).then(chooseTown);
       updatePostButton();
-    });
+    }
 
     function chooseTown() {
       var fromPhoto = null;
@@ -395,9 +420,12 @@
         if (failed) { showError(failed + (failed > 1 ? ' photos' : ' photo') + ' didn’t go up. Check signal and tap Retry.'); return; }
         var n = batch.length;
         els.successText.textContent = 'Posted ' + n + (n > 1 ? ' photos' : ' photo') + ' to ' + town + '.';
+        els.again.textContent = leftover.length ? 'Post the other ' + leftover.length : 'Post more';
         els.success.hidden = false;
         els.compose.hidden = true;
-        els.comment.value = '';
+        els.capNote.hidden = true;
+        if (leftover.length) carried = true;  // the rest of the same job keeps its comment
+        else els.comment.value = '';
         els.files.value = '';
       });
     });
@@ -449,6 +477,13 @@
     }
 
     els.again.addEventListener('click', function () {
+      if (leftover.length) {   // same job: same town (remembered) and comment
+        carried = false;
+        els.success.hidden = true;
+        els.compose.hidden = false;
+        loadSelection(leftover);
+        return;
+      }
       resetBatch();
       els.success.hidden = true;
       els.compose.hidden = true;

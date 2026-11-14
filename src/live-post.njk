@@ -39,6 +39,7 @@ sitemap: false
     .lp-pick { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: 64px; border: 2px dashed var(--blue-light); border-radius: 12px; background: #eff6ff; color: var(--blue); font-size: 1.1rem; font-weight: 700; cursor: pointer; }
     .lp-pick input { position: absolute; width: 1px; height: 1px; opacity: 0; }
     .lp-rules { margin: 12px 0 0; font-size: .9rem; color: var(--gray); text-align: center; }
+    .lp-cap-note { margin: 0 0 12px; padding: 10px 12px; border-radius: 10px; background: #fef3c7; color: #92400e; font-weight: 600; font-size: .9rem; }
     .lp-items { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 10px; }
     .lp-item { display: flex; gap: 12px; align-items: center; }
     .lp-item img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; background: var(--line); flex: none; }
@@ -107,6 +108,7 @@ sitemap: false
       </div>
 
       <div class="lp-card" id="lp-compose" hidden>
+        <p class="lp-cap-note" id="lp-cap-note" role="status" hidden></p>
         <ul class="lp-items" id="lp-items"></ul>
 
         <label class="lp-label" for="lp-town">Town</label>
