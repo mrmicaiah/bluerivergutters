@@ -13,11 +13,17 @@
  *   POST https://api.cloudinary.com/v1_1/<cloud>/image/upload (XHR, for progress)
  * Signed params: folder "live/", tags "brg-live", the incoming size cap
  * c_limit,w_2000,h_2000,q_auto:good, and context town | taken_at | comment |
- * gps. No timestamp is sent: the server picks one (so a phone clock that's
+ * gps | batch. No timestamp is sent: the server picks one (so a phone clock that's
  * off can't get a photo refused) and the upload uses the RETURNED timestamp,
  * which the signature covers. Post stays disabled until a town is set. A failure on one photo doesn't stop the
  * rest; Post then retries only the failed ones. A 403 anywhere means the link
  * is dead: show the "link not valid" screen.
+ *
+ * BATCH. One press of Post = one post on the site: every photo in that press
+ * carries the same context batch = b<unixms>-<4hex>. Retrying failed photos
+ * reuses it, so a partial failure never splits a driveway into two posts; a
+ * new selection gets a new one. Recent posts group by batch (one row, "+N",
+ * per-photo Remove inside; removing the last photo removes the post).
  *
  * CAPTURE CHAIN, per batch:
  *   taken_at  EXIF DateTimeOriginal (+ OffsetTimeOriginal when present).
@@ -182,13 +188,19 @@
 
   // ---- Cloudinary context: key=value|key=value, with = and | escaped ------
   function escapeCtx(s) { return String(s).replace(/([\\=|])/g, '\\$1'); }
+  function newBatchId() {
+    var r;
+    try { r = crypto.getRandomValues(new Uint16Array(1))[0]; } catch (e) { r = Math.floor(Math.random() * 65536); }
+    return 'b' + Date.now() + '-' + ('000' + r.toString(16)).slice(-4);
+  }
+
   function contextString(obj) {
     return Object.keys(obj).filter(function (k) { return obj[k] !== undefined && obj[k] !== ''; })
       .map(function (k) { return k + '=' + escapeCtx(obj[k]); }).join('|');
   }
 
   window.BRGLivePost = {
-    readExif: readExif, nearestTown: nearestTown, towns: towns,
+    readExif: readExif, nearestTown: nearestTown, towns: towns, newBatchId: newBatchId,
     hasCentroid: function (t) { return !!CENTROIDS[t]; }, contextString: contextString
   };
 
@@ -269,6 +281,7 @@
 
     // ---- picked photos ----------------------------------------------------
     var batch = [];   // {file, exif, el, state}
+    var batchId = null; // set on the first Post press for this selection; kept for retries
 
     els.files.addEventListener('change', function () {
       var files = Array.prototype.slice.call(els.files.files || []);
@@ -335,6 +348,7 @@
     function resetBatch() {
       batch.forEach(function (item) { var img = item.el.querySelector('img'); try { URL.revokeObjectURL(img.src); } catch (e) {} });
       batch = [];
+      batchId = null;
       els.items.textContent = '';
       clearError();
     }
@@ -364,12 +378,14 @@
       if (!town) { showError('Pick the town first.'); els.town.focus(); return; }
       lsSet(LS_TOWN, town);
       var comment = els.comment.value.trim();
+      if (!batchId) batchId = newBatchId();
+      var thisBatch = batchId;
       posting = true;
       els.compose.classList.add('lp-busy');
       updatePostButton();
 
       todo.reduce(function (chain, item) {
-        return chain.then(function () { if (!dead) return postOne(item, town, comment); });
+        return chain.then(function () { if (!dead) return postOne(item, town, comment, thisBatch); });
       }, Promise.resolve()).then(function () {
         posting = false;
         els.compose.classList.remove('lp-busy');
@@ -386,8 +402,8 @@
       });
     });
 
-    function postOne(item, town, comment) {
-      var ctx = { town: town };
+    function postOne(item, town, comment, batchKey) {
+      var ctx = { town: town, batch: batchKey };
       if (item.exif.taken_at) ctx.taken_at = item.exif.taken_at;
       if (comment) ctx.comment = comment;
       if (item.exif.gps) ctx.gps = item.exif.gps;
@@ -401,7 +417,7 @@
         return upload(item, params, sig);
       }).then(function (res) {
         setState(item, 'done', 'Posted', 100);
-        prependRecent({ id: res.public_id, thumb: thumbUrl(res.secure_url), town: town, taken_at: item.exif.taken_at || null, posted_at: new Date().toISOString(), comment: comment || null });
+        addJustPosted({ id: res.public_id, batch: batchKey, thumb: thumbUrl(res.secure_url), town: town, taken_at: item.exif.taken_at || null, posted_at: new Date().toISOString(), comment: comment || null });
       }, function (err) {
         if (dead) return;
         setState(item, 'failed', 'Failed', 0);
@@ -458,18 +474,56 @@
       return Math.floor(s / 86400) + (s < 172800 ? ' day ago' : ' days ago');
     }
 
-    function recentRow(p) {
+    // One row per post (= batch). Feed items without a batch are their own post.
+    function postKey(p) { return p.batch || ('id:' + p.id); }
+    function findRow(key) { return els.recent.querySelector(':scope > .lp-entry[data-batch="' + CSS.escape(key) + '"]'); }
+    function hasPhoto(id) { return !!els.recent.querySelector('.lp-photos [data-id="' + CSS.escape(id) + '"]'); }
+
+    function makeRow(p) {
       var li = document.createElement('li');
-      li.className = 'lp-recent-item';
-      li.dataset.id = p.id;
+      li.className = 'lp-entry';
+      li.dataset.batch = postKey(p);
+      var cover = document.createElement('div'); cover.className = 'lp-cover';
       var img = document.createElement('img');
       img.alt = ''; img.loading = 'lazy'; img.width = 64; img.height = 64;
-      if (p.thumb) img.src = p.thumb;
+      var count = document.createElement('span'); count.className = 'lp-count'; count.hidden = true;
+      cover.appendChild(img); cover.appendChild(count);
       var meta = document.createElement('div'); meta.className = 'lp-recent-meta';
       var line = document.createElement('strong');
       line.textContent = [p.taken_at ? 'Taken ' + shortDate(p.taken_at) : '', p.town, 'Posted ' + ago(p.posted_at)].filter(Boolean).join(' · ');
       meta.appendChild(line);
       if (p.comment) { var c = document.createElement('span'); c.textContent = p.comment; meta.appendChild(c); }
+      var expand = document.createElement('button'); expand.type = 'button'; expand.className = 'lp-expand';
+      var photos = document.createElement('ul'); photos.className = 'lp-photos'; photos.hidden = true;
+      expand.addEventListener('click', function () { photos.hidden = !photos.hidden; refreshRow(li); });
+      li.appendChild(cover); li.appendChild(meta); li.appendChild(expand); li.appendChild(photos);
+      return li;
+    }
+
+    function refreshRow(li) {
+      var photos = li.querySelector('.lp-photos');
+      var n = photos.children.length;
+      if (!n) {   // the last photo out takes the post with it
+        li.remove();
+        els.recentEmpty.hidden = !!els.recent.children.length;
+        return;
+      }
+      var first = photos.children[0].querySelector('img');
+      var cover = li.querySelector('.lp-cover img');
+      if (first && first.getAttribute('src') && cover.getAttribute('src') !== first.getAttribute('src')) cover.src = first.getAttribute('src');
+      var count = li.querySelector('.lp-count');
+      count.textContent = '+' + (n - 1);
+      count.hidden = n < 2;
+      li.querySelector('.lp-expand').textContent = photos.hidden ? (n > 1 ? n + ' photos' : 'Manage') : 'Done';
+    }
+
+    function photoRow(p, post) {
+      var li = document.createElement('li');
+      li.className = 'lp-photo';
+      li.dataset.id = p.id;
+      var img = document.createElement('img');
+      img.alt = ''; img.loading = 'lazy'; img.width = 48; img.height = 48;
+      if (p.thumb) img.src = p.thumb;
       var rm = document.createElement('button'); rm.type = 'button'; rm.className = 'lp-remove'; rm.textContent = 'Remove';
       var sure = document.createElement('button'); sure.type = 'button'; sure.className = 'lp-remove-confirm'; sure.textContent = 'Tap to remove'; sure.hidden = true;
       rm.addEventListener('click', function () {
@@ -481,30 +535,46 @@
         api('/api/live/delete', { token: token, id: p.id }).then(function () {
           addRemoved(p.id);
           li.remove();
-          if (!els.recent.children.length) els.recentEmpty.hidden = false;
+          refreshRow(post);
         }, function () {
           if (dead) return;
           sure.disabled = false; sure.textContent = 'Couldn’t remove — try again';
         });
       });
-      li.appendChild(img); li.appendChild(meta); li.appendChild(rm); li.appendChild(sure);
+      li.appendChild(img); li.appendChild(rm); li.appendChild(sure);
       return li;
     }
 
-    function prependRecent(p) {
-      if (!p.id) return;
-      var existing = els.recent.querySelector('[data-id="' + CSS.escape(p.id) + '"]');
-      if (existing) existing.remove();
-      els.recent.insertBefore(recentRow(p), els.recent.firstChild);
+    // where 'top' puts a new post first (just posted), 'end' appends (feed order).
+    // atStart puts the photo first inside its post: the feed is newest-first,
+    // so prepending keeps a post's photos in the order they went up.
+    function addPhoto(p, where, atStart) {
+      if (!p.id || hasPhoto(p.id)) return;
+      var row = findRow(postKey(p));
+      if (!row) {
+        row = makeRow(p);
+        if (where === 'top') els.recent.insertBefore(row, els.recent.firstChild);
+        else els.recent.appendChild(row);
+      }
+      var list = row.querySelector('.lp-photos');
+      var item = photoRow(p, row);
+      if (atStart) list.insertBefore(item, list.firstChild); else list.appendChild(item);
+      refreshRow(row);
       els.recentEmpty.hidden = true;
     }
 
+    function addJustPosted(p) {
+      var row = findRow(postKey(p));
+      if (row && row !== els.recent.firstElementChild) els.recent.insertBefore(row, els.recent.firstChild);
+      addPhoto(p, 'top', false);
+    }
+
     function loadRecent() {
-      fetch('/api/live/feed?n=12').then(function (r) { return r.ok ? r.json() : { posts: [] }; }).then(function (d) {
+      // Same URL as the banner and /live/, so all three share the server's 60s cache.
+      fetch('/api/live/feed').then(function (r) { return r.ok ? r.json() : { posts: [] }; }).then(function (d) {
         var hide = removedIds();
         (d.posts || []).forEach(function (p) {
-          if (hide.indexOf(p.id) !== -1 || els.recent.querySelector('[data-id="' + CSS.escape(p.id) + '"]')) return;
-          els.recent.appendChild(recentRow(p));
+          if (hide.indexOf(p.id) === -1) addPhoto(p, 'end', true);
         });
         els.recentEmpty.hidden = !!els.recent.children.length;
       }).catch(function () { els.recentEmpty.hidden = !!els.recent.children.length; });
