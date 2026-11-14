@@ -92,7 +92,10 @@
   // sales pitch typed into the name box. Mirrored server-side in /api/lead.
   var MAX_NAME_CHARS = 60;
   var MIN_NAME_CHARS = 2;
-  var NAME_LINK = /https?:|www\.|@|\.(com|net|org|io|co|us|biz|info|site|online|agency|studio|xyz|app|dev)\b/i;
+  // Keep the TLDs a superset of NAME_URL in functions/api/lead.js: a name the
+  // server drops silently must never reach it from here, or Clarity would
+  // count a form_submit for spam.
+  var NAME_LINK = /https?:|www\.|@|\.(com|net|org|io|co|biz|info|us|xyz|online|site|agency|ai|dev|app|store|tech|digital|studio)\b/i;
 
   function hasName(name) {
     return String(name || '').trim().length >= MIN_NAME_CHARS;
