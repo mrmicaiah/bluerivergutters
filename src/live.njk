@@ -35,6 +35,9 @@ permalink: /live/
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
     }
     window.brgLiveFirst = get(null);
+    // The feed can fail before DOMContentLoaded, while nothing is listening yet:
+    // mark the rejection handled now. start() and the banner still get it.
+    window.brgLiveFirst.catch(function () {});
     if (window.brgTrack) brgTrack('live_page_view');
 
     function start() {
