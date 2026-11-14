@@ -149,7 +149,7 @@ test('blatant name: over 60 chars, URL/domain, or @ -> silent reject', async () 
   await assertSilentReject(lead({ name: 'A'.repeat(61) }), '61-char name');
   for (const name of [
     'http://cheap-seo.example', 'Visit https://x.test', 'www.growfast', 'Mike from growthlabs.com',
-    'Ana at pixel.net', 'Team Acme.org', 'buildfast.io', 'Sam - leads.co', 'ana@studio', 'Bob @ Acme'
+    'Ana at pixel.net', 'Team Acme.org', 'buildfast.io', 'Sam - leads.co', 'ana@studio', 'Bob @ Acme', 'Northline Web.Studio', 'growth.digital'
   ]) {
     await assertSilentReject(lead({ name }), 'name "' + name + '"');
   }
@@ -219,4 +219,7 @@ test('outreach wordlist is the one the client ships (no drift)', () => {
   };
   assert.deepEqual(shared.outreachPhrases, arrayIn('OUTREACH_PHRASES'), 'OUTREACH_PHRASES drifted: update src/_data/leadSpam.js and the client together');
   assert.deepEqual(shared.outreachWords, arrayIn('OUTREACH_WORDS'), 'OUTREACH_WORDS drifted');
+  const link = client.match(/var NAME_LINK = \/.*?\\\.\(([a-z|]+)\)\\b\/i;/);
+  assert.ok(link, 'NAME_LINK TLD group not found in src/js/lead-form.js');
+  assert.deepEqual(shared.nameTlds, link[1].split('|'), 'name-link TLDs drifted: update src/_data/leadSpam.js and NAME_LINK together');
 });

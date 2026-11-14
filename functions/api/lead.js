@@ -42,7 +42,7 @@ function cityForZip(zip) {
 }
 
 const MAX_NAME_CHARS = 60;
-const NAME_URL = /https?:|www\.|\.(com|net|org|io|co|biz|info|us|xyz|online|site|agency|ai|dev|app|store|tech|digital)\b/i;
+const NAME_URL = new RegExp('https?:|www\\.|\\.(' + leadSpam.nameTlds.join('|') + ')\\b', 'i');
 const SUSPECT_NAME_WORDS = 5;
 const SUSPECT_NAME_DIGITS = 3;
 // The text fields a person types into (email is checked by format only).
