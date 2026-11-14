@@ -349,13 +349,18 @@
         e.setAttribute('data-posted', t);
         return e;
       }
-      // Re-render every posted time (and LIVE state) against `now`.
+      var reduced = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+      // Re-render every posted time (and LIVE state) against `now`. A time
+      // marked .lb-time (banner concept b) gives a small pop when it changes.
       function tick(now) {
         now = now == null ? Date.now() : now;
         var ts = document.querySelectorAll('[data-posted]');
         for (var i = 0; i < ts.length; i++) {
           var t = ts[i].getAttribute('data-posted'), s = rel(t, now);
-          if (ts[i].textContent !== s) ts[i].textContent = s;
+          if (ts[i].textContent !== s) {
+            ts[i].textContent = s;
+            if (!reduced && ts[i].classList.contains('lb-time') && ts[i].animate) ts[i].animate([{ transform: 'scale(1.18)', opacity: 0.6 }, { transform: 'none', opacity: 1 }], { duration: 420, easing: 'ease-out' });
+          }
           var box = ts[i].closest('[data-live-box]');
           if (box && box.setLive) box.setLive(isLive(t, now));
         }
@@ -366,23 +371,29 @@
         setInterval(function () { if (!document.hidden) tick(); }, 15000);
         document.addEventListener('visibilitychange', function () { if (!document.hidden) tick(); });
       }
-      window.brgLive = { rel: rel, day: day, isLive: isLive, safe: safe, small: small, el: el, dot: dot, ago: ago, tick: tick, startTicking: startTicking };
+      // A post's first photo. Batches carry photos[]; the pre-batch feed had
+      // w/h/thumb/full on the post itself.
+      function first(p) { return (p && p.photos && p.photos[0]) || p || {}; }
+      function ok(p) { return p && !isNaN(Date.parse(p.posted_at)); }
+      window.brgLive = { rel: rel, day: day, isLive: isLive, safe: safe, small: small, el: el, dot: dot, ago: ago, tick: tick, startTicking: startTicking, first: first, reduced: reduced };
 
       var slot = document.getElementById('live-banner');
       if (!slot) return;
       slot.addEventListener('click', function (e) {
         if (e.target.closest && e.target.closest('a') && window.brgTrack) brgTrack('live_banner_click');
       });
-      function render(d) {
-        var p = d && d.posts && d.posts[0];
-        if (!p || isNaN(Date.parse(p.posted_at))) return;
-        var a = slot.querySelector('a'), frag = document.createDocumentFragment(), src = small(p.thumb);
-        if (src) {
-          var img = el('img', 'live-banner-thumb');
-          img.alt = ''; img.width = 28; img.height = 28; img.decoding = 'async';
-          img.src = src;
-          frag.appendChild(img);
-        }
+      function thumb(p, size) {
+        var src = small(first(p).thumb);
+        if (!src) return null;
+        var img = el('img', 'live-banner-thumb');
+        img.alt = ''; img.width = size; img.height = size; img.decoding = 'async';
+        img.src = src;
+        return img;
+      }
+      // Today's banner (no data-variant): the link's contents are swapped in place.
+      function renderPlain(p) {
+        var a = slot.querySelector('a'), frag = document.createDocumentFragment(), img = thumb(p, 28);
+        if (img) frag.appendChild(img);
         var d0 = dot(isLive(p.posted_at));
         frag.appendChild(d0);
         var txt = el('span', 'live-banner-text');
@@ -397,6 +408,120 @@
         a.textContent = '';
         a.appendChild(frag);
         startTicking();
+      }
+
+      // Motion concepts (data-variant a|b|c), for Micaiah to pick from. Every
+      // new layer is absolutely positioned inside the fixed 40px slot and
+      // moves by transform/opacity only, so nothing outside the slot can
+      // shift. The static label stays until the new layer is in, then leaves.
+      // Reduced motion: an opacity fade; no slides, flips or cycling.
+      //   a  photo card slides in from the right and settles
+      //   b  breaking-news strip: band wipes in from the left, LIVE tab, the
+      //      ticking time in a chip that pops on each change
+      //   c  departure board: flips to the newest job, once through the next
+      //      two, and rests back on the newest
+      function item(v, p) {
+        var it = el('span', 'lb-item'), d0 = dot(isLive(p.posted_at));
+        it.setAttribute('data-live-box', '');
+        it.setLive = function (on) { d0.classList.toggle('is-live', on); };
+        var img = thumb(p, v === 'a' ? 30 : 26), t = ago(p.posted_at);
+        if (v === 'a') {
+          it.appendChild(el('span', 'lb-brand', 'Blue River Live'));
+          var card = el('span', 'lb-card');
+          if (img) card.appendChild(img);
+          card.appendChild(d0);
+          card.appendChild(el('strong', 'lb-tag', 'LIVE'));
+          var tx = el('span', 'lb-text');
+          tx.appendChild(document.createTextNode('posted '));
+          tx.appendChild(t);
+          if (p.town) tx.appendChild(document.createTextNode(' · ' + p.town));
+          card.appendChild(tx);
+          card.appendChild(el('span', 'lb-arrow', '→'));
+          it.appendChild(card);
+        } else if (v === 'b') {
+          var tab = el('span', 'lb-tab');
+          tab.appendChild(d0);
+          tab.appendChild(el('strong', null, 'LIVE'));
+          it.appendChild(el('span', 'lb-wipe'));
+          it.appendChild(tab);
+          var row = el('span', 'lb-row');
+          if (img) row.appendChild(img);
+          row.appendChild(el('span', 'lb-brand', 'Blue River Live'));
+          if (p.town) row.appendChild(el('span', 'lb-town', p.town));
+          t.className = 'lb-time';
+          var chip = el('span', 'lb-chip', 'posted ');
+          chip.appendChild(t);
+          row.appendChild(chip);
+          row.appendChild(el('span', 'lb-arrow', '→'));
+          it.appendChild(row);
+        } else {
+          var face = el('span', 'lb-face');
+          face.appendChild(el('span', 'lb-brand', 'Blue River Live'));
+          if (img) face.appendChild(img);
+          face.appendChild(d0);
+          if (p.town) face.appendChild(el('span', 'lb-town', p.town));
+          var c = el('span', 'lb-when');
+          c.appendChild(t);
+          face.appendChild(c);
+          face.appendChild(el('span', 'lb-arrow', '→'));
+          it.appendChild(face);
+        }
+        return it;
+      }
+      function whenReady(it, fn) {
+        // Start the motion once the thumb can paint (or after 1.2s regardless).
+        var img = it.querySelector('img'), done = false;
+        function go() { if (!done) { done = true; fn(); } }
+        if (img && img.decode) img.decode().then(go, go); else go();
+        setTimeout(go, 1200);
+      }
+      function renderVariant(v, posts) {
+        var a = slot.querySelector('a'), label = a.textContent;
+        var stage = el('span', 'lb-stage'), st = el('span', 'lb-static', label);
+        var cur = item(v, posts[0]);
+        cur.classList.add('lb-current');
+        slot.classList.add('live-banner--' + v);
+        a.textContent = '';
+        a.appendChild(st);
+        a.appendChild(stage);
+        whenReady(cur, function () {
+          stage.appendChild(cur);
+          cur.classList.add('lb-in');
+          st.classList.add('lb-out');
+          setTimeout(function () { if (st.parentNode) st.parentNode.removeChild(st); }, 900);
+          startTicking();
+          if (v === 'c' && !reduced && posts.length > 1) cycle(stage, posts);
+        });
+      }
+      // Concept c: one pass through the next two posts, back to the newest, then rest.
+      // Holds while hovered/focused, scrolled away or in a background tab.
+      function cycle(stage, posts) {
+        var order = posts.slice(1, 3).concat([posts[0]]), every = +slot.getAttribute('data-cycle-ms') || 4500, i = 0, hold = false, seen = true;
+        slot.addEventListener('mouseenter', function () { hold = true; });
+        slot.addEventListener('mouseleave', function () { hold = false; });
+        slot.addEventListener('focusin', function () { hold = true; });
+        slot.addEventListener('focusout', function () { hold = false; });
+        if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }).observe(slot);
+        function step() {
+          if (i >= order.length) return;
+          if (hold || !seen || document.hidden) return setTimeout(step, every);
+          var next = item('c', order[i++]), old = stage.querySelector('.lb-current');
+          whenReady(next, function () {
+            old.classList.remove('lb-current', 'lb-in');
+            old.classList.add('lb-flip-out');
+            next.classList.add('lb-current', 'lb-in');
+            stage.appendChild(next);
+            setTimeout(function () { if (old.parentNode) old.parentNode.removeChild(old); }, 700);
+            setTimeout(step, every);
+          });
+        }
+        setTimeout(step, every);
+      }
+      function render(d) {
+        var posts = ((d && d.posts) || []).filter(ok);
+        if (!posts.length) return;
+        var v = slot.getAttribute('data-variant') || '';
+        if (/^[abc]$/.test(v)) renderVariant(v, posts.slice(0, 3)); else renderPlain(posts[0]);
       }
       function hydrate() {
         (window.brgLiveFirst || fetch('/api/live/feed', { headers: { accept: 'application/json' } })

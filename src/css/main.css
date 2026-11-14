@@ -388,18 +388,107 @@ section { padding: 4rem 0; }
 @keyframes live-ping { 0% { transform: scale(1); opacity: 0.75; } 80%, 100% { transform: scale(2.6); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .live-dot.is-live::after { animation: none; } }
 
+/* Banner motion concepts (data-variant a|b|c; Micaiah picks one before any
+   ships — without data-variant the banner is today's). Every layer is
+   absolute inside the 40px slot (positioned on .live-banner) and animates
+   transform/opacity only: zero layout shift, nothing outside the slot moves. */
+.live-banner { position: relative; }
+.lb-static, .lb-stage { position: absolute; inset: 0; }
+.lb-static { display: flex; align-items: center; justify-content: center; }
+.lb-static.lb-out { animation: lb-fade-out 0.35s ease-in both; }
+.lb-item { position: absolute; top: 0; bottom: 0; left: 0; right: 0; max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; align-items: center; justify-content: center; gap: 0.6rem; min-width: 0; color: var(--white); font-size: 0.88rem; font-weight: 600; white-space: nowrap; }
+.lb-item .live-banner-thumb { width: 26px; height: 26px; }
+.lb-item time { font-weight: 700; }
+.lb-arrow { opacity: 0.7; }
+@keyframes lb-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lb-fade-out { to { opacity: 0; } }
+
+/* a — a photo card slides in from the right and settles */
+.live-banner--a .lb-brand { font-weight: 700; letter-spacing: 0.02em; }
+.live-banner--a .lb-card { display: inline-flex; align-items: center; gap: 0.45rem; min-width: 0; height: 30px; padding: 0 0.8rem 0 2px; border-radius: 999px; background: var(--white); color: var(--navy); font-size: 0.85rem; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+.live-banner--a .lb-card .live-banner-thumb { width: 26px; height: 26px; border-radius: 50%; }
+.live-banner--a .lb-tag { color: var(--red); letter-spacing: 0.08em; }
+.live-banner--a .lb-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.live-banner--a .lb-text time { color: var(--red); }
+.live-banner--a .lb-in .lb-card { animation: lb-a-slide 0.9s cubic-bezier(0.2, 1.3, 0.35, 1) both; }
+.live-banner--a .lb-in .lb-brand { animation: lb-a-brand 0.5s 0.2s ease-out both; }
+@keyframes lb-a-slide { from { transform: translateX(75vw); opacity: 0; } 35% { opacity: 1; } to { transform: none; opacity: 1; } }
+@keyframes lb-a-brand { from { transform: translateX(-12px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* b — breaking-news strip: band wipes in from the left edge, LIVE tab, the
+   ticking time in a chip that pops on each change (base.njk tick()) */
+.live-banner--b .lb-item { max-width: none; padding: 0; justify-content: flex-start; gap: 0; }
+.live-banner--b .lb-wipe { position: absolute; inset: 0; background: linear-gradient(90deg, #7f1d1d, var(--navy) 65%); transform-origin: left center; }
+.live-banner--b .lb-tab { position: relative; display: inline-flex; align-items: center; gap: 0.45rem; height: 100%; padding: 0 0.9rem; background: var(--red); font-size: 0.8rem; letter-spacing: 0.12em; }
+.live-banner--b .lb-tab .live-dot, .live-banner--b .lb-tab .live-dot.is-live::after { background: var(--white); }
+.live-banner--b .lb-row { position: relative; flex: 1; min-width: 0; display: flex; align-items: center; justify-content: center; gap: 0.55rem; padding: 0 1rem; }
+.live-banner--b .lb-town { min-width: 0; overflow: hidden; text-overflow: ellipsis; opacity: 0.85; }
+.live-banner--b .lb-brand::after { content: ' ·'; opacity: 0.6; }
+.live-banner--b .lb-chip { padding: 0.12rem 0.5rem; border-radius: 4px; background: var(--white); color: var(--red); font-weight: 700; }
+.live-banner--b .lb-time { display: inline-block; }
+.live-banner--b .lb-in .lb-wipe { animation: lb-b-wipe 0.5s cubic-bezier(0.6, 0, 0.2, 1) both; }
+.live-banner--b .lb-in .lb-tab { animation: lb-b-tab 0.45s 0.1s cubic-bezier(0.2, 1.2, 0.4, 1) both; }
+.live-banner--b .lb-in .lb-row { animation: lb-b-row 0.4s 0.35s ease-out both; }
+@keyframes lb-b-wipe { from { transform: scaleX(0); } to { transform: none; } }
+@keyframes lb-b-tab { from { transform: translateX(-100%); } to { transform: none; } }
+@keyframes lb-b-row { from { transform: translateY(100%); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* c — departure board: flips to the newest job, once through the next two,
+   rests on the newest (base.njk cycle()) */
+.live-banner--c .lb-stage { perspective: 500px; }
+.live-banner--c .lb-item { backface-visibility: hidden; }
+.live-banner--c .lb-face { display: flex; align-items: center; gap: 0.55rem; min-width: 0; }
+.live-banner--c .lb-brand { padding-right: 0.65rem; border-right: 1px solid rgba(255,255,255,0.2); color: #fca5a5; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.live-banner--c .lb-town { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.live-banner--c .lb-when time { padding: 0.1rem 0.45rem; border-radius: 3px; background: rgba(255,255,255,0.12); font-variant-numeric: tabular-nums; }
+.live-banner--c .lb-item.lb-in { animation: lb-c-flip-in 0.55s cubic-bezier(0.3, 1.4, 0.5, 1) both; }
+.live-banner--c .lb-flip-out, .live-banner--c .lb-static.lb-out { animation: lb-c-flip-out 0.4s ease-in both; }
+@keyframes lb-c-flip-in { from { transform: rotateX(-90deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes lb-c-flip-out { to { transform: rotateX(90deg); opacity: 0; } }
+
+@media (max-width: 480px) {
+  .lb-item { gap: 0.45rem; padding: 0 0.75rem; font-size: 0.82rem; }
+  .live-banner--a .lb-brand { font-size: 0.78rem; }
+  .live-banner--a .lb-card { font-size: 0.8rem; }
+  .live-banner--b .lb-brand { display: none; } /* the red LIVE tab carries it at phone width */
+  .live-banner--b .lb-tab { padding: 0 0.7rem; }
+  .live-banner--b .lb-row { padding: 0 0.6rem; gap: 0.45rem; }
+  .live-banner--c .lb-brand { font-size: 0.62rem; letter-spacing: 0.08em; padding-right: 0.5rem; }
+}
+/* Reduced motion: no slides, wipes or flips — the new layer simply fades in. */
+@media (prefers-reduced-motion: reduce) {
+  .live-banner .lb-in, .live-banner .lb-in *, .live-banner .lb-flip-out { animation: none !important; }
+  .live-banner .lb-item.lb-in { animation: lb-fade 0.45s ease-out both !important; }
+  .live-banner .lb-static.lb-out { animation: lb-fade-out 0.3s ease-in both !important; }
+}
+
 /* /live/ page */
 .live-intro { padding: 3rem 0 1.5rem; background: var(--cream); }
 .live-intro h1 { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
 .live-intro h1 .live-dot { width: 14px; height: 14px; }
 .live-intro p { max-width: 680px; font-size: 1.1rem; margin-bottom: 0; }
-.live-feed-section { padding: 1rem 0 4rem; min-height: 100vh; } /* keeps the footer below the fold while the feed loads */
+/* The first screenful is reserved before the feed answers, so the lead form
+   below it starts under the fold and nothing on screen moves as cards land. */
+.live-feed-section { padding: 1rem 0 2.5rem; }
+.live-feed-first { min-height: max(320px, calc(100vh - 280px)); }
+.live-feed-rest { padding-top: 2.5rem; }
 .live-status { min-height: 1.6em; margin-bottom: 1rem; color: var(--gray); }
 .live-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; align-items: start; }
 .live-card { background: var(--white); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(15,23,42,0.08), 0 4px 14px rgba(15,23,42,0.06); }
-.live-photo { position: relative; display: block; overflow: hidden; background: var(--light-gray); } /* aspect-ratio set inline from the feed's w/h */
-.live-photo img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
-.live-chip { position: absolute; top: 0.6rem; left: 0.6rem; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.6rem; border-radius: 999px; background: rgba(15,23,42,0.82); color: var(--white); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; }
+.live-media { position: relative; }
+/* Photo strip: the box takes the first photo's shape (aspect-ratio inline,
+   clamped 3:4..4:3); each slide reserves its own photo's w/h at that height.
+   Swiping scrolls inside the box, so the card never changes size. */
+.live-strip { display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; background: var(--light-gray); }
+.live-strip::-webkit-scrollbar { display: none; }
+@media (hover: hover) { .live-strip { scrollbar-width: thin; } }
+.live-slide { flex: 0 0 auto; height: 100%; max-width: 100%; scroll-snap-align: start; display: block; }
+.live-slide + .live-slide { margin-left: 3px; }
+.live-slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.live-chip { position: absolute; top: 0.6rem; left: 0.6rem; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.6rem; border-radius: 999px; background: rgba(15,23,42,0.82); color: var(--white); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; pointer-events: none; }
+/* Fixed width: "+3 photos" -> "2 / 4" must not move its edge (that is a layout shift). */
+.live-count { position: absolute; right: 0.6rem; bottom: 0.6rem; width: 6.6em; padding: 0.3rem 0; text-align: center; white-space: nowrap; overflow: hidden; border: 0; border-radius: 999px; background: rgba(15,23,42,0.82); color: var(--white); font: inherit; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
+.live-count:hover, .live-count:focus-visible { background: var(--navy); }
 .live-body { padding: 0.9rem 1rem 1.1rem; }
 .live-stamp { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.35rem; margin-bottom: 0; color: var(--gray); font-size: 0.85rem; }
 .live-town { font-weight: 600; color: var(--slate); }
@@ -407,6 +496,15 @@ section { padding: 4rem 0; }
 .live-posted time { color: var(--red); }
 .live-sep-last { display: none; } /* posted time is lifted to the first line */
 .live-comment { margin: 0.6rem 0 0; color: var(--slate); }
+/* The recurring hook between posts: one quiet line, phone tappable. */
+.live-hook { grid-column: 1 / -1; padding: 0.85rem 1.1rem; border-left: 4px solid var(--red); border-radius: 6px; background: var(--cream); color: var(--navy); font-weight: 600; text-align: center; }
+.live-hook a { white-space: nowrap; font-weight: 700; color: var(--red); }
+/* Feed down or empty: a calm panel in the reserved space, phone + the form below. */
+.live-empty { padding: 2.5rem 1.5rem; border-radius: 10px; background: var(--cream); text-align: center; color: var(--navy); }
+.live-empty[hidden] { display: none; }
+.live-empty p { max-width: 560px; margin: 0 auto 0.75rem; font-size: 1.1rem; }
+.live-empty a { font-weight: 700; color: var(--red); white-space: nowrap; }
+.live-empty .live-empty-down { margin-bottom: 0; font-size: 0.95rem; color: var(--gray); }
 .live-more { display: block; margin: 2rem auto 0; }
 .live-more[hidden] { display: none; }
 @media (max-width: 768px) {

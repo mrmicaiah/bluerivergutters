@@ -12,20 +12,44 @@ permalink: /live/
   </div>
 </section>
 
-<section class="live-feed-section">
+{# First screenful of posts. Its height is reserved before the feed answers
+   (.live-feed-first), so the lead form below starts under the fold and
+   nothing on screen moves as cards land. If the feed is down or empty, the
+   same space holds a calm panel with the phone number, and the form is right
+   below it: the page can still produce a lead. #}
+<section class="live-feed-section live-feed-first">
   <div class="container">
     <p class="live-status" id="live-status" role="status" aria-live="polite">Loading the latest jobs…</p>
+    <div class="live-empty" id="live-empty" hidden>
+      <p>This could be your house — free estimates across Huntsville &amp; North Alabama. <a href="tel:2566166760">Call (256) 616-6760</a></p>
+      <p class="live-empty-down">Or tell us about your home in the form below — it takes 15 seconds.</p>
+    </div>
     <ol class="live-grid" id="live-feed"></ol>
     <noscript><p>Blue River Live needs JavaScript to load the newest job photos. You can also browse our <a href="{{ '/recent-projects/' | url }}">recent projects</a>.</p></noscript>
+  </div>
+</section>
+
+{% set lead_form_kind = "live" %}
+{% include "partials/lead-form.njk" %}
+
+<section class="live-feed-section live-feed-rest">
+  <div class="container">
+    <ol class="live-grid" id="live-feed-more"></ol>
     <button type="button" class="btn btn-primary live-more" id="live-more" hidden>Load more jobs</button>
   </div>
 </section>
 
-{# Feed: GET /api/live/feed?cursor&n -> {posts:[{id,w,h,thumb,full,town,taken_at|null,posted_at,comment|null}], next}.
-   The first page is requested right away (it is this page's content) and shared
-   with the site-wide banner via window.brgLiveFirst. Everything from the feed
-   goes in as text or a checked https URL, never as HTML. Town only: no
-   coordinates, in the cards or the JSON-LD. #}
+{# Feed: GET /api/live/feed?cursor -> {posts:[{id, photos:[{id,w,h,thumb,full}],
+   count, town, taken_at|null, posted_at, comment|null}], next}. The pre-batch
+   shape (w,h,thumb,full on the post) still renders as a one-photo post.
+   The first page is the bare URL, requested right away (it is this page's
+   content) and shared with the site-wide banner via window.brgLiveFirst.
+   Everything from the feed goes in as text or a checked https URL, never as
+   HTML. Town only: no coordinates, in the cards or the JSON-LD.
+   Layout: cards 1..K go above the lead form, where K is two rows at the
+   current column count (6 on desktop, 2 on a phone); the rest go below it.
+   A one-line hook sits before card n+1 whenever n is a multiple of 6 —
+   counted across Load More pages, never right next to the form. #}
 <script>
   (function () {
     // Bare URL for the first page (n defaults to 24 server-side): the banner on
@@ -40,30 +64,70 @@ permalink: /live/
     window.brgLiveFirst.catch(function () {});
     if (window.brgTrack) brgTrack('live_page_view');
 
+    var HOOK_EVERY = 6;
     function start() {
-      var L = window.brgLive, feed = document.getElementById('live-feed'),
-          status = document.getElementById('live-status'), more = document.getElementById('live-more'),
-          shown = [], seen = {}, next = null, busy = false;
+      var L = window.brgLive, firstGrid = document.getElementById('live-feed'),
+          moreGrid = document.getElementById('live-feed-more'), status = document.getElementById('live-status'),
+          empty = document.getElementById('live-empty'), more = document.getElementById('live-more'),
+          shown = [], seen = {}, next = null, busy = false, count = 0;
+      var cols = Math.max(1, getComputedStyle(firstGrid).gridTemplateColumns.split(' ').filter(Boolean).length);
+      var K = 2 * Math.min(cols, 3);
+
+      // Batch -> photos; the pre-batch shape is a one-photo post.
+      function photos(p) {
+        var ph = Array.isArray(p.photos) ? p.photos : [{ id: p.id, w: p.w, h: p.h, thumb: p.thumb, full: p.full }];
+        return ph.filter(function (x) { return x && L.safe(x.thumb); });
+      }
+      function ratio(x) { var w = Math.round(+x.w) || 4, h = Math.round(+x.h) || 3; return { w: w, h: h }; }
+
+      function strip(p, ph) {
+        var s = L.el('div', 'live-strip'), r0 = ratio(ph[0]);
+        // The box takes the first photo's shape, clamped so rows stay tidy.
+        s.style.aspectRatio = String(Math.min(4 / 3, Math.max(3 / 4, r0.w / r0.h)));
+        ph.forEach(function (x, i) {
+          var r = ratio(x), a = L.el('a', 'live-slide'), img = L.el('img');
+          a.href = L.safe(x.full) || L.safe(x.thumb);
+          a.target = '_blank'; a.rel = 'noopener';
+          a.style.aspectRatio = r.w + ' / ' + r.h; // each slide reserves its own photo's shape
+          img.width = r.w; img.height = r.h;
+          img.loading = 'lazy'; img.decoding = 'async';
+          img.alt = (p.comment ? p.comment : 'Gutter job' + (p.town ? ' in ' + p.town : '')) + (ph.length > 1 ? ' (photo ' + (i + 1) + ' of ' + ph.length + ')' : '');
+          img.src = L.safe(x.thumb);
+          a.appendChild(img);
+          s.appendChild(a);
+        });
+        return s;
+      }
 
       function card(p) {
-        var c = L.el('li', 'live-card'), a = L.el('a', 'live-photo'), img = L.el('img');
+        var ph = photos(p), total = Math.max(+p.count || 0, ph.length);
+        var c = L.el('li', 'live-card'), media = L.el('div', 'live-media'), s = strip(p, ph);
         c.setAttribute('data-id', p.id);
-        a.href = L.safe(p.full) || L.safe(p.thumb);
-        a.target = '_blank'; a.rel = 'noopener';
-        var w = Math.round(+p.w) || 4, h = Math.round(+p.h) || 3;
-        img.width = w; img.height = h;
-        // Box reserved from the feed's w/h (clamped to 3:4..4:3 so rows stay tidy)
-        // before a byte of the photo arrives: zero shift as images land.
-        // The box is the <a>; the img only fills it, so nothing about the photo
-        // (slow, failed, alt text) can change layout.
-        a.style.aspectRatio = img.style.aspectRatio = String(Math.min(4 / 3, Math.max(3 / 4, w / h)));
-        img.loading = 'lazy'; img.decoding = 'async';
-        img.alt = p.comment ? p.comment : 'Gutter job in ' + (p.town || 'North Alabama');
-        img.src = L.safe(p.thumb);
-        a.appendChild(img);
-        c.appendChild(a);
+        media.appendChild(s);
+        if (total > 1) {
+          // "+N photos": tap to step through; becomes "k / N" once the strip moves.
+          var n = L.el('button', 'live-count', '+' + (total - 1) + ' photo' + (total - 1 === 1 ? '' : 's'));
+          n.type = 'button';
+          n.setAttribute('aria-label', 'Next photo (' + total + ' in this post)');
+          n.addEventListener('click', function () {
+            var atEnd = s.scrollLeft + s.clientWidth >= s.scrollWidth - 4;
+            s.scrollTo({ left: atEnd ? 0 : s.scrollLeft + s.clientWidth * 0.9, behavior: L.reduced ? 'auto' : 'smooth' });
+          });
+          var raf = 0;
+          s.addEventListener('scroll', function () {
+            if (raf) return;
+            raf = requestAnimationFrame(function () {
+              raf = 0;
+              var k = 0, slides = s.children;
+              for (var i = 0; i < slides.length; i++) if (slides[i].offsetLeft - s.scrollLeft <= s.clientWidth / 2) k = i;
+              n.textContent = (k + 1) + ' / ' + total;
+            });
+          }, { passive: true });
+          media.appendChild(n);
+        }
+        c.appendChild(media);
 
-        // Taken date only when real; town only when non-empty (the feed sends "").
+        // One stamp line: taken date only when real, town only when non-empty.
         var body = L.el('div', 'live-body'), stamp = L.el('p', 'live-stamp'), lead = [];
         if (p.taken_at && !isNaN(Date.parse(p.taken_at))) lead.push(L.el('span', 'live-taken', 'Taken ' + L.day(p.taken_at)));
         if (p.town) lead.push(L.el('span', 'live-town', p.town));
@@ -79,7 +143,7 @@ permalink: /live/
         if (p.comment) body.appendChild(L.el('p', 'live-comment', p.comment));
         c.appendChild(body);
 
-        // LIVE chip on the photo while the post is under 24h old; tick() keeps it honest.
+        // LIVE chip while the post is under 24h old; tick() keeps it honest.
         var chip = null;
         c.setAttribute('data-live-box', '');
         c.setLive = function (on) {
@@ -87,22 +151,32 @@ permalink: /live/
             chip = L.el('span', 'live-chip');
             chip.appendChild(L.dot(true));
             chip.appendChild(document.createTextNode('LIVE'));
-            a.appendChild(chip);
+            media.appendChild(chip);
           } else if (!on && chip) { chip.remove(); chip = null; }
         };
         c.setLive(L.isLive(p.posted_at));
         return c;
       }
 
+      function hook() {
+        var h = L.el('li', 'live-hook', 'This could be your house — free estimates across Huntsville & North Alabama. '), a = L.el('a', null, 'Call (256) 616-6760');
+        a.href = 'tel:2566166760';
+        h.appendChild(a);
+        return h;
+      }
+
       function ld() {
-        var graph = shown.map(function (p) {
-          var o = { '@type': 'ImageObject', contentUrl: L.safe(p.full), thumbnailUrl: L.safe(p.thumb),
-            width: p.w, height: p.h, uploadDate: p.posted_at,
-            creator: { '@type': 'Organization', name: 'Blue River Gutters', url: 'https://bluerivergutters.com/' } };
-          if (p.town) o.contentLocation = { '@type': 'Place', name: p.town };
-          if (p.taken_at) o.dateCreated = p.taken_at;
-          if (p.comment) o.caption = p.comment;
-          return o;
+        var graph = [];
+        shown.forEach(function (p) {
+          photos(p).forEach(function (x) {
+            var o = { '@type': 'ImageObject', contentUrl: L.safe(x.full) || L.safe(x.thumb), thumbnailUrl: L.safe(x.thumb),
+              width: x.w, height: x.h, uploadDate: p.posted_at,
+              creator: { '@type': 'Organization', name: 'Blue River Gutters', url: 'https://bluerivergutters.com/' } };
+            if (p.town) o.contentLocation = { '@type': 'Place', name: p.town };
+            if (p.taken_at) o.dateCreated = p.taken_at;
+            if (p.comment) o.caption = p.comment;
+            graph.push(o);
+          });
         });
         var s = document.getElementById('live-ld');
         if (!s) { s = document.createElement('script'); s.type = 'application/ld+json'; s.id = 'live-ld'; document.head.appendChild(s); }
@@ -110,20 +184,29 @@ permalink: /live/
       }
 
       function add(d) {
-        var posts = (d && d.posts) || [], frag = document.createDocumentFragment();
+        var posts = (d && d.posts) || [], top = document.createDocumentFragment(), rest = document.createDocumentFragment();
         posts.forEach(function (p) {
-          if (!p || seen[p.id] || !L.safe(p.thumb) || isNaN(Date.parse(p.posted_at))) return;
-          seen[p.id] = 1; shown.push(p); frag.appendChild(card(p));
+          if (!p || seen[p.id] || !photos(p).length || isNaN(Date.parse(p.posted_at))) return;
+          seen[p.id] = 1; shown.push(p);
+          var before = count; count++;
+          var into = count <= K ? top : rest;
+          if (before > 0 && before % HOOK_EVERY === 0 && before !== K) into.appendChild(hook());
+          into.appendChild(card(p));
         });
-        feed.appendChild(frag);
+        firstGrid.appendChild(top);
+        moreGrid.appendChild(rest);
         next = d && d.next ? d.next : null;
         more.hidden = !next;
-        status.textContent = shown.length ? '' : 'No jobs posted yet — the crew posts from the field as work wraps up. Check back soon.';
-        if (shown.length) { ld(); L.startTicking(); }
+        if (shown.length) { status.textContent = ''; ld(); L.startTicking(); }
+        else down('No jobs posted yet — the crew posts from the field as work wraps up. Check back soon.');
+      }
+      function down(msg) {
+        status.textContent = msg;
+        empty.hidden = false;
       }
 
       window.brgLiveFirst.then(add, function () {
-        status.textContent = 'We couldn’t load the latest jobs just now. Please refresh in a minute.';
+        down('We couldn’t load the latest jobs just now. Please refresh in a minute.');
       });
 
       more.addEventListener('click', function () {
@@ -131,14 +214,14 @@ permalink: /live/
         busy = true; more.disabled = true;
         // Reserve a screen of space now, inside the click's input window, so the
         // new cards land in room that already exists and the footer is off-screen.
-        feed.style.minHeight = (feed.offsetHeight + innerHeight) + 'px';
-        // Errors are told on the button itself: changing the status line above
-        // the grid would move every card on screen.
+        moreGrid.style.minHeight = (moreGrid.offsetHeight + innerHeight) + 'px';
+        // Errors are told on the button itself: changing text above the grid
+        // would move every card on screen.
         get(next).then(function (d) { more.textContent = 'Load more jobs'; add(d); }, function () {
           more.textContent = 'Couldn’t load — tap to try again';
         }).then(function () {
           busy = false; more.disabled = false;
-          requestAnimationFrame(function () { feed.style.minHeight = ''; });
+          requestAnimationFrame(function () { moreGrid.style.minHeight = ''; });
         });
       });
     }
