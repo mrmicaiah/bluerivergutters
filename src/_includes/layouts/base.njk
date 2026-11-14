@@ -120,6 +120,8 @@
   
   {% include "partials/header.njk" %}
   {% include "partials/live-banner.njk" %}
+  {# Preview branch only: banner-concept picker (src/_data/bannerPicker.js is false on every other build). #}
+  {% if bannerPicker %}{% include "partials/live-banner-picker.njk" %}{% endif %}
 
   <main>
     {% block content %}

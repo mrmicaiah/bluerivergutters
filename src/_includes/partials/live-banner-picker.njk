@@ -1,0 +1,35 @@
+{# Preview-only banner-concept picker (src/_data/bannerPicker.js). It sets the
+   banner's data-variant from ?banner=a|b|c before the banner hydrates (which
+   happens after window load), and floats a small picker in the corner. It's
+   position: fixed, so it never moves the page. #}
+<script>
+  (function () {
+    var v = (new URLSearchParams(location.search).get('banner') || '').toLowerCase();
+    var slot = document.getElementById('live-banner');
+    if (slot && /^[abc]$/.test(v)) slot.setAttribute('data-variant', v);
+  })();
+</script>
+<nav class="live-banner-picker" id="live-banner-picker" aria-label="Banner concept (preview only)">
+  <span>Banner</span>
+  <a href="?banner=">Today</a>
+  <a href="?banner=a" title="Photo card slides in">A</a>
+  <a href="?banner=b" title="Breaking-news strip">B</a>
+  <a href="?banner=c" title="Departure board">C</a>
+</nav>
+<script>
+  (function () {
+    var v = (new URLSearchParams(location.search).get('banner') || '').toLowerCase();
+    if (!/^[abc]$/.test(v)) v = '';
+    document.querySelectorAll('#live-banner-picker a').forEach(function (a) {
+      if (a.getAttribute('href') === '?banner=' + v) a.setAttribute('aria-current', 'true');
+    });
+  })();
+</script>
+<style>
+  .live-banner-picker { position: fixed; left: 12px; bottom: 76px; z-index: 2000; display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: 999px; background: rgba(15,23,42,0.92); box-shadow: 0 4px 16px rgba(0,0,0,0.3); font-size: 0.8rem; font-weight: 700; }
+  .live-banner-picker span { padding: 0 0.5rem 0 0.6rem; color: #fca5a5; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.7rem; }
+  .live-banner-picker a { padding: 0.3rem 0.65rem; border-radius: 999px; color: #fff; }
+  .live-banner-picker a:hover { background: rgba(255,255,255,0.15); color: #fff; }
+  .live-banner-picker a[aria-current] { background: #fff; color: #0f172a; }
+  @media (min-width: 769px) { .live-banner-picker { bottom: 16px; } }
+</style>
