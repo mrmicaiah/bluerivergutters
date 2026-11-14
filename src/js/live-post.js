@@ -474,8 +474,9 @@
       return Math.floor(s / 86400) + (s < 172800 ? ' day ago' : ' days ago');
     }
 
-    // One row per post (= batch). Feed items without a batch are their own post.
-    function postKey(p) { return p.batch || ('id:' + p.id); }
+    // One row per post. Its key is the batch id, which is also the feed's post
+    // id; a pre-batch photo's post id is its own public_id.
+    function postKey(p) { return p.batch || p.id; }
     function findRow(key) { return els.recent.querySelector(':scope > .lp-entry[data-batch="' + CSS.escape(key) + '"]'); }
     function hasPhoto(id) { return !!els.recent.querySelector('.lp-photos [data-id="' + CSS.escape(id) + '"]'); }
 
@@ -546,8 +547,7 @@
     }
 
     // where 'top' puts a new post first (just posted), 'end' appends (feed order).
-    // atStart puts the photo first inside its post: the feed is newest-first,
-    // so prepending keeps a post's photos in the order they went up.
+    // atStart puts the photo first inside its post instead of last.
     function addPhoto(p, where, atStart) {
       if (!p.id || hasPhoto(p.id)) return;
       var row = findRow(postKey(p));
@@ -573,8 +573,15 @@
       // Same URL as the banner and /live/, so all three share the server's 60s cache.
       fetch('/api/live/feed').then(function (r) { return r.ok ? r.json() : { posts: [] }; }).then(function (d) {
         var hide = removedIds();
-        (d.posts || []).forEach(function (p) {
-          if (hide.indexOf(p.id) === -1) addPhoto(p, 'end', true);
+        // Feed posts are already grouped: {id (batch id, or the lone photo's
+        // public_id), photos[{id, thumb, ...}] in upload order, town, ...}.
+        // A flat photo (older feed) is treated as a post of one.
+        (d.posts || []).forEach(function (post) {
+          var photos = Array.isArray(post.photos) ? post.photos : [post];
+          photos.forEach(function (ph) {
+            if (!ph || hide.indexOf(ph.id) !== -1) return;
+            addPhoto({ id: ph.id, batch: post.id, thumb: ph.thumb, town: post.town, taken_at: post.taken_at, posted_at: post.posted_at, comment: post.comment }, 'end', false);
+          });
         });
         els.recentEmpty.hidden = !!els.recent.children.length;
       }).catch(function () { els.recentEmpty.hidden = !!els.recent.children.length; });
