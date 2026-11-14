@@ -101,6 +101,14 @@ test('Huntsville prefix zip auto-fills the city; unknown funnel and extra fields
   assert.match(m.text, /Unexpected fields ignored: utm/);
 });
 
+test('live-page-form is a known funnel: delivered with no Notes block', async () => {
+  const r = await post(lead({ funnel: 'live-page-form' }));
+  assert.equal(r.status, 200);
+  const m = sentMail();
+  assert.match(m.text, /Funnel: +live-page-form/);
+  assert.ok(!/Notes:|Unrecognized funnel/.test(m.text), m.text);
+});
+
 test('existing silent rejects still silent', async () => {
   await assertSilentReject(lead({ time_to_fill_ms: 2999 }), 'too fast');
   await assertSilentReject(lead({ time_to_fill_ms: 'abc' }), 'non-numeric fill time');
