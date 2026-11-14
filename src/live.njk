@@ -1,0 +1,141 @@
+---
+layout: base.njk
+title: Blue River Live | Real Gutter Jobs, Posted From the Field
+description: Blue River Live — photos from real gutter jobs, posted from the field by our crews across Huntsville, Madison, Decatur and North Alabama. Newest first.
+permalink: /live/
+---
+
+<section class="live-intro">
+  <div class="container">
+    <h1><span class="live-dot is-live" aria-hidden="true"></span>Blue River Live</h1>
+    <p>These are our real jobs, posted from the field by the crew while the ladders are still up — across Huntsville, Madison, Decatur and the rest of North Alabama. Newest first, straight from the truck.</p>
+  </div>
+</section>
+
+<section class="live-feed-section">
+  <div class="container">
+    <p class="live-status" id="live-status" role="status" aria-live="polite">Loading the latest jobs…</p>
+    <ol class="live-grid" id="live-feed"></ol>
+    <noscript><p>Blue River Live needs JavaScript to load the newest job photos. You can also browse our <a href="{{ '/recent-projects/' | url }}">recent projects</a>.</p></noscript>
+    <button type="button" class="btn btn-primary live-more" id="live-more" hidden>Load more jobs</button>
+  </div>
+</section>
+
+{# Feed: GET /api/live/feed?cursor&n -> {posts:[{id,w,h,thumb,full,town,taken_at|null,posted_at,comment|null}], next}.
+   The first page is requested right away (it is this page's content) and shared
+   with the site-wide banner via window.brgLiveFirst. Everything from the feed
+   goes in as text or a checked https URL, never as HTML. Town only: no
+   coordinates, in the cards or the JSON-LD. #}
+<script>
+  (function () {
+    var N = 24;
+    function get(cursor) {
+      return fetch('/api/live/feed?n=' + N + (cursor ? '&cursor=' + encodeURIComponent(cursor) : ''), { headers: { accept: 'application/json' } })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
+    }
+    window.brgLiveFirst = get(null);
+    if (window.brgTrack) brgTrack('live_page_view');
+
+    function start() {
+      var L = window.brgLive, feed = document.getElementById('live-feed'),
+          status = document.getElementById('live-status'), more = document.getElementById('live-more'),
+          shown = [], seen = {}, next = null, busy = false;
+
+      function card(p) {
+        var c = L.el('li', 'live-card'), a = L.el('a', 'live-photo'), img = L.el('img');
+        c.setAttribute('data-id', p.id);
+        a.href = L.safe(p.full) || L.safe(p.thumb);
+        a.target = '_blank'; a.rel = 'noopener';
+        var w = Math.round(+p.w) || 4, h = Math.round(+p.h) || 3;
+        img.width = w; img.height = h;
+        // Box reserved from the feed's w/h (clamped to 3:4..4:3 so rows stay tidy)
+        // before a byte of the photo arrives: zero shift as images land.
+        // The box is the <a>; the img only fills it, so nothing about the photo
+        // (slow, failed, alt text) can change layout.
+        a.style.aspectRatio = img.style.aspectRatio = String(Math.min(4 / 3, Math.max(3 / 4, w / h)));
+        img.loading = 'lazy'; img.decoding = 'async';
+        img.alt = p.comment ? p.comment : 'Gutter job in ' + (p.town || 'North Alabama');
+        img.src = L.safe(p.thumb);
+        a.appendChild(img);
+        c.appendChild(a);
+
+        var body = L.el('div', 'live-body'), stamp = L.el('p', 'live-stamp');
+        if (p.taken_at && !isNaN(Date.parse(p.taken_at))) {
+          stamp.appendChild(L.el('span', 'live-taken', 'Taken ' + L.day(p.taken_at)));
+          stamp.appendChild(L.el('span', 'live-sep', ' · '));
+        }
+        stamp.appendChild(L.el('span', 'live-town', p.town || 'North Alabama'));
+        stamp.appendChild(L.el('span', 'live-sep live-sep-last', ' · '));
+        var posted = L.el('span', 'live-posted', 'Posted ');
+        posted.appendChild(L.ago(p.posted_at));
+        stamp.appendChild(posted);
+        body.appendChild(stamp);
+        if (p.comment) body.appendChild(L.el('p', 'live-comment', p.comment));
+        c.appendChild(body);
+
+        // LIVE chip on the photo while the post is under 24h old; tick() keeps it honest.
+        var chip = null;
+        c.setAttribute('data-live-box', '');
+        c.setLive = function (on) {
+          if (on && !chip) {
+            chip = L.el('span', 'live-chip');
+            chip.appendChild(L.dot(true));
+            chip.appendChild(document.createTextNode('LIVE'));
+            a.appendChild(chip);
+          } else if (!on && chip) { chip.remove(); chip = null; }
+        };
+        c.setLive(L.isLive(p.posted_at));
+        return c;
+      }
+
+      function ld() {
+        var graph = shown.map(function (p) {
+          var o = { '@type': 'ImageObject', contentUrl: L.safe(p.full), thumbnailUrl: L.safe(p.thumb),
+            width: p.w, height: p.h, uploadDate: p.posted_at,
+            contentLocation: { '@type': 'Place', name: p.town },
+            creator: { '@type': 'Organization', name: 'Blue River Gutters', url: 'https://bluerivergutters.com/' } };
+          if (p.taken_at) o.dateCreated = p.taken_at;
+          if (p.comment) o.caption = p.comment;
+          return o;
+        });
+        var s = document.getElementById('live-ld');
+        if (!s) { s = document.createElement('script'); s.type = 'application/ld+json'; s.id = 'live-ld'; document.head.appendChild(s); }
+        s.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
+      }
+
+      function add(d) {
+        var posts = (d && d.posts) || [], frag = document.createDocumentFragment();
+        posts.forEach(function (p) {
+          if (!p || seen[p.id] || !L.safe(p.thumb) || isNaN(Date.parse(p.posted_at))) return;
+          seen[p.id] = 1; shown.push(p); frag.appendChild(card(p));
+        });
+        feed.appendChild(frag);
+        next = d && d.next ? d.next : null;
+        more.hidden = !next;
+        status.textContent = shown.length ? '' : 'No jobs posted yet — the crew posts from the field as work wraps up. Check back soon.';
+        if (shown.length) { ld(); L.startTicking(); }
+      }
+
+      window.brgLiveFirst.then(add, function () {
+        status.textContent = 'We couldn’t load the latest jobs just now. Please refresh in a minute.';
+      });
+
+      more.addEventListener('click', function () {
+        if (busy || !next) return;
+        busy = true; more.disabled = true;
+        // Reserve a screen of space now, inside the click's input window, so the
+        // new cards land in room that already exists and the footer is off-screen.
+        feed.style.minHeight = (feed.offsetHeight + innerHeight) + 'px';
+        // Errors are told on the button itself: changing the status line above
+        // the grid would move every card on screen.
+        get(next).then(function (d) { more.textContent = 'Load more jobs'; add(d); }, function () {
+          more.textContent = 'Couldn’t load — tap to try again';
+        }).then(function () {
+          busy = false; more.disabled = false;
+          requestAnimationFrame(function () { feed.style.minHeight = ''; });
+        });
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+  })();
+</script>

@@ -366,3 +366,50 @@ section { padding: 4rem 0; }
    moves (no CLS). The class goes on the blocks, not <html>, so revealing them
    restyles only them. */
 [data-local-only]:not(.brg-local-show) { display: none !important; }
+
+/* Blue River Live ------------------------------------------------------------
+   Banner: a fixed-height slot under the header on every page (desktop: the top
+   strip of the hero; mobile: top of the page). Its height never depends on
+   its contents, so hydration and the font swap cannot shift anything. */
+.live-banner { height: 40px; overflow: hidden; background: var(--navy); border-top: 1px solid rgba(255,255,255,0.08); }
+.live-banner-link { display: flex; align-items: center; justify-content: center; gap: 0.5rem; height: 40px; max-width: 1200px; margin: 0 auto; padding: 0 1rem; color: var(--white); font-size: 0.9rem; font-weight: 600; line-height: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.live-banner-link:hover, .live-banner-link:focus-visible { color: var(--white); text-decoration: underline; text-underline-offset: 3px; }
+.live-banner-thumb { flex: none; width: 28px; height: 28px; border-radius: 4px; object-fit: cover; background: var(--slate); }
+.live-banner-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.live-banner-tag { color: #fca5a5; letter-spacing: 0.08em; }
+.live-banner-link time { font-weight: 700; }
+.live-banner-arrow { opacity: 0.7; }
+
+/* The LIVE dot: pulses (transform + opacity only, compositor-cheap) on posts
+   under 24h old; a quiet grey dot otherwise. */
+.live-dot { position: relative; flex: none; display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--gray); vertical-align: middle; }
+.live-dot.is-live { background: #ef4444; }
+.live-dot.is-live::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #ef4444; animation: live-ping 1.8s ease-out infinite; }
+@keyframes live-ping { 0% { transform: scale(1); opacity: 0.75; } 80%, 100% { transform: scale(2.6); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .live-dot.is-live::after { animation: none; } }
+
+/* /live/ page */
+.live-intro { padding: 3rem 0 1.5rem; background: var(--cream); }
+.live-intro h1 { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+.live-intro h1 .live-dot { width: 14px; height: 14px; }
+.live-intro p { max-width: 680px; font-size: 1.1rem; margin-bottom: 0; }
+.live-feed-section { padding: 1rem 0 4rem; min-height: 100vh; } /* keeps the footer below the fold while the feed loads */
+.live-status { min-height: 1.6em; margin-bottom: 1rem; color: var(--gray); }
+.live-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; align-items: start; }
+.live-card { background: var(--white); border-radius: 10px; overflow: hidden; box-shadow: 0 1px 3px rgba(15,23,42,0.08), 0 4px 14px rgba(15,23,42,0.06); }
+.live-photo { position: relative; display: block; overflow: hidden; background: var(--light-gray); } /* aspect-ratio set inline from the feed's w/h */
+.live-photo img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+.live-chip { position: absolute; top: 0.6rem; left: 0.6rem; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.6rem; border-radius: 999px; background: rgba(15,23,42,0.82); color: var(--white); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; }
+.live-body { padding: 0.9rem 1rem 1.1rem; }
+.live-stamp { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.35rem; margin-bottom: 0; color: var(--gray); font-size: 0.85rem; }
+.live-town { font-weight: 600; color: var(--slate); }
+.live-posted { flex-basis: 100%; order: -1; color: var(--navy); font-size: 1.35rem; font-weight: 700; line-height: 1.25; }
+.live-posted time { color: var(--red); }
+.live-sep-last { display: none; } /* posted time is lifted to the first line */
+.live-comment { margin: 0.6rem 0 0; color: var(--slate); }
+.live-more { display: block; margin: 2rem auto 0; }
+.live-more[hidden] { display: none; }
+@media (max-width: 768px) {
+  .live-intro { padding: 2rem 0 1rem; }
+  .live-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+}

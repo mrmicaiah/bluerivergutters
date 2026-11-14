@@ -119,7 +119,8 @@
 <body>
   
   {% include "partials/header.njk" %}
-  
+  {% include "partials/live-banner.njk" %}
+
   <main>
     {% block content %}
     {{ content | safe }}
@@ -279,6 +280,129 @@
       });
       show.forEach(function (el) { el.classList.add('brg-local-show'); });
     });
+  </script>
+
+  {# Blue River Live. window.brgLive holds the shared helpers (/live/ uses them
+     too). The banner fetches the newest post only after window load, in idle
+     time, like GA and brgLocal: nothing runs before the page is interactive.
+     /live/ already fetches the feed itself, so there the banner reuses that
+     response (window.brgLiveFirst) instead of making a second request.
+     Times tick every 15s. Only the town is shown: the feed has no coordinates
+     and none may ever be added to the page. #}
+  <script>
+    (function () {
+      var DAY = 86400000, fmt = {};
+      function dateFmt(withYear) {
+        var k = withYear ? 'y' : 'n';
+        if (!fmt[k]) {
+          var o = { month: 'short', day: 'numeric', timeZone: 'America/Chicago' };
+          if (withYear) o.year = 'numeric';
+          try { fmt[k] = new Intl.DateTimeFormat('en-US', o); }
+          catch (err) { delete o.timeZone; fmt[k] = new Intl.DateTimeFormat('en-US', o); }
+        }
+        return fmt[k];
+      }
+      // "Nov 6"; with the year only when it isn't the current one.
+      function day(t, now) {
+        var d = new Date(t), n = new Date(now == null ? Date.now() : now);
+        if (isNaN(d)) return '';
+        return dateFmt(d.getFullYear() !== n.getFullYear()).format(d);
+      }
+      function rel(t, now) {
+        var ts = Date.parse(t);
+        if (isNaN(ts)) return '';
+        var m = Math.floor(Math.max(0, (now == null ? Date.now() : now) - ts) / 60000);
+        if (m < 1) return 'just now';
+        if (m < 60) return m + ' min ago';
+        var h = Math.floor(m / 60);
+        if (h < 24) return h + (h === 1 ? ' hr' : ' hrs') + ' ago';
+        var dd = Math.floor(h / 24);
+        if (dd < 7) return dd + (dd === 1 ? ' day' : ' days') + ' ago';
+        return day(ts, now);
+      }
+      function isLive(t, now) { return (now == null ? Date.now() : now) - Date.parse(t) < DAY; }
+      // Only https (or same-site) URLs from the feed ever reach src/href.
+      function safe(u) { return typeof u === 'string' && (/^https:\/\//i.test(u) || /^\/(?!\/)/.test(u)) ? u : ''; }
+      // Cloudinary thumb -> the small variant: drop the feed's own transforms,
+      // use w_200,f_auto,q_auto (≈10KB). Other hosts pass through unchanged.
+      function small(u) {
+        var m = /^(https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.+)$/.exec(safe(u));
+        if (!m) return safe(u);
+        var parts = m[2].split('/');
+        while (parts.length > 1 && /^[a-z]{1,3}_[^,]+(,[a-z]{1,3}_[^,]+)*$/.test(parts[0])) parts.shift();
+        return m[1] + 'w_200,f_auto,q_auto/' + parts.join('/');
+      }
+      function el(tag, cls, text) {
+        var e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (text != null) e.textContent = text;
+        return e;
+      }
+      function dot(on) { return el('span', 'live-dot' + (on ? ' is-live' : '')); }
+      function ago(t, now) {
+        var e = el('time', null, rel(t, now));
+        e.setAttribute('datetime', t);
+        e.setAttribute('data-posted', t);
+        return e;
+      }
+      // Re-render every posted time (and LIVE state) against `now`.
+      function tick(now) {
+        now = now == null ? Date.now() : now;
+        var ts = document.querySelectorAll('[data-posted]');
+        for (var i = 0; i < ts.length; i++) {
+          var t = ts[i].getAttribute('data-posted'), s = rel(t, now);
+          if (ts[i].textContent !== s) ts[i].textContent = s;
+          var box = ts[i].closest('[data-live-box]');
+          if (box && box.setLive) box.setLive(isLive(t, now));
+        }
+      }
+      var ticking = false;
+      function startTicking() {
+        if (ticking) return; ticking = true;
+        setInterval(function () { if (!document.hidden) tick(); }, 15000);
+        document.addEventListener('visibilitychange', function () { if (!document.hidden) tick(); });
+      }
+      window.brgLive = { rel: rel, day: day, isLive: isLive, safe: safe, small: small, el: el, dot: dot, ago: ago, tick: tick, startTicking: startTicking };
+
+      var slot = document.getElementById('live-banner');
+      if (!slot) return;
+      slot.addEventListener('click', function (e) {
+        if (e.target.closest && e.target.closest('a') && window.brgTrack) brgTrack('live_banner_click');
+      });
+      function render(d) {
+        var p = d && d.posts && d.posts[0];
+        if (!p || isNaN(Date.parse(p.posted_at))) return;
+        var a = slot.querySelector('a'), frag = document.createDocumentFragment(), src = small(p.thumb);
+        if (src) {
+          var img = el('img', 'live-banner-thumb');
+          img.alt = ''; img.width = 28; img.height = 28; img.decoding = 'async';
+          img.src = src;
+          frag.appendChild(img);
+        }
+        var d0 = dot(isLive(p.posted_at));
+        frag.appendChild(d0);
+        var txt = el('span', 'live-banner-text');
+        txt.appendChild(el('strong', 'live-banner-tag', 'LIVE'));
+        txt.appendChild(document.createTextNode(' · posted '));
+        txt.appendChild(ago(p.posted_at));
+        if (p.town) txt.appendChild(document.createTextNode(' · ' + p.town));
+        txt.appendChild(el('span', 'live-banner-arrow', ' →'));
+        frag.appendChild(txt);
+        a.setAttribute('data-live-box', '');
+        a.setLive = function (on) { d0.classList.toggle('is-live', on); };
+        a.textContent = '';
+        a.appendChild(frag);
+        startTicking();
+      }
+      function hydrate() {
+        (window.brgLiveFirst || fetch('/api/live/feed?n=1', { headers: { accept: 'application/json' } })
+          .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }))
+          .then(render)
+          .catch(function () { /* the static "Blue River Live →" link stays */ });
+      }
+      function idle() { (window.requestIdleCallback || setTimeout)(hydrate, { timeout: 2000 }); }
+      if (document.readyState === 'complete') idle(); else addEventListener('load', idle);
+    })();
   </script>
 
   {# Additional scripts slot #}

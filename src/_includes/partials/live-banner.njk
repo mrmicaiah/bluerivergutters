@@ -1,0 +1,8 @@
+{# Blue River Live strip — every page, everyone (not geo-gated).
+   The slot is a fixed-height box in the initial HTML holding a static link, so
+   it is never a hole and hydration never moves anything: base.njk swaps the
+   link's contents for the newest post (thumb, LIVE dot, posted time, town) after
+   window load, in idle time. On a failed or empty feed the static link stays. #}
+<div class="live-banner" id="live-banner">
+  <a class="live-banner-link" href="{{ '/live/' | url }}">Blue River Live →</a>
+</div>
