@@ -474,7 +474,7 @@ lcp_hero_crop: wide
     const email = field('email')?.value.trim() || '';
     const messageText = field('message')?.value.trim() || '';
 
-    if (!name) return invalid('Please tell us your name.', 'name');
+    if (G.hasName ? !G.hasName(name) : !name) return invalid('Please tell us your name.', 'name');
     if (!G.isPhone(phone)) return invalid('Please enter a phone number we can reach you at.', 'phone');
 
     // Required 5-digit zip. Every genuine submission in the lead history that
@@ -492,11 +492,16 @@ lcp_hero_crop: wide
         'a full sentence helps us come prepared, or leave the message blank.', 'message');
     }
 
-    // Outreach scan runs BEFORE the service-area check on purpose. Both would
+    // Spam screen runs BEFORE the service-area check on purpose. Both would
     // stop a pitch, but only this one is silent — checking it first means a
     // spammer never sees the zip message and so never learns the zip rule.
-    if (G.looksLikeOutreach(messageText)) {
-      console.warn('Outreach markers matched — silent reject');
+    // Name that isn't a name, or outreach markers in name/message/service/city.
+    // Falls back to the message-only scan if a stale lead-form.js is cached.
+    const spam = G.spamReason
+      ? G.spamReason({ name: name, message: messageText, service: field('service')?.value || '', city: field('city')?.value || G.cityForZip(zip) })
+      : (G.looksLikeOutreach(messageText) ? 'outreach markers' : '');
+    if (spam) {
+      console.warn('Spam screen (' + spam + ') — silent reject');
       window.location.href = CONFIG.redirectUrl; // Show success, same as honeypot
       return;
     }

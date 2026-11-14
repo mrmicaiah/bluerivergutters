@@ -11,10 +11,13 @@
  *   1. honeypot field filled          -> silent
  *   2. submitted under 3 seconds      -> silent
  *   3. required fields / formats      -> visible
+ *      (a name needs 2+ characters: a typo gets told, not dropped)
  *   4. message shape (only if a message was given)        -> visible
- *   5. outreach markers in the message                    -> silent
+ *   5. spamReason(): a name that isn't a name, or outreach markers in any
+ *      text field (name, message, service, city)          -> silent
  *   6. zip outside the service area                       -> visible
- * Only a submission past all six is sent.
+ * Only a submission past all six is sent. A borderline name (isSuspectName:
+ * 5+ words or 3+ digits) is still sent; /api/lead tags it [suspect].
  *
  * Clarity instrumentation lives here too, one path for all four forms
  * (homepage, service, city, contact) via BRGLeadGuards.instrument():
@@ -32,7 +35,7 @@
 
   // Bump when the marker list or zip allowlist changes, so a later recount can
   // tell which filter era a lead arrived under.
-  var SCAN_VERSION = 2;
+  var SCAN_VERSION = 3;
 
   var AREA = window.BRG_SERVICE_AREA || { prefixes: {}, zips: {} };
 
@@ -83,6 +86,36 @@
     return OUTREACH_WORDS.some(function (word) {
       return new RegExp('\\b' + word + '\\b').test(text);
     });
+  }
+
+  // Names that can't be a person's name. The Nov 14 lead was a 140-character
+  // sales pitch typed into the name box. Mirrored server-side in /api/lead.
+  var MAX_NAME_CHARS = 60;
+  var MIN_NAME_CHARS = 2;
+  var NAME_LINK = /https?:|www\.|@|\.(com|net|org|io|co|us|biz|info|site|online|agency|studio|xyz|app|dev)\b/i;
+
+  function hasName(name) {
+    return String(name || '').trim().length >= MIN_NAME_CHARS;
+  }
+
+  // '' when the lead may be sent; otherwise why it is being silently dropped.
+  // Fields: name, message, service, city (any may be missing).
+  function spamReason(fields) {
+    fields = fields || {};
+    var name = String(fields.name || '').trim();
+    if (name.length > MAX_NAME_CHARS) return 'name too long';
+    if (NAME_LINK.test(name)) return 'link or address in name';
+    var texts = [name, fields.message, fields.service, fields.city];
+    for (var i = 0; i < texts.length; i++) {
+      if (looksLikeOutreach(texts[i])) return 'outreach markers';
+    }
+    return '';
+  }
+
+  // Borderline, not blocked: sent as normal, flagged by the server.
+  function isSuspectName(name) {
+    name = String(name || '').trim();
+    return name.split(/\s+/).filter(Boolean).length >= 5 || (name.match(/[0-9]/g) || []).length >= 3;
   }
 
   function isPhone(phone) {
@@ -149,6 +182,10 @@
     inServiceArea: inServiceArea,
     hasSubstantiveMessage: hasSubstantiveMessage,
     looksLikeOutreach: looksLikeOutreach,
+    hasName: hasName,
+    spamReason: spamReason,
+    isSuspectName: isSuspectName,
+    MAX_NAME_CHARS: MAX_NAME_CHARS,
     isPhone: isPhone,
     isEmail: isEmail,
     instrument: instrument
@@ -225,13 +262,19 @@
       var zip = zipField.value.trim();
       var email = emailField ? emailField.value.trim() : '';
 
-      if (!name) return showError('Please tell us your name.', nameField);
+      if (!hasName(name)) return showError('Please tell us your name.', nameField);
       if (!isPhone(phone)) return showError('Please enter a phone number we can reach you at.', phoneField);
       if (!/^[0-9]{5}$/.test(zip)) return showError('Please enter your 5-digit zip code so we know the area.', zipField);
       if (emailRequired && !email) return showError('Please enter your email address.', emailField);
       if (email && !isEmail(email)) return showError('Please enter a valid email address.', emailField);
 
-      // No message box on this form, so guards 4 and 5 have nothing to check.
+      // No message box on this form, so guard 4 has nothing to check.
+      var spam = spamReason({ name: name, service: form.getAttribute('data-service') || '', city: cityForZip(zip) });
+      if (spam) {
+        console.warn('Spam screen (' + spam + ') — silent reject');
+        showSuccess();
+        return;
+      }
 
       if (!inServiceArea(zip)) {
         return showError("Looks like you're outside our North Alabama service area. " +

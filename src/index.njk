@@ -1103,14 +1103,21 @@ a.lp-city:hover { text-decoration: underline; }
     const zip = zipField.value.trim();
     const email = emailField.value.trim();
 
-    if (!name) return showError('Please tell us your name.', nameField);
+    if (G.hasName ? !G.hasName(name) : !name) return showError('Please tell us your name.', nameField);
     if (!G.isPhone(phone)) return showError('Please enter a phone number we can reach you at.', phoneField);
     // /api/lead rejects any lead without a zip, so this one is load-bearing.
     if (!/^[0-9]{5}$/.test(zip)) return showError('Please enter your 5-digit zip code so we know the area.', zipField);
     if (email && !G.isEmail(email)) return showError('Please enter a valid email address.', emailField);
 
-    // No message box on this form, so the message-shape and outreach guards
-    // have nothing to check.
+    // No message box, so no message-shape check. A name that isn't a name
+    // (too long, a link, an @, outreach words) gets the same fake success as
+    // the honeypot. Guarded so a stale cached lead-form.js can't break this.
+    const spam = G.spamReason ? G.spamReason({ name: name, city: G.cityForZip(zip) }) : '';
+    if (spam) {
+      console.warn('Spam screen (' + spam + ') — silent reject');
+      showSuccess();
+      return;
+    }
 
     // Out of area gets a visible message, never a silent fail: a real customer
     // who fat-fingers their zip needs a way back in.
