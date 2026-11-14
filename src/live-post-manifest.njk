@@ -1,0 +1,23 @@
+---
+permalink: /live/post/manifest.webmanifest
+eleventyExcludeFromCollections: true
+sitemap: false
+---
+{#- Add-to-Home-Screen manifest for the crew posting page only. No start_url on
+    purpose: it then defaults to the page URL the phone was on, which carries
+    the #t= token on platforms that keep the fragment. live-post.js also keeps
+    the token in localStorage for launches that drop it. -#}
+{
+  "name": "Blue River Live",
+  "short_name": "BR Live",
+  "description": "Post job photos to Blue River Live.",
+  "scope": "{{ '/live/post/' | url }}",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#1e40af",
+  "icons": [
+    { "src": "{{ '/images/live/live-post-icon-192.png' | url }}", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "{{ '/images/live/live-post-icon-512.png' | url }}", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
