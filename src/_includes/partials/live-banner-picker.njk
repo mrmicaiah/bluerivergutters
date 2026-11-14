@@ -1,20 +1,45 @@
 {# Preview-only banner-concept picker (src/_data/bannerPicker.js). It sets the
    banner's data-variant from ?banner=a|b|c before the banner hydrates (which
-   happens after window load), and floats a small picker in the corner. It's
-   position: fixed, so it never moves the page. #}
+   happens after window load), and floats a picker in the corner. It's
+   position: fixed, so it never moves the page.
+   It also supplies DEMO posts (window.brgLiveDemo) that base.njk shows, on
+   preview builds only, when the feed fails or is empty, so the three concepts
+   can be compared before any real post exists. Real job photos already on the
+   site's Cloudinary; the newest is stamped two minutes before page load. #}
 <script>
   (function () {
     var v = (new URLSearchParams(location.search).get('banner') || '').toLowerCase();
     var slot = document.getElementById('live-banner');
     if (slot && /^[abc]$/.test(v)) slot.setAttribute('data-variant', v);
+
+    var BASE = 'https://res.cloudinary.com/dxzw1zwez/image/upload/';
+    function photo(id) {
+      return { id: id, w: 1600, h: 1200,
+        thumb: BASE + 'c_limit,w_500,f_auto,q_auto/v1/blueriver-projects/' + id,
+        full: BASE + 'c_limit,w_2000,f_auto,q_auto/v1/blueriver-projects/' + id };
+    }
+    var JOBS = [
+      ['demo-1', 'Madison', 2, ['madison-gutter-cleaning-Y9Oz2O-1', 'madison-rotten-wood-repair-Rmalj2-1', 'huntsville-gutter-guards-hXNbri-1']],
+      ['demo-2', 'Huntsville', 38, ['huntsville-seamless-gutters-0j5ZT7-1']],
+      ['demo-3', 'Decatur', 125, ['decatur-gutter-cleaning-Mc3FwA-1']]
+    ];
+    var loaded = Date.now();
+    window.brgLiveDemo = function () {
+      return { next: null, posts: JOBS.map(function (j) {
+        return { id: j[0], photos: j[3].map(photo), count: j[3].length, town: j[1], taken_at: null,
+          posted_at: new Date(loaded - j[2] * 60000).toISOString(), comment: null };
+      }) };
+    };
   })();
 </script>
-<nav class="live-banner-picker" id="live-banner-picker" aria-label="Banner concept (preview only)">
-  <span>Banner</span>
-  <a href="?banner=">Today</a>
-  <a href="?banner=a" title="Photo card slides in">A</a>
-  <a href="?banner=b" title="Breaking-news strip">B</a>
-  <a href="?banner=c" title="Departure board">C</a>
+<nav class="live-banner-picker" id="live-banner-picker" aria-label="Banner options (preview only)">
+  <span class="lbp-label">Banner options — tap to compare</span>
+  <span class="lbp-row">
+    <a href="?banner=">Today</a>
+    <a href="?banner=a" title="Photo card slides in">A</a>
+    <a href="?banner=b" title="Breaking-news strip">B</a>
+    <a href="?banner=c" title="Departure board">C</a>
+  </span>
 </nav>
 <script>
   (function () {
@@ -26,10 +51,15 @@
   })();
 </script>
 <style>
-  .live-banner-picker { position: fixed; left: 12px; bottom: 76px; z-index: 2000; display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: 999px; background: rgba(15,23,42,0.92); box-shadow: 0 4px 16px rgba(0,0,0,0.3); font-size: 0.8rem; font-weight: 700; }
-  .live-banner-picker span { padding: 0 0.5rem 0 0.6rem; color: #fca5a5; letter-spacing: 0.06em; text-transform: uppercase; font-size: 0.7rem; }
-  .live-banner-picker a { padding: 0.3rem 0.65rem; border-radius: 999px; color: #fff; }
-  .live-banner-picker a:hover { background: rgba(255,255,255,0.15); color: #fff; }
-  .live-banner-picker a[aria-current] { background: #fff; color: #0f172a; }
+  .live-banner-picker { position: fixed; left: 12px; bottom: 76px; z-index: 2000; display: flex; flex-direction: column; gap: 6px; padding: 10px 10px 8px; border-radius: 14px; background: #facc15; color: #0f172a; border: 2px solid #0f172a; box-shadow: 0 6px 24px rgba(0,0,0,0.45); font-weight: 800; animation: lbp-pulse 0.7s 0.8s ease-in-out 2 both; transform-origin: left bottom; }
+  .live-banner-picker .lbp-label { padding: 0 4px; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .live-banner-picker .lbp-row { display: flex; gap: 6px; }
+  .live-banner-picker a { display: inline-flex; align-items: center; justify-content: center; min-width: 48px; height: 44px; padding: 0 0.9rem; border-radius: 10px; background: #0f172a; color: #fff; font-size: 1.05rem; text-decoration: none; }
+  .live-banner-picker a:hover { background: #1e293b; color: #fff; }
+  .live-banner-picker a[aria-current] { background: #fff; color: #0f172a; box-shadow: inset 0 0 0 2px #0f172a; }
+  @keyframes lbp-pulse { 50% { transform: scale(1.08); } }
+  @media (prefers-reduced-motion: reduce) { .live-banner-picker { animation: none; } }
   @media (min-width: 769px) { .live-banner-picker { bottom: 16px; } }
+  /* Demo data marker on the banner (added by base.njk on preview builds only). */
+  .live-banner-demo { position: absolute; top: 0; right: 0; z-index: 3; padding: 0 5px; border-bottom-left-radius: 3px; background: #facc15; color: #0f172a; font-size: 8px; font-weight: 800; line-height: 10px; letter-spacing: 0.06em; text-transform: uppercase; pointer-events: none; }
 </style>

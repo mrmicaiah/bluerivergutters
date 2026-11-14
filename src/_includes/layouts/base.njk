@@ -521,14 +521,24 @@
       }
       function render(d) {
         var posts = ((d && d.posts) || []).filter(ok);
-        if (!posts.length) return;
+        if (!posts.length) return false;
         var v = slot.getAttribute('data-variant') || '';
         if (/^[abc]$/.test(v)) renderVariant(v, posts.slice(0, 3)); else renderPlain(posts[0]);
+        return true;
       }
       function hydrate() {
         (window.brgLiveFirst || fetch('/api/live/feed', { headers: { accept: 'application/json' } })
           .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }))
           .then(render)
+{%- if bannerPicker %}
+          // Preview build only: no posts or no feed -> labelled demo posts, so
+          // the concepts can be compared before real posts exist.
+          .then(function (shown) { if (!shown) throw 0; })
+          .catch(function () {
+            if (!window.brgLiveDemo || !render(window.brgLiveDemo())) return;
+            slot.appendChild(el('span', 'live-banner-demo', 'Preview — demo photo'));
+          })
+{%- endif %}
           .catch(function () { /* the static "Blue River Live →" link stays */ });
       }
       function idle() { (window.requestIdleCallback || setTimeout)(hydrate, { timeout: 2000 }); }
