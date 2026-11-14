@@ -285,8 +285,11 @@
   {# Blue River Live. window.brgLive holds the shared helpers (/live/ uses them
      too). The banner fetches the newest post only after window load, in idle
      time, like GA and brgLocal: nothing runs before the page is interactive.
-     /live/ already fetches the feed itself, so there the banner reuses that
-     response (window.brgLiveFirst) instead of making a second request.
+     It asks for the bare /api/live/feed — the same URL as /live/'s first page —
+     so every page shares one cached response (the Function caches per n+cursor
+     and Cloudinary's Admin API is rate-limited hourly). On /live/ it reuses the
+     page's own response (window.brgLiveFirst) instead of a second request.
+     The thumb is the feed's image re-derived at w_200 (≈6KB), never the w_500.
      Times tick every 15s. Only the town is shown: the feed has no coordinates
      and none may ever be added to the page. #}
   <script>
@@ -323,8 +326,9 @@
       function isLive(t, now) { return (now == null ? Date.now() : now) - Date.parse(t) < DAY; }
       // Only https (or same-site) URLs from the feed ever reach src/href.
       function safe(u) { return typeof u === 'string' && (/^https:\/\//i.test(u) || /^\/(?!\/)/.test(u)) ? u : ''; }
-      // Cloudinary thumb -> the small variant: drop the feed's own transforms,
-      // use w_200,f_auto,q_auto (≈10KB). Other hosts pass through unchanged.
+      // Cloudinary thumb -> the small variant: drop the feed's own transforms
+      // (c_limit,w_500,…), keep v<version>/<public_id>, use w_200,f_auto,q_auto.
+      // Other hosts pass through unchanged.
       function small(u) {
         var m = /^(https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.+)$/.exec(safe(u));
         if (!m) return safe(u);
@@ -395,7 +399,7 @@
         startTicking();
       }
       function hydrate() {
-        (window.brgLiveFirst || fetch('/api/live/feed?n=1', { headers: { accept: 'application/json' } })
+        (window.brgLiveFirst || fetch('/api/live/feed', { headers: { accept: 'application/json' } })
           .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }))
           .then(render)
           .catch(function () { /* the static "Blue River Live →" link stays */ });

@@ -28,9 +28,10 @@ permalink: /live/
    coordinates, in the cards or the JSON-LD. #}
 <script>
   (function () {
-    var N = 24;
+    // Bare URL for the first page (n defaults to 24 server-side): the banner on
+    // every other page asks for exactly this URL, so they share one cache entry.
     function get(cursor) {
-      return fetch('/api/live/feed?n=' + N + (cursor ? '&cursor=' + encodeURIComponent(cursor) : ''), { headers: { accept: 'application/json' } })
+      return fetch('/api/live/feed' + (cursor ? '?cursor=' + encodeURIComponent(cursor) : ''), { headers: { accept: 'application/json' } })
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
     }
     window.brgLiveFirst = get(null);
@@ -59,13 +60,15 @@ permalink: /live/
         a.appendChild(img);
         c.appendChild(a);
 
-        var body = L.el('div', 'live-body'), stamp = L.el('p', 'live-stamp');
-        if (p.taken_at && !isNaN(Date.parse(p.taken_at))) {
-          stamp.appendChild(L.el('span', 'live-taken', 'Taken ' + L.day(p.taken_at)));
-          stamp.appendChild(L.el('span', 'live-sep', ' · '));
-        }
-        stamp.appendChild(L.el('span', 'live-town', p.town || 'North Alabama'));
-        stamp.appendChild(L.el('span', 'live-sep live-sep-last', ' · '));
+        // Taken date only when real; town only when non-empty (the feed sends "").
+        var body = L.el('div', 'live-body'), stamp = L.el('p', 'live-stamp'), lead = [];
+        if (p.taken_at && !isNaN(Date.parse(p.taken_at))) lead.push(L.el('span', 'live-taken', 'Taken ' + L.day(p.taken_at)));
+        if (p.town) lead.push(L.el('span', 'live-town', p.town));
+        lead.forEach(function (e, i) {
+          if (i) stamp.appendChild(L.el('span', 'live-sep', ' · '));
+          stamp.appendChild(e);
+        });
+        if (lead.length) stamp.appendChild(L.el('span', 'live-sep live-sep-last', ' · '));
         var posted = L.el('span', 'live-posted', 'Posted ');
         posted.appendChild(L.ago(p.posted_at));
         stamp.appendChild(posted);
@@ -92,8 +95,8 @@ permalink: /live/
         var graph = shown.map(function (p) {
           var o = { '@type': 'ImageObject', contentUrl: L.safe(p.full), thumbnailUrl: L.safe(p.thumb),
             width: p.w, height: p.h, uploadDate: p.posted_at,
-            contentLocation: { '@type': 'Place', name: p.town },
             creator: { '@type': 'Organization', name: 'Blue River Gutters', url: 'https://bluerivergutters.com/' } };
+          if (p.town) o.contentLocation = { '@type': 'Place', name: p.town };
           if (p.taken_at) o.dateCreated = p.taken_at;
           if (p.comment) o.caption = p.comment;
           return o;
