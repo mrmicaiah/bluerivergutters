@@ -1,11 +1,15 @@
 {# ===========================================================================
-   Lead form — name / phone / zip, for service and city pages.
+   Lead form — name / phone / zip, for service, city and Live pages.
 
    Set before the include:
-     lead_form_kind     "service" or "city" — names the Clarity events
-                        (form_start_<kind> / form_submit_<kind>), the
-                        lead funnel (<kind>-page-form) and the Clarity
-                        tag form=<kind>-page-form
+     lead_form_kind     "service", "city" or "live" — names the Clarity
+                        events (form_start_<kind> / form_submit_<kind>),
+                        the lead funnel (<kind>-page-form) and the Clarity
+                        tag form=<kind>-page-form. On /live/:
+                          {% set lead_form_kind = "live" %}
+                          {% include "partials/lead-form.njk" %}
+                        -> form_start_live / form_submit_live, funnel
+                        live-page-form. Every guard (incl. #188) applies.
      lead_form_service  optional service name, sent with the lead
    An addition to the page's call buttons and booking link, never a
    replacement. Guards and submit logic live in /js/lead-form.js; the zip

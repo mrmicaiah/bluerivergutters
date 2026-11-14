@@ -19,8 +19,8 @@
  * Only a submission past all six is sent. A borderline name (isSuspectName:
  * 5+ words or 3+ digits) is still sent; /api/lead tags it [suspect].
  *
- * Clarity instrumentation lives here too, one path for all four forms
- * (homepage, service, city, contact) via BRGLeadGuards.instrument():
+ * Clarity instrumentation lives here too, one path for every form
+ * (homepage, service, city, live, contact) via BRGLeadGuards.instrument():
  *   form_start_<kind>   once, on the first real interaction with the form
  *   form_submit_<kind>  once, only after /api/lead answers OK — never on a
  *                       silent reject, a visible reject, or a failed send
@@ -28,6 +28,11 @@
  * carries), so funnels can be split per form without reading recordings.
  */
 (function () {
+  // Loaded twice on one page (the partial included twice, or a page that also
+  // loads this file itself)? The first copy owns every form; a second copy
+  // would wire them again and send each lead twice.
+  if (window.BRGLeadGuards && window.BRGLeadGuards.instrument) return;
+
   // Same-origin Pages Function. It re-checks the timing floor server-side and
   // forwards email-bearing leads to Courier, so the subscriber list is fed as
   // before.
@@ -154,7 +159,7 @@
     clarityCall('event', eventName);
   }
 
-  // kind:   homepage | service | city | contact   -> form_start_/form_submit_<kind>
+  // kind:   homepage | service | city | live | contact -> form_start_/form_submit_<kind>
   // funnel: the payload's funnel string           -> Clarity tag form=<funnel>
   // Returns { submitted() } — call it on the OK response from /api/lead and
   // nowhere else.
@@ -212,6 +217,8 @@
   };
 
   function wire(form) {
+    if (form.getAttribute('data-lead-wired')) return; // once per form, ever
+    form.setAttribute('data-lead-wired', '1');
     var kind = form.getAttribute('data-form-kind');
     var card = form.closest('.lead-form-card');
     var errorEl = form.querySelector('.lead-form-error');
