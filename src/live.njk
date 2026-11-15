@@ -16,36 +16,55 @@ permalink: /live/
   window.brgLiveFirst.catch(function () {});
 </script>
 
-{# Top: energy + a way to book before the first photo. The booking row is
-   static HTML, so it is on screen at first paint and never moves. #}
-<section class="live-intro">
-  <div class="container">
-    <p class="live-kicker">Straight from the truck</p>
-    <h1><span class="live-dot is-live" aria-hidden="true"></span>Blue River Live</h1>
-    <p class="live-lede">Our crews post from the field — these photos land here the day they happen.</p>
-    <p class="live-sub">Real gutter jobs across Huntsville, Madison, Decatur and the rest of North Alabama, posted while the ladders are still up. Newest first.</p>
-    <div class="live-book">
-      <a class="btn btn-primary live-book-btn" href="https://BlueRiverGutters.as.me/" target="_blank" rel="noopener">📅 Book Your Free Inspection</a>
-      <a class="live-book-tel" href="tel:2566166760">📞 (256) 616-6760</a>
-      <a class="live-book-form" href="#quick-form">or use the quick form below ↓</a>
+{# The mark's display face: Oswald 700, uppercase-only subset (text=), from
+   Google Fonts, loaded without blocking render (media=print swap). Until it
+   lands — or if it never does — the mark uses condensed system faces. The
+   lockup is stacked ("● BLUE RIVER" over a red LIVE bar) with fixed line
+   heights; only fixed-size things lead a line and nothing follows a
+   font-dependent width, so the swap can't move anything. #}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&text=ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789%20%C2%B7%E2%80%94-&display=swap" media="print" onload="this.media='all'">
+
+{# Top: a show title over a backdrop made of the crew's own photos, the
+   newest post as a polaroid stack on the right, and a way to book at first
+   paint. The mosaic and polaroids fill from the feed the page already
+   loads (no extra requests) into boxes that exist in the HTML — absolutely
+   positioned / fixed size — so nothing on screen moves. Empty feed: the
+   gradient stands, the polaroid box stays empty. #}
+<section class="live-intro" id="live-intro">
+  <div class="live-mosaic" id="live-mosaic" aria-hidden="true"></div>
+  <div class="container live-intro-grid">
+    <div class="live-intro-copy">
+      <p class="live-kicker"><span class="live-onair"><span class="live-dot is-live" aria-hidden="true"></span>On air</span><span class="live-kicker-text">Straight from the truck</span></p>
+      <h1 class="live-mark"><span class="live-mark-name"><span class="live-mark-dot" aria-hidden="true"></span>Blue River </span><span class="live-mark-line"><span class="live-mark-live">Live</span></span></h1>
+      <p class="live-lede">Our crews post from the field — these photos land here the day they happen.</p>
+      <p class="live-sub">Real gutter jobs across Huntsville, Madison, Decatur and the rest of North Alabama, posted while the ladders are still up. Newest first.</p>
+      <div class="live-book">
+        <a class="btn btn-primary live-book-btn" href="https://BlueRiverGutters.as.me/" target="_blank" rel="noopener">📅 Book Your Free Inspection</a>
+        <a class="live-book-tel" href="tel:2566166760">📞 (256) 616-6760</a>
+        <a class="live-book-form" href="#quick-form">or use the quick form below ↓</a>
+      </div>
     </div>
+    <div class="live-polaroids" id="live-polaroids"></div>
   </div>
 </section>
 
-{# Filmstrip: the latest photos as thumbs, tap one to glide to its post. A
-   fixed-height box with placeholder tiles in the HTML, so filling it moves
-   nothing. The line above it holds the stats sentence ("The crew's been in
-   Decatur today") — only when it sounds alive; otherwise it stays blank. #}
+{# The seam: the filmstrip docks into the hero's bottom edge like a film tray
+   sliding out, and a slim red ticker runs under it — the day's towns and
+   alive phrases, from real posts only. Fixed heights in the HTML. #}
 <section class="live-film-wrap" aria-label="Latest photos">
   <div class="container">
-    <div class="live-film-head">
-      <span class="live-film-label"><span class="live-dot is-live" aria-hidden="true"></span>Latest from the field</span>
-      <p class="live-stats" id="live-stats" role="status" aria-live="polite"></p>
-    </div>
-    <div class="live-film" id="live-film">
-      <span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span>
+    <div class="live-film-tray">
+      <div class="live-film" id="live-film">
+        <span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span><span class="live-film-ph"></span>
+      </div>
     </div>
   </div>
+  <div class="live-ticker" id="live-ticker" aria-hidden="true">
+    <div class="live-ticker-track" id="live-ticker-track"><span class="live-ticker-item">Blue River Live — the crew posts from the field, the day it happens</span></div>
+  </div>
+  <p class="sr-only" id="live-stats" role="status" aria-live="polite"></p>
 </section>
 
 {# THE STREAM: one column hanging off a rail (red at the top, fading to navy),
@@ -60,10 +79,11 @@ permalink: /live/
   <div class="container">
    <div class="ls-col">
     <ol class="live-stream live-stream-first" id="live-stream">
-      <li class="ls-top"><span class="ls-top-node" aria-hidden="true"></span><span class="ls-top-text" id="live-status">Loading the crew’s latest…</span></li>
+      <li class="ls-top"><span class="ls-top-node" aria-hidden="true"></span><span class="ls-top-text">Newest at the top — the crew’s day, flowing down</span></li>
       <li class="ls-welcome" id="live-empty" hidden>
         <span class="ls-node" aria-hidden="true"></span>
         <div class="ls-welcome-card">
+          <p class="ls-welcome-status" id="live-status" role="status" aria-live="polite"></p>
           <span class="live-welcome-badge"><span class="live-dot is-live" aria-hidden="true"></span>Blue River Live</span>
           <h2>This is our crews’ camera roll</h2>
           <p>When a job wraps — a fresh run of seamless gutters, a clean-out, a downspout rerouted away from the foundation — the crew snaps it from the ladder and posts it right here, the same day. No stock photos, no staging.</p>
@@ -310,6 +330,8 @@ permalink: /live/
           status = document.getElementById('live-status'), statsEl = document.getElementById('live-stats'),
           film = document.getElementById('live-film'), empty = document.getElementById('live-empty'),
           more = document.getElementById('live-more'), form2 = document.getElementById('quick-form-2'),
+          intro = document.getElementById('live-intro'), mosaic = document.getElementById('live-mosaic'),
+          pols = document.getElementById('live-polaroids'), ticker = document.getElementById('live-ticker-track'),
           shown = [], seen = {}, next = null, busy = false, count = 0, lastDay = null, hooks = 0, reveal = null;
       var K = matchMedia('(max-width: 768px)').matches ? 2 : 3;
 
@@ -325,8 +347,8 @@ permalink: /live/
         return ph.filter(function (x) { return x && L.safe(x.thumb); });
       }
       function ratio(x) { var w = Math.round(+x.w) || 4, h = Math.round(+x.h) || 3; return { w: w, h: h }; }
-      // The feed thumb is w_500; the stream column is ~680px on a desktop, so
-      // offer a w_1000 too. Phones are told "170px" so they keep the w_500
+      // The feed thumb is w_500; stream cards are ~530px (zigzag) to ~680px
+      // wide on bigger screens, so offer a w_1000 too. Phones are told "170px" so they keep the w_500
       // they always had (same quality and bytes as before, LCP unchanged).
       function big(u) { return L.small(u).replace('/w_200,', '/c_limit,w_1000,'); }
 
@@ -344,7 +366,7 @@ permalink: /live/
           img.alt = (p.comment ? p.comment : 'Gutter job' + (p.town ? ' in ' + p.town : '')) + (ph.length > 1 ? ' (photo ' + (i + 1) + ' of ' + ph.length + ')' : '');
           if (/res\.cloudinary\.com/.test(src)) {
             img.srcset = src + ' 500w, ' + big(src) + ' 1000w';
-            img.sizes = '(max-width: 768px) 170px, 680px';
+            img.sizes = '(max-width: 768px) 170px, (min-width: 1024px) 530px, 680px';
           }
           img.src = src;
           a.appendChild(img);
@@ -359,6 +381,8 @@ permalink: /live/
         var c = L.el('li', 'ls-post'), node = L.el('span', 'ls-node'), card = L.el('article', 'ls-card'),
             media = L.el('div', 'live-media'), s = strip(p, ph, shown.length === 1);
         c.id = 'ls-' + count;
+        // Desktop zigzag: posts alternate sides of a centred rail (CSS, >=1024px).
+        c.classList.add(count % 2 ? 'is-left' : 'is-right');
         c.setAttribute('data-id', p.id);
         node.setAttribute('aria-hidden', 'true');
         c.appendChild(node);
@@ -454,6 +478,84 @@ permalink: /live/
         return h;
       }
 
+      // Glide to a post in the stream (filmstrip thumbs, the polaroid stack).
+      function jumpTo(id, ev) {
+        var t = document.getElementById(id);
+        if (!t) return false;
+        t.classList.remove('is-pending');
+        t.scrollIntoView({ behavior: L.reduced ? 'auto' : 'smooth', block: 'start' });
+        t.classList.remove('is-pinged'); void t.offsetWidth; t.classList.add('is-pinged');
+        if (ev && window.brgTrack) brgTrack(ev);
+        return true;
+      }
+
+      // Hero backdrop made of the crew's photos: the filmstrip's own w_200
+      // URLs (already on the page), tiled, treated dark in CSS, drifting slowly.
+      function fillMosaic() {
+        var srcs = [];
+        shown.forEach(function (p) { photos(p).forEach(function (x) { if (srcs.length < 18) srcs.push(L.small(x.thumb)); }); });
+        if (!srcs.length) return;
+        var n = matchMedia('(max-width: 768px)').matches ? 9 : 18, frag = document.createDocumentFragment();
+        for (var i = 0; i < n; i++) {
+          var img = L.el('img', 'live-mosaic-tile');
+          img.alt = ''; img.decoding = 'async'; img.fetchPriority = 'low';
+          img.src = srcs[i % srcs.length];
+          frag.appendChild(img);
+        }
+        mosaic.appendChild(frag);
+        intro.classList.add('has-mosaic');
+      }
+
+      // The newest post as a tilted polaroid stack (newest on top, the next
+      // two peeking behind): LIVE chip, alive phrase, ticking time. Desktop.
+      function fillPolaroids() {
+        var top3 = shown.slice(0, 3);
+        if (!top3.length) return;
+        var a = L.el('a', 'live-pol');
+        a.href = '#ls-1';
+        a.setAttribute('aria-label', 'Newest post: ' + W.headline(top3[0], null, 0) + ' — jump to it');
+        top3.slice().reverse().forEach(function (p) {
+          var i = top3.indexOf(p), card = L.el('span', 'pol-card pol-' + i), img = L.el('img');
+          img.alt = ''; img.decoding = 'async';
+          img.src = L.safe(photos(p)[0].thumb);
+          card.appendChild(img);
+          if (!i) {
+            var cap = L.el('span', 'pol-cap'), when = L.el('span', 'pol-sub', 'Posted ');
+            if (L.isLive(p.posted_at)) { var chip = L.el('span', 'live-chip'); chip.appendChild(L.dot(true)); chip.appendChild(document.createTextNode('LIVE')); card.appendChild(chip); }
+            cap.appendChild(L.el('span', 'pol-head', W.headline(p, null, 0)));
+            var t = L.el('time', null, W.ago(p.posted_at));
+            t.setAttribute('datetime', p.posted_at); t.setAttribute('data-posted', p.posted_at);
+            when.appendChild(t);
+            cap.appendChild(when);
+            card.appendChild(cap);
+          }
+          a.appendChild(card);
+        });
+        a.addEventListener('click', function (e) { if (jumpTo('ls-1', 'live_polaroid_tap')) e.preventDefault(); });
+        pols.appendChild(a);
+      }
+
+      // Red ticker: the stats sentence, then the alive phrases of this week's
+      // posts. Real posts only; with none this week the static line stays.
+      var tickerText = '';
+      function fillTicker() {
+        var items = [], st = W.stats(shown), seen = {};
+        if (st) items.push(st);
+        var wk = shown.filter(function (p) { return Date.now() - Date.parse(p.posted_at) < 7 * 86400000; }).slice(0, 10), k = {};
+        wk.forEach(function (p) {
+          var tr = W.tier(p.posted_at), h = W.headline(p, null, k[tr] = (k[tr] || 0)); k[tr]++;
+          if (!seen[h]) { seen[h] = 1; items.push(h); }
+        });
+        if (!items.length || items.join('|') === tickerText) return;
+        tickerText = items.join('|');
+        var frag = document.createDocumentFragment();
+        for (var r = 0; r < 2; r++) items.forEach(function (x) { frag.appendChild(L.el('span', 'live-ticker-item', x)); });
+        ticker.textContent = '';
+        ticker.appendChild(frag);
+        ticker.style.setProperty('--dur', Math.max(24, items.length * 7) + 's');
+        ticker.classList.add('is-rolling');
+      }
+
       // Filmstrip: the latest photos, newest first; a tap glides to the post.
       function fillFilm() {
         var frag = document.createDocumentFragment(), n = 0;
@@ -463,7 +565,7 @@ permalink: /live/
             var a = L.el('a', 'live-film-thumb' + (!k && L.isLive(p.posted_at) ? ' is-live' : '')), img = L.el('img');
             a.href = '#ls-' + (i + 1);
             a.setAttribute('aria-label', 'Jump to ' + W.headline(p, null, 0) + (k ? ' (photo ' + (k + 1) + ')' : ''));
-            img.alt = ''; img.width = 76; img.height = 76; img.decoding = 'async'; img.loading = n < 8 ? 'eager' : 'lazy';
+            img.alt = ''; img.width = 96; img.height = 96; img.decoding = 'async'; img.loading = n < 8 ? 'eager' : 'lazy';
             img.src = L.small(x.thumb);
             a.appendChild(img);
             frag.appendChild(a);
@@ -476,13 +578,7 @@ permalink: /live/
         film.addEventListener('click', function (e) {
           var a = e.target.closest && e.target.closest('a[href^="#ls-"]');
           if (!a) return;
-          var t = document.getElementById(a.getAttribute('href').slice(1));
-          if (!t) return;
-          e.preventDefault();
-          t.classList.remove('is-pending');
-          t.scrollIntoView({ behavior: L.reduced ? 'auto' : 'smooth', block: 'start' });
-          t.classList.remove('is-pinged'); void t.offsetWidth; t.classList.add('is-pinged');
-          if (window.brgTrack) brgTrack('live_film_tap');
+          if (jumpTo(a.getAttribute('href').slice(1), 'live_film_tap')) e.preventDefault();
         });
       }
 
@@ -539,7 +635,6 @@ permalink: /live/
         } else rest.appendChild(below);
         if (shown.length) {
           headlines();
-          status.textContent = 'Newest at the top — the crew’s day, flowing down';
           var st = W.stats(shown);
           statsEl.textContent = st;
           form2.hidden = count < K + FORM2_AFTER;
@@ -566,9 +661,12 @@ permalink: /live/
           ds[i].classList.toggle('is-today', lab === 'Today');
         }
         statsEl.textContent = W.stats(shown);
+        var ph = pols.querySelector('.pol-head');
+        if (ph) ph.textContent = W.headline(shown[0], null, 0);
+        fillTicker();
       }, 60000);
 
-      window.brgLiveFirst.then(function (d) { add(d, true); if (shown.length) fillFilm(); }, function () {
+      window.brgLiveFirst.then(function (d) { add(d, true); if (shown.length) { fillFilm(); fillMosaic(); fillPolaroids(); fillTicker(); } }, function () {
         down('We couldn’t load the latest photos just now — refresh in a minute.');
       });
 

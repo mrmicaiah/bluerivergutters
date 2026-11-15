@@ -463,12 +463,53 @@ section { padding: 4rem 0; }
 }
 
 /* /live/ page */
+/* Fallback for the mark's display face with Oswald's vertical metrics
+   (hhea ascender 1193 / descender -289 per 1000, no line gap), so the
+   fallback and Oswald occupy the same line box: when Oswald swaps in, glyphs
+   change width (nothing follows them on a line) but never move vertically.
+   No size-adjust, so the overrides apply as-is. Chromium/Firefox honour the
+   overrides; Safari ignores them (a sub-pixel nudge there at worst). */
+@font-face { font-family: 'Oswald Fallback'; src: local('Arial Narrow Bold'), local('ArialNarrow-Bold'), local('Arial Bold'), local('Arial-BoldMT'), local('Arial'); font-weight: 700; ascent-override: 119.3%; descent-override: 28.9%; line-gap-override: 0%; }
 /* Top: a dark, warm "on air" panel; the booking row sits in it at first paint. */
 .live-intro, .live-close { position: relative; overflow: hidden; color: var(--white); background: radial-gradient(circle at 88% 12%, rgba(185,28,28,0.38), transparent 42%), radial-gradient(circle at 8% 110%, rgba(59,130,246,0.22), transparent 40%), linear-gradient(135deg, var(--navy) 0%, #1e293b 100%); }
-.live-intro { padding: 2.75rem 0 2.25rem; }
-.live-kicker { display: inline-block; margin-bottom: 0.9rem; padding: 0.3rem 0.75rem; border-radius: 999px; background: rgba(239,68,68,0.16); border: 1px solid rgba(248,113,113,0.45); color: #fecaca; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
-.live-intro h1 { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; color: var(--white); font-size: 2.9rem; line-height: 1.1; }
-.live-intro h1 .live-dot { width: 16px; height: 16px; }
+.live-intro { padding: 2.75rem 0 calc(2.25rem + 64px); }
+/* Hero backdrop made of the crew's photos (filled from the feed). Navy
+   duotone via luminosity blend, a scrim heaviest behind the copy, slow drift
+   (transform only; none under reduced motion). Behind everything. */
+.live-mosaic { position: absolute; inset: -40px -6%; z-index: 0; display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: 170px; gap: 6px; background: var(--navy); opacity: 0; transition: opacity 1.2s ease; pointer-events: none; }
+.live-intro.has-mosaic .live-mosaic { opacity: 1; animation: live-drift 48s ease-in-out infinite alternate; }
+@keyframes live-drift { from { transform: translate3d(0, 0, 0) scale(1.02); } to { transform: translate3d(-3%, -4%, 0) scale(1.08); } }
+.live-mosaic-tile { display: block; width: 100%; height: 100%; object-fit: cover; mix-blend-mode: luminosity; opacity: 0.85; filter: contrast(1.1); }
+.live-intro::before { content: ''; position: absolute; inset: 0; z-index: 1; opacity: 0; transition: opacity 1.2s ease; pointer-events: none; background: radial-gradient(circle at 82% 18%, rgba(185,28,28,0.42), transparent 46%), linear-gradient(90deg, rgba(15,23,42,0.95) 0%, rgba(15,23,42,0.86) 42%, rgba(30,41,59,0.62) 100%), linear-gradient(0deg, rgba(15,23,42,0.85) 0%, rgba(15,23,42,0) 38%); }
+.live-intro.has-mosaic::before { opacity: 1; }
+.live-intro-grid { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 2.5rem; align-items: center; }
+/* The mark: a show title, not a page heading. Condensed heavy caps, the red
+   dot built in. Fixed line box: the display face swapping in moves nothing. */
+.live-kicker { display: inline-flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; color: rgba(255,255,255,0.8); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.live-onair { display: inline-flex; flex: none; align-items: center; justify-content: center; gap: 0.45rem; width: 6.4em; padding: 0.3rem 0; border-radius: 4px; background: var(--red); color: var(--white); font-family: 'Oswald', 'Oswald Fallback', sans-serif; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.16em; box-shadow: 0 0 0 1px rgba(255,255,255,0.15), 0 4px 16px rgba(185,28,28,0.5); }
+.live-onair .live-dot.is-live, .live-onair .live-dot.is-live::after { background: var(--white); }
+.live-mark { display: block; margin: 0 0 0.85rem; color: var(--white); font-family: 'Oswald', 'Oswald Fallback', sans-serif; font-size: min(4.6rem, 6.2vw); font-weight: 700; font-stretch: condensed; line-height: 1; text-transform: uppercase; white-space: nowrap; }
+.live-mark-name { display: flex; align-items: center; gap: 0.55em; height: 1.2em; font-size: 0.4em; line-height: 1.2; letter-spacing: 0.2em; color: rgba(255,255,255,0.9); text-shadow: 0 2px 18px rgba(0,0,0,0.5); }
+.live-mark-line { display: flex; align-items: center; gap: 0.2em; height: 1.08em; }
+.live-mark-live { display: inline-block; height: 1.08em; padding: 0.04em 0.2em 0; line-height: 1.04; background: var(--red); color: var(--white); letter-spacing: 0.02em; box-shadow: 0 8px 28px rgba(185,28,28,0.5), inset 0 -0.06em 0 rgba(0,0,0,0.2); }
+.live-mark-dot { position: relative; flex: none; width: 0.62em; height: 0.62em; border-radius: 50%; background: #ef4444; box-shadow: 0 0 0 0.06em rgba(239,68,68,0.3), 0 0 24px rgba(239,68,68,0.8); }
+.live-mark-dot::after { content: ''; position: absolute; inset: 0; border-radius: 50%; background: #ef4444; animation: live-ping 1.8s ease-out infinite; }
+/* The newest post as a tilted polaroid stack (desktop). Fixed box. */
+.live-polaroids { position: relative; width: 360px; height: 380px; }
+.live-pol { position: absolute; inset: 0; display: block; color: var(--navy); }
+.pol-card { position: absolute; left: 30px; top: 10px; width: 290px; padding: 12px 12px 0; background: #fbfaf7; border-radius: 4px; box-shadow: 0 18px 40px rgba(0,0,0,0.45); transition: transform 0.35s ease; animation: pol-in 0.8s cubic-bezier(0.2, 0.9, 0.25, 1.1) both; }
+.pol-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #cbd5e1; }
+.pol-0 { z-index: 3; --r: -4deg; transform: rotate(-4deg); padding-bottom: 14px; }
+.pol-1 { z-index: 2; --r: 5deg; transform: translate(26px, -6px) rotate(5deg); animation-delay: 0.08s; }
+.pol-2 { z-index: 1; --r: -9deg; transform: translate(-22px, 14px) rotate(-9deg); animation-delay: 0.16s; }
+.pol-1, .pol-2 { padding-bottom: 46px; }
+@keyframes pol-in { from { opacity: 0; transform: translate(40px, 30px) rotate(12deg) scale(0.92); } }
+.live-pol:hover .pol-0, .live-pol:focus-visible .pol-0 { transform: rotate(-2deg) translateY(-6px); }
+.pol-0 .live-chip { top: 1.3rem; left: 1.3rem; }
+.pol-cap { display: block; padding: 0.7rem 0.15rem 0; }
+.pol-head { display: block; overflow: hidden; color: var(--red); font-size: 1.2rem; font-weight: 800; line-height: 1.2; white-space: nowrap; text-overflow: ellipsis; }
+.pol-sub { display: block; color: var(--gray); font-size: 0.82rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .live-lede { max-width: 720px; margin-bottom: 0.5rem; font-size: 1.3rem; font-weight: 600; line-height: 1.4; color: var(--white); }
 .live-sub { max-width: 680px; margin-bottom: 0; font-size: 1rem; color: rgba(255,255,255,0.72); }
 /* Booking row (top and closing block): scheduler, phone, quick form. */
@@ -493,23 +534,31 @@ section { padding: 4rem 0; }
 .live-count { position: absolute; right: 0.6rem; bottom: 0.6rem; width: 6.6em; padding: 0.3rem 0; text-align: center; white-space: nowrap; overflow: hidden; border: 0; border-radius: 999px; background: rgba(15,23,42,0.82); color: var(--white); font: inherit; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
 .live-count:hover, .live-count:focus-visible { background: var(--navy); }
 /* Filmstrip: fixed-height box (placeholder tiles in the HTML), so filling it moves nothing. */
-.live-film-wrap { padding: 0.9rem 0 0.85rem; background: var(--white); border-bottom: 1px solid #e8edf3; }
-.live-film-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 1.6rem; margin-bottom: 0.55rem; }
-.live-film-label { display: inline-flex; align-items: center; gap: 0.5rem; flex: none; color: var(--navy); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
-.live-stats { min-width: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--red); font-size: 0.98rem; font-weight: 700; }
-.live-film { display: flex; gap: 8px; height: 76px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; scrollbar-width: none; overscroll-behavior-x: contain; }
+/* The seam: the filmstrip docks into the hero's bottom edge like a film tray
+   sliding out; a slim red ticker runs under it. Fixed heights throughout. */
+.live-film-wrap { position: relative; z-index: 3; margin-top: -64px; padding: 0; }
+.live-film-tray { padding: 12px 12px 10px; border-radius: 14px 14px 0 0; background: rgba(15,23,42,0.92); box-shadow: 0 -10px 30px rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-bottom: 0; }
+.live-film { display: flex; gap: 10px; height: 96px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x proximity; scrollbar-width: none; overscroll-behavior-x: contain; }
 .live-film::-webkit-scrollbar { display: none; }
-.live-film-ph, .live-film-thumb { flex: none; width: 76px; height: 76px; border-radius: 10px; background: linear-gradient(100deg, #e2e8f0 30%, #f1f5f9 50%, #e2e8f0 70%) 0 0 / 300% 100%; scroll-snap-align: start; }
+.live-film-ph, .live-film-thumb { flex: none; width: 96px; height: 96px; border-radius: 10px; background: linear-gradient(100deg, #1e293b 30%, #334155 50%, #1e293b 70%) 0 0 / 300% 100%; scroll-snap-align: start; }
 .live-film-ph { animation: live-shimmer 1.4s linear infinite; }
 @keyframes live-shimmer { to { background-position: -150% 0; } }
 .live-film-thumb { display: block; overflow: hidden; transition: transform 0.2s ease; }
-.live-film-thumb:hover, .live-film-thumb:focus-visible { transform: translateY(-3px); }
+.live-film-thumb:hover, .live-film-thumb:focus-visible { transform: translateY(-4px); }
 .live-film-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .live-film-thumb.is-live { outline: 3px solid #ef4444; outline-offset: -3px; }
-.live-film-empty { align-self: center; color: var(--gray); font-weight: 600; }
+.live-film-empty { align-self: center; padding: 0 0.5rem; color: rgba(255,255,255,0.75); font-weight: 600; }
+.live-ticker { height: 34px; overflow: hidden; background: var(--red); color: var(--white); box-shadow: inset 0 1px 0 rgba(255,255,255,0.15); }
+.live-ticker-track { display: flex; width: max-content; height: 34px; align-items: center; white-space: nowrap; }
+.live-ticker-track.is-rolling { animation: live-ticker var(--dur, 40s) linear infinite; }
+.live-ticker:hover .live-ticker-track { animation-play-state: paused; }
+@keyframes live-ticker { to { transform: translateX(-50%); } }
+.live-ticker-item { display: inline-flex; align-items: center; padding: 0 1.4rem 0 0; font-size: 0.84rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.live-ticker-item::before { content: ''; flex: none; width: 7px; height: 7px; margin: 0 0.75rem 0 0.4rem; border-radius: 50%; background: var(--white); opacity: 0.9; }
+.live-ticker-track:not(.is-rolling) { padding-left: max(1.5rem, calc((100vw - 1200px) / 2 + 1rem)); }
 /* THE STREAM: one column hanging off a rail, red at the top fading to navy.
    Nodes sit ON the rail; posts, hooks and the form card hang off it. */
-.live-stream-wrap { padding: 1.25rem 0 2.5rem; background: linear-gradient(180deg, #f6f8fb 0%, #ffffff 40%, #f6f8fb 100%); }
+.live-stream-wrap { padding: 1.5rem 0 2.5rem; background: linear-gradient(180deg, #f6f8fb 0%, #ffffff 40%, #f6f8fb 100%); }
 .ls-col { position: relative; max-width: 760px; margin: 0 auto; padding-left: 52px; --rail: 20px; }
 .ls-col::before { content: ''; position: absolute; left: calc(var(--rail) - 1.5px); top: 12px; bottom: 12px; width: 3px; border-radius: 3px; background: linear-gradient(180deg, #ef4444 0%, var(--red) 10%, #7f1d1d 30%, var(--navy) 65%, rgba(15,23,42,0.25) 100%); }
 .live-stream { list-style: none; margin: 0; padding: 0; }
@@ -564,6 +613,8 @@ section { padding: 4rem 0; }
 .ls-form .lead-form-card { max-width: none; margin: 0; padding: 0.75rem 0 0; border: 0; border-radius: 0; box-shadow: none; background: none; }
 /* No posts (or feed down): the welcome node on the rail. */
 .ls-welcome[hidden] { display: none; }
+.ls-welcome-status { margin: 0 0 0.9rem; color: var(--red); font-size: 0.85rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.ls-welcome-status:empty { display: none; }
 .ls-welcome .ls-node { top: 30px; background: #ef4444; border-color: #fecaca; }
 .ls-welcome-card { padding: 2.25rem 2rem; border: 1px solid #ece7df; border-top: 4px solid var(--red); border-radius: 14px; background: linear-gradient(180deg, var(--white) 0%, var(--cream) 100%); box-shadow: 0 10px 30px rgba(15,23,42,0.08); text-align: center; color: var(--navy); }
 .live-welcome-badge { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; padding: 0.35rem 0.85rem; border-radius: 999px; background: var(--navy); color: var(--white); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
@@ -576,6 +627,9 @@ section { padding: 4rem 0; }
 .live-more[hidden] { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .live-film-ph, .ls-top-node::after, .ls-day.is-today .ls-node::after { animation: none; }
+  .live-intro.has-mosaic .live-mosaic, .live-mark-dot::after, .pol-card, .live-ticker-track.is-rolling { animation: none; }
+  .live-ticker-track.is-rolling { transform: none; }
+  .live-mosaic, .live-intro::before { transition: none; }
   .ls-card, .ls-node, .live-film-thumb { transition: none; }
 }
 /* Desktop floating booking pill (phones have the sitewide sticky bar). */
@@ -584,22 +638,61 @@ section { padding: 4rem 0; }
 .live-float:hover, .live-float:focus-visible { background: var(--red-dark); color: var(--white); }
 @media (max-width: 768px) { .live-float { display: none; } }
 @media (prefers-reduced-motion: reduce) { .live-float { transition: none; transform: none; } }
+/* Below desktop: no polaroid column (phones keep v2's hero layout). */
+@media (max-width: 1023px) {
+  .live-intro-grid { grid-template-columns: minmax(0, 1fr); }
+  .live-polaroids { display: none; }
+}
+/* Desktop: THE STREAM USES THE WIDTH. Rail centred; posts alternate left and
+   right of it (zigzag), each pulled up beside the one before it; day nodes
+   become big pills ON the rail; hooks, forms and the welcome sit centred
+   across it. Phones and tablets keep the single column. */
+@media (min-width: 1024px) {
+  .ls-col { max-width: 1140px; padding-left: 0; }
+  .ls-col::before { left: calc(50% - 1.5px); width: 3px; }
+  .ls-top { flex-direction: column; justify-content: flex-start; padding-top: 30px; text-align: center; }
+  .ls-top-node { left: calc(50% - 10px); top: 0; }
+  .ls-top-text { position: relative; padding: 0.2rem 0.75rem; background: #f6f8fb; }
+  .ls-day { justify-content: center; margin: 2.25rem 0 1.5rem; }
+  .ls-day .ls-node { display: none; }
+  .ls-day-label { position: relative; padding: 0.55rem 1.35rem; border: 3px solid #f6f8fb; font-size: 0.95rem; letter-spacing: 0.16em; box-shadow: 0 0 0 2px #cbd5e1; }
+  .ls-day.is-today .ls-day-label { box-shadow: 0 0 0 2px #ef4444, 0 0 0 9px rgba(239,68,68,0.18), 0 6px 22px rgba(185,28,28,0.45); }
+  .ls-day.is-today .ls-day-label::after { content: ''; position: absolute; inset: -3px; z-index: -1; border-radius: 999px; background: #ef4444; animation: live-ping 2.2s ease-out infinite; }
+  .ls-post { width: calc(50% - 46px); margin-bottom: 2rem; }
+  .ls-post.is-left { margin-right: auto; }
+  .ls-post.is-right { margin-left: auto; }
+  .ls-post + .ls-post { margin-top: -170px; }
+  .ls-post.is-left .ls-node { left: calc(100% + 46px - 6.5px); }
+  .ls-post.is-right .ls-node { left: calc(-46px - 6.5px); }
+  .ls-post .ls-node::after { width: 36px; }
+  .ls-post.is-left .ls-node::after { left: auto; right: 100%; background: linear-gradient(270deg, rgba(15,23,42,0.25), rgba(15,23,42,0)); }
+  .ls-post.is-left.is-pending .ls-card { transform: translateX(-22px); }
+  .ls-hook { max-width: 660px; margin: 0.5rem auto 2rem; }
+  .ls-hook .ls-node, .ls-form .ls-node, .ls-welcome .ls-node, .ls-end .ls-node { left: calc(50% - 6.5px); top: -18px; }
+  .ls-form .ls-node { left: calc(50% - 9.5px); top: -24px; }
+  .ls-form, .ls-welcome { max-width: 780px; margin-left: auto; margin-right: auto; }
+  .ls-form { margin-top: 2.5rem; }
+  .live-more { margin: 1rem auto 2rem; position: relative; }
+}
 /* A full scroll ends here: phone, scheduler, form. */
 .live-close { padding: 3rem 0; text-align: center; }
 .live-close h2 { margin-bottom: 0.5rem; color: var(--white); font-size: 2rem; }
 .live-close p { max-width: 600px; margin: 0 auto; color: rgba(255,255,255,0.78); font-size: 1.05rem; }
 .live-close .live-book { justify-content: center; }
 @media (max-width: 768px) {
-  .live-intro { padding: 1.75rem 0 1.75rem; }
-  .live-intro h1 { font-size: 2.2rem; }
+  .live-intro { padding: 1.5rem 0 calc(1.5rem + 46px); }
+  .live-mosaic { grid-template-columns: repeat(3, 1fr); grid-auto-rows: 130px; }
+  .live-mark { font-size: min(3.4rem, 12vw); }
+  .live-kicker { gap: 0.55rem; font-size: 0.72rem; letter-spacing: 0.1em; }
   .live-lede { font-size: 1.12rem; }
   .live-sub { font-size: 0.95rem; }
   .live-book { gap: 0.6rem 1rem; margin-top: 1.25rem; }
   .live-book-btn { flex: 1 1 100%; }
-  .live-film-head { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 0.2rem; height: 3.65rem; }
-  .live-stats { max-width: 100%; font-size: 0.9rem; line-height: 1.3; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-  .live-film { height: 64px; }
-  .live-film-ph, .live-film-thumb { width: 64px; height: 64px; }
+  .live-film-wrap { margin-top: -46px; }
+  .live-film-tray { padding: 9px 9px 8px; border-radius: 12px 12px 0 0; }
+  .live-film { height: 72px; gap: 8px; }
+  .live-film-ph, .live-film-thumb { width: 72px; height: 72px; }
+  .live-film-wrap > .container { padding: 0 0.75rem; }
   .ls-col { padding-left: 34px; --rail: 12px; }
   .ls-node { left: calc(var(--rail) - 34px - 6.5px); }
   .ls-top-node { left: calc(var(--rail) - 34px - 10px); }
