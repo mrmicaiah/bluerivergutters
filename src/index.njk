@@ -1081,8 +1081,8 @@ a.lp-city:hover { text-decoration: underline; }
 {# Lead form handler — posts to /api/lead. Guards, zip allowlist and
    zip -> city come from /js/lead-form.js (window.BRGLeadGuards), fed by
    src/_data/serviceArea.js — one guard chain for every form on the site. #}
-<script src="{{ '/js/service-area.js' | url }}"></script>
-<script src="{{ '/js/lead-form.js' | url }}"></script>
+<script src="{{ '/js/service-area.js' | url | v }}"></script>
+<script src="{{ '/js/lead-form.js' | url | v }}"></script>
 {% raw %}
 <script>
 (function() {

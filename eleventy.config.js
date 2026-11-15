@@ -1,4 +1,33 @@
 const { execSync } = require("child_process");
+const crypto = require("crypto");
+const fs = require("fs");
+const path = require("path");
+
+// Cache-busting for /css/ and /js/ references: "?v=" + the first 10 hex of a
+// sha256 of the asset's SOURCE, so a URL changes exactly when its file does
+// (stable across rebuilds) and browsers / Cloudflare's edge fetch the new
+// file at once instead of serving a stale cached copy for hours. Filenames
+// are unchanged. The generated /js/service-area.js hashes its template and
+// its data file. An unknown asset fails the build rather than ship unversioned.
+const ASSET_SOURCES = {
+  "/js/service-area.js": ["src/service-area-js.njk", "src/_data/serviceArea.js"],
+};
+const assetHashes = new Map();
+function assetVersion(url) {
+  const m = /^(.*?)(\/(?:css|js)\/[^?#]+)$/.exec(String(url));
+  if (!m) throw new Error("[asset v] not a /css/ or /js/ URL: " + url);
+  const key = m[2];
+  if (!assetHashes.has(key)) {
+    const files = ASSET_SOURCES[key] || [path.join("src", key)];
+    const h = crypto.createHash("sha256");
+    for (const f of files) {
+      if (!fs.existsSync(f)) throw new Error("[asset v] no source for " + key + " (looked for " + f + ")");
+      h.update(fs.readFileSync(f));
+    }
+    assetHashes.set(key, h.digest("hex").slice(0, 10));
+  }
+  return m[1] + key + "?v=" + assetHashes.get(key);
+}
 
 // "git Last Modified" dates (sitemap lastmod, schema dateModified) need full
 // history. Cloudflare Pages builds from a shallow clone, where every file's
@@ -31,6 +60,12 @@ function ensureFullGitHistory() {
 }
 
 module.exports = function(eleventyConfig) {
+  // {{ '/css/main.css' | url | v }} -> /css/main.css?v=<content hash>. Hashes
+  // are computed once per build (cleared before each build, so --serve /
+  // --watch pick up edits).
+  eleventyConfig.addFilter("v", assetVersion);
+  eleventyConfig.on("eleventy.before", () => assetHashes.clear());
+
   // True only when per-file git dates are trustworthy (see ensureFullGitHistory).
   eleventyConfig.addGlobalData("gitHistoryComplete", ensureFullGitHistory());
 

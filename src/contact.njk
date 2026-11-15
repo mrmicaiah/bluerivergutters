@@ -416,8 +416,8 @@ lcp_hero_crop: wide
 
 {# Lead Form Handler (posts to /api/lead) — guards, zip allowlist and zip -> city come from
    /js/lead-form.js (window.BRGLeadGuards), fed by src/_data/serviceArea.js #}
-<script src="{{ '/js/service-area.js' | url }}"></script>
-<script src="{{ '/js/lead-form.js' | url }}"></script>
+<script src="{{ '/js/service-area.js' | url | v }}"></script>
+<script src="{{ '/js/lead-form.js' | url | v }}"></script>
 <script>
 (function() {
   const CONFIG = {

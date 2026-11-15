@@ -6,7 +6,8 @@
     "build": "eleventy",
     "serve": "eleventy --serve",
     "watch": "eleventy --watch",
-    "test:functions": "node --test 'tests/functions/*.test.mjs'"
+    "test:functions": "node --test 'tests/functions/*.test.mjs'",
+    "test:build": "node --test 'tests/build/*.test.mjs'"
   },
   "keywords": ["gutters", "huntsville", "alabama", "home-services"],
   "author": "Untitled Publishers",

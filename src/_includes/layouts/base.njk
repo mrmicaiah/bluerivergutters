@@ -105,9 +105,9 @@
   <link rel="preload" as="font" type="font/woff2" href="{{ '/fonts/source-sans-3-latin.woff2' | url }}" crossorigin>
   
   {# Combined Stylesheet (styles + navigation + parallax merged for perf) #}
-  <link rel="stylesheet" href="{{ '/css/main.css' | url }}">
+  <link rel="stylesheet" href="{{ '/css/main.css' | url | v }}">
   {% if extraCss %}
-  <link rel="stylesheet" href="{{ '/css/' | url }}{{ extraCss }}">
+  <link rel="stylesheet" href="{{ ('/css/' + extraCss) | url | v }}">
   {% endif %}
   
   {# Canonical URL #}
@@ -132,7 +132,7 @@
   {% include "partials/footer.njk" %}
   
   {# Navigation JS (dropdowns, mobile menu, accordions) #}
-  <script src="{{ '/js/navigation.js' | url }}"></script>
+  <script src="{{ '/js/navigation.js' | url | v }}"></script>
   
   {# FAQ accordion #}
   <script>
