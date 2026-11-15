@@ -7,18 +7,26 @@ description: "Huntsville's top-rated gutter company — 4.7★ Google rating. Se
 # Keep in sync with the .hero-v2 background below.
 lcp_hero: https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/hero-bg_axhlw4.jpg
 lcp_hero_crop: tall
+# The hero's status slot carries Blue River Live here, so the site-wide strip
+# would only repeat it: base.njk leaves it out on this page.
+liveBanner: false
 ---
 
 
-{# Urgency Bar #}
-<div class="urgency-bar">
-  <span class="pulse"></span>
-  <strong>Currently booking 2–3 weeks out:</strong> Free estimates available this week
-</div>
-
 {# Hero with Lead Form #}
 <section class="hero-v2">
-  <div class="container">
+  {# Status slot. The HTML is today's urgency bar, and that is what shows with
+     JS off, a failed or empty feed, or a newest post older than 14 days. When
+     a post exists the script at the end of this file swaps it for the Blue
+     River Live strip after load; any extra height hangs into the container's
+     empty top padding, so nothing below it moves. #}
+  <div class="hero-status" id="hero-status">
+    <div class="urgency-bar">
+      <span class="pulse"></span>
+      <strong>Currently booking 2–3 weeks out:</strong> Free estimates available this week
+    </div>
+  </div>
+  <div class="container hero-v2-inner">
     <div class="hero-v2-grid">
 
       <div class="hero-v2-content">
@@ -498,6 +506,35 @@ lcp_hero_crop: tall
   50% { opacity: 0.6; transform: scale(1.4); }
 }
 
+/* Blue River Live in the hero status slot (hydrated by the script below).
+   A dark translucent strip over the hero photo; the content row lines up
+   with the container and carries the red left border. The whole strip is one
+   link to /live/. The dot is the shared .live-dot (no pulse under reduced
+   motion, main.css). */
+.hero-status { position: relative; z-index: 1; }
+.hero-live { display: block; background: rgba(15, 23, 42, 0.78); color: var(--white); text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+.hero-live:hover, .hero-live:focus-visible { color: var(--white); }
+.hero-live-row { display: flex; align-items: center; gap: 0.9rem; max-width: calc(1200px - 3rem); margin: 0 auto; padding: 0.5rem 0 0.5rem 0.85rem; border-left: 4px solid var(--red); }
+.hero-live-thumb { flex: none; display: block; width: 46px; height: 46px; border-radius: 6px; object-fit: cover; background: var(--slate); }
+.hero-live-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+.hero-live-line { font-size: 1rem; font-weight: 700; line-height: 1.3; }
+.hero-live-line .live-dot { margin: -2px 0.45rem 0 0; }
+.hero-live-tag { color: #f87171; letter-spacing: 0.08em; }
+.hero-live-line time { white-space: nowrap; }
+.hero-live-book { font-size: 0.82rem; font-weight: 500; line-height: 1.3; color: rgba(255, 255, 255, 0.72); }
+.hero-live-cta { flex: none; padding: 0.55rem 0.95rem; border: 1px solid rgba(255, 255, 255, 0.5); border-radius: 6px; background: rgba(255, 255, 255, 0.08); font-size: 0.95rem; font-weight: 700; white-space: nowrap; transition: background 0.2s, color 0.2s; }
+.hero-live:hover .hero-live-cta, .hero-live:focus-visible .hero-live-cta { background: var(--white); color: var(--navy); }
+@media (max-width: 600px) {
+  /* Phone: thumb left, three short lines right — the CTA becomes the last line
+     (the whole strip is the tap target). */
+  .hero-live-row { display: grid; grid-template-columns: 46px minmax(0, 1fr); column-gap: 0.7rem; row-gap: 0.1rem; align-items: start; padding: 0.3rem 0 0.3rem 0.65rem; }
+  .hero-live-thumb { grid-row: 1 / span 2; margin-top: 2px; }
+  .hero-live-line { font-size: 0.92rem; line-height: 1.25; }
+  .hero-live-book { font-size: 0.74rem; line-height: 1.25; }
+  .hero-live-cta { grid-column: 2; justify-self: start; padding: 0; border: 0; background: none; font-size: 0.86rem; line-height: 1.3; color: #fecaca; }
+  .hero-live:hover .hero-live-cta, .hero-live:focus-visible .hero-live-cta { background: none; color: var(--white); text-decoration: underline; }
+}
+
 .hero-v2 {
   position: relative;
   background-image:
@@ -505,9 +542,12 @@ lcp_hero_crop: tall
     url('https://res.cloudinary.com/dxzw1zwez/image/upload/f_auto,q_auto,w_1920/hero-bg_axhlw4.jpg');
   background-size: cover;
   background-position: center;
-  padding: 4rem 0 5rem;
+  padding: 0 0 5rem;
   color: var(--white);
 }
+/* Top padding lives on the inner container so the status slot above it sits
+   at the hero's top edge, exactly where the urgency bar always was. */
+.hero-v2-inner { padding-top: 4rem; }
 @media (max-width: 768px) {
   /* Phone variant of the hero (3:4 crop, w_828) — matches lcp_hero_crop above
      so it's the same URL base.njk preloads. */
@@ -974,7 +1014,8 @@ a.lp-city:hover { text-decoration: underline; }
 }
 
 @media (max-width: 768px) {
-  .hero-v2 { padding: 2.5rem 0 3rem; }
+  .hero-v2 { padding: 0 0 3rem; }
+  .hero-v2-inner { padding-top: 2.5rem; }
   .hero-v2-content h1 { font-size: 2rem; }
   .hero-v2-sub { font-size: 1rem; }
   .hero-form-card { padding: 1.5rem; }
@@ -1181,6 +1222,115 @@ a.lp-city:hover { text-decoration: underline; }
 })();
 </script>
 {% endraw %}
+
+{# Blue River Live in the hero status slot (#hero-status). After window load,
+   in idle time, it reads the newest post from the bare /api/live/feed (the
+   same cached URL every page uses) and, when one exists and is under 14 days
+   old, swaps today's urgency bar for the live strip: thumb, LIVE dot, posted
+   time, what + town, the booking line folded beneath, "See today's work".
+   Zero layout shift is enforced here, not hoped for: in the same task as the
+   swap it measures how much taller the strip is than the bar and lets that
+   hang into the container's empty top padding, so nothing below moves. If the room isn't
+   there (a very narrow screen, huge text) it puts the bar straight back
+   before anything paints. Feed text goes in as text only. #}
+<script>
+  (function () {
+    var slot = document.getElementById('hero-status');
+    if (!slot) return;
+    var inner = slot.nextElementSibling, bar = slot.firstElementChild, live = null;
+    var MIN_PAD = 10, FRESH = 14 * 86400000;
+    var BOOK = 'Currently booking 2–3 weeks out · Free estimates this week';
+    var dayKey = (function () {
+      var f;
+      try { f = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit' }); }
+      catch (e) { f = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' }); }
+      return function (t) { return f.format(new Date(t)); };
+    })();
+
+    function build(L, p) {
+      var a = L.el('a', 'hero-live'), row = L.el('span', 'hero-live-row');
+      a.href = '/live/';
+      var src = L.small(L.first(p).thumb), img = L.el(src ? 'img' : 'span', 'hero-live-thumb');
+      if (src) {
+        img.alt = ''; img.width = 46; img.height = 46; img.decoding = 'async';
+        img.addEventListener('error', function () { img.style.visibility = 'hidden'; });
+        img.src = src;
+      }
+      row.appendChild(img);
+      var body = L.el('span', 'hero-live-body'), line = L.el('span', 'hero-live-line');
+      var on = L.isLive(p.posted_at), d0 = L.dot(on), tag = L.el('strong', 'hero-live-tag', on ? 'LIVE' : 'RECENT');
+      var what = (typeof p.service === 'string' && p.service.trim()) || 'New photos';
+      line.appendChild(d0);
+      line.appendChild(tag);
+      line.appendChild(document.createTextNode(' — Posted '));
+      line.appendChild(L.ago(p.posted_at));
+      line.appendChild(document.createTextNode(' · ' + what + (p.town ? ' in ' + p.town : '')));
+      body.appendChild(line);
+      body.appendChild(L.el('span', 'hero-live-book', BOOK));
+      row.appendChild(body);
+      var cta = L.el('span', 'hero-live-cta');
+      row.appendChild(cta);
+      a.appendChild(row);
+      // tick() calls this as time passes: LIVE only under 24h, "today's" only today.
+      a.setAttribute('data-live-box', '');
+      a.setLive = function (isOn) {
+        d0.classList.toggle('is-live', isOn);
+        tag.textContent = isOn ? 'LIVE' : 'RECENT';
+        cta.textContent = dayKey(p.posted_at) === dayKey(Date.now()) ? 'See today’s work →' : 'See the latest work →';
+      };
+      a.setLive(on);
+      a.addEventListener('click', function () { if (window.brgTrack) brgTrack('live_hero_click'); });
+      return a;
+    }
+
+    // The slot keeps the bar's height in the flow (min-height) and the strip's
+    // extra height hangs into the container's top padding (negative margin;
+    // the slot is positioned, so it paints over that empty padding). Nothing
+    // after the slot moves — not the container's box, not the H1.
+    // false = not enough padding: the caller restores the bar, same task.
+    function fit() {
+      slot.style.minHeight = slot.style.marginBottom = '';
+      bar.style.cssText = 'position:absolute;top:0;left:0;right:0;visibility:hidden';
+      slot.appendChild(bar);
+      var barH = bar.offsetHeight, extra = live.offsetHeight - barH;
+      slot.removeChild(bar);
+      bar.style.cssText = '';
+      if ((parseFloat(getComputedStyle(inner).paddingTop) || 0) - extra < MIN_PAD) return false;
+      slot.style.minHeight = barH + 'px';
+      if (extra > 0) slot.style.marginBottom = -extra + 'px';
+      return true;
+    }
+    function unwind() {
+      if (live && live.parentNode) slot.replaceChild(bar, live);
+      slot.style.minHeight = slot.style.marginBottom = '';
+      live = null;
+    }
+
+    function render(d) {
+      var L = window.brgLive;
+      if (!L) return;
+      var p = ((d && d.posts) || []).filter(function (x) { return x && !isNaN(Date.parse(x.posted_at)); })[0];
+      if (!p || Date.now() - Date.parse(p.posted_at) > FRESH) return;
+      live = build(L, p);
+      slot.replaceChild(live, bar);
+      if (!fit()) return unwind();
+      L.startTicking();
+      var t = 0;
+      addEventListener('resize', function () {
+        clearTimeout(t);
+        t = setTimeout(function () { if (live && !fit()) unwind(); }, 150);
+      });
+    }
+    function hydrate() {
+      fetch('/api/live/feed', { headers: { accept: 'application/json' } })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+        .then(render)
+        .catch(function () { /* today's urgency bar stays */ });
+    }
+    function idle() { (window.requestIdleCallback || setTimeout)(hydrate, { timeout: 2000 }); }
+    if (document.readyState === 'complete') idle(); else addEventListener('load', idle);
+  })();
+</script>
 
 {# Schema markup for LocalBusiness + FAQ — consolidated July 2026: reviews nested in main entity, sameAs added #}
 {% raw %}

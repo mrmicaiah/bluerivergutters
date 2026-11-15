@@ -119,7 +119,9 @@
 <body>
   
   {% include "partials/header.njk" %}
-  {% include "partials/live-banner.njk" %}
+  {# Every page but the homepage (liveBanner: false), whose hero status slot
+     carries Blue River Live instead. #}
+  {% if liveBanner !== false %}{% include "partials/live-banner.njk" %}{% endif %}
 
   <main>
     {% block content %}
