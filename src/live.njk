@@ -5,32 +5,57 @@ description: Blue River Live — photos from real gutter jobs, posted from the f
 permalink: /live/
 ---
 
+{# The first feed page is this page's content (its first photo is the LCP),
+   so it is requested before any markup: the bare URL, shared with the
+   site-wide strip. The feed can fail before DOMContentLoaded, while nothing
+   is listening yet, so the rejection is marked handled at once; start() and
+   the strip still get it. #}
+<script>
+  window.brgLiveFirst = fetch('/api/live/feed', { headers: { accept: 'application/json' } })
+    .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
+  window.brgLiveFirst.catch(function () {});
+</script>
+
+{# Top: energy + a way to book before the first photo. The booking row is
+   static HTML, so it is on screen at first paint and never moves. #}
 <section class="live-intro">
   <div class="container">
+    <p class="live-kicker">Straight from the truck</p>
     <h1><span class="live-dot is-live" aria-hidden="true"></span>Blue River Live</h1>
-    <p>These are our real jobs, posted from the field by the crew while the ladders are still up — across Huntsville, Madison, Decatur and the rest of North Alabama. Newest first, straight from the truck.</p>
+    <p class="live-lede">Our crews post from the field — these photos land here the day they happen.</p>
+    <p class="live-sub">Real gutter jobs across Huntsville, Madison, Decatur and the rest of North Alabama, posted while the ladders are still up. Newest first.</p>
+    <div class="live-book">
+      <a class="btn btn-primary live-book-btn" href="https://BlueRiverGutters.as.me/" target="_blank" rel="noopener">📅 Book Your Free Inspection</a>
+      <a class="live-book-tel" href="tel:2566166760">📞 (256) 616-6760</a>
+      <a class="live-book-form" href="#quick-form">or use the quick form below ↓</a>
+    </div>
   </div>
 </section>
 
 {# First screenful of posts. Its height is reserved before the feed answers
    (.live-feed-first), so the lead form below starts under the fold and
-   nothing on screen moves as cards land. If the feed is down or empty, the
-   same space holds a calm panel with the phone number, and the form is right
-   below it: the page can still produce a lead. #}
+   nothing on screen moves as cards land. The status line holds the stats
+   ("14 photos this week · 5 towns", from the feed only) or, with no posts,
+   what happened — and the same reserved space holds the welcome panel, so a
+   page with zero posts still reads as intentional, with the form right below. #}
 <section class="live-feed-section live-feed-first">
   <div class="container">
     <p class="live-status" id="live-status" role="status" aria-live="polite">Loading the latest jobs…</p>
-    <div class="live-empty" id="live-empty" hidden>
-      <p>This could be your house — free estimates across Huntsville &amp; North Alabama. <a href="tel:2566166760">Call (256) 616-6760</a></p>
-      <p class="live-empty-down">Or tell us about your home in the form below — it takes 15 seconds.</p>
+    <div class="live-welcome" id="live-empty" hidden>
+      <span class="live-welcome-badge"><span class="live-dot is-live" aria-hidden="true"></span>Blue River Live</span>
+      <h2>This is our crews’ camera roll</h2>
+      <p>When a job wraps — a fresh run of seamless gutters, a clean-out, a downspout rerouted away from the foundation — the crew snaps it from the ladder and posts it right here, the same day. No stock photos, no staging.</p>
+      <p class="live-welcome-next">The trucks are out — new photos land here as the work wraps up. Want yours to be next? The quick form is right below.</p>
     </div>
     <ol class="live-grid" id="live-feed"></ol>
     <noscript><p>Blue River Live needs JavaScript to load the newest job photos. You can also browse our <a href="{{ '/recent-projects/' | url }}">recent projects</a>.</p></noscript>
   </div>
 </section>
 
+<div id="quick-form" class="live-form-anchor">
 {% set lead_form_kind = "live" %}
 {% include "partials/lead-form.njk" %}
+</div>
 
 <section class="live-feed-section live-feed-rest">
   <div class="container">
@@ -38,6 +63,44 @@ permalink: /live/
     <button type="button" class="btn btn-primary live-more" id="live-more" hidden>Load more jobs</button>
   </div>
 </section>
+
+<a class="live-float" id="live-float" href="https://BlueRiverGutters.as.me/" target="_blank" rel="noopener" aria-hidden="true" tabindex="-1">📅 Book your free inspection</a>
+
+{# A full scroll always ends at a booking path. #}
+<section class="live-close">
+  <div class="container">
+    <h2>Want your house on this page next?</h2>
+    <p>Free, no-pressure inspection across Huntsville &amp; North Alabama — most homes seen within 48 hours.</p>
+    <div class="live-book">
+      <a class="btn btn-primary live-book-btn" href="https://BlueRiverGutters.as.me/" target="_blank" rel="noopener">📅 Book Your Free Inspection</a>
+      <a class="live-book-tel" href="tel:2566166760">📞 (256) 616-6760</a>
+      <a class="live-book-form" href="#quick-form">or use the quick form ↑</a>
+    </div>
+  </div>
+</section>
+
+{# #live-float (above the closing block), desktop only: a floating booking
+   pill while no booking row, form or closing block is on screen, so every
+   scroll position offers a way to book (phones have the site's sticky Call /
+   Free Estimate bar). Fixed + opacity/transform only: it can never shift the
+   page. #}
+<script>
+  (function () {
+    var f = document.getElementById('live-float');
+    if (!f || !('IntersectionObserver' in window)) return;
+    var spots = document.querySelectorAll('.live-intro .live-book, #quick-form, .live-close'), on = {};
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { on[[].indexOf.call(spots, e.target)] = e.isIntersecting; });
+      var show = !Object.keys(on).some(function (k) { return on[k]; });
+      f.classList.toggle('is-on', show);
+      if (show) { f.removeAttribute('aria-hidden'); f.removeAttribute('tabindex'); }
+      else { f.setAttribute('aria-hidden', 'true'); f.setAttribute('tabindex', '-1'); }
+    });
+    function go() { [].forEach.call(spots, function (el) { io.observe(el); }); }
+    // Not needed until someone scrolls: keep it out of the first render.
+    if (document.readyState === 'complete') go(); else addEventListener('load', go);
+  })();
+</script>
 
 {# Feed: GET /api/live/feed?cursor -> {posts:[{id, photos:[{id,w,h,thumb,full}],
    count, town, taken_at|null, posted_at, comment|null}], next}. The pre-batch
@@ -48,8 +111,11 @@ permalink: /live/
    HTML. Town only: no coordinates, in the cards or the JSON-LD.
    Layout: cards 1..K go above the lead form, where K is two rows at the
    current column count (6 on desktop, 2 on a phone); the rest go below it.
-   A one-line hook sits before card n+1 whenever n is a multiple of 6 —
-   counted across Load More pages, never right next to the form. #}
+   A one-line hook (phone + booking link) sits before card n+1 whenever n is
+   a multiple of 6 — counted across Load More pages, never right next to the
+   form. A day divider ("Today", "Yesterday", the weekday within a week, then
+   the date; America/Chicago) opens each day's run of cards, and opens the
+   grid below the form again. The town rides on the photo as a pill. #}
 <script>
   (function () {
     // Bare URL for the first page (n defaults to 24 server-side): the banner on
@@ -58,10 +124,8 @@ permalink: /live/
       return fetch('/api/live/feed' + (cursor ? '?cursor=' + encodeURIComponent(cursor) : ''), { headers: { accept: 'application/json' } })
         .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); });
     }
-    window.brgLiveFirst = get(null);
-    // The feed can fail before DOMContentLoaded, while nothing is listening yet:
-    // mark the rejection handled now. start() and the banner still get it.
-    window.brgLiveFirst.catch(function () {});
+    // window.brgLiveFirst was started at the top of the page (see there).
+    if (!window.brgLiveFirst) { window.brgLiveFirst = get(null); window.brgLiveFirst.catch(function () {}); }
     if (window.brgTrack) brgTrack('live_page_view');
 
     var HOOK_EVERY = 6;
@@ -69,7 +133,19 @@ permalink: /live/
       var L = window.brgLive, firstGrid = document.getElementById('live-feed'),
           moreGrid = document.getElementById('live-feed-more'), status = document.getElementById('live-status'),
           empty = document.getElementById('live-empty'), more = document.getElementById('live-more'),
-          shown = [], seen = {}, next = null, busy = false, count = 0;
+          shown = [], seen = {}, next = null, busy = false, count = 0, lastDay = null;
+      var BOOK = 'https://BlueRiverGutters.as.me/', dayFmt, weekdayFmt;
+      // Built on first use (a time-zone formatter costs real time on a slow phone).
+      function fmts() {
+        if (dayFmt) return;
+        try {
+          dayFmt = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Chicago', year: 'numeric', month: '2-digit', day: '2-digit' });
+          weekdayFmt = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', weekday: 'long' });
+        } catch (e) {
+          dayFmt = new Intl.DateTimeFormat('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit' });
+          weekdayFmt = new Intl.DateTimeFormat('en-US', { weekday: 'long' });
+        }
+      }
       var cols = Math.max(1, getComputedStyle(firstGrid).gridTemplateColumns.split(' ').filter(Boolean).length);
       var K = 2 * Math.min(cols, 3);
 
@@ -80,7 +156,7 @@ permalink: /live/
       }
       function ratio(x) { var w = Math.round(+x.w) || 4, h = Math.round(+x.h) || 3; return { w: w, h: h }; }
 
-      function strip(p, ph) {
+      function strip(p, ph, lcp) {
         var s = L.el('div', 'live-strip'), r0 = ratio(ph[0]);
         // The box takes the first photo's shape, clamped so rows stay tidy.
         s.style.aspectRatio = String(Math.min(4 / 3, Math.max(3 / 4, r0.w / r0.h)));
@@ -90,7 +166,9 @@ permalink: /live/
           a.target = '_blank'; a.rel = 'noopener';
           a.style.aspectRatio = r.w + ' / ' + r.h; // each slide reserves its own photo's shape
           img.width = r.w; img.height = r.h;
-          img.loading = 'lazy'; img.decoding = 'async';
+          // The newest post's first photo is this page's LCP: fetch it now.
+          if (lcp && !i) { img.loading = 'eager'; img.fetchPriority = 'high'; }
+          else { img.loading = 'lazy'; img.decoding = 'async'; }
           img.alt = (p.comment ? p.comment : 'Gutter job' + (p.town ? ' in ' + p.town : '')) + (ph.length > 1 ? ' (photo ' + (i + 1) + ' of ' + ph.length + ')' : '');
           img.src = L.safe(x.thumb);
           a.appendChild(img);
@@ -101,7 +179,7 @@ permalink: /live/
 
       function card(p) {
         var ph = photos(p), total = Math.max(+p.count || 0, ph.length);
-        var c = L.el('li', 'live-card'), media = L.el('div', 'live-media'), s = strip(p, ph);
+        var c = L.el('li', 'live-card'), media = L.el('div', 'live-media'), s = strip(p, ph, shown.length === 1);
         c.setAttribute('data-id', p.id);
         media.appendChild(s);
         if (total > 1) {
@@ -125,12 +203,16 @@ permalink: /live/
           }, { passive: true });
           media.appendChild(n);
         }
+        if (p.town) {
+          var pill = L.el('span', 'live-pill', p.town);
+          pill.setAttribute('aria-label', 'Town: ' + p.town);
+          media.appendChild(pill);
+        }
         c.appendChild(media);
 
-        // One stamp line: taken date only when real, town only when non-empty.
+        // One stamp line: taken date only when real. The town is the pill on the photo.
         var body = L.el('div', 'live-body'), stamp = L.el('p', 'live-stamp'), lead = [];
         if (p.taken_at && !isNaN(Date.parse(p.taken_at))) lead.push(L.el('span', 'live-taken', 'Taken ' + L.day(p.taken_at)));
-        if (p.town) lead.push(L.el('span', 'live-town', p.town));
         lead.forEach(function (e, i) {
           if (i) stamp.appendChild(L.el('span', 'live-sep', ' · '));
           stamp.appendChild(e);
@@ -159,10 +241,55 @@ permalink: /live/
       }
 
       function hook() {
-        var h = L.el('li', 'live-hook', 'This could be your house — free estimates across Huntsville & North Alabama. '), a = L.el('a', null, 'Call (256) 616-6760');
+        var h = L.el('li', 'live-hook', 'This could be your house — free estimates across Huntsville & North Alabama. '), a = L.el('a', null, 'Call (256) 616-6760'), b = L.el('a', null, 'book online');
         a.href = 'tel:2566166760';
+        b.href = BOOK; b.target = '_blank'; b.rel = 'noopener';
         h.appendChild(a);
+        h.appendChild(document.createTextNode(' or '));
+        h.appendChild(b);
         return h;
+      }
+
+      // Day dividers, in the business's own time zone.
+      function dayParts(t) {
+        var o = {};
+        fmts();
+        dayFmt.formatToParts(new Date(t)).forEach(function (x) { o[x.type] = x.value; });
+        return { key: o.year + '-' + o.month + '-' + o.day, n: Date.UTC(+o.year, +o.month - 1, +o.day) / 86400000 };
+      }
+      function dayLabel(t, now) {
+        var diff = dayParts(now == null ? Date.now() : now).n - dayParts(t).n;
+        if (diff <= 0) return 'Today';
+        if (diff === 1) return 'Yesterday';
+        if (diff < 7) return weekdayFmt.format(new Date(t));
+        return L.day(t, now);
+      }
+      function divider(p) {
+        var d = L.el('li', 'live-day'), s = L.el('span', null, dayLabel(p.posted_at));
+        d.setAttribute('data-t', p.posted_at);
+        d.appendChild(s);
+        return d;
+      }
+      // "Today" becomes "Yesterday" at midnight on a page left open.
+      setInterval(function () {
+        if (document.hidden) return;
+        var ds = document.querySelectorAll('.live-day');
+        for (var i = 0; i < ds.length; i++) ds[i].firstChild.textContent = dayLabel(ds[i].getAttribute('data-t'));
+      }, 60000);
+
+      // "14 photos this week · 5 towns": real feed data only, from the posts on
+      // the page. "+" when the whole first page is this week and more exist.
+      function stats() {
+        var wk = shown.filter(function (p) { return Date.now() - Date.parse(p.posted_at) < 7 * 86400000; });
+        if (!wk.length) { status.textContent = ''; return; }
+        var n = 0, towns = {}, k = 0;
+        wk.forEach(function (p) {
+          n += Math.max(+p.count || 0, photos(p).length);
+          var t = (p.town || '').trim().toLowerCase();
+          if (t && !towns[t]) { towns[t] = 1; k++; }
+        });
+        var plus = next && wk.length === shown.length ? '+' : '';
+        status.textContent = n + plus + ' photo' + (n === 1 ? '' : 's') + ' this week' + (k ? ' · ' + k + ' town' + (k === 1 ? '' : 's') : '');
       }
 
       function ld() {
@@ -189,24 +316,27 @@ permalink: /live/
           if (!p || seen[p.id] || !photos(p).length || isNaN(Date.parse(p.posted_at))) return;
           seen[p.id] = 1; shown.push(p);
           var before = count; count++;
-          var into = count <= K ? top : rest;
+          var into = count <= K ? top : rest, day = dayParts(p.posted_at).key;
           if (before > 0 && before % HOOK_EVERY === 0 && before !== K) into.appendChild(hook());
+          if (day !== lastDay || before === K) into.appendChild(divider(p));
+          lastDay = day;
           into.appendChild(card(p));
         });
         firstGrid.appendChild(top);
         moreGrid.appendChild(rest);
         next = d && d.next ? d.next : null;
         more.hidden = !next;
-        if (shown.length) { status.textContent = ''; ld(); L.startTicking(); }
-        else down('No jobs posted yet — the crew posts from the field as work wraps up. Check back soon.');
+        if (shown.length) { stats(); status.classList.add('live-stats'); ld(); L.startTicking(); }
+        else down('Nothing posted yet today — the crews are out on jobs.');
       }
       function down(msg) {
         status.textContent = msg;
+        status.classList.add('live-status-quiet');
         empty.hidden = false;
       }
 
       window.brgLiveFirst.then(add, function () {
-        down('We couldn’t load the latest jobs just now. Please refresh in a minute.');
+        down('We couldn’t load the latest photos just now — refresh in a minute.');
       });
 
       more.addEventListener('click', function () {
