@@ -376,6 +376,13 @@ section { padding: 4rem 0; }
 .live-banner-link:hover, .live-banner-link:focus-visible { color: var(--white); text-decoration: underline; text-underline-offset: 3px; }
 .live-banner-thumb { flex: none; width: 28px; height: 28px; border-radius: 4px; object-fit: cover; background: var(--slate); }
 .live-banner-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+/* Video posts (WO-0150). Small surfaces (banner, hero strip, filmstrip,
+   mosaic, polaroid) show the poster jpg with this glyph over it — the video
+   file never loads there. --g sets the glyph's size per surface. */
+.live-glyph { position: absolute; left: 50%; top: 50%; width: var(--g, 26px); height: var(--g, 26px); margin: calc(var(--g, 26px) / -2) 0 0 calc(var(--g, 26px) / -2); border-radius: 50%; background: rgba(15,23,42,0.72); box-shadow: 0 0 0 1px rgba(255,255,255,0.35); pointer-events: none; }
+.live-glyph::after { content: ''; position: absolute; left: 38%; top: 50%; margin-top: calc(var(--g, 26px) * -0.21); border-style: solid; border-width: calc(var(--g, 26px) * 0.21) 0 calc(var(--g, 26px) * 0.21) calc(var(--g, 26px) * 0.32); border-color: transparent transparent transparent #fff; }
+.live-vthumb { position: relative; flex: none; display: inline-block; line-height: 0; --g: 16px; }
+.live-vthumb .live-glyph { box-shadow: none; }
 .live-banner-tag { color: #fca5a5; letter-spacing: 0.08em; }
 .live-banner-link time { font-weight: 700; }
 .live-banner-arrow { opacity: 0.7; }
@@ -499,6 +506,9 @@ section { padding: 4rem 0; }
 .live-pol { position: absolute; inset: 0; display: block; color: var(--navy); }
 .pol-card { position: absolute; left: 30px; top: 10px; width: 290px; padding: 12px 12px 0; background: #fbfaf7; border-radius: 4px; box-shadow: 0 18px 40px rgba(0,0,0,0.45); transition: transform 0.35s ease; animation: pol-in 0.8s cubic-bezier(0.2, 0.9, 0.25, 1.1) both; }
 .pol-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #cbd5e1; }
+.pol-photo { position: relative; display: block; --g: 54px; }
+.live-mosaic-vid { position: relative; display: block; --g: 30px; }
+.live-mosaic-vid .live-mosaic-tile { height: 100%; }
 .pol-0 { z-index: 3; --r: -4deg; transform: rotate(-4deg); padding-bottom: 14px; }
 .pol-1 { z-index: 2; --r: 5deg; transform: translate(26px, -6px) rotate(5deg); animation-delay: 0.08s; }
 .pol-2 { z-index: 1; --r: -9deg; transform: translate(-22px, 14px) rotate(-9deg); animation-delay: 0.16s; }
@@ -529,6 +539,18 @@ section { padding: 4rem 0; }
 .live-slide { flex: 0 0 auto; height: 100%; max-width: 100%; scroll-snap-align: start; display: block; }
 .live-slide + .live-slide { margin-left: 3px; }
 .live-slide img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* A video slide: the poster in the same reserved w/h box, a full-box play
+   button, a duration chip. A tap lays the <video> over the poster at the
+   exact same box (absolute, inset 0), so playing/pausing moves nothing. */
+.live-slide.is-video { position: relative; overflow: hidden; }
+.live-play { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: pointer; --g: 64px; }
+.live-play .live-glyph { transition: transform 0.15s ease, background 0.15s ease; }
+.live-play:hover .live-glyph, .live-play:focus-visible .live-glyph { transform: scale(1.08); background: rgba(185,28,28,0.9); }
+.live-play:focus-visible { outline: 3px solid #fff; outline-offset: -3px; }
+.live-play[hidden], .live-dur[hidden] { display: none; }
+.live-dur { position: absolute; left: 0.6rem; bottom: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 999px; background: rgba(15,23,42,0.82); color: var(--white); font-size: 0.75rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; pointer-events: none; }
+.live-video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; background: #0f172a; }
+@media (prefers-reduced-motion: reduce) { .live-play .live-glyph { transition: none; } }
 .live-chip { position: absolute; top: 0.6rem; left: 0.6rem; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.6rem; border-radius: 999px; background: rgba(15,23,42,0.82); color: var(--white); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; pointer-events: none; }
 /* Fixed width: "+3 photos" -> "2 / 4" must not move its edge (that is a layout shift). */
 .live-count { position: absolute; right: 0.6rem; bottom: 0.6rem; width: 6.6em; padding: 0.3rem 0; text-align: center; white-space: nowrap; overflow: hidden; border: 0; border-radius: 999px; background: rgba(15,23,42,0.82); color: var(--white); font: inherit; font-size: 0.8rem; font-weight: 700; cursor: pointer; }
@@ -543,7 +565,7 @@ section { padding: 4rem 0; }
 .live-film-ph, .live-film-thumb { flex: none; width: 96px; height: 96px; border-radius: 10px; background: linear-gradient(100deg, #1e293b 30%, #334155 50%, #1e293b 70%) 0 0 / 300% 100%; scroll-snap-align: start; }
 .live-film-ph { animation: live-shimmer 1.4s linear infinite; }
 @keyframes live-shimmer { to { background-position: -150% 0; } }
-.live-film-thumb { display: block; overflow: hidden; transition: transform 0.2s ease; }
+.live-film-thumb { position: relative; display: block; overflow: hidden; transition: transform 0.2s ease; --g: 30px; }
 .live-film-thumb:hover, .live-film-thumb:focus-visible { transform: translateY(-4px); }
 .live-film-thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .live-film-thumb.is-live { outline: 3px solid #ef4444; outline-offset: -3px; }

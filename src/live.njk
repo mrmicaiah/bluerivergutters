@@ -342,9 +342,47 @@ permalink: /live/
         }, { rootMargin: '0px 0px -8% 0px' });
       }
 
+      // Photos and videos both: a video entry ({kind:"video", duration, mp4,
+      // poster, thumb}) shows as its poster jpg everywhere, and only a stream
+      // card ever plays it (see strip()).
       function photos(p) {
         var ph = Array.isArray(p.photos) ? p.photos : [{ id: p.id, w: p.w, h: p.h, thumb: p.thumb, full: p.full }];
-        return ph.filter(function (x) { return x && L.safe(x.thumb); });
+        return ph.filter(function (x) { return x && L.still(x); });
+      }
+      function vthumb(img, cls) {
+        var w = L.el('span', cls);
+        w.appendChild(img);
+        w.appendChild(L.glyph());
+        return w;
+      }
+
+      // Inline playback: a tap lays a <video> over the poster in the slide's
+      // reserved box — muted, playsinline, no autoplay, native controls once
+      // it plays (for sound) — and nothing loads before that tap. One plays
+      // at a time; one scrolled or swiped out of sight pauses.
+      var seenV = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) {
+        es.forEach(function (e) { if (!e.isIntersecting && !e.target.paused) e.target.pause(); });
+      }, { threshold: 0.2 }) : null;
+      document.addEventListener('play', function (e) {
+        var vs = document.querySelectorAll('video.live-video');
+        for (var i = 0; i < vs.length; i++) if (vs[i] !== e.target && !vs[i].paused) vs[i].pause();
+      }, true);
+      function playIn(slide, x, img, btn, chip) {
+        var v = L.el('video', 'live-video');
+        v.muted = true; v.defaultMuted = true; v.setAttribute('muted', '');
+        v.playsInline = true; v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
+        v.preload = 'none';
+        v.poster = img.currentSrc || img.src;
+        v.controls = true;
+        v.setAttribute('aria-label', img.alt);
+        v.src = L.safe(x.mp4);
+        slide.appendChild(v);
+        btn.hidden = true; chip.hidden = true;
+        if (seenV) seenV.observe(v);
+        var pr = v.play();
+        if (pr && pr.catch) pr.catch(function () { /* controls are there to start it by hand */ });
+        try { v.focus({ preventScroll: true }); } catch (err) {}
+        if (window.brgTrack) brgTrack('live_video_play');
       }
       function ratio(x) { var w = Math.round(+x.w) || 4, h = Math.round(+x.h) || 3; return { w: w, h: h }; }
       // The feed thumb is w_500; stream cards are ~530px (zigzag) to ~680px
@@ -356,20 +394,35 @@ permalink: /live/
         var s = L.el('div', 'live-strip'), r0 = ratio(ph[0]);
         s.style.aspectRatio = String(Math.min(4 / 3, Math.max(3 / 4, r0.w / r0.h)));
         ph.forEach(function (x, i) {
-          var r = ratio(x), a = L.el('a', 'live-slide'), img = L.el('img'), src = L.safe(x.thumb);
-          a.href = L.safe(x.full) || src;
-          a.target = '_blank'; a.rel = 'noopener';
+          // A playable video is a box (not a link) holding the poster, a
+          // full-box play button and its duration; a photo links to the full size.
+          var vid = L.isVideo(x), d = vid ? L.dur(x.duration) : '';
+          var r = ratio(x), a = L.el(vid ? 'div' : 'a', 'live-slide' + (vid ? ' is-video' : '')), img = L.el('img'), src = L.still(x);
+          if (!vid) {
+            a.href = L.safe(x.full) || src;
+            a.target = '_blank'; a.rel = 'noopener';
+          }
           a.style.aspectRatio = r.w + ' / ' + r.h;
           img.width = r.w; img.height = r.h;
           if (lcp && !i) { img.loading = 'eager'; img.fetchPriority = 'high'; }
           else { img.loading = 'lazy'; img.decoding = 'async'; }
-          img.alt = (p.comment ? p.comment : 'Gutter job' + (p.town ? ' in ' + p.town : '')) + (ph.length > 1 ? ' (photo ' + (i + 1) + ' of ' + ph.length + ')' : '');
+          img.alt = (p.comment ? p.comment : 'Gutter job' + (p.town ? ' in ' + p.town : '')) +
+            (vid ? ' (video' + (d ? ', ' + d : '') + (ph.length > 1 ? ', ' + (i + 1) + ' of ' + ph.length : '') + ')' : ph.length > 1 ? ' (photo ' + (i + 1) + ' of ' + ph.length + ')' : '');
+          if (vid) {
+            var btn = L.el('button', 'live-play'), chip = L.el('span', 'live-dur', d);
+            btn.type = 'button';
+            btn.setAttribute('aria-label', 'Play video' + (d ? ' (' + d + ')' : ''));
+            btn.appendChild(L.glyph());
+            chip.hidden = !d;
+            btn.addEventListener('click', function () { playIn(a, x, img, btn, chip); });
+          }
           if (/res\.cloudinary\.com/.test(src)) {
             img.srcset = src + ' 500w, ' + big(src) + ' 1000w';
             img.sizes = '(max-width: 768px) 170px, (min-width: 1024px) 530px, 680px';
           }
           img.src = src;
           a.appendChild(img);
+          if (vid) { a.appendChild(btn); a.appendChild(chip); }
           s.appendChild(a);
         });
         return s;
@@ -388,9 +441,12 @@ permalink: /live/
         c.appendChild(node);
         media.appendChild(s);
         if (total > 1) {
-          var n = L.el('button', 'live-count', '+' + (total - 1) + ' photo' + (total - 1 === 1 ? '' : 's'));
+          // "+2 photos", "+1 video", or "+2 more" when the rest are mixed.
+          var restV = ph.slice(1).filter(function (x) { return x.kind === 'video'; }).length, m = total - 1;
+          var what = !restV ? 'photo' + (m === 1 ? '' : 's') : restV === ph.length - 1 && ph.length === total ? 'video' + (m === 1 ? '' : 's') : 'more';
+          var n = L.el('button', 'live-count', '+' + m + ' ' + what);
           n.type = 'button';
-          n.setAttribute('aria-label', 'Next photo (' + total + ' in this post)');
+          n.setAttribute('aria-label', 'Next ' + (restV ? 'item' : 'photo') + ' (' + total + ' in this post)');
           n.addEventListener('click', function () {
             var atEnd = s.scrollLeft + s.clientWidth >= s.scrollWidth - 4;
             s.scrollTo({ left: atEnd ? 0 : s.scrollLeft + s.clientWidth * 0.9, behavior: L.reduced ? 'auto' : 'smooth' });
@@ -493,14 +549,14 @@ permalink: /live/
       // URLs (already on the page), tiled, treated dark in CSS, drifting slowly.
       function fillMosaic() {
         var srcs = [];
-        shown.forEach(function (p) { photos(p).forEach(function (x) { if (srcs.length < 18) srcs.push(L.small(x.thumb)); }); });
+        shown.forEach(function (p) { photos(p).forEach(function (x) { if (srcs.length < 18) srcs.push({ src: L.small(L.still(x)), video: x.kind === 'video' }); }); });
         if (!srcs.length) return;
         var n = matchMedia('(max-width: 768px)').matches ? 9 : 18, frag = document.createDocumentFragment();
         for (var i = 0; i < n; i++) {
-          var img = L.el('img', 'live-mosaic-tile');
+          var img = L.el('img', 'live-mosaic-tile'), t = srcs[i % srcs.length];
           img.alt = ''; img.decoding = 'async'; img.fetchPriority = 'low';
-          img.src = srcs[i % srcs.length];
-          frag.appendChild(img);
+          img.src = t.src;
+          frag.appendChild(t.video ? vthumb(img, 'live-mosaic-vid') : img);
         }
         mosaic.appendChild(frag);
         intro.classList.add('has-mosaic');
@@ -516,9 +572,10 @@ permalink: /live/
         a.setAttribute('aria-label', 'Newest post: ' + W.headline(top3[0], null, 0) + ' — jump to it');
         top3.slice().reverse().forEach(function (p) {
           var i = top3.indexOf(p), card = L.el('span', 'pol-card pol-' + i), img = L.el('img');
+          var x0 = photos(p)[0];
           img.alt = ''; img.decoding = 'async';
-          img.src = L.safe(photos(p)[0].thumb);
-          card.appendChild(img);
+          img.src = L.still(x0);
+          card.appendChild(x0.kind === 'video' ? vthumb(img, 'pol-photo') : img);
           if (!i) {
             var cap = L.el('span', 'pol-cap'), when = L.el('span', 'pol-sub', 'Posted ');
             if (L.isLive(p.posted_at)) { var chip = L.el('span', 'live-chip'); chip.appendChild(L.dot(true)); chip.appendChild(document.createTextNode('LIVE')); card.appendChild(chip); }
@@ -564,10 +621,11 @@ permalink: /live/
             if (n >= FILM_MAX) return;
             var a = L.el('a', 'live-film-thumb' + (!k && L.isLive(p.posted_at) ? ' is-live' : '')), img = L.el('img');
             a.href = '#ls-' + (i + 1);
-            a.setAttribute('aria-label', 'Jump to ' + W.headline(p, null, 0) + (k ? ' (photo ' + (k + 1) + ')' : ''));
+            a.setAttribute('aria-label', 'Jump to ' + W.headline(p, null, 0) + (x.kind === 'video' ? ' (video)' : k ? ' (photo ' + (k + 1) + ')' : ''));
             img.alt = ''; img.width = 96; img.height = 96; img.decoding = 'async'; img.loading = n < 8 ? 'eager' : 'lazy';
-            img.src = L.small(x.thumb);
+            img.src = L.small(L.still(x));
             a.appendChild(img);
+            if (x.kind === 'video') a.appendChild(L.glyph());
             frag.appendChild(a);
             n++;
           });
@@ -586,9 +644,17 @@ permalink: /live/
         var graph = [];
         shown.forEach(function (p) {
           photos(p).forEach(function (x) {
-            var o = { '@type': 'ImageObject', contentUrl: L.safe(x.full) || L.safe(x.thumb), thumbnailUrl: L.safe(x.thumb),
-              width: x.w, height: x.h, uploadDate: p.posted_at,
-              creator: { '@type': 'Organization', name: 'Blue River Gutters', url: 'https://bluerivergutters.com/' } };
+            var org = { '@type': 'Organization', name: 'Blue River Gutters', url: 'https://bluerivergutters.com/' }, o;
+            if (L.isVideo(x)) {
+              // VideoObject: the mp4, its poster, ISO duration; same town-only place.
+              var s = L.secs(x.duration);
+              o = { '@type': 'VideoObject', name: p.comment || 'Gutter job' + (p.town ? ' in ' + p.town : '') + ' — Blue River Live',
+                description: (p.comment ? p.comment + ' — ' : '') + 'Video from a Blue River Gutters job' + (p.town ? ' in ' + p.town + ', AL' : '') + ', posted from the field.',
+                contentUrl: L.safe(x.mp4), thumbnailUrl: L.safe(x.poster) || L.still(x), uploadDate: p.posted_at, creator: org };
+              if (!isNaN(s)) o.duration = 'PT' + (s >= 60 ? Math.floor(s / 60) + 'M' : '') + (s % 60 || s < 60 ? s % 60 + 'S' : '');
+              if (x.w && x.h) { o.width = x.w; o.height = x.h; }
+            } else o = { '@type': 'ImageObject', contentUrl: L.safe(x.full) || L.still(x), thumbnailUrl: L.still(x),
+              width: x.w, height: x.h, uploadDate: p.posted_at, creator: org };
             if (p.town) o.contentLocation = { '@type': 'Place', name: p.town };
             if (p.taken_at) o.dateCreated = p.taken_at;
             if (p.comment) o.caption = p.comment;

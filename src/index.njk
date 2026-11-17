@@ -516,6 +516,9 @@ liveBanner: false
 .hero-live:hover, .hero-live:focus-visible { color: var(--white); }
 .hero-live-row { display: flex; align-items: center; gap: 0.9rem; max-width: calc(1200px - 3rem); margin: 0 auto; padding: 0.5rem 0 0.5rem 0.85rem; border-left: 4px solid var(--red); }
 .hero-live-thumb { flex: none; display: block; width: 46px; height: 46px; border-radius: 6px; object-fit: cover; background: var(--slate); }
+/* A video post: the same 46px box wraps the poster and its play glyph. */
+.hero-live-thumb.live-vthumb { overflow: hidden; --g: 22px; }
+.live-vthumb > .hero-live-thumb { width: 100%; height: 100%; margin: 0; border-radius: 0; }
 .hero-live-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
 .hero-live-line { font-size: 1rem; font-weight: 700; line-height: 1.3; }
 .hero-live-line .live-dot { margin: -2px 0.45rem 0 0; }
@@ -1250,13 +1253,19 @@ a.lp-city:hover { text-decoration: underline; }
     function build(L, p) {
       var a = L.el('a', 'hero-live'), row = L.el('span', 'hero-live-row');
       a.href = '/live/';
-      var src = L.small(L.first(p).thumb), img = L.el(src ? 'img' : 'span', 'hero-live-thumb');
+      // A video post: its poster frame + a play glyph (the video never loads here).
+      var x = L.first(p), src = L.small(L.still(x)), img = L.el(src ? 'img' : 'span', 'hero-live-thumb');
       if (src) {
         img.alt = ''; img.width = 46; img.height = 46; img.decoding = 'async';
         img.addEventListener('error', function () { img.style.visibility = 'hidden'; });
         img.src = src;
       }
-      row.appendChild(img);
+      if (src && x.kind === 'video') {
+        var vt = L.el('span', 'hero-live-thumb live-vthumb');
+        vt.appendChild(img);
+        vt.appendChild(L.glyph());
+        row.appendChild(vt);
+      } else row.appendChild(img);
       var body = L.el('span', 'hero-live-body'), line = L.el('span', 'hero-live-line');
       var on = L.isLive(p.posted_at), d0 = L.dot(on), tag = L.el('strong', 'hero-live-tag', on ? 'LIVE' : 'RECENT');
       var what = (typeof p.service === 'string' && p.service.trim()) || 'New photos';

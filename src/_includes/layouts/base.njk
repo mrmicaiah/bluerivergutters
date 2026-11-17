@@ -331,13 +331,31 @@
       // Cloudinary thumb -> the small variant: drop the feed's own transforms
       // (c_limit,w_500,…), keep v<version>/<public_id>, use w_200,f_auto,q_auto.
       // Other hosts pass through unchanged.
+      // A video's poster (…/video/upload/…/<id>.jpg) gets the same treatment
+      // as a jpg (f_jpg): small surfaces only ever load the poster frame.
       function small(u) {
-        var m = /^(https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.+)$/.exec(safe(u));
+        var m = /^(https:\/\/res\.cloudinary\.com\/[^/]+\/(image|video)\/upload\/)(.+)$/.exec(safe(u));
         if (!m) return safe(u);
-        var parts = m[2].split('/');
+        if (m[2] === 'video' && !/\.jpe?g$/i.test(m[3])) return safe(u);
+        var parts = m[3].split('/');
         while (parts.length > 1 && /^[a-z]{1,3}_[^,]+(,[a-z]{1,3}_[^,]+)*$/.test(parts[0])) parts.shift();
-        return m[1] + 'w_200,f_auto,q_auto/' + parts.join('/');
+        // so_0 keeps the first frame (the poster), not Cloudinary's default middle one.
+        return m[1] + (m[2] === 'video' ? 'w_200,so_0,f_jpg,q_auto/' : 'w_200,f_auto,q_auto/') + parts.join('/');
       }
+      // Video entries in photos[]: { kind: "video", duration, mp4, poster, thumb, w, h }.
+      // Only one with a safe mp4 counts as playable; otherwise it is just its
+      // poster. still() is the jpg every surface shows (the thumb, else the poster).
+      function isVideo(x) { return !!(x && x.kind === 'video' && safe(x.mp4)); }
+      function still(x) { return x ? safe(x.thumb) || (x.kind === 'video' ? safe(x.poster) : '') : ''; }
+      // Seconds (or "m:ss") -> whole seconds, or NaN.
+      function secs(v) {
+        if (typeof v === 'string' && /^\d{1,3}:[0-5]\d$/.test(v)) { var p = v.split(':'); return +p[0] * 60 + +p[1]; }
+        return typeof v === 'number' && isFinite(v) && v > 0 ? Math.max(1, Math.round(v)) : NaN;
+      }
+      // The duration chip: 23 -> "0:23", 83.4 -> "1:23"; junk -> "".
+      function dur(v) { var s = secs(v); return isNaN(s) ? '' : Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }
+      // The small play glyph laid over a poster (CSS draws it; the parent is positioned).
+      function glyph() { var g = el('span', 'live-glyph'); g.setAttribute('aria-hidden', 'true'); return g; }
       function el(tag, cls, text) {
         var e = document.createElement(tag);
         if (cls) e.className = cls;
@@ -377,20 +395,26 @@
       // w/h/thumb/full on the post itself.
       function first(p) { return (p && p.photos && p.photos[0]) || p || {}; }
       function ok(p) { return p && !isNaN(Date.parse(p.posted_at)); }
-      window.brgLive = { rel: rel, day: day, isLive: isLive, safe: safe, small: small, el: el, dot: dot, ago: ago, tick: tick, startTicking: startTicking, first: first, reduced: reduced };
+      window.brgLive = { rel: rel, day: day, isLive: isLive, safe: safe, small: small, el: el, dot: dot, ago: ago, tick: tick, startTicking: startTicking, first: first, reduced: reduced,
+        isVideo: isVideo, still: still, secs: secs, dur: dur, glyph: glyph };
 
       var slot = document.getElementById('live-banner');
       if (!slot) return;
       slot.addEventListener('click', function (e) {
         if (e.target.closest && e.target.closest('a') && window.brgTrack) brgTrack('live_banner_click');
       });
+      // A video post shows its poster frame with a play glyph: never the video.
       function thumb(p, size) {
-        var src = small(first(p).thumb);
+        var x = first(p), src = small(still(x));
         if (!src) return null;
         var img = el('img', 'live-banner-thumb');
         img.alt = ''; img.width = size; img.height = size; img.decoding = 'async';
         img.src = src;
-        return img;
+        if (x.kind !== 'video') return img;
+        var w = el('span', 'live-vthumb');
+        w.appendChild(img);
+        w.appendChild(glyph());
+        return w;
       }
       // Today's banner (no data-variant): the link's contents are swapped in place.
       function renderPlain(p) {
