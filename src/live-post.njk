@@ -68,21 +68,49 @@ sitemap: false
     .lp-success p { font-size: 1.15rem; font-weight: 700; margin: 4px 0 14px; }
     .lp-check { font-size: 2.4rem; color: var(--green); line-height: 1; }
     .lp-again { font: inherit; font-weight: 700; padding: 12px 20px; border-radius: 10px; border: 2px solid var(--blue); background: #fff; color: var(--blue); }
-    h2 { font-size: 1rem; margin: 0 0 10px; }
+    h2 { font-size: 1rem; margin: 0 0 6px; }
+    .lp-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 16px; border-radius: 12px; background: #e2e8f0; }
+    .lp-tabs button { min-height: 48px; border: 0; border-radius: 9px; background: transparent; color: var(--gray); font: inherit; font-size: 1rem; font-weight: 700; cursor: pointer; }
+    .lp-tabs button[aria-selected="true"] { background: #fff; color: var(--blue); box-shadow: 0 1px 2px rgba(15,23,42,.12); }
+    .lp-manage-help { margin: 0 0 8px; font-size: .85rem; color: var(--gray); }
     .lp-recent { list-style: none; margin: 0; padding: 0; }
-    .lp-entry { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+    .lp-entry { padding: 14px 0; border-top: 1px solid var(--line); }
     .lp-entry:first-child { border-top: 0; }
-    .lp-cover { position: relative; flex: none; }
-    .lp-cover img { display: block; width: 64px; height: 64px; object-fit: cover; border-radius: 8px; background: var(--line); }
+    .lp-row-top { display: flex; gap: 12px; align-items: flex-start; }
+    .lp-cover { position: relative; flex: none; transition: opacity .2s; }
+    .lp-cover img { display: block; width: 72px; height: 72px; object-fit: cover; border-radius: 8px; background: var(--line); }
     .lp-count { position: absolute; right: 4px; bottom: 4px; padding: 1px 6px; border-radius: 10px; background: rgba(15,23,42,.8); color: #fff; font-size: .75rem; font-weight: 700; }
-    .lp-expand { flex: none; font: inherit; font-size: .85rem; font-weight: 600; padding: 8px 10px; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; color: var(--blue); }
-    .lp-photos { flex-basis: 100%; list-style: none; margin: 0; padding: 0 0 0 74px; display: grid; gap: 8px; }
+    .lp-recent-meta { flex: 1; min-width: 0; display: grid; gap: 3px; font-size: .9rem; }
+    .lp-meta-line { font-size: .95rem; }
+    .lp-meta-town:not(:empty)::after { content: "\00b7"; margin: 0 .4em; font-weight: 400; color: var(--gray); }
+    .lp-meta-when { font-weight: 400; color: var(--gray); font-size: .85rem; }
+    .lp-meta-comment { color: #334155; overflow-wrap: anywhere; }
+    .lp-badge { justify-self: start; padding: 3px 8px; border-radius: 6px; background: #fee2e2; color: #991b1b; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; }
+    .lp-entry[data-hidden="true"] .lp-cover { opacity: .4; filter: grayscale(1); }
+    .lp-entry[data-hidden="true"] .lp-meta-line, .lp-entry[data-hidden="true"] .lp-meta-comment { color: #94a3b8; }
+    .lp-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+    .lp-actions button, .lp-editor-actions button, .lp-retry, .lp-wide { min-height: 44px; font: inherit; font-size: .95rem; font-weight: 700; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; color: var(--blue); cursor: pointer; }
+    .lp-entry[data-hidden="true"] .lp-hide { border-color: var(--blue); background: var(--blue); color: #fff; }
+    .lp-wide { display: block; width: 100%; margin-top: 12px; }
+    .lp-status-row { display: flex; align-items: center; gap: 10px; }
+    .lp-status { flex: 1; margin: 0; font-size: .85rem; color: var(--gray); }
+    .lp-status:not(:empty) { margin-top: 8px; }
+    .lp-entry[data-state="saved"] .lp-status { color: var(--green); }
+    .lp-entry[data-state="failed"] .lp-status { color: var(--red); font-weight: 600; }
+    .lp-retry { flex: none; margin-top: 8px; padding: 0 18px; border-color: var(--red); color: var(--red); }
+    .lp-editor { margin-top: 12px; padding: 12px; border-radius: 10px; background: #f8fafc; border: 1px solid var(--line); }
+    .lp-editor textarea { min-height: 72px; margin-bottom: 12px; }
+    .lp-editor select { margin-bottom: 12px; min-height: 48px; }
+    .lp-editor-actions { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; }
+    .lp-editor-actions .lp-save { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .lp-photos-wrap { margin-top: 12px; padding: 12px; border-radius: 10px; background: #f8fafc; }
+    .lp-remove-note { margin: 0 0 10px; font-size: .8rem; color: var(--gray); }
+    .lp-photos { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
     .lp-photo { display: flex; align-items: center; gap: 10px; }
     .lp-photo img { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; background: var(--line); flex: none; margin-right: auto; }
-    .lp-recent-meta { flex: 1; min-width: 0; display: grid; gap: 2px; font-size: .85rem; }
-    .lp-recent-meta span { color: var(--gray); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .lp-remove, .lp-remove-confirm { flex: none; font: inherit; font-size: .85rem; font-weight: 600; padding: 8px 10px; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; color: var(--gray); }
+    .lp-remove, .lp-remove-confirm { flex: none; min-height: 44px; font: inherit; font-size: .85rem; font-weight: 600; padding: 0 14px; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; color: var(--gray); }
     .lp-remove-confirm { border-color: var(--red); background: var(--red); color: #fff; }
+    .lp-list-error p { margin: 8px 0 0; color: var(--red); font-weight: 600; }
     .lp-empty { color: var(--gray); font-size: .9rem; margin: 0; }
     .lp-invalid { text-align: center; padding: 32px 16px; }
     .lp-invalid p { margin: 8px 0; }
@@ -99,6 +127,12 @@ sitemap: false
     </div>
 
     <div id="lp-app" hidden>
+      <div class="lp-tabs" role="tablist" aria-label="Blue River Live">
+        <button type="button" role="tab" id="lp-tab-post" aria-selected="true" aria-controls="lp-view-post">Post</button>
+        <button type="button" role="tab" id="lp-tab-manage" aria-selected="false" aria-controls="lp-view-manage">Manage posts</button>
+      </div>
+
+      <div id="lp-view-post" role="tabpanel" aria-labelledby="lp-tab-post">
       <div class="lp-card">
         <label class="lp-pick">
           <span aria-hidden="true">📷</span> Choose photos
@@ -131,10 +165,21 @@ sitemap: false
         <button type="button" class="lp-again" id="lp-again">Post more</button>
       </div>
 
-      <div class="lp-card">
-        <h2>Recent posts</h2>
-        <ul class="lp-recent" id="lp-recent"></ul>
-        <p class="lp-empty" id="lp-recent-empty" hidden>Nothing posted yet.</p>
+      </div>
+
+      <div id="lp-view-manage" role="tabpanel" aria-labelledby="lp-tab-manage" hidden>
+        <div class="lp-card">
+          <h2>Your posts</h2>
+          <p class="lp-manage-help">Hide takes a post off the site and Unhide puts it back. Changes reach the live site within a minute.</p>
+          <ul class="lp-recent" id="lp-recent"></ul>
+          <p class="lp-empty" id="lp-recent-empty" hidden>Nothing posted yet.</p>
+          <p class="lp-empty" id="lp-list-loading" hidden>Loading your posts…</p>
+          <div class="lp-list-error" id="lp-list-error" role="alert" hidden>
+            <p>Couldn’t load your posts. Check signal.</p>
+            <button type="button" class="lp-wide" id="lp-list-retry">Try again</button>
+          </div>
+          <button type="button" class="lp-wide" id="lp-more" hidden>Load more</button>
+        </div>
       </div>
     </div>
   </main>

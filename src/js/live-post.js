@@ -22,11 +22,19 @@
  * BATCH. One press of Post = one post on the site: every photo in that press
  * carries the same context batch = b<unixms>-<4hex>. Retrying failed photos
  * reuses it, so a partial failure never splits a driveway into two posts; a
- * new selection gets a new one. Recent posts group by batch (one row, "+N",
- * per-photo Remove inside; removing the last photo removes the post).
+ * new selection gets a new one.
  * At most MAX_PER_POST (20) photos per post, matching the feed: a bigger
  * selection posts the first 20 and offers "Post the other N" afterwards as a
  * separate post — said up front, never split or uploaded silently.
+ *
+ * MANAGE. A second view, "Manage posts" (Post stays the default on every
+ * load). His full history from POST /api/live/list {token, cursor?, n}, hidden
+ * posts included, paged with Load more; fetched on the first open of the view,
+ * not per visit. One row per post (keyed by batch id): edit comment, change
+ * town, Hide/Unhide via POST /api/live/update {token, id, comment?|town?|hidden?},
+ * optimistic, with per-row Retry on failure. Per-photo Remove (delete for
+ * good) stays inside the row as the mistake path; Hide is the everyday way to
+ * pull a post. The public feed catches up within its 60s cache.
  *
  * CAPTURE CHAIN, per batch:
  *   taken_at  EXIF DateTimeOriginal (+ OffsetTimeOriginal when present).
@@ -220,7 +228,8 @@
       invalid: $('lp-invalid'), files: $('lp-files'), items: $('lp-items'), compose: $('lp-compose'),
       town: $('lp-town'), townNote: $('lp-town-note'), locate: $('lp-locate'), comment: $('lp-comment'),
       post: $('lp-post'), error: $('lp-error'), success: $('lp-success'), successText: $('lp-success-text'),
-      again: $('lp-again'), capNote: $('lp-cap-note'), recent: $('lp-recent'), recentEmpty: $('lp-recent-empty')
+      again: $('lp-again'), capNote: $('lp-cap-note'), recent: $('lp-recent'), recentEmpty: $('lp-recent-empty'),
+      more: $('lp-more'), listError: $('lp-list-error'), listRetry: $('lp-list-retry'), listLoading: $('lp-list-loading')
     };
 
     // Token: fragment first (then remembered), else stored from an earlier visit.
@@ -509,34 +518,158 @@
       return Math.floor(s / 86400) + (s < 172800 ? ' day ago' : ' days ago');
     }
 
-    // One row per post. Its key is the batch id, which is also the feed's post
-    // id; a pre-batch photo's post id is its own public_id.
+    // ---- views: Post (default, always on load) | Manage posts --------------
+    var tabs = { post: $('lp-tab-post'), manage: $('lp-tab-manage') };
+    var views = { post: $('lp-view-post'), manage: $('lp-view-manage') };
+    var listed = false;   // the first page is fetched on the first open of Manage, not per visit
+    function showView(name) {
+      if (dead) return;
+      Object.keys(views).forEach(function (k) {
+        views[k].hidden = k !== name;
+        tabs[k].setAttribute('aria-selected', k === name ? 'true' : 'false');
+      });
+      window.scrollTo(0, 0);
+      if (name === 'manage' && !listed) { listed = true; loadList(null); }
+    }
+    tabs.post.addEventListener('click', function () { showView('post'); });
+    tabs.manage.addEventListener('click', function () { showView('manage'); });
+
+    // ---- manage: one row per post -------------------------------------------
+    // Its key is the batch id, which is also the post id the server knows; a
+    // pre-batch photo's post id is its own public_id. Edits, Hide and Unhide
+    // go to /api/live/update {token, id, comment?|town?|hidden?} and apply to
+    // the whole post. They show at once (optimistic); a failure keeps what he
+    // set, marks the row, and Retry resends the whole unsaved change.
+    var LIST_N = 12;
+    var recs = {};   // post key -> {comment, town, hidden, pending, inflight}
+    var FIELDS = ['comment', 'town', 'hidden'];
+
     function postKey(p) { return p.batch || p.id; }
     function findRow(key) { return els.recent.querySelector(':scope > .lp-entry[data-batch="' + CSS.escape(key) + '"]'); }
     function hasPhoto(id) { return !!els.recent.querySelector('.lp-photos [data-id="' + CSS.escape(id) + '"]'); }
+    function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text) e.textContent = text; return e; }
+    function btn(cls, text) { var b = el('button', cls, text); b.type = 'button'; return b; }
+
+    function townOptions(select, current) {
+      select.textContent = '';
+      var list = towns();
+      if (current && list.indexOf(current) === -1) list = [current].concat(list);
+      list.forEach(function (t) { var o = document.createElement('option'); o.value = t; o.textContent = t; select.appendChild(o); });
+      select.value = current || '';
+    }
 
     function makeRow(p) {
-      var li = document.createElement('li');
-      li.className = 'lp-entry';
-      li.dataset.batch = postKey(p);
-      var cover = document.createElement('div'); cover.className = 'lp-cover';
-      var img = document.createElement('img');
-      img.alt = ''; img.loading = 'lazy'; img.width = 64; img.height = 64;
-      var count = document.createElement('span'); count.className = 'lp-count'; count.hidden = true;
+      var key = postKey(p);
+      recs[key] = { comment: p.comment || '', town: p.town || '', hidden: !!p.hidden, taken_at: p.taken_at, posted_at: p.posted_at, pending: null, inflight: false };
+      var li = el('li', 'lp-entry');
+      li.dataset.batch = key;
+      li.dataset.state = '';
+
+      var top = el('div', 'lp-row-top');
+      var cover = el('div', 'lp-cover');
+      var img = el('img'); img.alt = ''; img.loading = 'lazy'; img.width = 64; img.height = 64;
+      var count = el('span', 'lp-count'); count.hidden = true;
       cover.appendChild(img); cover.appendChild(count);
-      var meta = document.createElement('div'); meta.className = 'lp-recent-meta';
-      var line = document.createElement('strong');
-      line.textContent = [p.taken_at ? 'Taken ' + shortDate(p.taken_at) : '', p.town, 'Posted ' + ago(p.posted_at)].filter(Boolean).join(' · ');
+      var meta = el('div', 'lp-recent-meta');
+      var line = el('strong', 'lp-meta-line');
+      line.appendChild(el('span', 'lp-meta-town'));
+      line.appendChild(el('span', 'lp-meta-when'));
       meta.appendChild(line);
-      if (p.comment) { var c = document.createElement('span'); c.textContent = p.comment; meta.appendChild(c); }
-      var expand = document.createElement('button'); expand.type = 'button'; expand.className = 'lp-expand';
-      var photos = document.createElement('ul'); photos.className = 'lp-photos'; photos.hidden = true;
-      expand.addEventListener('click', function () { photos.hidden = !photos.hidden; refreshRow(li); });
-      li.appendChild(cover); li.appendChild(meta); li.appendChild(expand); li.appendChild(photos);
+      meta.appendChild(el('span', 'lp-meta-comment'));
+      meta.appendChild(el('span', 'lp-badge', 'Hidden from the site'));
+      top.appendChild(cover); top.appendChild(meta);
+
+      var actions = el('div', 'lp-actions');
+      var edit = btn('lp-edit', 'Edit');
+      var hide = btn('lp-hide', 'Hide');
+      var expand = btn('lp-expand');
+      actions.appendChild(edit); actions.appendChild(hide); actions.appendChild(expand);
+
+      var statusRow = el('div', 'lp-status-row');
+      var status = el('p', 'lp-status'); status.setAttribute('aria-live', 'polite');
+      var retry = btn('lp-retry', 'Retry'); retry.hidden = true;
+      statusRow.appendChild(status); statusRow.appendChild(retry);
+
+      var editor = el('div', 'lp-editor'); editor.hidden = true;
+      var cLabel = el('label', 'lp-label', 'Comment');
+      var cInput = el('textarea', 'lp-edit-comment'); cInput.maxLength = 280; cInput.rows = 2;
+      var tLabel = el('label', 'lp-label', 'Town');
+      var tSelect = el('select', 'lp-edit-town');
+      var uid = 'e' + Math.random().toString(36).slice(2, 8);
+      cInput.id = uid + 'c'; cLabel.htmlFor = cInput.id; tSelect.id = uid + 't'; tLabel.htmlFor = tSelect.id;
+      var eActions = el('div', 'lp-editor-actions');
+      var save = btn('lp-save', 'Save'); var cancel = btn('lp-cancel', 'Cancel');
+      eActions.appendChild(save); eActions.appendChild(cancel);
+      [cLabel, cInput, tLabel, tSelect, eActions].forEach(function (n) { editor.appendChild(n); });
+
+      var wrap = el('div', 'lp-photos-wrap'); wrap.hidden = true;
+      wrap.appendChild(el('p', 'lp-remove-note', 'Remove deletes one photo for good — only for a mistake (wrong photo, a face, a house number or plate). To take a post off the site, use Hide.'));
+      var photos = el('ul', 'lp-photos');
+      wrap.appendChild(photos);
+
+      [top, actions, statusRow, editor, wrap].forEach(function (n) { li.appendChild(n); });
+
+      edit.addEventListener('click', function () {
+        if (!editor.hidden) { editor.hidden = true; refreshRow(li); return; }
+        var r = recs[key];
+        cInput.value = r.comment;
+        townOptions(tSelect, r.town);
+        editor.hidden = false;
+        refreshRow(li);
+        cInput.focus();
+      });
+      cancel.addEventListener('click', function () { editor.hidden = true; refreshRow(li); });
+      save.addEventListener('click', function () {
+        var r = recs[key], patch = {}, any = false;
+        var c = cInput.value.trim();
+        if (c !== r.comment) { patch.comment = c; any = true; }
+        if (tSelect.value && tSelect.value !== r.town) { patch.town = tSelect.value; any = true; }
+        editor.hidden = true;
+        if (any) change(li, patch); else refreshRow(li);
+      });
+      hide.addEventListener('click', function () { change(li, { hidden: !recs[key].hidden }); });
+      retry.addEventListener('click', function () { if (!recs[key].inflight && recs[key].pending) sendChange(li); });
+      expand.addEventListener('click', function () { wrap.hidden = !wrap.hidden; refreshRow(li); });
       return li;
     }
 
+    function change(li, patch) {
+      var r = recs[li.dataset.batch];
+      Object.keys(patch).forEach(function (k) { r[k] = patch[k]; });
+      r.pending = Object.assign(r.pending || {}, patch);
+      if (r.inflight) { refreshRow(li); return; }   // goes with the next send
+      sendChange(li);
+    }
+
+    function sendChange(li) {
+      var key = li.dataset.batch, r = recs[key];
+      var sent = r.pending; r.pending = null; r.inflight = true;
+      var body = { token: token, id: key };
+      FIELDS.forEach(function (k) { if (k in sent) body[k] = sent[k]; });
+      setRowState(li, 'saving', 'Saving…');
+      api('/api/live/update', body).then(function () {
+        r.inflight = false;
+        if (r.pending) return sendChange(li);
+        setRowState(li, 'saved', 'Saved. The live site catches up within a minute.');
+        // Quiet: the note goes once he's had time to read it.
+        setTimeout(function () { if (li.dataset.state === 'saved' && !r.inflight && !r.pending) setRowState(li, '', ''); }, 8000);
+      }, function () {
+        r.inflight = false;
+        if (dead) return;
+        r.pending = Object.assign({}, sent, r.pending || {});
+        setRowState(li, 'failed', 'Didn’t save. Check signal and tap Retry.');
+      });
+    }
+
+    function setRowState(li, state, text) {
+      li.dataset.state = state;
+      li.querySelector('.lp-status').textContent = text;
+      li.querySelector('.lp-retry').hidden = state !== 'failed';
+      refreshRow(li);
+    }
+
     function refreshRow(li) {
+      var wrap = li.querySelector('.lp-photos-wrap');
       var photos = li.querySelector('.lp-photos');
       var n = photos.children.length;
       if (!n) {   // the last photo out takes the post with it
@@ -544,24 +677,34 @@
         els.recentEmpty.hidden = !!els.recent.children.length;
         return;
       }
+      var r = recs[li.dataset.batch];
       var first = photos.children[0].querySelector('img');
       var cover = li.querySelector('.lp-cover img');
       if (first && first.getAttribute('src') && cover.getAttribute('src') !== first.getAttribute('src')) cover.src = first.getAttribute('src');
       var count = li.querySelector('.lp-count');
       count.textContent = '+' + (n - 1);
       count.hidden = n < 2;
-      li.querySelector('.lp-expand').textContent = photos.hidden ? (n > 1 ? n + ' photos' : 'Manage') : 'Done';
+      li.querySelector('.lp-meta-town').textContent = r.town;
+      li.querySelector('.lp-meta-when').textContent = ['Posted ' + ago(r.posted_at), r.taken_at ? 'taken ' + shortDate(r.taken_at) : ''].filter(Boolean).join(' · ');
+      var c = li.querySelector('.lp-meta-comment');
+      c.textContent = r.comment; c.hidden = !r.comment;
+      li.dataset.hidden = r.hidden ? 'true' : 'false';
+      li.querySelector('.lp-badge').hidden = !r.hidden;
+      var hide = li.querySelector('.lp-hide');
+      hide.textContent = r.hidden ? 'Unhide' : 'Hide';
+      hide.setAttribute('aria-pressed', r.hidden ? 'true' : 'false');
+      li.querySelector('.lp-edit').textContent = li.querySelector('.lp-editor').hidden ? 'Edit' : 'Close';
+      li.querySelector('.lp-expand').textContent = wrap.hidden ? (n > 1 ? n + ' photos' : 'Photo') : 'Done';
     }
 
     function photoRow(p, post) {
-      var li = document.createElement('li');
-      li.className = 'lp-photo';
+      var li = el('li', 'lp-photo');
       li.dataset.id = p.id;
-      var img = document.createElement('img');
+      var img = el('img');
       img.alt = ''; img.loading = 'lazy'; img.width = 48; img.height = 48;
       if (p.thumb) img.src = p.thumb;
-      var rm = document.createElement('button'); rm.type = 'button'; rm.className = 'lp-remove'; rm.textContent = 'Remove';
-      var sure = document.createElement('button'); sure.type = 'button'; sure.className = 'lp-remove-confirm'; sure.textContent = 'Tap to remove'; sure.hidden = true;
+      var rm = btn('lp-remove', 'Remove');
+      var sure = btn('lp-remove-confirm', 'Tap to remove'); sure.hidden = true;
       rm.addEventListener('click', function () {
         rm.hidden = true; sure.hidden = false;
         setTimeout(function () { if (!sure.disabled) { sure.hidden = true; rm.hidden = false; } }, 4000);
@@ -581,9 +724,8 @@
       return li;
     }
 
-    // where 'top' puts a new post first (just posted), 'end' appends (feed order).
-    // atStart puts the photo first inside its post instead of last.
-    function addPhoto(p, where, atStart) {
+    // where 'top' puts a new post first (just posted), 'end' appends (list order).
+    function addPhoto(p, where) {
       if (!p.id || hasPhoto(p.id)) return;
       var row = findRow(postKey(p));
       if (!row) {
@@ -591,9 +733,7 @@
         if (where === 'top') els.recent.insertBefore(row, els.recent.firstChild);
         else els.recent.appendChild(row);
       }
-      var list = row.querySelector('.lp-photos');
-      var item = photoRow(p, row);
-      if (atStart) list.insertBefore(item, list.firstChild); else list.appendChild(item);
+      row.querySelector('.lp-photos').appendChild(photoRow(p, row));
       refreshRow(row);
       els.recentEmpty.hidden = true;
     }
@@ -601,27 +741,45 @@
     function addJustPosted(p) {
       var row = findRow(postKey(p));
       if (row && row !== els.recent.firstElementChild) els.recent.insertBefore(row, els.recent.firstChild);
-      addPhoto(p, 'top', false);
+      addPhoto(p, 'top');
     }
 
-    function loadRecent() {
-      // Same URL as the banner and /live/, so all three share the server's 60s cache.
-      fetch('/api/live/feed').then(function (r) { return r.ok ? r.json() : { posts: [] }; }).then(function (d) {
-        var hide = removedIds();
-        // Feed posts are already grouped: {id (batch id, or the lone photo's
-        // public_id), photos[{id, thumb, ...}] in upload order, town, ...}.
-        // A flat photo (older feed) is treated as a post of one.
+    // POST /api/live/list {token, cursor?, n} -> {posts: feed shape + hidden, next}.
+    // Hidden posts included, newest first, never cached.
+    var listBusy = false, nextCursor = null;
+    function loadList(cursor) {
+      if (listBusy || dead) return;
+      listBusy = true;
+      els.listError.hidden = true;
+      els.more.hidden = true;
+      els.listLoading.hidden = false;
+      var body = { token: token };
+      if (cursor) body.cursor = cursor;
+      body.n = LIST_N;
+      api('/api/live/list', body).then(function (d) {
+        listBusy = false;
+        els.listLoading.hidden = true;
+        var gone = removedIds();
+        // A just-deleted photo can linger in Cloudinary search for a moment.
         (d.posts || []).forEach(function (post) {
           var photos = Array.isArray(post.photos) ? post.photos : [post];
           photos.forEach(function (ph) {
-            if (!ph || hide.indexOf(ph.id) !== -1) return;
-            addPhoto({ id: ph.id, batch: post.id, thumb: ph.thumb, town: post.town, taken_at: post.taken_at, posted_at: post.posted_at, comment: post.comment }, 'end', false);
+            if (!ph || gone.indexOf(ph.id) !== -1) return;
+            addPhoto({ id: ph.id, batch: post.id, thumb: ph.thumb, town: post.town, taken_at: post.taken_at, posted_at: post.posted_at, comment: post.comment, hidden: post.hidden === true }, 'end');
           });
         });
+        nextCursor = d.next || null;
+        els.more.hidden = !nextCursor;
         els.recentEmpty.hidden = !!els.recent.children.length;
-      }).catch(function () { els.recentEmpty.hidden = !!els.recent.children.length; });
+      }, function () {
+        listBusy = false;
+        els.listLoading.hidden = true;
+        if (dead) return;
+        els.listError.hidden = false;
+        els.listRetry.onclick = function () { loadList(cursor); };
+      });
     }
-    loadRecent();
+    els.more.addEventListener('click', function () { if (nextCursor) loadList(nextCursor); });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
