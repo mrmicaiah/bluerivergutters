@@ -27,6 +27,12 @@
  * selection posts the first 20 and offers "Post the other N" afterwards as a
  * separate post — said up front, never split or uploaded silently.
  *
+ * VIDEO (WO-0150). Same picker. Each video is gated before anything is signed:
+ * over 95MB, over 30.0s (loadedmetadata on an off-DOM <video>), or length
+ * unreadable -> turned down with its reason; never retried, never blocks the
+ * rest. Accepted ones sign with resource_type "video" and the video cap
+ * (c_limit,w_1280,h_1280,q_auto,vc_auto) and POST to /video/upload.
+ *
  * MANAGE. A second view, "Manage posts" (Post stays the default on every
  * load). His full history from POST /api/live/list {token, cursor?, n}, hidden
  * posts included, paged with Load more; fetched on the first open of the view,
@@ -533,7 +539,10 @@
       var params = baseParams(item.kind);
       params.context = contextString(ctx);
       setState(item, 'signing', 'Starting…', 0);
-      return api('/api/live/sign', { token: token, params_to_sign: params }).then(function (sig) {
+      // sign.js checks the transformation against the resource type; image is its default.
+      var signBody = { token: token, params_to_sign: params };
+      if (item.kind === 'video') signBody.resource_type = 'video';
+      return api('/api/live/sign', signBody).then(function (sig) {
         // The signature covers the server's timestamp: upload with exactly that.
         if (!sig.timestamp || !sig.signature) throw new Error('bad sign response');
         params.timestamp = sig.timestamp;
