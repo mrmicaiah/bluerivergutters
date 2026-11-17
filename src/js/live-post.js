@@ -53,6 +53,14 @@
   var FOLDER = 'live/';
   var TAG = 'brg-live';
   var TRANSFORMATION = 'c_limit,w_2000,h_2000,q_auto:good';
+  // Videos (WO-0150): the server signs exactly this cap for video uploads.
+  var VIDEO_TRANSFORMATION = 'c_limit,w_1280,h_1280,q_auto,vc_auto';
+  var MAX_VIDEO_SECONDS = 30;             // "over 30.0s" is turned down
+  var MAX_VIDEO_BYTES = 95 * 1024 * 1024; // under Cloudinary's 100MB single-upload limit
+  var VIDEO_META_TIMEOUT_MS = 15000;
+  var MSG_TOO_LONG = 'Videos must be 30 seconds or less. Trim it and try again.';
+  var MSG_TOO_LARGE = 'This video is too large to upload. Shoot it at 1080p (not 4K) or keep it shorter, and try again.';
+  var MSG_UNREADABLE = 'Couldn\u2019t read this video, so it can\u2019t go up. Try a different one.';
   var MAX_TOWN_KM = 25;
   // The feed shows at most 20 photos per post; anything past that would upload
   // and never render. So one press of Post never carries more than 20.
@@ -213,9 +221,46 @@
       .map(function (k) { return k + '=' + escapeCtx(obj[k]); }).join('|');
   }
 
+  // ---- video gates: size, then duration, both before any upload -----------
+  function isVideo(file) {
+    return /^video\//.test(file.type || '') || /\.(mov|mp4|m4v|webm|3gp|qt)$/i.test(file.name || '');
+  }
+
+  // -> {ok: true, duration} | {ok: false, message}. Never throws. A video whose
+  // length can't be read is turned down: nothing goes up unverified.
+  function videoGate(file) {
+    if (file.size > MAX_VIDEO_BYTES) return Promise.resolve({ ok: false, message: MSG_TOO_LARGE });
+    return new Promise(function (resolve) {
+      var v = document.createElement('video'), url = null, done = false;
+      function finish(result) {
+        if (done) return; done = true;
+        clearTimeout(timer);
+        v.onloadedmetadata = v.onerror = null;
+        try { v.removeAttribute('src'); v.load(); } catch (e) {}
+        try { URL.revokeObjectURL(url); } catch (e) {}
+        resolve(result);
+      }
+      var timer = setTimeout(function () { finish({ ok: false, message: MSG_UNREADABLE }); }, VIDEO_META_TIMEOUT_MS);
+      v.preload = 'metadata';
+      v.muted = true;
+      v.onloadedmetadata = function () {
+        var d = v.duration;
+        if (!isFinite(d) || !(d > 0)) return finish({ ok: false, message: MSG_UNREADABLE });
+        if (d > MAX_VIDEO_SECONDS) return finish({ ok: false, message: MSG_TOO_LONG, duration: d });
+        finish({ ok: true, duration: d });
+      };
+      v.onerror = function () { finish({ ok: false, message: MSG_UNREADABLE }); };
+      try { url = URL.createObjectURL(file); v.src = url; } catch (e) { finish({ ok: false, message: MSG_UNREADABLE }); }
+    });
+  }
+
+  // Tenths, rounded down: a 30.1s clip must never read as "30" next to the 30s rule.
+  function clock(sec) { return (Math.floor(sec * 10) / 10).toFixed(1) + ' sec'; }
+
   window.BRGLivePost = {
     readExif: readExif, nearestTown: nearestTown, towns: towns, newBatchId: newBatchId,
-    hasCentroid: function (t) { return !!CENTROIDS[t]; }, contextString: contextString
+    hasCentroid: function (t) { return !!CENTROIDS[t]; }, contextString: contextString,
+    videoGate: videoGate, isVideo: isVideo
   };
 
   // ---- page -----------------------------------------------------------------
@@ -256,8 +301,8 @@
         });
     }
 
-    function baseParams() {
-      return { folder: FOLDER, tags: TAG, transformation: TRANSFORMATION };
+    function baseParams(kind) {
+      return { folder: FOLDER, tags: TAG, transformation: kind === 'video' ? VIDEO_TRANSFORMATION : TRANSFORMATION };
     }
 
     // Probe the link once on load so a dead link says so before he picks
@@ -324,11 +369,29 @@
       els.success.hidden = true;
       els.compose.hidden = false;
       files.forEach(function (file) {
-        var item = { file: file, exif: {}, state: 'ready' };
+        var video = isVideo(file);
+        var item = { file: file, kind: video ? 'video' : 'photo', exif: {}, state: video ? 'checking' : 'ready' };
         item.el = renderItem(item);
         batch.push(item);
       });
+      var mine = batch;
       Promise.all(batch.map(function (item) {
+        if (item.kind === 'video') {
+          return videoGate(item.file).then(function (g) {
+            if (batch !== mine) return;
+            var when = item.el.querySelector('.lp-item-when');
+            if (g.ok) {
+              when.textContent = 'Video \u00b7 ' + clock(g.duration);
+              setState(item, 'ready', 'Ready');
+            } else {
+              when.textContent = g.duration ? 'Video \u00b7 ' + clock(g.duration) : 'Video';
+              setState(item, 'refused', 'Turned down');
+              item.el.querySelector('.lp-item-msg').textContent = g.message;
+              item.el.querySelector('.lp-item-msg').hidden = false;
+            }
+            updatePostButton();
+          });
+        }
         return exifFromFile(item.file).then(function (exif) {
           item.exif = exif;
           if (exif.taken_at) item.el.dataset.takenAt = exif.taken_at;
@@ -336,7 +399,7 @@
           var when = item.el.querySelector('.lp-item-when');
           when.textContent = exif.taken_at ? 'Taken ' + shortDate(exif.taken_at) : 'No photo date';
         });
-      })).then(chooseTown);
+      })).then(function () { if (batch === mine) chooseTown(); });
       updatePostButton();
     }
 
@@ -357,16 +420,24 @@
     function renderItem(item) {
       var li = document.createElement('li');
       li.className = 'lp-item';
-      li.dataset.state = 'ready';
-      var img = document.createElement('img');
-      img.alt = '';
-      try { img.src = URL.createObjectURL(item.file); } catch (e) {}
-      img.onerror = function () { img.style.visibility = 'hidden'; };
+      li.dataset.state = item.state;
+      li.dataset.kind = item.kind;
+      var img;
+      if (item.kind === 'video') {
+        // A tile, not a decoded frame: the gate reads only metadata.
+        img = document.createElement('span'); img.className = 'lp-item-vid'; img.setAttribute('aria-hidden', 'true'); img.textContent = '\u25b6';
+      } else {
+        img = document.createElement('img');
+        img.alt = '';
+        try { img.src = URL.createObjectURL(item.file); } catch (e) {}
+        img.onerror = function () { img.style.visibility = 'hidden'; };
+      }
       var meta = document.createElement('div'); meta.className = 'lp-item-meta';
-      var when = document.createElement('span'); when.className = 'lp-item-when'; when.textContent = 'Reading…';
-      var status = document.createElement('span'); status.className = 'lp-item-status'; status.textContent = 'Ready';
+      var when = document.createElement('span'); when.className = 'lp-item-when'; when.textContent = item.kind === 'video' ? 'Checking video\u2026' : 'Reading\u2026';
+      var status = document.createElement('span'); status.className = 'lp-item-status'; status.textContent = item.kind === 'video' ? 'Checking' : 'Ready';
       var bar = document.createElement('progress'); bar.className = 'lp-progress'; bar.max = 100; bar.value = 0;
-      meta.appendChild(when); meta.appendChild(status); meta.appendChild(bar);
+      var msg = document.createElement('p'); msg.className = 'lp-item-msg'; msg.setAttribute('role', 'status'); msg.hidden = true;
+      meta.appendChild(when); meta.appendChild(status); meta.appendChild(bar); meta.appendChild(msg);
       li.appendChild(img); li.appendChild(meta);
       els.items.appendChild(li);
       return li;
@@ -380,21 +451,34 @@
     }
 
     function resetBatch() {
-      batch.forEach(function (item) { var img = item.el.querySelector('img'); try { URL.revokeObjectURL(img.src); } catch (e) {} });
+      batch.forEach(function (item) { var img = item.el.querySelector('img'); if (img) { try { URL.revokeObjectURL(img.src); } catch (e) {} } });
       batch = [];
       batchId = null;
       els.items.textContent = '';
       clearError();
     }
 
-    function pending() { return batch.filter(function (i) { return i.state !== 'done'; }); }
+    // Turned-down videos are never pending: nothing to retry, nothing to send.
+    function pending() { return batch.filter(function (i) { return i.state !== 'done' && i.state !== 'refused'; }); }
+    function checking() { return batch.some(function (i) { return i.state === 'checking'; }); }
+
+    // "3 photos", "2 videos", "2 photos + 1 video"
+    function describe(items, joiner) {
+      var p = 0, v = 0;
+      items.forEach(function (i) { if (i.kind === 'video') v++; else p++; });
+      var parts = [];
+      if (p) parts.push(p + (p > 1 ? ' photos' : ' photo'));
+      if (v) parts.push(v + (v > 1 ? ' videos' : ' video'));
+      return parts.join(joiner);
+    }
 
     function updatePostButton() {
       var failed = batch.filter(function (i) { return i.state === 'failed'; }).length;
-      var left = pending().length;
-      els.post.disabled = !left || posting || !els.town.value;
+      var todo = pending();
+      els.post.disabled = !todo.length || posting || !els.town.value || checking();
       if (failed) els.post.textContent = 'Retry ' + failed + ' failed';
-      else els.post.textContent = left > 1 ? 'Post ' + left + ' photos' : 'Post';
+      else if (checking()) els.post.textContent = 'Checking video\u2026';
+      else els.post.textContent = todo.length > 1 ? 'Post ' + describe(todo, ' + ') : 'Post';
     }
 
     function showError(msg) { els.error.textContent = msg; els.error.hidden = false; }
@@ -404,7 +488,7 @@
     var posting = false;
 
     els.post.addEventListener('click', function () {
-      if (posting || dead) return;
+      if (posting || dead || checking()) return;
       clearError();
       var todo = pending();
       if (!todo.length) return;
@@ -427,8 +511,10 @@
         updatePostButton();
         var failed = batch.filter(function (i) { return i.state === 'failed'; }).length;
         if (failed) { showError(failed + (failed > 1 ? ' photos' : ' photo') + ' didn’t go up. Check signal and tap Retry.'); return; }
-        var n = batch.length;
-        els.successText.textContent = 'Posted ' + n + (n > 1 ? ' photos' : ' photo') + ' to ' + town + '.';
+        var sent = batch.filter(function (i) { return i.state === 'done'; });
+        var refused = batch.length - sent.length;
+        els.successText.textContent = 'Posted ' + describe(sent, ' and ') + ' to ' + town + '.' +
+          (refused ? ' ' + refused + (refused > 1 ? ' videos were' : ' video was') + ' turned down.' : '');
         els.again.textContent = leftover.length ? 'Post the other ' + leftover.length : 'Post more';
         els.success.hidden = false;
         els.compose.hidden = true;
@@ -444,7 +530,7 @@
       if (item.exif.taken_at) ctx.taken_at = item.exif.taken_at;
       if (comment) ctx.comment = comment;
       if (item.exif.gps) ctx.gps = item.exif.gps;
-      var params = baseParams();
+      var params = baseParams(item.kind);
       params.context = contextString(ctx);
       setState(item, 'signing', 'Starting…', 0);
       return api('/api/live/sign', { token: token, params_to_sign: params }).then(function (sig) {
@@ -454,7 +540,7 @@
         return upload(item, params, sig);
       }).then(function (res) {
         setState(item, 'done', 'Posted', 100);
-        addJustPosted({ id: res.public_id, batch: batchKey, thumb: thumbUrl(res.secure_url), town: town, taken_at: item.exif.taken_at || null, posted_at: new Date().toISOString(), comment: comment || null });
+        addJustPosted({ id: res.public_id, batch: batchKey, kind: item.kind, thumb: item.kind === 'video' ? posterUrl(res.secure_url) : thumbUrl(res.secure_url), town: town, taken_at: item.exif.taken_at || null, posted_at: new Date().toISOString(), comment: comment || null });
       }, function (err) {
         if (dead) return;
         setState(item, 'failed', 'Failed', 0);
@@ -469,7 +555,7 @@
         Object.keys(params).forEach(function (k) { fd.append(k, params[k]); });
         fd.append('signature', sig.signature);
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://api.cloudinary.com/v1_1/' + (sig.cloud_name || CLOUD) + '/image/upload');
+        xhr.open('POST', 'https://api.cloudinary.com/v1_1/' + (sig.cloud_name || CLOUD) + (item.kind === 'video' ? '/video/upload' : '/image/upload'));
         xhr.upload.onprogress = function (e) {
           if (e.lengthComputable) setState(item, 'uploading', Math.round(e.loaded / e.total * 100) + '%', Math.min(99, Math.round(e.loaded / e.total * 100)));
         };
@@ -502,6 +588,8 @@
 
     // ---- recent posts -----------------------------------------------------
     function thumbUrl(u) { return String(u || '').replace('/image/upload/', '/image/upload/w_300,h_300,c_fill,f_auto,q_auto/'); }
+    // A just-uploaded video's poster: its first frame as a JPEG.
+    function posterUrl(u) { return String(u || '').replace('/video/upload/', '/video/upload/so_0,w_300,h_300,c_fill,q_auto/').replace(/\.[a-z0-9]+$/i, '.jpg'); }
 
     function shortDate(iso) {
       var mm = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || '');
@@ -680,6 +768,7 @@
       var r = recs[li.dataset.batch];
       var first = photos.children[0].querySelector('img');
       var cover = li.querySelector('.lp-cover img');
+      li.querySelector('.lp-cover').classList.toggle('lp-cover-video', photos.children[0].dataset.kind === 'video');
       if (first && first.getAttribute('src') && cover.getAttribute('src') !== first.getAttribute('src')) cover.src = first.getAttribute('src');
       var count = li.querySelector('.lp-count');
       count.textContent = '+' + (n - 1);
@@ -700,6 +789,7 @@
     function photoRow(p, post) {
       var li = el('li', 'lp-photo');
       li.dataset.id = p.id;
+      li.dataset.kind = p.kind === 'video' ? 'video' : 'photo';
       var img = el('img');
       img.alt = ''; img.loading = 'lazy'; img.width = 48; img.height = 48;
       if (p.thumb) img.src = p.thumb;
@@ -765,7 +855,7 @@
           var photos = Array.isArray(post.photos) ? post.photos : [post];
           photos.forEach(function (ph) {
             if (!ph || gone.indexOf(ph.id) !== -1) return;
-            addPhoto({ id: ph.id, batch: post.id, thumb: ph.thumb, town: post.town, taken_at: post.taken_at, posted_at: post.posted_at, comment: post.comment, hidden: post.hidden === true }, 'end');
+            addPhoto({ id: ph.id, batch: post.id, kind: ph.kind, thumb: ph.thumb || ph.poster, town: post.town, taken_at: post.taken_at, posted_at: post.posted_at, comment: post.comment, hidden: post.hidden === true }, 'end');
           });
         });
         nextCursor = d.next || null;

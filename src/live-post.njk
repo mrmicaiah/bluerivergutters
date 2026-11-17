@@ -48,6 +48,11 @@ sitemap: false
     .lp-item-status { font-weight: 600; }
     .lp-item[data-state="done"] .lp-item-status { color: var(--green); }
     .lp-item[data-state="failed"] .lp-item-status { color: var(--red); }
+    .lp-item-vid { width: 64px; height: 64px; flex: none; border-radius: 8px; background: var(--navy); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+    .lp-item[data-state="refused"] .lp-item-vid { background: #94a3b8; }
+    .lp-item[data-state="refused"] .lp-item-status, .lp-item[data-state="checking"] .lp-item-status { color: #b45309; }
+    .lp-item[data-state="refused"] .lp-progress { display: none; }
+    .lp-item-msg { grid-column: 1 / -1; margin: 2px 0 0; padding: 8px 10px; border-radius: 8px; background: #fef3c7; color: #92400e; font-weight: 600; font-size: .85rem; line-height: 1.35; }
     .lp-progress { grid-column: 1 / -1; width: 100%; height: 8px; appearance: none; -webkit-appearance: none; border: 0; border-radius: 4px; background: var(--line); overflow: hidden; }
     .lp-progress::-webkit-progress-bar { background: var(--line); border-radius: 4px; }
     .lp-progress::-webkit-progress-value { background: var(--blue-light); border-radius: 4px; transition: width .2s; }
@@ -87,6 +92,10 @@ sitemap: false
     .lp-meta-comment { color: #334155; overflow-wrap: anywhere; }
     .lp-badge { justify-self: start; padding: 3px 8px; border-radius: 6px; background: #fee2e2; color: #991b1b; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; }
     .lp-entry[data-hidden="true"] .lp-cover { opacity: .4; filter: grayscale(1); }
+    .lp-cover-video::after, .lp-photo[data-kind="video"]::before { content: "\25B6"; position: absolute; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(15,23,42,.72); color: #fff; pointer-events: none; }
+    .lp-cover-video::after { left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px; font-size: .8rem; padding-left: 2px; }
+    .lp-photo[data-kind="video"] { position: relative; }
+    .lp-photo[data-kind="video"]::before { left: 12px; top: 50%; width: 24px; height: 24px; margin-top: -12px; font-size: .65rem; padding-left: 2px; }
     .lp-entry[data-hidden="true"] .lp-meta-line, .lp-entry[data-hidden="true"] .lp-meta-comment { color: #94a3b8; }
     .lp-actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
     .lp-actions button, .lp-editor-actions button, .lp-retry, .lp-wide { min-height: 44px; font: inherit; font-size: .95rem; font-weight: 700; border-radius: 10px; border: 1px solid #cbd5e1; background: #fff; color: var(--blue); cursor: pointer; }
@@ -135,10 +144,10 @@ sitemap: false
       <div id="lp-view-post" role="tabpanel" aria-labelledby="lp-tab-post">
       <div class="lp-card">
         <label class="lp-pick">
-          <span aria-hidden="true">📷</span> Choose photos
-          <input type="file" id="lp-files" accept="image/*" multiple>
+          <span aria-hidden="true">📷</span> Choose photos or videos
+          <input type="file" id="lp-files" accept="image/*,video/*" multiple>
         </label>
-        <p class="lp-rules">No faces without an OK, no house numbers or plates.</p>
+        <p class="lp-rules">Videos up to 30 seconds. No faces without an OK, no house numbers or plates.</p>
       </div>
 
       <div class="lp-card" id="lp-compose" hidden>
@@ -152,7 +161,7 @@ sitemap: false
         </div>
         <p class="lp-note" id="lp-town-note" aria-live="polite"></p>
 
-        <label class="lp-label" for="lp-comment">Comment <span style="font-weight:400;color:var(--gray)">(optional, goes on every photo)</span></label>
+        <label class="lp-label" for="lp-comment">Comment <span style="font-weight:400;color:var(--gray)">(optional, goes on every photo and video)</span></label>
         <textarea id="lp-comment" maxlength="280" placeholder="Seamless 6&quot; install, before &amp; after"></textarea>
 
         <button type="button" class="lp-post" id="lp-post" disabled>Post</button>
