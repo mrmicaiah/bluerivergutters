@@ -151,11 +151,13 @@ function asset(name, t, ctx = {}) {
 // cursors — the cursor names the next window's first asset, so new uploads at
 // the top don't shift later windows, as with the real API. Honors max_results.
 function fakeCloudinary(assets) {
-  const sorted = () => [...assets].sort((a, b) => b.uploaded_at.localeCompare(a.uploaded_at) || b.public_id.localeCompare(a.public_id));
+  // Only Live-tagged assets, as the real search's tags=brg-live clause does.
+  const sorted = () => assets.filter((a) => a.tags.includes('brg-live')).sort((a, b) => b.uploaded_at.localeCompare(a.uploaded_at) || b.public_id.localeCompare(a.public_id));
   resetNet([{
     match: (url) => url.includes(SEARCH),
     reply: (url, init) => {
       const q = JSON.parse(init.body);
+      assert.match(q.expression, /tags=brg-live/);
       const all = sorted();
       const start = q.next_cursor ? all.findIndex((r) => 'cur:' + r.public_id === q.next_cursor) : 0;
       assert.ok(start >= 0, 'stale fake cursor ' + q.next_cursor);
@@ -493,6 +495,397 @@ test('missing env -> loud 500 naming the missing vars, on every endpoint', async
       assert.equal(one.status, 500, path + ' without ' + v);
       assert.ok(one.text.includes(v));
       for (const other of needed.filter((x) => x !== v)) assert.ok(!one.text.includes(other), path + ' wrongly names ' + other);
+    }
+  }
+  assert.equal(net.calls.length, 0);
+});
+
+// ==== management: POST /api/live/update, POST /api/live/list, hidden posts ====
+
+const TOWNS_OK = ['Madison', 'Huntsville', 'Laceys Spring', 'Owens Cross Roads'];
+const UPDATE = '/api/live/update';
+const LIST = '/api/live/list';
+
+// Cloudinary context string <-> map, with its backslash escapes for | and =.
+function parseContext(s) {
+  const out = {};
+  for (const pair of s.match(/(?:\\.|[^|])+/g) || []) {
+    const m = pair.match(/^((?:\\.|[^=])*)=(.*)$/s);
+    const un = (x) => x.replace(/\\(.)/g, '$1');
+    if (m) out[un(m[1])] = un(m[2]);
+  }
+  return out;
+}
+const flatCtx = (a) => (a.context && a.context.custom) || a.context || {};
+
+// A fake Cloudinary holding `assets` (mutated by updates): Search (honoring a
+// context.batch="..." clause), GET resource, and the Admin API update, which
+// REPLACES the asset's context with the one given.
+function fakeStore(assets, { failUpdate = false } = {}) {
+  fakeCloudinary(assets);
+  const searchHandler = net.handlers[0];
+  const findAsset = (url) => {
+    const id = decodeURIComponent(url.split('/resources/image/upload/')[1]);
+    return assets.find((a) => a.public_id === id);
+  };
+  net.handlers = [
+    {
+      match: (url) => url.includes(SEARCH),
+      reply: (url, init) => {
+        const q = JSON.parse(init.body);
+        const m = q.expression.match(/context\.batch="([^"]*)"/);
+        if (!m) return searchHandler.reply(url, init);
+        assert.match(q.expression, /tags=brg-live/, 'batch lookup must be limited to Live assets');
+        const hits = assets.filter((a) => a.tags.includes('brg-live') && flatCtx(a).batch === m[1]);
+        return jsonResponse({ total_count: hits.length, resources: hits });
+      }
+    },
+    {
+      match: (url, init) => url.includes(RESOURCE) && (init.method || 'GET') === 'GET',
+      reply: (url) => {
+        const a = findAsset(url);
+        if (!a) return jsonResponse({ error: { message: 'Resource not found' } }, 404);
+        return jsonResponse({ ...a, context: { custom: { ...flatCtx(a) } } });
+      }
+    },
+    {
+      match: (url, init) => url.includes(RESOURCE) && init.method === 'POST',
+      reply: (url, init) => {
+        if (failUpdate) return new Response('boom', { status: 500 });
+        const a = findAsset(url);
+        if (!a) return jsonResponse({ error: { message: 'Resource not found' } }, 404);
+        assert.ok(a.tags.includes('brg-live'), 'updated a non-Live asset: ' + a.public_id);
+        const form = new URLSearchParams(init.body);
+        a.context = parseContext(form.get('context') || '');
+        return jsonResponse({ ...a, context: { custom: a.context } });
+      }
+    }
+  ];
+}
+const updates = () => net.calls.filter((c) => c.url.includes(RESOURCE) && c.init.method === 'POST');
+
+async function update(fields, env = ENV) {
+  return call(UPDATE, { method: 'POST', env, body: { token: ENV.LIVE_POST_TOKEN, ...fields } });
+}
+async function list(fields = {}, env = ENV) {
+  return call(LIST, { method: 'POST', env, body: { token: ENV.LIVE_POST_TOKEN, ...fields } });
+}
+
+function sampleStore() {
+  const assets = [
+    asset('legacy', 5, { town: 'Decatur', comment: 'Old one' }),
+    asset('b1', 10, { batch: 'bONE', town: 'Madison', taken_at: '2026-11-14T10:00:00Z', comment: 'First' }),
+    asset('b2', 11, { batch: 'bONE' }),
+    asset('b3', 12, { batch: 'bONE' }),
+    asset('o1', 20, { batch: 'bOTHER', town: 'Athens', comment: 'Leave me' }),
+    { ...asset('hero', 30, {}), public_id: 'heroes/home', tags: ['hero'] }
+  ];
+  fakeStore(assets);
+  return assets;
+}
+const byId = (assets, id) => assets.find((a) => a.public_id === id);
+
+test('routes: /api/live/update and /api/live/list are generated', async () => {
+  const { routes } = await loadWorker();
+  for (const r of ['/api/live/update', '/api/live/list']) assert.ok(routes.include.includes(r), r);
+});
+
+test('update: comment only -> every photo in the batch, nothing else touched', async () => {
+  const assets = sampleStore();
+  const r = await update({ id: 'bONE', comment: 'Before and after, 6-inch seamless' });
+  assert.equal(r.status, 200, r.text);
+  assert.equal(r.json.ok, true);
+  assert.equal(updates().length, 3, 'one update per photo in the batch');
+  for (const id of ['live/b1', 'live/b2', 'live/b3']) assert.equal(flatCtx(byId(assets, id)).comment, 'Before and after, 6-inch seamless', id);
+  const b1 = flatCtx(byId(assets, 'live/b1'));
+  assert.equal(b1.town, 'Madison');
+  assert.equal(b1.gps, GPS, 'private gps context preserved');
+  assert.equal(b1.batch, 'bONE');
+  assert.equal(b1.taken_at, '2026-11-14T10:00:00Z');
+  assert.equal(flatCtx(byId(assets, 'live/b2')).town, undefined, 'town not invented where absent');
+  assert.equal(flatCtx(byId(assets, 'live/o1')).comment, 'Leave me');
+  assert.ok(!r.text.includes(GPS));
+});
+
+test('update: town only, and the feed shows it', async () => {
+  const assets = sampleStore();
+  const r = await update({ id: 'bONE', town: 'Laceys Spring' });
+  assert.equal(r.status, 200, r.text);
+  for (const id of ['live/b1', 'live/b2', 'live/b3']) {
+    assert.equal(flatCtx(byId(assets, id)).town, 'Laceys Spring');
+    assert.equal(flatCtx(byId(assets, id)).comment, id === 'live/b1' ? 'First' : undefined, 'comment untouched');
+  }
+  const post = (await feed()).posts.find((p) => p.id === 'bONE');
+  assert.equal(post.town, 'Laceys Spring');
+});
+
+test('update: hide -> hidden="1" on every photo; feed drops it, list keeps it flagged', async () => {
+  const assets = sampleStore();
+  const r = await update({ id: 'bONE', hidden: true });
+  assert.equal(r.status, 200, r.text);
+  for (const id of ['live/b1', 'live/b2', 'live/b3']) assert.equal(flatCtx(byId(assets, id)).hidden, '1');
+  resetCache();
+  const pub = await feed();
+  assert.deepEqual(pub.posts.map((p) => p.id), ['bOTHER', 'live/legacy']);
+  const l = await list();
+  assert.equal(l.status, 200, l.text);
+  assert.deepEqual(l.json.posts.map((p) => [p.id, p.hidden]), [['bOTHER', false], ['bONE', true], ['live/legacy', false]]);
+});
+
+test('update: unhide removes the key; the post returns to the feed', async () => {
+  const assets = sampleStore();
+  await update({ id: 'bONE', hidden: true });
+  const r = await update({ id: 'bONE', hidden: false });
+  assert.equal(r.status, 200, r.text);
+  for (const id of ['live/b1', 'live/b2', 'live/b3']) {
+    assert.ok(!('hidden' in flatCtx(byId(assets, id))), id + ' still carries hidden');
+    assert.equal(flatCtx(byId(assets, id)).batch, 'bONE');
+  }
+  resetCache();
+  assert.ok((await feed()).posts.some((p) => p.id === 'bONE'));
+});
+
+test('update: combined fields in one call; empty strings clear comment and town', async () => {
+  const assets = sampleStore();
+  let r = await update({ id: 'bONE', comment: 'New words', town: 'Huntsville', hidden: true });
+  assert.equal(r.status, 200, r.text);
+  for (const id of ['live/b1', 'live/b2', 'live/b3']) {
+    assert.deepEqual(
+      [flatCtx(byId(assets, id)).comment, flatCtx(byId(assets, id)).town, flatCtx(byId(assets, id)).hidden],
+      ['New words', 'Huntsville', '1']
+    );
+  }
+  r = await update({ id: 'bONE', comment: '', town: '' });
+  assert.equal(r.status, 200, r.text);
+  for (const id of ['live/b1', 'live/b2', 'live/b3']) {
+    assert.ok(!('comment' in flatCtx(byId(assets, id))));
+    assert.ok(!('town' in flatCtx(byId(assets, id))));
+    assert.equal(flatCtx(byId(assets, id)).hidden, '1', 'hidden untouched when not given');
+  }
+});
+
+test('update: a comment with | and = survives Cloudinary context escaping', async () => {
+  const assets = sampleStore();
+  const comment = 'Pitch = 6/12 | 2 downspouts \\ new';
+  const r = await update({ id: 'live/legacy', comment });
+  assert.equal(r.status, 200, r.text);
+  assert.equal(flatCtx(byId(assets, 'live/legacy')).comment, comment);
+  assert.equal(flatCtx(byId(assets, 'live/legacy')).town, 'Decatur');
+});
+
+test('update: legacy single-photo post (id = public_id) is manageable, incl. hide', async () => {
+  const assets = sampleStore();
+  let r = await update({ id: 'live/legacy', comment: 'Edited', town: 'Madison' });
+  assert.equal(r.status, 200, r.text);
+  assert.equal(updates().length, 1);
+  assert.equal(flatCtx(byId(assets, 'live/legacy')).comment, 'Edited');
+  r = await update({ id: 'live/legacy', hidden: true });
+  assert.equal(r.status, 200, r.text);
+  resetCache();
+  assert.ok(!(await feed()).posts.some((p) => p.id === 'live/legacy'));
+  assert.equal((await list()).json.posts.find((p) => p.id === 'live/legacy').hidden, true);
+});
+
+test('update: a photo id inside a batch manages its whole batch', async () => {
+  const assets = sampleStore();
+  const r = await update({ id: 'live/b2', hidden: true });
+  assert.equal(r.status, 200, r.text);
+  for (const id of ['live/b1', 'live/b2', 'live/b3']) assert.equal(flatCtx(byId(assets, id)).hidden, '1', id);
+});
+
+test('update: town outside the service area -> 400 naming why; nothing written', async () => {
+  sampleStore();
+  for (const town of ['Nashville', 'madison', ' Madison', 'Huntsville AL', 5]) {
+    const r = await update({ id: 'bONE', town });
+    assert.equal(r.status, 400, JSON.stringify(town) + ' -> ' + r.status);
+    assert.match(r.json.error, /town/i);
+  }
+  for (const town of TOWNS_OK) assert.equal((await update({ id: 'bONE', town })).status, 200, town);
+  net.calls = [];
+  await update({ id: 'bONE', town: 'Nashville' });
+  assert.equal(updates().length, 0);
+});
+
+test('update: other bad fields -> 400 with a readable reason, before any write', async () => {
+  sampleStore();
+  const cases = {
+    'comment too long': { id: 'bONE', comment: 'x'.repeat(301) },
+    'comment not a string': { id: 'bONE', comment: 42 },
+    'hidden not boolean': { id: 'bONE', hidden: '1' },
+    'nothing to change': { id: 'bONE' },
+    'unknown field': { id: 'bONE', gps: '1,2' },
+    'no id': { comment: 'x' },
+    'id not a string': { id: 7, comment: 'x' }
+  };
+  for (const [name, body] of Object.entries(cases)) {
+    net.calls = [];
+    const r = await update(body);
+    assert.equal(r.status, 400, name + ' -> ' + r.status + ' ' + r.text);
+    assert.ok(typeof r.json.error === 'string' && r.json.error.length > 3, name);
+    assert.equal(updates().length, 0, name + ' wrote');
+  }
+  assert.equal((await update({ id: 'bONE', comment: 'y'.repeat(300) })).status, 200, '300 chars is fine');
+});
+
+test('update: bad token -> the same 403 as sign after ~1s; Cloudinary never called', async () => {
+  sampleStore();
+  const signBad = await call('/api/live/sign', { method: 'POST', env: ENV, body: { token: 'nope' } });
+  for (const body of [{ token: 'nope', id: 'bONE', hidden: true }, { id: 'bONE', hidden: true }]) {
+    const t0 = Date.now();
+    const r = await call(UPDATE, { method: 'POST', env: ENV, body });
+    assert.equal(r.status, 403);
+    assert.ok(Date.now() - t0 >= 900);
+    assert.equal(r.text, signBad.text);
+  }
+  const raw = await call(UPDATE, { method: 'POST', env: ENV, rawBody: 'not json' });
+  assert.equal(raw.status, 403);
+  assert.equal(net.calls.length, 0);
+});
+
+test('update: unknown id or a non-Live asset -> 404, never written', async () => {
+  sampleStore();
+  for (const id of ['bNOPE', 'live/missing', 'heroes/home']) {
+    net.calls = [];
+    const r = await update({ id, hidden: true });
+    assert.equal(r.status, 404, id + ' -> ' + r.status + ' ' + r.text);
+    assert.deepEqual(r.json, { error: 'not found' }, id + ' (the function, not a missing route)');
+    assert.equal(updates().length, 0, id);
+  }
+});
+
+test('update: Cloudinary failure -> 502', async () => {
+  fakeStore([asset('b1', 10, { batch: 'bONE', town: 'Madison' })], { failUpdate: true });
+  const r = await update({ id: 'bONE', comment: 'x' });
+  assert.equal(r.status, 502, r.text);
+  assert.equal(r.json.ok, undefined);
+});
+
+// ---- hidden posts and the public feed's paging --------------------------
+
+test('feed: a batch with ANY photo hidden="1" is excluded', async () => {
+  fakeStore([
+    asset('v1', 1, { town: 'T' }),
+    asset('h1', 2, { batch: 'bH', town: 'T' }), asset('h2', 3, { batch: 'bH', hidden: '1' }), asset('h3', 4, { batch: 'bH' }),
+    asset('v2', 5, { town: 'T', hidden: '0' })
+  ]);
+  const r = await call('/api/live/feed', { env: ENV });
+  assert.deepEqual(r.json.posts.map((p) => p.id), ['live/v2', 'live/v1']);
+  assert.ok(!/hidden/.test(r.text), 'public feed never mentions hidden');
+});
+
+test('feed: hidden posts never surface through any cursor edge (pages x windows)', async () => {
+  // Visible singles and batches with hidden batches straddling search windows
+  // (100) and every page boundary for a range of n; some hidden batches only
+  // carry the flag on ONE photo (a partial write), at either end.
+  const assets = [];
+  let t = 0;
+  const hiddenIds = new Set();
+  const add = (name, ctx, hide) => { const a = asset(name, t++, ctx); assets.push(a); if (hide) hiddenIds.add(a.public_id); };
+  for (let g = 0; g < 40; g++) {
+    add('s' + g, { town: 'T' });
+    for (let i = 0; i < 4; i++) add('vb' + g + '-' + i, { batch: 'bV' + g, town: 'T' });
+    const flag = g % 3; // 0: all flagged, 1: only first-uploaded, 2: only last-uploaded
+    for (let i = 0; i < 3; i++) {
+      const ctx = { batch: 'bH' + g, town: 'T' };
+      if (flag === 0 || (flag === 1 && i === 0) || (flag === 2 && i === 2)) ctx.hidden = '1';
+      add('hb' + g + '-' + i, ctx, true);
+    }
+  }
+  fakeStore(assets);
+  for (const n of [1, 2, 3, 7, 24, 48]) {
+    const pages = await allPages(n);
+    const seen = pages.flatMap((p) => p.posts).flatMap(ids);
+    for (const id of seen) assert.ok(!hiddenIds.has(id), 'n=' + n + ': hidden photo ' + id + ' surfaced');
+    assert.equal(seen.length, assets.length - hiddenIds.size, 'n=' + n + ': visible photos lost or duplicated');
+    assert.equal(new Set(seen).size, seen.length);
+    for (const p of pages) assert.ok(p.posts.length <= n);
+  }
+});
+
+test('feed: a huge hidden batch flagged on one photo, read past the call limit, stays hidden on the next page', async () => {
+  const assets = [asset('older', 1, { town: 'T' })];
+  for (let i = 0; i < 700; i++) assets.push(asset('big' + String(i).padStart(3, '0'), 100 + i, i === 699 ? { batch: 'bHUGE', hidden: '1' } : { batch: 'bHUGE' }));
+  fakeStore(assets);
+  const pages = await allPages(5);
+  const seen = pages.flatMap((p) => p.posts).map((p) => p.id);
+  assert.deepEqual(seen, ['live/older']);
+});
+
+// ---- list ---------------------------------------------------------------
+
+test('list: feed post shape + hidden, newest first, includes hidden, private no-store, never cached', async () => {
+  sampleStore();
+  await update({ id: 'bOTHER', hidden: true });
+  net.calls = [];
+  const r = await list();
+  assert.equal(r.status, 200, r.text);
+  assert.match(r.headers.get('Cache-Control'), /no-store/);
+  assert.match(r.headers.get('Cache-Control'), /private/);
+  assert.equal(cache.puts.length, 0, 'list response went into the cache');
+  assert.deepEqual(Object.keys(r.json).sort(), ['next', 'posts']);
+  assert.deepEqual(r.json.posts.map((p) => [p.id, p.hidden]), [['bOTHER', true], ['bONE', false], ['live/legacy', false]]);
+  const one = r.json.posts[1];
+  assert.deepEqual(Object.keys(one).sort(), ['comment', 'count', 'hidden', 'id', 'photos', 'posted_at', 'taken_at', 'town']);
+  assert.equal(one.count, 3);
+  assert.equal(one.comment, 'First');
+  assert.ok(!/gps/i.test(r.text) && !r.text.includes('34.6993'), 'gps leaked from list');
+  // A second identical call goes to Cloudinary again: no caching.
+  const before = callsTo(SEARCH).length;
+  await list();
+  assert.ok(callsTo(SEARCH).length > before);
+});
+
+test('list: pages with the same cursor machinery, hidden posts included exactly once', async () => {
+  const assets = [];
+  for (let g = 0; g < 30; g++) {
+    assets.push(asset('s' + g, g * 10, { town: 'T', ...(g % 4 === 0 ? { hidden: '1' } : {}) }));
+    for (let i = 0; i < 5; i++) assets.push(asset('b' + g + '-' + i, g * 10 + 1 + i, { batch: 'bL' + g, town: 'T', ...(g % 2 ? { hidden: '1' } : {}) }));
+  }
+  fakeStore(assets);
+  for (const n of [1, 4, 48]) {
+    const seen = [];
+    let cursor;
+    for (let guard = 0; guard < 200; guard++) {
+      const r = await list({ n, ...(cursor ? { cursor } : {}) });
+      assert.equal(r.status, 200, r.text);
+      assert.ok(r.json.posts.length <= n);
+      for (const p of r.json.posts) {
+        seen.push(...ids(p));
+        assert.equal(p.hidden, p.id.startsWith('bL') ? Number(p.id.slice(2)) % 2 === 1 : Number(p.id.slice(6)) % 4 === 0, p.id);
+      }
+      if (!r.json.next) break;
+      cursor = r.json.next;
+    }
+    assert.equal(seen.length, assets.length, 'n=' + n);
+    assert.equal(new Set(seen).size, assets.length);
+  }
+  assert.equal(cache.puts.length, 0);
+});
+
+test('list: bad token -> 403 after ~1s, no Cloudinary; bad cursor -> 400', async () => {
+  sampleStore();
+  const t0 = Date.now();
+  const r = await call(LIST, { method: 'POST', env: ENV, body: { token: 'wrong' } });
+  assert.equal(r.status, 403);
+  assert.ok(Date.now() - t0 >= 900);
+  assert.equal(net.calls.length, 0);
+  const bad = await list({ cursor: 'not-a-real-cursor' });
+  assert.equal(bad.status, 400);
+  assert.equal(net.calls.length, 0);
+});
+
+test('update + list: missing env -> loud 500 naming the missing vars', async () => {
+  const needed = ['CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET', 'LIVE_POST_TOKEN'];
+  for (const [path, body] of [[UPDATE, { token: ENV.LIVE_POST_TOKEN, id: 'bONE', hidden: true }], [LIST, { token: ENV.LIVE_POST_TOKEN }]]) {
+    const all = await call(path, { method: 'POST', body, env: {} });
+    assert.equal(all.status, 500, path);
+    for (const v of needed) assert.ok(all.text.includes(v), path + ' does not name ' + v);
+    for (const v of needed) {
+      const env = { ...ENV };
+      delete env[v];
+      const one = await call(path, { method: 'POST', body, env });
+      assert.equal(one.status, 500, path + ' without ' + v);
+      assert.ok(one.text.includes(v));
     }
   }
   assert.equal(net.calls.length, 0);
