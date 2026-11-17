@@ -4,6 +4,9 @@ import { test, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { call, loadWorker, resetNet, resetCache, net, cache, callsTo, jsonResponse } from './harness.mjs';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { ROOT } from './harness.mjs';
 
 const ENV = {
   CLOUDINARY_API_KEY: 'test-key-123',
@@ -1080,4 +1083,230 @@ test('delete: a non-Live video is refused; an id that is neither image nor video
     assert.equal(r.status, 404, id);
   }
   assert.equal(net.calls.filter((c) => c.url.includes('destroy')).length, 0);
+});
+
+// ==== server-rendered /live/ and its archive (WO-0150 #269) ================
+
+const SHELL = '<!doctype html><html><head><meta charset="utf-8">' +
+  '<title>Blue River Live | Real Gutter Jobs, Posted From the Field</title>' +
+  '<meta property="og:title" content="Blue River Live | Real Gutter Jobs, Posted From the Field">' +
+  '<meta property="og:url" content="https://bluerivergutters.com/live/">' +
+  '<link rel="canonical" href="https://bluerivergutters.com/live/">' +
+  '<!--brg-ssr:head--></head><body>' +
+  '<script>window.brgLiveFirst = fetch("/api/live/feed")</script>' +
+  '<ol class="live-stream" id="live-stream" data-ssr-slot><li class="ls-top">Newest at the top</li><!--brg-ssr:stream--></ol>' +
+  '<script src="/js/live.js"></script></body></html>';
+const NOT_FOUND_PAGE = '<!doctype html><html><head><title>Page not found</title></head><body>404 static page</body></html>';
+
+// env.ASSETS: the static build. `shell` replaces /live/'s HTML; a function
+// makes it fail.
+function assetsWith({ shell = SHELL, fail = false } = {}) {
+  const seen = [];
+  return {
+    seen,
+    fetch: async (req) => {
+      const url = new URL(typeof req === 'string' ? req : req.url);
+      seen.push(url.pathname);
+      if (url.pathname === '/live/' || url.pathname === '/live/index.html') {
+        if (fail) return new Response('upstream broke', { status: 500 });
+        return new Response(shell, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+      }
+      if (url.pathname === '/404.html' || url.pathname === '/404') return new Response(NOT_FOUND_PAGE, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+      return new Response('no such static file', { status: 404 });
+    }
+  };
+}
+
+async function page(path, opts = {}) {
+  const ASSETS = opts.ASSETS || assetsWith(opts);
+  return call(path, { env: { ...ENV, ASSETS } });
+}
+const noScripts = (html) => html.replace(/<script[\s\S]*?<\/script>/g, '');
+const slot = (html) => {
+  const at = html.indexOf('data-ssr-slot');
+  return at < 0 ? '' : html.slice(at, html.indexOf('</ol>', at));
+};
+
+// 72 visible posts (singles with a town + caption, one 2-photo batch, one
+// video), a hidden TEST batch and a hidden TEST single in the middle.
+function archiveStore() {
+  const assets = [];
+  for (let i = 0; i < 70; i++) {
+    const name = 'job' + String(i).padStart(2, '0');
+    assets.push(asset(name, 100 + i * 10, { town: i % 2 ? 'Madison' : 'Athens', comment: 'Caption for ' + name }));
+  }
+  assets.push(asset('pair-a', 400, { batch: 'bPAIR', town: 'Hartselle', comment: 'Pair caption' }), asset('pair-b', 401, { batch: 'bPAIR' }));
+  assets.push(video('clip', 550, 14, { town: 'Decatur', comment: 'Video caption' }));
+  assets.push(asset('hid-a', 355, { batch: 'bHIDDEN', town: 'Toney', comment: 'TEST hidden post', hidden: '1' }), asset('hid-b', 356, { batch: 'bHIDDEN', hidden: '1' }));
+  assets.push(asset('hid-solo', 605, { town: 'Toney', comment: 'TEST hidden single', hidden: '1' }));
+  fakeStore(assets);
+  return assets;
+}
+
+test('ssr routes: /live/, /live/page/*, /live-sitemap.xml are Functions; /live/post/ stays static', async () => {
+  const { routes } = await loadWorker();
+  for (const r of ['/live', '/live-sitemap.xml']) assert.ok(routes.include.includes(r), r + ' in ' + JSON.stringify(routes.include));
+  assert.ok(routes.include.some((r) => r.startsWith('/live/page/')), 'archive route');
+  assert.ok(!routes.include.some((r) => r === '/live/*' || r === '/*'), 'functions must not swallow /live/post/');
+});
+
+test('ssr page 1: towns and captions are in the HTML itself, from the shell, with head tags', async () => {
+  archiveStore();
+  const r = await page('/live/');
+  assert.equal(r.status, 200, r.text);
+  assert.match(r.headers.get('Content-Type'), /text\/html/);
+  const html = noScripts(r.text);
+  const stream = slot(r.text);
+  for (const s of ['Video caption', 'Caption for job69', 'Decatur', 'Madison', 'Athens']) assert.ok(stream.includes(s), s + ' not server-rendered');
+  assert.ok(html.includes('Newest at the top'), 'shell content kept');
+  assert.ok(!r.text.includes('<!--brg-ssr:'), 'markers replaced');
+  assert.ok(!stream.includes('<script'), 'stream markup carries no script');
+  assert.match(r.text, /data-ssr-page="1"/);
+  // the video flows through with its mp4 for hydration
+  assert.ok(stream.includes('f_mp4,vc_auto,q_auto/v1794600550/live/clip.mp4'), 'video mp4 not passed to the renderer output');
+  const canon = r.text.match(/<link[^>]+rel="canonical"[^>]*>/g);
+  assert.equal(canon.length, 1, 'exactly one canonical');
+  assert.match(canon[0], /href="https:\/\/bluerivergutters\.com\/live\/"/);
+  assert.match(r.text, /<link[^>]+rel="next"[^>]+href="[^"]*\/live\/page\/2\/"/);
+  assert.ok(!/rel="prev"/.test(r.text), 'page 1 has no prev');
+  assert.match(stream, /href="[^"]*\/live\/page\/2\/"/, 'Older work link in the stream');
+});
+
+test('ssr: the chain walks 30 posts a page and ends; hidden TEST posts absent from every page', async () => {
+  archiveStore();
+  const pages = [];
+  let path = '/live/';
+  for (let guard = 0; guard < 10 && path; guard++) {
+    const r = await page(path);
+    assert.equal(r.status, 200, path + ' ' + r.text);
+    pages.push({ path, html: r.text });
+    const next = r.text.match(/<link[^>]+rel="next"[^>]+href="([^"]+)"/);
+    path = next ? new URL(next[1], 'https://bluerivergutters.com').pathname : null;
+  }
+  assert.deepEqual(pages.map((p) => p.path), ['/live/', '/live/page/2/', '/live/page/3/']);
+  const last = pages[2].html;
+  assert.ok(!/rel="next"/.test(last), 'last page has no next');
+  assert.ok(!/\/live\/page\/4\//.test(last), 'last page links nowhere further');
+  assert.match(last, /<link[^>]+rel="prev"[^>]+href="[^"]*\/live\/page\/2\/"/);
+  assert.match(pages[1].html, /<link[^>]+rel="prev"[^>]+href="[^"]*\/live\/"/);
+  const all = pages.map((p) => slot(p.html)).join('\n');
+  for (let i = 0; i < 70; i++) assert.ok(all.includes('Caption for job' + String(i).padStart(2, '0')), 'job' + i + ' missing from the archive');
+  assert.ok(all.includes('Pair caption') && all.includes('live/pair-b'), 'the 2-photo batch is in the archive');
+  for (let i = 0; i < 70; i++) {
+    const c = 'Caption for job' + String(i).padStart(2, '0');
+    assert.equal(pages.filter((p) => slot(p.html).includes(c)).length, 1, c + ' on more than one page');
+  }
+  for (const p of pages) {
+    for (const bad of ['TEST hidden', 'live/hid-a', 'live/hid-b', 'live/hid-solo', 'Toney']) assert.ok(!p.html.includes(bad), p.path + ' shows hidden post: ' + bad);
+  }
+  for (const [i, p] of pages.entries()) {
+    const canon = p.html.match(/<link[^>]+rel="canonical"[^>]*>/g);
+    assert.equal(canon.length, 1, p.path);
+    assert.ok(canon[0].includes('https://bluerivergutters.com' + p.path), p.path + ' canonical is self');
+    if (i > 0) {
+      assert.match(p.html, new RegExp('<title>[^<]*Page ' + (i + 1) + '[^<]*</title>'), 'archive title names its page');
+      assert.match(p.html, new RegExp('og:url" content="https://bluerivergutters.com' + p.path.replace(/\//g, '\\/') + '"'));
+      assert.match(p.html, new RegExp('data-ssr-page="' + (i + 1) + '"'));
+    }
+  }
+});
+
+test('ssr: /live/page/1/ 301s to /live/; past-end and junk page numbers 404 with the static page', async () => {
+  archiveStore();
+  const one = await page('/live/page/1/');
+  assert.equal(one.status, 301);
+  assert.equal(new URL(one.headers.get('Location'), 'https://bluerivergutters.com').pathname, '/live/');
+  const noSlash = await page('/live/page/2');
+  assert.equal(noSlash.status, 301);
+  assert.equal(new URL(noSlash.headers.get('Location'), 'https://bluerivergutters.com').pathname, '/live/page/2/');
+  for (const p of ['/live/page/4/', '/live/page/99/', '/live/page/0/', '/live/page/02/', '/live/page/abc/', '/live/page/-1/', '/live/page/999999999999/']) {
+    const r = await page(p);
+    assert.equal(r.status, 404, p + ' -> ' + r.status);
+    assert.ok(r.text.includes('404 static page'), p + ' should serve the static 404');
+  }
+});
+
+test('ssr: cached 60s per page — a hit never reaches Cloudinary or the shell', async () => {
+  archiveStore();
+  const ASSETS = assetsWith();
+  const first = await page('/live/', { ASSETS });
+  assert.equal(first.status, 200);
+  assert.match(first.headers.get('Cache-Control'), /max-age=60\b/);
+  const htmlPut = cache.puts.find((p) => p.key.endsWith('/live/'));
+  assert.ok(htmlPut, 'page 1 HTML not cached: ' + JSON.stringify(cache.puts.map((p) => p.key)));
+  assert.match(htmlPut.cacheControl, /max-age=60\b/);
+  const searches = callsTo(SEARCH).length;
+  const shells = ASSETS.seen.length;
+  const second = await page('/live/', { ASSETS });
+  assert.equal(second.text, first.text);
+  assert.equal(callsTo(SEARCH).length, searches, 'cache hit went to Cloudinary');
+  assert.equal(ASSETS.seen.length, shells, 'cache hit refetched the shell');
+  // page 2 is its own entry
+  await page('/live/page/2/', { ASSETS });
+  assert.ok(cache.puts.some((p) => p.key.endsWith('/live/page/2/')));
+});
+
+test('ssr: a new post appears on /live/ once the minute is up — no rebuild', async () => {
+  const assets = archiveStore();
+  const before = await page('/live/');
+  assert.ok(!before.text.includes('Fresh from the truck'));
+  assets.push(asset('fresh', 9000, { town: 'Arab', comment: 'Fresh from the truck' }));
+  resetCache(); // the 60s pass
+  const after = await page('/live/');
+  assert.ok(slot(after.text).includes('Fresh from the truck'));
+});
+
+test('ssr: shell fetch failure -> 503 with a body, never a blank 200, not cached', async () => {
+  archiveStore();
+  for (const p of ['/live/', '/live/page/2/']) {
+    resetCache();
+    const r = await page(p, { fail: true });
+    assert.equal(r.status, 503, p);
+    assert.ok(r.text.length > 50, 'blank 503');
+    assert.ok(r.headers.get('Retry-After'));
+    assert.match(r.headers.get('Cache-Control'), /no-store/);
+    assert.ok(!cache.store.has('https://bluerivergutters.com' + p));
+  }
+});
+
+test('ssr: Cloudinary down -> /live/ serves the plain shell (client still loads), archive pages 503', async () => {
+  resetNet([{ match: (u) => u.includes(SEARCH), reply: () => new Response('down', { status: 500 }) }]);
+  const one = await page('/live/');
+  assert.equal(one.status, 200);
+  assert.ok(one.text.includes('Newest at the top'));
+  assert.match(one.headers.get('Cache-Control'), /no-store/);
+  const two = await page('/live/page/2/');
+  assert.equal(two.status, 503);
+  assert.equal(cache.store.size, 0);
+});
+
+test('ssr: a shell without the markers -> /live/ as-is (no regression), archive pages 503', async () => {
+  archiveStore();
+  const bare = SHELL.replace('<!--brg-ssr:head-->', '').replace('<!--brg-ssr:stream-->', '');
+  const one = await page('/live/', { shell: bare });
+  assert.equal(one.status, 200);
+  assert.equal(one.text, bare);
+  const two = await page('/live/page/2/', { shell: bare });
+  assert.equal(two.status, 503);
+});
+
+test('live-sitemap.xml: /live/ + every archive page, cached 1h; robots.txt points at it', async () => {
+  archiveStore();
+  const r = await page('/live-sitemap.xml');
+  assert.equal(r.status, 200, r.text);
+  assert.match(r.headers.get('Content-Type'), /xml/);
+  assert.match(r.headers.get('Cache-Control'), /max-age=3600\b/);
+  const locs = [...r.text.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  assert.deepEqual(locs, ['https://bluerivergutters.com/live/', 'https://bluerivergutters.com/live/page/2/', 'https://bluerivergutters.com/live/page/3/']);
+  assert.match(r.text, /^<\?xml/);
+  assert.ok(cache.puts.some((p) => p.key.endsWith('/live-sitemap.xml') && /max-age=3600/.test(p.cacheControl)));
+  const robots = readFileSync(join(ROOT, 'src/robots.njk'), 'utf8');
+  assert.match(robots, /^Sitemap: https:\/\/bluerivergutters\.com\/live-sitemap\.xml$/m);
+});
+
+test('live-sitemap.xml: an empty Live still lists /live/', async () => {
+  fakeStore([]);
+  const r = await page('/live-sitemap.xml');
+  const locs = [...r.text.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  assert.deepEqual(locs, ['https://bluerivergutters.com/live/']);
 });
