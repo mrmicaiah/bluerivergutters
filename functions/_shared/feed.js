@@ -5,7 +5,26 @@
 //
 //   post shape: { id, photos: [{ id, w, h, thumb, full }], count, town,
 //                 taken_at|null, posted_at, comment|null }
-//               (+ hidden: boolean when built with { withHidden: true })
+//               (+ hidden: boolean when built with { manage: true })
+//
+// photos[] holds images AND videos (WO-0150). An image entry is exactly
+// { id, w, h, thumb, full } — no kind key: absent kind means image, so
+// consumers written before video keep working. A video entry is
+//   { id, w, h, kind: "video", duration, thumb, full, poster, mp4 }
+//   duration  seconds, as Cloudinary reports it
+//   thumb     jpg of the first frame, w_500   (same role as an image's thumb)
+//   full      jpg of the first frame, w_1000  (same role as an image's full;
+//             an old consumer shows the still instead of breaking)
+//   poster    = full, named for <video poster>
+//   mp4       f_mp4,vc_auto,q_auto delivery, for <video src> on iOS + Android
+//   w, h      the stored (already capped to 1280) video's size
+// Duration backstop: the public feed leaves out any video longer than
+// MAX_VIDEO_SECONDS (31: the post page refuses over 30.0; this catches a
+// direct upload), or whose duration Cloudinary didn't report (fails closed).
+// Only the file drops; the post keeps its other photos, and a post with
+// nothing left drops (it never takes a page slot). The manage list keeps
+// every video and flags it: overlong: true|false on video entries only.
+// Nothing is ever trimmed or deleted here — exclusion, not mutation.
 //
 // A post is one Post action on /live/post/: every asset whose context carries
 // the same `batch` id. Assets without one (uploaded before batches existed)
@@ -35,11 +54,11 @@
 // Hidden posts. A post is hidden when ANY of its photos carries context
 // hidden="1" (/api/live/update writes it on all of them; judging by any one
 // means a half-finished write still hides). The public feed drops hidden
-// posts — they don't count toward n — and the list shows them with
+// posts — they don't count toward n — and the manage list shows them with
 // hidden: true. A hidden batch read past a page's boundary goes into the
 // cursor's skip list like a shown one, so a tail of photos that happen not to
 // carry the flag can never surface on the next page as a post of its own.
-import { DELIVERY_BASE, API_BASE, LIVE_TAG, basicAuth, idPath } from './live.js';
+import { DELIVERY_BASE, VIDEO_DELIVERY_BASE, API_BASE, LIVE_EXPRESSION, basicAuth, idPath, typeOf } from './live.js';
 
 export const DEFAULT_N = 24;
 export const MAX_N = 48;
@@ -47,7 +66,11 @@ const MAX_PHOTOS = 20;
 const WINDOW = 100; // assets per Cloudinary search call; fixed, cursors depend on it
 const MAX_CALLS = 6; // per feed request
 const MAX_SKIP = 8; // shown (or hidden) batches carried in a cursor
+export const MAX_VIDEO_SECONDS = 31;
 const THUMB = 'c_limit,w_500,f_auto,q_auto';
+const POSTER_THUMB = 'so_0,c_limit,w_500,f_jpg,q_auto';
+const POSTER_FULL = 'so_0,c_limit,w_1000,f_jpg,q_auto';
+const MP4 = 'f_mp4,vc_auto,q_auto';
 const FULL = 'c_limit,w_2000,f_auto,q_auto';
 const CURSOR_CHARS = /^[A-Za-z0-9_-]{1,1500}$/;
 
@@ -66,9 +89,29 @@ export function groupKey(r) {
   return batch && batch.length <= 100 ? 'b:' + batch : 'a:' + r.public_id;
 }
 
-function photo(r) {
+// A video the public may see: Cloudinary reported a duration within the cap.
+export function overlong(r) {
+  const d = Number(r.duration);
+  return typeof r.duration !== 'number' || !Number.isFinite(d) || d > MAX_VIDEO_SECONDS;
+}
+const publicOk = (r) => typeOf(r) !== 'video' || !overlong(r);
+
+function photo(r, manage) {
   const path = 'v' + r.version + '/' + idPath(r.public_id);
-  return { id: r.public_id, w: r.width, h: r.height, thumb: DELIVERY_BASE + THUMB + '/' + path, full: DELIVERY_BASE + FULL + '/' + path };
+  if (typeOf(r) !== 'video') {
+    return { id: r.public_id, w: r.width, h: r.height, thumb: DELIVERY_BASE + THUMB + '/' + path, full: DELIVERY_BASE + FULL + '/' + path };
+  }
+  const still = (t) => VIDEO_DELIVERY_BASE + t + '/' + path + '.jpg';
+  return {
+    id: r.public_id, w: r.width, h: r.height,
+    kind: 'video',
+    duration: typeof r.duration === 'number' ? r.duration : null,
+    thumb: still(POSTER_THUMB),
+    full: still(POSTER_FULL),
+    poster: still(POSTER_FULL),
+    mp4: VIDEO_DELIVERY_BASE + MP4 + '/' + path + '.mp4',
+    ...(manage ? { overlong: overlong(r) } : {})
+  };
 }
 
 const uploaded = (r) => r.uploaded_at || r.created_at;
@@ -76,7 +119,7 @@ const uploaded = (r) => r.uploaded_at || r.created_at;
 export const isHidden = (r) => text(contextOf(r).hidden) === '1';
 
 // assets: one post's assets, newest first (search order).
-function post(key, assets, hidden) {
+function post(key, assets, hidden, manage) {
   const ordered = assets.slice().reverse().slice(0, MAX_PHOTOS);
   const ctxs = ordered.map(contextOf);
   const first = (k) => ctxs.map((c) => text(c[k])).find(Boolean) || null;
@@ -86,7 +129,7 @@ function post(key, assets, hidden) {
     const ms = t ? Date.parse(t) : NaN;
     if (!Number.isNaN(ms) && (!taken || ms < taken.ms)) taken = { t, ms };
   }
-  const photos = ordered.map(photo);
+  const photos = ordered.map((r) => photo(r, manage));
   return {
     id: key.slice(2),
     photos,
@@ -123,7 +166,7 @@ function decodeCursor(raw) {
 
 async function search(env, cursor) {
   const query = {
-    expression: 'resource_type:image AND tags=' + LIVE_TAG,
+    expression: LIVE_EXPRESSION,
     sort_by: [{ uploaded_at: 'desc' }],
     max_results: WINDOW,
     with_field: ['context']
@@ -150,10 +193,11 @@ export function parseCursor(raw) {
   return raw ? decodeCursor(raw) : { c: '', o: 0, a: '', x: [] };
 }
 
-// One page of posts. withHidden false (public feed): hidden posts are left
-// out and don't count toward n. withHidden true (crew list): they're kept,
-// and every post carries hidden: boolean.
-export async function buildPage(env, n, start, { withHidden = false } = {}) {
+// One page of posts. manage false (public feed): hidden posts and overlong
+// videos are left out and don't count toward n. manage true (crew list):
+// everything is kept; every post carries hidden: boolean and every video
+// entry overlong: boolean.
+export async function buildPage(env, n, start, { manage = false } = {}) {
   const skip = new Set(start.x);
   const read = []; // { r, key, c, o } in search order
   const groups = new Map(); // key -> assets, insertion = newest-first post order
@@ -174,7 +218,10 @@ export async function buildPage(env, n, start, { withHidden = false } = {}) {
       read.push({ r, key, c: windowCursor, o });
       if (isHidden(r)) hiddenKeys.add(key);
       if (skip.has(key)) return;
-      if (!withHidden && hiddenKeys.has(key)) { groups.delete(key); return; }
+      if (!manage && hiddenKeys.has(key)) { groups.delete(key); return; }
+      // An overlong video is read (cursors count it) but never grouped, so a
+      // post made only of one never forms; a hidden flag on it still counts.
+      if (!manage && !publicOk(r)) return;
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(r);
     });
@@ -199,14 +246,14 @@ export async function buildPage(env, n, start, { withHidden = false } = {}) {
     }
   }
 
-  const posts = shown.map((k) => post(k, groups.get(k), withHidden ? hiddenKeys.has(k) : undefined));
+  const posts = shown.map((k) => post(k, groups.get(k), manage ? hiddenKeys.has(k) : undefined, manage));
   let next = null;
   if (boundary) {
     const from = boundary.at !== undefined ? boundary.at : read.indexOf(boundary);
     const done = new Set([...skip, ...shown]);
     // Hidden posts left out of this page go last: a shown post re-appearing
     // would be a duplicate, a hidden one's unflagged tail only a fallback.
-    const leftOut = withHidden ? [] : [...hiddenKeys].filter((k) => !done.has(k));
+    const leftOut = manage ? [] : [...hiddenKeys].filter((k) => !done.has(k));
     const later = new Set(read.slice(from).map((e) => e.key).filter((k) => done.has(k)));
     if (boundary.at !== undefined) shown.forEach((k) => later.add(k)); // its unread tail
     read.slice(from).map((e) => e.key).filter((k) => leftOut.includes(k)).forEach((k) => later.add(k));

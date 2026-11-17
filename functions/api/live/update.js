@@ -26,12 +26,13 @@
 // updated: the feed hides a post when ANY photo is hidden, and repeating the
 // same call is safe).
 //
+// Photos and videos alike (each written through its own resource type).
 // Cloudinary: the batch is found with one Search; each photo then gets one
 // Admin API update carrying its WHOLE context, read-modify-write, because
 // that call replaces an asset's context rather than merging into it (which
 // is also what lets a key be removed).
 import serviceArea from '../../../src/_data/serviceArea.js';
-import { API_BASE, LIVE_TAG, json, missingEnv, tokenOk, forbidden, readBody, basicAuth, idPath } from '../../_shared/live.js';
+import { API_BASE, LIVE_TAG, LIVE_EXPRESSION, json, missingEnv, tokenOk, forbidden, readBody, basicAuth, idPath, lookupLive, typeOf } from '../../_shared/live.js';
 import { contextOf, groupKey } from '../../_shared/feed.js';
 
 const MAX_COMMENT = 300;
@@ -74,7 +75,7 @@ async function batchAssets(env, batch) {
   let cursor;
   for (let calls = 0; calls < 10; calls++) {
     const query = {
-      expression: 'resource_type:image AND tags=' + LIVE_TAG + ' AND context.batch="' + batch + '"',
+      expression: LIVE_EXPRESSION + ' AND context.batch="' + batch + '"',
       max_results: 500,
       with_field: ['context', 'tags']
     };
@@ -102,14 +103,8 @@ async function postAssets(env, id) {
     const inBatch = await batchAssets(env, id);
     if (inBatch.length) return inBatch;
   }
-  const look = await cloudinary(env, '/resources/image/upload/' + idPath(id));
-  if (look.status === 404) return [];
-  if (!look.ok) throw new Error('lookup ' + look.status);
-  const asset = await look.json();
-  if (!Array.isArray(asset.tags) || !asset.tags.includes(LIVE_TAG)) {
-    console.log('live update refused, not a Live post:', id);
-    return [];
-  }
+  const asset = await lookupLive(env, id);
+  if (!asset) return [];
   const key = groupKey(asset);
   return key.startsWith('b:') ? batchAssets(env, key.slice(2)) : [asset];
 }
@@ -127,7 +122,7 @@ async function write(env, asset, body) {
   const ctx = {};
   for (const [k, v] of Object.entries(contextOf(asset))) if (typeof v === 'string') ctx[k] = v;
   const form = new URLSearchParams({ context: contextString(changed(ctx, body)) });
-  const resp = await cloudinary(env, '/resources/image/upload/' + idPath(asset.public_id), {
+  const resp = await cloudinary(env, '/resources/' + typeOf(asset) + '/upload/' + idPath(asset.public_id), {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: form.toString()

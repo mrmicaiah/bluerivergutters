@@ -135,6 +135,7 @@ function asset(name, t, ctx = {}) {
   return {
     asset_id: 'a-' + name,
     public_id: 'live/' + name,
+    resource_type: 'image',
     version: 1794600000 + t,
     format: 'jpg',
     width: 2000,
@@ -435,6 +436,7 @@ test('sign: a context carrying batch signs through unchanged', async () => {
 
 const RESOURCE = 'api.cloudinary.com/v1_1/dxzw1zwez/resources/image/upload/';
 const DESTROY = 'api.cloudinary.com/v1_1/dxzw1zwez/image/destroy';
+const ANY_RESOURCE = /api\.cloudinary\.com\/v1_1\/dxzw1zwez\/resources\/(image|video)\/upload\//;
 function deleteMock(tags = ['brg-live']) {
   resetNet([
     { match: (u) => u.includes(RESOURCE), reply: () => jsonResponse({ public_id: 'live/job-1', tags }) },
@@ -524,9 +526,11 @@ const flatCtx = (a) => (a.context && a.context.custom) || a.context || {};
 function fakeStore(assets, { failUpdate = false } = {}) {
   fakeCloudinary(assets);
   const searchHandler = net.handlers[0];
+  // /resources/<type>/upload/<id>: only an asset of that resource type.
   const findAsset = (url) => {
-    const id = decodeURIComponent(url.split('/resources/image/upload/')[1]);
-    return assets.find((a) => a.public_id === id);
+    const m = url.match(/\/resources\/(image|video)\/upload\/(.+)$/);
+    const id = decodeURIComponent(m[2]);
+    return assets.find((a) => a.public_id === id && (a.resource_type || 'image') === m[1]);
   };
   net.handlers = [
     {
@@ -541,7 +545,7 @@ function fakeStore(assets, { failUpdate = false } = {}) {
       }
     },
     {
-      match: (url, init) => url.includes(RESOURCE) && (init.method || 'GET') === 'GET',
+      match: (url, init) => ANY_RESOURCE.test(url) && (init.method || 'GET') === 'GET',
       reply: (url) => {
         const a = findAsset(url);
         if (!a) return jsonResponse({ error: { message: 'Resource not found' } }, 404);
@@ -549,7 +553,7 @@ function fakeStore(assets, { failUpdate = false } = {}) {
       }
     },
     {
-      match: (url, init) => url.includes(RESOURCE) && init.method === 'POST',
+      match: (url, init) => ANY_RESOURCE.test(url) && init.method === 'POST',
       reply: (url, init) => {
         if (failUpdate) return new Response('boom', { status: 500 });
         const a = findAsset(url);
@@ -562,7 +566,7 @@ function fakeStore(assets, { failUpdate = false } = {}) {
     }
   ];
 }
-const updates = () => net.calls.filter((c) => c.url.includes(RESOURCE) && c.init.method === 'POST');
+const updates = () => net.calls.filter((c) => ANY_RESOURCE.test(c.url) && c.init.method === 'POST');
 
 async function update(fields, env = ENV) {
   return call(UPDATE, { method: 'POST', env, body: { token: ENV.LIVE_POST_TOKEN, ...fields } });
@@ -889,4 +893,191 @@ test('update + list: missing env -> loud 500 naming the missing vars', async () 
     }
   }
   assert.equal(net.calls.length, 0);
+});
+
+// ==== video (WO-0150) ======================================================
+
+const VIDEO_T = 'c_limit,w_1280,h_1280,q_auto,vc_auto';
+const VBASE = 'https://res.cloudinary.com/dxzw1zwez/video/upload/';
+
+// One Cloudinary video asset; `duration` in seconds (undefined = not reported).
+function video(name, t, duration, ctx = {}) {
+  const a = { ...asset(name, t, ctx), resource_type: 'video', format: 'mov', width: 720, height: 1280 };
+  if (duration !== undefined) a.duration = duration;
+  return a;
+}
+
+async function signAs(resource_type, params) {
+  const body = { token: ENV.LIVE_POST_TOKEN, params_to_sign: params };
+  if (resource_type !== undefined) body.resource_type = resource_type;
+  return call('/api/live/sign', { method: 'POST', env: ENV, body });
+}
+
+test('sign video: the video cap set (any order) is signed, same folder/tag/context rules', async () => {
+  for (const t of [VIDEO_T, 'vc_auto,q_auto,h_1280,c_limit,w_1280']) {
+    const p = goodParams({ transformation: t, context: 'town=Madison|batch=b1794681290000-a1f3|taken_at=2026-11-14T10:02:00Z|comment=Clip|gps=34.6993,-86.7483' });
+    const r = await signAs('video', p);
+    assert.equal(r.status, 200, t + ' ' + r.text);
+    assert.equal(r.json.signature, expectedSignature(p, ENV.CLOUDINARY_API_SECRET), 'resource_type is never part of the signature');
+    assert.equal(r.json.cloud_name, 'dxzw1zwez');
+  }
+  for (const [name, p] of Object.entries({
+    'wrong folder': goodParams({ transformation: VIDEO_T, folder: 'projects/' }),
+    'no brg-live tag': goodParams({ transformation: VIDEO_T, tags: 'crew' }),
+    'unknown param': goodParams({ transformation: VIDEO_T, eager: 'sp_auto' })
+  })) {
+    const r = await signAs('video', p);
+    assert.equal(r.status, 400, name);
+  }
+});
+
+test('sign video: anything but exactly the video cap set is refused', async () => {
+  const cases = {
+    'image cap on a video': TRANSFORMATION,
+    'no vc_auto': 'c_limit,w_1280,h_1280,q_auto',
+    'no q_auto': 'c_limit,w_1280,h_1280,vc_auto',
+    'bigger': 'c_limit,w_1920,h_1920,q_auto,vc_auto',
+    'trimmed (du_)': VIDEO_T + ',du_30',
+    'chained step': VIDEO_T + '/e_sepia',
+    'q_auto:good instead': 'c_limit,w_1280,h_1280,q_auto:good,vc_auto',
+    'empty': ''
+  };
+  for (const [name, t] of Object.entries(cases)) {
+    const r = await signAs('video', goodParams({ transformation: t }));
+    assert.equal(r.status, 400, name + ' -> ' + r.status);
+    assert.match(r.json.error, /transformation/, name);
+    assert.ok(!r.json.signature);
+  }
+});
+
+test('sign: image rules unchanged — video cap refused for images; resource_type image/absent same; junk type 400', async () => {
+  assert.equal((await signAs('image', goodParams())).status, 200);
+  assert.equal((await signAs(undefined, goodParams())).status, 200);
+  const r = await signAs(undefined, goodParams({ transformation: VIDEO_T }));
+  assert.equal(r.status, 400);
+  for (const t of ['raw', 'auto', 'VIDEO', 5]) {
+    const bad = await signAs(t, goodParams());
+    assert.equal(bad.status, 400, JSON.stringify(t));
+    assert.match(bad.json.error, /resource_type/);
+  }
+});
+
+test('feed: video entry shape and URLs; images keep their exact shape (no kind key)', async () => {
+  fakeStore([
+    asset('pic', 10, { batch: 'bMIX', town: 'Madison' }),
+    video('clip', 11, 12.4, { batch: 'bMIX' })
+  ]);
+  const { posts } = await feed();
+  assert.equal(posts.length, 1);
+  const [pic, clip] = posts[0].photos;
+  assert.equal(posts[0].count, 2);
+  assert.deepEqual(Object.keys(pic).sort(), ['full', 'h', 'id', 'thumb', 'w']);
+  assert.deepEqual(clip, {
+    id: 'live/clip', w: 720, h: 1280,
+    kind: 'video',
+    duration: 12.4,
+    thumb: VBASE + 'so_0,c_limit,w_500,f_jpg,q_auto/v1794600011/live/clip.jpg',
+    full: VBASE + 'so_0,c_limit,w_1000,f_jpg,q_auto/v1794600011/live/clip.jpg',
+    poster: VBASE + 'so_0,c_limit,w_1000,f_jpg,q_auto/v1794600011/live/clip.jpg',
+    mp4: VBASE + 'f_mp4,vc_auto,q_auto/v1794600011/live/clip.mp4'
+  });
+  const q = JSON.parse(callsTo(SEARCH)[0].init.body);
+  assert.match(q.expression, /resource_type:image/);
+  assert.match(q.expression, /resource_type:video/);
+  assert.match(q.expression, /tags=brg-live/);
+});
+
+test('feed: duration backstop — >31s video dropped, its post stays; video-only post drops; unknown duration fails closed', async () => {
+  fakeStore([
+    asset('p1', 10, { batch: 'bA', town: 'T' }), video('long', 11, 45, { batch: 'bA' }), video('ok', 12, 31, { batch: 'bA' }),
+    video('alone-long', 20, 31.5, { batch: 'bB', town: 'T' }),
+    video('alone-ok', 30, 30.0, { town: 'T' }),
+    video('unknown', 40, undefined, { town: 'T' })
+  ]);
+  const { posts } = await feed();
+  assert.deepEqual(posts.map((p) => [p.id, ids(p)]), [
+    ['live/alone-ok', ['live/alone-ok']],
+    ['bA', ['live/p1', 'live/ok']]
+  ]);
+  assert.equal(posts[1].count, 2);
+});
+
+test('feed: overlong-only posts never cost a page slot or break paging', async () => {
+  const assets = [];
+  for (let i = 0; i < 60; i++) {
+    assets.push(asset('s' + i, i * 3, { town: 'T' }));
+    assets.push(video('v' + i, i * 3 + 1, i % 2 ? 90 : 8, { batch: 'bV' + i, town: 'T' }));
+  }
+  fakeStore(assets);
+  for (const n of [1, 5, 24]) {
+    const pages = await allPages(n);
+    const seen = pages.flatMap((p) => p.posts).flatMap(ids);
+    assert.equal(seen.length, 90, 'n=' + n);
+    assert.ok(seen.every((id) => !/^live\/v\d*[13579]$/.test(id)), 'overlong surfaced');
+    for (const p of pages.slice(0, -1)) assert.equal(p.posts.length, n, 'n=' + n + ': short page');
+  }
+});
+
+test('list: overlong video included, flagged overlong:true; short videos overlong:false; images unflagged', async () => {
+  fakeStore([
+    asset('p1', 10, { batch: 'bA', town: 'T' }), video('long', 11, 45, { batch: 'bA' }), video('ok', 12, 20, { batch: 'bA' }),
+    video('alone-long', 20, 300, { batch: 'bB', town: 'T' })
+  ]);
+  const r = await list();
+  assert.equal(r.status, 200, r.text);
+  const [b, a] = r.json.posts;
+  assert.equal(b.id, 'bB');
+  assert.deepEqual(b.photos.map((p) => p.overlong), [true]);
+  assert.deepEqual(a.photos.map((p) => [p.id, p.kind, p.overlong]), [
+    ['live/p1', undefined, undefined], ['live/long', 'video', true], ['live/ok', 'video', false]
+  ]);
+});
+
+test('update: a batch holding videos updates every asset, each via its own resource type', async () => {
+  const assets = [asset('p1', 10, { batch: 'bV', town: 'Madison' }), video('c1', 11, 10, { batch: 'bV' })];
+  fakeStore(assets);
+  const r = await update({ id: 'bV', hidden: true });
+  assert.equal(r.status, 200, r.text);
+  assert.equal(r.json.photos, 2);
+  assert.deepEqual(updates().map((c) => c.url.match(/resources\/(\w+)\/upload\/(.+)$/).slice(1)), [['image', 'live/p1'], ['video', 'live/c1']]);
+  assert.equal(flatCtx(assets[1]).hidden, '1');
+  assert.equal(flatCtx(assets[1]).gps, GPS);
+});
+
+test('update: a legacy single video found by its public_id', async () => {
+  const assets = [video('solo', 10, 10, { town: 'Madison' })];
+  fakeStore(assets);
+  const r = await update({ id: 'live/solo', comment: 'Clip' });
+  assert.equal(r.status, 200, r.text);
+  assert.equal(flatCtx(assets[0]).comment, 'Clip');
+});
+
+test('delete: a Live video is destroyed as a video; nothing else changes', async () => {
+  const VDESTROY = 'api.cloudinary.com/v1_1/dxzw1zwez/video/destroy';
+  resetNet([
+    { match: (u) => u.includes('/resources/image/upload/'), reply: () => jsonResponse({ error: { message: 'Resource not found' } }, 404) },
+    { match: (u) => u.includes('/resources/video/upload/'), reply: () => jsonResponse({ public_id: 'live/clip', resource_type: 'video', tags: ['brg-live'] }) },
+    { match: (u) => u.includes(VDESTROY), reply: () => jsonResponse({ result: 'ok' }) }
+  ]);
+  const r = await call('/api/live/delete', { method: 'POST', env: ENV, body: { token: ENV.LIVE_POST_TOKEN, id: 'live/clip' } });
+  assert.equal(r.status, 200, r.text);
+  const [d] = callsTo(VDESTROY);
+  const form = new URLSearchParams(d.init.body);
+  assert.equal(form.get('public_id'), 'live/clip');
+  const signed = { invalidate: form.get('invalidate'), public_id: form.get('public_id'), timestamp: form.get('timestamp') };
+  assert.equal(form.get('signature'), expectedSignature(signed, ENV.CLOUDINARY_API_SECRET));
+  assert.equal(callsTo('/image/destroy').length, 0);
+});
+
+test('delete: a non-Live video is refused; an id that is neither image nor video is 404', async () => {
+  resetNet([
+    { match: (u) => u.includes('/resources/image/upload/'), reply: () => jsonResponse({ error: {} }, 404) },
+    { match: (u) => u.includes('/resources/video/upload/promo'), reply: () => jsonResponse({ public_id: 'promo', resource_type: 'video', tags: ['marketing'] }) },
+    { match: (u) => u.includes('/resources/video/upload/'), reply: () => jsonResponse({ error: {} }, 404) }
+  ]);
+  for (const id of ['promo', 'live/gone']) {
+    const r = await call('/api/live/delete', { method: 'POST', env: ENV, body: { token: ENV.LIVE_POST_TOKEN, id } });
+    assert.equal(r.status, 404, id);
+  }
+  assert.equal(net.calls.filter((c) => c.url.includes('destroy')).length, 0);
 });

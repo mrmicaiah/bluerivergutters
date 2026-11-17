@@ -3,6 +3,8 @@
 //   in:  { token, cursor?, n? }
 //   out: { posts: [ ...the public feed's post shape..., hidden: boolean ],
 //          next: cursor|null }
+//   Video entries also carry overlong: boolean (true = longer than 31s, or
+//   no duration reported: the public feed leaves that file out).
 //
 // The same posts, order (newest first), grouping and cursors as
 // /api/live/feed (functions/_shared/feed.js), but INCLUDING hidden posts, each
@@ -29,7 +31,7 @@ export async function onRequestPost({ request, env }) {
   if (!start) return json({ error: 'bad cursor' }, 400, PRIVATE);
 
   try {
-    return json(await buildPage(env, n, start, { withHidden: true }), 200, PRIVATE);
+    return json(await buildPage(env, n, start, { manage: true }), 200, PRIVATE);
   } catch (err) {
     console.error('LIVE LIST unavailable:', err.message);
     return json({ posts: [], next: null, error: 'list unavailable' }, 502, PRIVATE);

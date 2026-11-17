@@ -1,7 +1,8 @@
 // Shared by the Blue River Live endpoints (functions/api/live/*). Exports no
 // onRequest handler, so Pages never turns this file into a route.
 //
-// Cloudinary layout for a Live post: folder "live/", tag "brg-live", context
+// Cloudinary layout for a Live post: images AND videos (WO-0150), folder
+// "live/", tag "brg-live", context
 // keys town, taken_at (ISO8601, optional), comment (optional) and gps
 // ("lat,lng"). gps is PRIVATE: it lives only in Cloudinary context and no
 // response from these endpoints may ever carry it.
@@ -10,6 +11,10 @@ export const CLOUD_NAME = 'dxzw1zwez';
 export const LIVE_TAG = 'brg-live';
 export const API_BASE = 'https://api.cloudinary.com/v1_1/' + CLOUD_NAME;
 export const DELIVERY_BASE = 'https://res.cloudinary.com/' + CLOUD_NAME + '/image/upload/';
+export const VIDEO_DELIVERY_BASE = 'https://res.cloudinary.com/' + CLOUD_NAME + '/video/upload/';
+export const RESOURCE_TYPES = ['image', 'video'];
+// Every Search for Live assets uses this, so images and videos page together.
+export const LIVE_EXPRESSION = '(resource_type:image OR resource_type:video) AND tags=' + LIVE_TAG;
 export const BAD_TOKEN_DELAY_MS = 1000;
 
 export function json(body, status = 200, headers = {}) {
@@ -80,3 +85,27 @@ export function basicAuth(env) {
 export function idPath(id) {
   return id.split('/').map(encodeURIComponent).join('/');
 }
+
+// The Admin API record of a Live asset by public_id, image or video, with
+// resource_type set; null when there's no such asset or it isn't tagged
+// brg-live (so the Live token never reaches the site's other media).
+// Throws on any other Cloudinary failure.
+export async function lookupLive(env, id) {
+  for (const type of RESOURCE_TYPES) {
+    const look = await fetch(API_BASE + '/resources/' + type + '/upload/' + idPath(id), {
+      headers: { Authorization: basicAuth(env) }
+    });
+    if (look.status === 404) continue;
+    if (!look.ok) throw new Error('lookup ' + type + ' ' + look.status);
+    const asset = await look.json();
+    if (!Array.isArray(asset.tags) || !asset.tags.includes(LIVE_TAG)) {
+      console.log('live: refused, not a Live asset:', id);
+      return null;
+    }
+    return { ...asset, resource_type: asset.resource_type || type };
+  }
+  return null;
+}
+
+// image | video for a Search/Admin record (Live has nothing else).
+export const typeOf = (r) => (r.resource_type === 'video' ? 'video' : 'image');
