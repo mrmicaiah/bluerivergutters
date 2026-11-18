@@ -1,6 +1,7 @@
-// PLACEHOLDER — Abebe owns this file and replaces it whole. It exists so the
-// SSR plumbing (functions/_shared/ssr.js) builds and its tests run before his
-// module lands. Keep the two exports' contract; everything else is his.
+// Server-rendered Blue River Live: the stream's HTML and the head tags for
+// /live/ and /live/page/<n>/ (called by functions/_shared/ssr.js, which
+// fetches the static /live/ shell and injects these at its markers).
+// Exports no onRequest handler, so Pages never turns this file into a route.
 //
 // renderStream(posts, { pageNum, nextUrl, prevUrl }) -> HTML string
 //   posts    one page of the public feed's posts (functions/_shared/feed.js
@@ -8,46 +9,33 @@
 //            overlong videos already removed
 //   nextUrl  site path of the next (older) archive page, or null at the end
 //            ("Older work →" links here); prevUrl the newer page or null
-//   The HTML goes inside the shell's data-ssr-slot container, at
-//   <!--brg-ssr:stream-->. Plain factual stamps (town + date); no <script>.
+//   The HTML goes inside the shell's data-ssr-slot list (#live-stream), at
+//   <!--brg-ssr:stream-->. No <script>.
 //
 // renderHead(pageNum, { prevUrl, nextUrl, canonical }) -> HTML string
-//   canonical  absolute URL of this page; prevUrl/nextUrl site paths or null
-//   Must emit exactly one <link rel="canonical"> (the shell's own is removed
-//   before injection) plus rel="prev"/rel="next" when given. Goes in <head>
-//   at <!--brg-ssr:head-->.
+//   Exactly one <link rel="canonical"> (the shell's own is removed before
+//   injection) plus rel="prev"/rel="next" when given; in <head>.
+//
+// The markup and words come from src/_data/liveCore.js — the same factories
+// the page itself inlines, so a server-rendered card and one the browser
+// builds are the same HTML, and the browser only hydrates what's here.
+// Stamps are factual ("Decatur · Nov 17, 2:41 PM"); the page upgrades them
+// to its present-tense lines. Times and LIVE chips are as of render time
+// (cached 60s); the page re-ticks them.
+import liveCore from '../../src/_data/liveCore.js';
+
 const SITE = 'https://bluerivergutters.com';
+const B = liveCore.basics();
+const C = liveCore.core(B);
 
-const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-
-function day(iso) {
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '';
-  return d.toLocaleDateString('en-US', { timeZone: 'America/Chicago', month: 'short', day: 'numeric', year: 'numeric' });
+export function renderStream(posts, { pageNum = 1, nextUrl = null, prevUrl = null, now = Date.now() } = {}) {
+  return C.stream(Array.isArray(posts) ? posts : [], { pageNum, nextUrl, prevUrl, now });
 }
 
-function media(p, alt) {
-  const img = '<img src="' + esc(p.thumb) + '" width="' + esc(p.w) + '" height="' + esc(p.h) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async">';
-  if (p.kind !== 'video') return img;
-  return '<figure class="ls-video" data-mp4="' + esc(p.mp4) + '" data-poster="' + esc(p.poster) + '" data-duration="' + esc(p.duration) + '">' + img + '</figure>';
-}
-
-export function renderStream(posts, { nextUrl = null } = {}) {
-  const items = posts.map((post) => {
-    const when = day(post.taken_at || post.posted_at);
-    const alt = 'Gutter work' + (post.town ? ' in ' + post.town : '') + (post.comment ? ': ' + post.comment : '');
-    return '<li class="ls-post" data-post-id="' + esc(post.id) + '">' +
-      '<p class="ls-stamp">' + esc([post.town, when].filter(Boolean).join(' · ')) + '</p>' +
-      (post.comment ? '<p class="ls-caption">' + esc(post.comment) + '</p>' : '') +
-      post.photos.map((p) => media(p, alt)).join('') +
-      '</li>';
-  });
-  if (nextUrl) items.push('<li class="ls-older"><a href="' + esc(nextUrl) + '">Older work →</a></li>');
-  return items.join('');
-}
+const abs = (p) => (/^\//.test(p) ? SITE + p : p);
 
 export function renderHead(pageNum, { prevUrl = null, nextUrl = null, canonical } = {}) {
-  return '<link rel="canonical" href="' + esc(canonical) + '">' +
-    (prevUrl ? '<link rel="prev" href="' + esc(SITE + prevUrl) + '">' : '') +
-    (nextUrl ? '<link rel="next" href="' + esc(SITE + nextUrl) + '">' : '');
+  return '<link rel="canonical" href="' + B.esc(canonical) + '">' +
+    (prevUrl ? '<link rel="prev" href="' + B.esc(abs(prevUrl)) + '">' : '') +
+    (nextUrl ? '<link rel="next" href="' + B.esc(abs(nextUrl)) + '">' : '');
 }

@@ -112,6 +112,9 @@
   
   {# Canonical URL #}
   <link rel="canonical" href="https://bluerivergutters.com{{ page.url }}">
+  {# Server-rendered pages (/live/): the Function swaps this marker for the
+     page's canonical + prev/next tags (functions/_shared/ssr.js). #}
+  {% if ssrHead %}<!--brg-ssr:head-->{% endif %}
   
   {# Schema markup slot #}
   {% block schema %}{% endblock %}
@@ -325,35 +328,10 @@
         if (dd < 7) return dd + (dd === 1 ? ' day' : ' days') + ' ago';
         return day(ts, now);
       }
-      function isLive(t, now) { return (now == null ? Date.now() : now) - Date.parse(t) < DAY; }
-      // Only https (or same-site) URLs from the feed ever reach src/href.
-      function safe(u) { return typeof u === 'string' && (/^https:\/\//i.test(u) || /^\/(?!\/)/.test(u)) ? u : ''; }
-      // Cloudinary thumb -> the small variant: drop the feed's own transforms
-      // (c_limit,w_500,…), keep v<version>/<public_id>, use w_200,f_auto,q_auto.
-      // Other hosts pass through unchanged.
-      // A video's poster (…/video/upload/…/<id>.jpg) gets the same treatment
-      // as a jpg (f_jpg): small surfaces only ever load the poster frame.
-      function small(u) {
-        var m = /^(https:\/\/res\.cloudinary\.com\/[^/]+\/(image|video)\/upload\/)(.+)$/.exec(safe(u));
-        if (!m) return safe(u);
-        if (m[2] === 'video' && !/\.jpe?g$/i.test(m[3])) return safe(u);
-        var parts = m[3].split('/');
-        while (parts.length > 1 && /^[a-z]{1,3}_[^,]+(,[a-z]{1,3}_[^,]+)*$/.test(parts[0])) parts.shift();
-        // so_0 keeps the first frame (the poster), not Cloudinary's default middle one.
-        return m[1] + (m[2] === 'video' ? 'w_200,so_0,f_jpg,q_auto/' : 'w_200,f_auto,q_auto/') + parts.join('/');
-      }
-      // Video entries in photos[]: { kind: "video", duration, mp4, poster, thumb, w, h }.
-      // Only one with a safe mp4 counts as playable; otherwise it is just its
-      // poster. still() is the jpg every surface shows (the thumb, else the poster).
-      function isVideo(x) { return !!(x && x.kind === 'video' && safe(x.mp4)); }
-      function still(x) { return x ? safe(x.thumb) || (x.kind === 'video' ? safe(x.poster) : '') : ''; }
-      // Seconds (or "m:ss") -> whole seconds, or NaN.
-      function secs(v) {
-        if (typeof v === 'string' && /^\d{1,3}:[0-5]\d$/.test(v)) { var p = v.split(':'); return +p[0] * 60 + +p[1]; }
-        return typeof v === 'number' && isFinite(v) && v > 0 ? Math.max(1, Math.round(v)) : NaN;
-      }
-      // The duration chip: 23 -> "0:23", 83.4 -> "1:23"; junk -> "".
-      function dur(v) { var s = secs(v); return isNaN(s) ? '' : Math.floor(s / 60) + ':' + ('0' + s % 60).slice(-2); }
+      // URL, video and LIVE helpers: basics() from src/_data/liveCore.js, the
+      // same factory the server renderer uses (inlined from its source).
+      var B = ({{ liveCore.basicsSrc | safe }})();
+      var isLive = B.isLive, safe = B.safe, small = B.small, isVideo = B.isVideo, still = B.still, secs = B.secs, dur = B.dur;
       // The small play glyph laid over a poster (CSS draws it; the parent is positioned).
       function glyph() { var g = el('span', 'live-glyph'); g.setAttribute('aria-hidden', 'true'); return g; }
       function el(tag, cls, text) {
@@ -396,7 +374,7 @@
       function first(p) { return (p && p.photos && p.photos[0]) || p || {}; }
       function ok(p) { return p && !isNaN(Date.parse(p.posted_at)); }
       window.brgLive = { rel: rel, day: day, isLive: isLive, safe: safe, small: small, el: el, dot: dot, ago: ago, tick: tick, startTicking: startTicking, first: first, reduced: reduced,
-        isVideo: isVideo, still: still, secs: secs, dur: dur, glyph: glyph };
+        isVideo: isVideo, still: still, secs: secs, dur: dur, glyph: glyph, esc: B.esc };
 
       var slot = document.getElementById('live-banner');
       if (!slot) return;

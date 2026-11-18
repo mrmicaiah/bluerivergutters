@@ -3,6 +3,7 @@ layout: base.njk
 title: Blue River Live | Real Gutter Jobs, Posted From the Field
 description: Blue River Live — photos from real gutter jobs, posted from the field by our crews across Huntsville, Madison, Decatur and North Alabama. Newest first.
 permalink: /live/
+ssrHead: true
 ---
 
 {# The first feed page is this page's content (its first photo is the LCP),
@@ -78,7 +79,10 @@ permalink: /live/
 <div class="live-stream-wrap">
   <div class="container">
    <div class="ls-col">
-    <ol class="live-stream live-stream-first" id="live-stream">
+    {# The server-rendered stream goes in here: the Function at /live/ and
+       /live/page/<n>/ fills it at the marker (functions/_shared/render.js)
+       and adds data-ssr-page; served as the plain file, the page builds it. #}
+    <ol class="live-stream live-stream-first" id="live-stream" data-ssr-slot>
       <li class="ls-top"><span class="ls-top-node" aria-hidden="true"></span><span class="ls-top-text">Newest at the top — the crew’s day, flowing down</span></li>
       <li class="ls-welcome" id="live-empty" hidden>
         <span class="ls-node" aria-hidden="true"></span>
@@ -90,8 +94,9 @@ permalink: /live/
           <p class="live-welcome-next">The trucks are out — the first photos land on this rail as the work wraps up. Want yours to be one of them? The quick form is right below.</p>
         </div>
       </li>
+<!--brg-ssr:stream-->
     </ol>
-    <noscript><p>Blue River Live needs JavaScript to load the newest job photos. You can also browse our <a href="{{ '/recent-projects/' | url }}">recent projects</a>.</p></noscript>
+    <noscript><p class="live-nojs">Blue River Live needs JavaScript to load the newest job photos. You can also browse our <a href="{{ '/recent-projects/' | url }}">recent projects</a>.</p></noscript>
 
     {# The lead form as a card in the stream. The partial is untouched inside;
        only the wrapper is ours. #}
@@ -120,6 +125,21 @@ permalink: /live/
         {{ liveForm2 | replace(r/<script\b[^>]*><\/script>/g, '') | replace(r/<style>[\s\S]*?<\/style>/g, '') | replace(r/(id|for)="lf-/g, '$1="lf2-') | safe }}
       </div>
     </div>
+    {# Server-rendered: the forms move into their spots on the rail (after
+       post 2; near the end of a long page), here, while the page is still
+       parsing — the spots are below the first screen. Without JS the forms
+       (which need it) and their spots stay hidden. #}
+    <script>
+      (function () {
+        var s = document.getElementById('live-stream');
+        if (!s || !s.hasAttribute('data-ssr-page')) return;
+        var a = s.querySelector('[data-spot="form"]'), b = s.querySelector('[data-spot="form2"]'),
+            f = document.getElementById('quick-form'), f2 = document.getElementById('quick-form-2');
+        if (a && f) a.appendChild(f);
+        if (b && f2) { b.appendChild(f2); f2.hidden = false; }
+      })();
+    </script>
+    <noscript><style>#quick-form, #quick-form-2, .live-film-tray, .live-more { display: none !important; } .live-film-wrap { margin-top: 0; } #live-stream[data-ssr-page] ~ noscript .live-nojs { display: none; }</style></noscript>
     <div class="ls-end" aria-hidden="true"><span class="ls-node"></span></div>
    </div>
   </div>
@@ -162,158 +182,38 @@ permalink: /live/
   })();
 </script>
 
-{# Words. window.brgStream holds the page's language, pure functions of real
-   feed data (tests call them directly):
-   - headline(post, now, k): the big red line, present tense, by AGE TIER —
-       fresh  (< 1h)        "Fresh off the ladder in Decatur" / "Minutes ago in …" / "Just in from …"
-       today  (same day)    "Today in …" / "This afternoon in …" (the real part of day) / "Earlier today in …"
-       yesterday            "Yesterday in …" / "Yesterday afternoon in …"
-       week   (2–6 days)    "Thursday in …"
-       older                "Nov 2 in …"
-     k picks the variant; the stream passes how many posts of that tier came
-     before, so neighbours never repeat. Never "right now", never invented
-     activity: the exact time is always the quiet sub-line under it.
-   - hook(post, k): the crew-voiced line after a post, keyed to that post's
-     town and words in its comment (clean / guard / seamless / downspout /
-     wood); generic when nothing matches. No prices, no counts.
-   - stats(posts, now): a sentence with life ("The crew's been in Decatur
-     today"), or "" when it would sound thin.
+{# The stream's words and markup: core() from src/_data/liveCore.js — the very
+   factory the server renderer (functions/_shared/render.js) uses, inlined
+   from its source. Instantiated in start() with window.brgLive (base.njk,
+   end of body) as its basics. window.brgStream keeps the page's language
+   API (tier, headline, hook, stats, dayLabel, date, ago, dayKey):
+   - headline(post, now, k): the big red line, present tense, by age tier;
+     k = how many posts of that tier came before, so neighbours never repeat.
+     Never "right now", never invented activity.
+   - hook(post, k): the crew-voiced line after a post, keyed to its town and
+     the words in its comment. No prices, no counts.
+   - stats(posts, now): a sentence with life, or "" when it would sound thin.
    America/Chicago days throughout (computed, no Intl time-zone formatter). #}
 <script>
-  (function () {
-    var HOUR = 3600000, DAY = 86400000;
-    var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    var WEEKDAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    // America/Chicago wall time by arithmetic (US rules: CDT from the 2nd
-    // Sunday of March 2am to the 1st Sunday of November 2am, else CST). A
-    // time-zone Intl formatter costs ~70ms to build on a slow phone, right in
-    // the first render; this costs nothing. The tests check it against Intl.
-    function sunday(y, m, from) { var d = new Date(Date.UTC(y, m, from)).getUTCDay(); return from + (7 - d) % 7; }
-    function local(t) {
-      var ms = typeof t === 'number' ? t : Date.parse(t), y = new Date(ms).getUTCFullYear();
-      var cdt = ms >= Date.UTC(y, 2, sunday(y, 2, 8), 8) && ms < Date.UTC(y, 10, sunday(y, 10, 1), 7);
-      return new Date(ms - (cdt ? 5 : 6) * HOUR);
-    }
-    function parts(t) {
-      var d = local(t), y = d.getUTCFullYear(), m = d.getUTCMonth(), dd = d.getUTCDate();
-      return { n: Date.UTC(y, m, dd) / DAY, hour: d.getUTCHours(), y: y, m: m, d: dd, wd: d.getUTCDay(), key: y + '-' + (m + 1) + '-' + dd };
-    }
-    function daysAgo(t, now) { return parts(now).n - parts(t).n; }
-    function partOfDay(t) { var h = parts(t).hour; return h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening'; }
-    function weekday(t) { return WEEKDAYS[parts(t).wd]; }
-    function date(t, now) {
-      var p = parts(t);
-      return MONTHS[p.m] + ' ' + p.d + (p.y !== parts(now == null ? Date.now() : now).y ? ', ' + p.y : '');
-    }
-    function tier(t, now) {
-      now = now == null ? Date.now() : now;
-      var age = now - Date.parse(t), d = daysAgo(t, now);
-      if (age < HOUR && d <= 0) return 'fresh';
-      if (d <= 0) return 'today';
-      if (d === 1) return 'yesterday';
-      if (d < 7) return 'week';
-      return 'older';
-    }
-    function at(town) { return town ? ' in ' + town : ''; }
-    function headline(p, now, k) {
-      now = now == null ? Date.now() : now; k = k || 0;
-      var t = p.posted_at, town = (p.town || '').trim(), tr = tier(t, now), v;
-      if (tr === 'fresh') v = [
-        'Fresh off the ladder' + at(town),
-        'Minutes ago' + at(town),
-        town ? 'Just in from ' + town : 'Just in from the field'];
-      else if (tr === 'today') v = [
-        'Today' + at(town),
-        'This ' + partOfDay(t) + at(town),
-        'Earlier today' + at(town)];
-      else if (tr === 'yesterday') v = [
-        'Yesterday' + at(town),
-        'Yesterday ' + partOfDay(t) + at(town)];
-      else if (tr === 'week') v = [weekday(t) + at(town)];
-      else v = [date(t, now) + at(town)];
-      return v[k % v.length];
-    }
-
-    // Crew-voiced lines keyed to the post above. Only what the post says.
-    var KINDS = [
-      ['clean', /clean|clog|debris|leaves|pine|gunk|flush|full/i, [
-        'Gutters like these fill up fast around here. Yours could be next on the list — ',
-        'That’s what a clean-out looks like. Want your gutters flowing again? ']],
-      ['guard', /guard|screen|cover|leaf ?filter/i, [
-        'Guards on and done. Tired of climbing a ladder every fall? We’ll look at yours — ',
-        'One less fall chore for that homeowner. Want guards priced for your roof? ']],
-      ['seamless', /seamless|new gutter|install|6.?inch|5.?inch|k-style|run/i, [
-        'Fresh seamless run, measured and formed on site. Want yours measured? ',
-        'New gutters, no seams to leak. Free inspection for yours — ']],
-      ['drain', /downspout|drain|underground|french|splash|pooling|foundation/i, [
-        'Water headed where it belongs. Pooling by your foundation? We’ll take a look — ',
-        'Downspouts sorted. If water’s sitting by your house, let’s fix that — ']],
-      ['wood', /wood|fascia|rot|soffit|trim/i, [
-        'Rotten fascia doesn’t fix itself. We’ll check yours on the same visit — ']]
-    ];
-    function hook(p, k) {
-      k = k || 0;
-      var c = p.comment || '', town = (p.town || '').trim();
-      for (var i = 0; i < KINDS.length; i++) if (KINDS[i][1].test(c)) return { kind: KINDS[i][0], text: KINDS[i][2][k % KINDS[i][2].length] };
-      if (town) {
-        var v = [
-          'That’s a ' + town + ' roofline. Yours could be next — we’re booking this week. ',
-          'Another one done in ' + town + '. Free estimates this week — ',
-          'Live near ' + town + '? The crew’s already in the neighborhood. '];
-        return { kind: 'town', text: v[k % v.length] };
-      }
-      return { kind: 'generic', text: 'This could be your house — free estimates across Huntsville & North Alabama. ' };
-    }
-
-    // A sentence with life, or nothing. Today first (towns by most posts,
-    // newest first on ties); else a strong week; else blank.
-    function stats(posts, now) {
-      now = now == null ? Date.now() : now;
-      function towns(list) {
-        var seen = {}, out = [];
-        list.forEach(function (p) {
-          var t = (p.town || '').trim(), k = t.toLowerCase();
-          if (!t) return;
-          if (!seen[k]) { seen[k] = { name: t, n: 0, i: out.length }; out.push(seen[k]); }
-          seen[k].n++;
-        });
-        return out.sort(function (a, b) { return b.n - a.n || a.i - b.i; }).map(function (x) { return x.name; });
-      }
-      var today = posts.filter(function (p) { return daysAgo(p.posted_at, now) <= 0; }), tt = towns(today);
-      if (tt.length === 1) return 'The crew’s been in ' + tt[0] + ' today';
-      if (tt.length === 2) return 'The crew’s been in ' + tt[0] + ' and ' + tt[1] + ' today';
-      if (tt.length > 2) return 'The crew’s been in ' + tt[0] + ', ' + tt[1] + ' and ' + (tt.length - 2) + ' more town' + (tt.length - 2 === 1 ? '' : 's') + ' today';
-      var week = posts.filter(function (p) { return now - Date.parse(p.posted_at) < 7 * DAY; }), wt = towns(week);
-      var photos = week.reduce(function (a, p) { return a + Math.max(+p.count || 0, Array.isArray(p.photos) ? p.photos.length : 1); }, 0);
-      if (photos >= 10 && wt.length >= 3) return 'This week the crew’s been in ' + wt[0] + ', ' + wt[1] + ' and ' + (wt.length - 2) + ' more town' + (wt.length - 2 === 1 ? '' : 's');
-      return '';
-    }
-    function dayLabel(t, now) {
-      now = now == null ? Date.now() : now;
-      var d = daysAgo(t, now);
-      return d <= 0 ? 'Today' : d === 1 ? 'Yesterday' : d < 7 ? weekday(t) : date(t, now);
-    }
-    // Same words as brgLive.rel() (the 15s ticker rewrites with that), without
-    // its time-zone formatter for posts over a week old.
-    function ago(t, now) {
-      now = now == null ? Date.now() : now;
-      var m = Math.floor(Math.max(0, now - Date.parse(t)) / 60000), h = Math.floor(m / 60), d = Math.floor(h / 24);
-      return m < 1 ? 'just now' : m < 60 ? m + ' min ago' : h < 24 ? h + (h === 1 ? ' hr' : ' hrs') + ' ago' : d < 7 ? d + (d === 1 ? ' day' : ' days') + ' ago' : date(t, now);
-    }
-    window.brgStream = { tier: tier, headline: headline, hook: hook, stats: stats, dayLabel: dayLabel, date: date, ago: ago, dayKey: function (t) { return parts(t).key; } };
-  })();
+  window.brgLiveCore = {{ liveCore.coreSrc | safe }};
 </script>
 
-{# Feed: GET /api/live/feed?cursor -> {posts:[{id, photos:[{id,w,h,thumb,full}],
-   count, town, taken_at|null, posted_at, comment|null}], next}. The pre-batch
-   shape (w,h,thumb,full on the post) still renders as a one-photo post.
-   Everything from the feed goes in as text or a checked https URL, never as
-   HTML. Town only: no coordinates, in the posts or the JSON-LD.
-   Stream order: a day node opens each day's run (and the part below the
-   form again); posts 1..K, then the form card, then the rest; a
-   crew-voiced hook follows post n when n % 4 == 0 — never next to a form,
-   never trailing the stream. Posts further down slide in as they enter the
-   screen (transform/opacity only; none under reduced motion). #}
+{# Two ways the stream arrives:
+   SERVER-RENDERED (the Function at /live/ and /live/page/<n>/ filled
+   #live-stream and marked it data-ssr-page="<n>"): the cards are already
+   here, so this HYDRATES them — wires batch strips, video tap-to-play, the
+   LIVE chips and ticking, upgrades each factual stamp to its present-tense
+   line in place (same element, fixed-height box), and never rebuilds a
+   card. Page 1 then tops up from the feed: posts newer than the server's
+   copy go in at the top, newest first, never twice (by post id) — straight
+   away if that spot is below the screen, otherwise behind a "new post" pill
+   at the top so nothing on screen moves until the visitor asks. Archive pages are frozen
+   history: no top-ups; their filmstrip and polaroid come from the page.
+   PLAIN SHELL (no Function: local builds, or the Function fell back): the
+   stream is built from the feed as before — the same HTML from the same
+   core, then the same hydration. Load More pages it.
+   Everything from the feed goes in escaped or as a checked https URL. Town
+   only: no coordinates, in the posts or the JSON-LD. #}
 <script>
   (function () {
     function get(cursor) {
@@ -323,17 +223,22 @@ permalink: /live/
     if (!window.brgLiveFirst) { window.brgLiveFirst = get(null); window.brgLiveFirst.catch(function () {}); }
     if (window.brgTrack) brgTrack('live_page_view');
 
-    var HOOK_EVERY = 4, FILM_MAX = 16, FORM2_AFTER = 6, BOOK = 'https://BlueRiverGutters.as.me/';
+    var FILM_MAX = 16, FORM2_AFTER = 6;
     function start() {
-      var L = window.brgLive, W = window.brgStream,
+      var L = window.brgLive, C = window.brgCore || (window.brgCore = window.brgLiveCore(L)),
           first = document.getElementById('live-stream'), rest = document.getElementById('live-stream-more'),
           status = document.getElementById('live-status'), statsEl = document.getElementById('live-stats'),
           film = document.getElementById('live-film'), empty = document.getElementById('live-empty'),
           more = document.getElementById('live-more'), form2 = document.getElementById('quick-form-2'),
           intro = document.getElementById('live-intro'), mosaic = document.getElementById('live-mosaic'),
           pols = document.getElementById('live-polaroids'), ticker = document.getElementById('live-ticker-track'),
-          shown = [], seen = {}, next = null, busy = false, count = 0, lastDay = null, hooks = 0, reveal = null;
-      var K = matchMedia('(max-width: 768px)').matches ? 2 : 3;
+          shown = [], ids = {}, next = null, busy = false, reveal = null;
+      var W = window.brgStream = { tier: C.tier, headline: C.headline, hook: C.hook, stats: C.stats, dayLabel: C.dayLabel, date: C.date, ago: C.ago, dayKey: C.dayKey };
+      var ssrPage = +first.getAttribute('data-ssr-page') || 0;
+      // Where the form card sits: after post K. The server always uses 2; the
+      // plain shell keeps its 2 (phone) / 3 (desktop).
+      var K = ssrPage ? 2 : matchMedia('(max-width: 768px)').matches ? 2 : 3;
+      var st = C.state({ K: K, alive: true });
 
       // Posts further down hang onto the rail as they scroll into view.
       if (!L.reduced && 'IntersectionObserver' in window) {
@@ -341,20 +246,8 @@ permalink: /live/
           es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.remove('is-pending'); reveal.unobserve(e.target); } });
         }, { rootMargin: '0px 0px -8% 0px' });
       }
-
-      // Photos and videos both: a video entry ({kind:"video", duration, mp4,
-      // poster, thumb}) shows as its poster jpg everywhere, and only a stream
-      // card ever plays it (see strip()).
-      function photos(p) {
-        var ph = Array.isArray(p.photos) ? p.photos : [{ id: p.id, w: p.w, h: p.h, thumb: p.thumb, full: p.full }];
-        return ph.filter(function (x) { return x && L.still(x); });
-      }
-      function vthumb(img, cls) {
-        var w = L.el('span', cls);
-        w.appendChild(img);
-        w.appendChild(L.glyph());
-        return w;
-      }
+      function pend(li) { if (reveal) { li.classList.add('is-pending'); reveal.observe(li); } }
+      function html(s) { var t = document.createElement('template'); t.innerHTML = s; return t.content; }
 
       // Inline playback: a tap lays a <video> over the poster in the slide's
       // reserved box — muted, playsinline, no autoplay, native controls once
@@ -367,139 +260,94 @@ permalink: /live/
         var vs = document.querySelectorAll('video.live-video');
         for (var i = 0; i < vs.length; i++) if (vs[i] !== e.target && !vs[i].paused) vs[i].pause();
       }, true);
-      function playIn(slide, x, img, btn, chip) {
-        var v = L.el('video', 'live-video');
+      function playIn(slide, btn) {
+        var img = slide.querySelector('img'), chip = slide.querySelector('.live-dur'), v = L.el('video', 'live-video');
         v.muted = true; v.defaultMuted = true; v.setAttribute('muted', '');
         v.playsInline = true; v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
         v.preload = 'none';
         v.poster = img.currentSrc || img.src;
         v.controls = true;
-        v.setAttribute('aria-label', img.alt);
-        v.src = L.safe(x.mp4);
+        v.setAttribute('aria-label', btn.getAttribute('aria-label').replace(/^Play video(, [0-9:]+)? — /, 'Video: '));
+        v.src = L.safe(slide.getAttribute('data-mp4'));
         slide.appendChild(v);
-        btn.hidden = true; chip.hidden = true;
+        btn.hidden = true; if (chip) chip.hidden = true;
         if (seenV) seenV.observe(v);
         var pr = v.play();
         if (pr && pr.catch) pr.catch(function () { /* controls are there to start it by hand */ });
         try { v.focus({ preventScroll: true }); } catch (err) {}
         if (window.brgTrack) brgTrack('live_video_play');
       }
-      function ratio(x) { var w = Math.round(+x.w) || 4, h = Math.round(+x.h) || 3; return { w: w, h: h }; }
-      // The feed thumb is w_500; stream cards are ~530px (zigzag) to ~680px
-      // wide on bigger screens, so offer a w_1000 too. Phones are told "170px" so they keep the w_500
-      // they always had (same quality and bytes as before, LCP unchanged).
-      function big(u) { return L.small(u).replace('/w_200,', '/c_limit,w_1000,'); }
 
-      function strip(p, ph, lcp) {
-        var s = L.el('div', 'live-strip'), r0 = ratio(ph[0]);
-        s.style.aspectRatio = String(Math.min(4 / 3, Math.max(3 / 4, r0.w / r0.h)));
-        ph.forEach(function (x, i) {
-          // A playable video is a box (not a link) holding the poster, a
-          // full-box play button and its duration; a photo links to the full size.
-          var vid = L.isVideo(x), d = vid ? L.dur(x.duration) : '';
-          var r = ratio(x), a = L.el(vid ? 'div' : 'a', 'live-slide' + (vid ? ' is-video' : '')), img = L.el('img'), src = L.still(x);
-          if (!vid) {
-            a.href = L.safe(x.full) || src;
-            a.target = '_blank'; a.rel = 'noopener';
-          }
-          a.style.aspectRatio = r.w + ' / ' + r.h;
-          img.width = r.w; img.height = r.h;
-          if (lcp && !i) { img.loading = 'eager'; img.fetchPriority = 'high'; }
-          else { img.loading = 'lazy'; img.decoding = 'async'; }
-          img.alt = (p.comment ? p.comment : 'Gutter job' + (p.town ? ' in ' + p.town : '')) +
-            (vid ? ' (video' + (d ? ', ' + d : '') + (ph.length > 1 ? ', ' + (i + 1) + ' of ' + ph.length : '') + ')' : ph.length > 1 ? ' (photo ' + (i + 1) + ' of ' + ph.length + ')' : '');
-          if (vid) {
-            var btn = L.el('button', 'live-play'), chip = L.el('span', 'live-dur', d);
-            btn.type = 'button';
-            btn.setAttribute('aria-label', 'Play video' + (d ? ' (' + d + ')' : ''));
-            btn.appendChild(L.glyph());
-            chip.hidden = !d;
-            btn.addEventListener('click', function () { playIn(a, x, img, btn, chip); });
-          }
-          if (/res\.cloudinary\.com/.test(src)) {
-            img.srcset = src + ' 500w, ' + big(src) + ' 1000w';
-            img.sizes = '(max-width: 768px) 170px, (min-width: 1024px) 530px, 680px';
-          }
-          img.src = src;
-          a.appendChild(img);
-          if (vid) { a.appendChild(btn); a.appendChild(chip); }
-          s.appendChild(a);
+      // A card's data, read back from its own markup (server-rendered cards
+      // carry it all), for the filmstrip, polaroid, ticker and JSON-LD.
+      function read(li) {
+        var c = li.querySelector('.ls-comment'), p = {
+          id: li.getAttribute('data-id'), posted_at: li.getAttribute('data-t'), town: li.getAttribute('data-town') || '',
+          taken_at: li.getAttribute('data-taken') || null, count: +li.getAttribute('data-count') || 0, comment: c ? c.textContent : null, photos: [] };
+        [].forEach.call(li.querySelectorAll('.live-slide'), function (s) {
+          var img = s.querySelector('img'), x = { w: +img.getAttribute('width'), h: +img.getAttribute('height'), thumb: img.getAttribute('src') };
+          if (s.classList.contains('is-video')) { x.kind = 'video'; x.mp4 = s.getAttribute('data-mp4'); x.poster = s.getAttribute('data-poster'); x.duration = +s.getAttribute('data-duration') || null; }
+          else x.full = s.getAttribute('href');
+          p.photos.push(x);
         });
-        return s;
+        return p;
       }
 
-      var tierSeen = {};
-      function post(p) {
-        var ph = photos(p), total = Math.max(+p.count || 0, ph.length);
-        var c = L.el('li', 'ls-post'), node = L.el('span', 'ls-node'), card = L.el('article', 'ls-card'),
-            media = L.el('div', 'live-media'), s = strip(p, ph, shown.length === 1);
-        c.id = 'ls-' + count;
-        // Desktop zigzag: posts alternate sides of a centred rail (CSS, >=1024px).
-        c.classList.add(count % 2 ? 'is-left' : 'is-right');
-        c.setAttribute('data-id', p.id);
-        node.setAttribute('aria-hidden', 'true');
-        c.appendChild(node);
-        media.appendChild(s);
-        if (total > 1) {
-          // "+2 photos", "+1 video", or "+2 more" when the rest are mixed.
-          var restV = ph.slice(1).filter(function (x) { return x.kind === 'video'; }).length, m = total - 1;
-          var what = !restV ? 'photo' + (m === 1 ? '' : 's') : restV === ph.length - 1 && ph.length === total ? 'video' + (m === 1 ? '' : 's') : 'more';
-          var n = L.el('button', 'live-count', '+' + m + ' ' + what);
-          n.type = 'button';
-          n.setAttribute('aria-label', 'Next ' + (restV ? 'item' : 'photo') + ' (' + total + ' in this post)');
-          n.addEventListener('click', function () {
-            var atEnd = s.scrollLeft + s.clientWidth >= s.scrollWidth - 4;
-            s.scrollTo({ left: atEnd ? 0 : s.scrollLeft + s.clientWidth * 0.9, behavior: L.reduced ? 'auto' : 'smooth' });
+      // Cards need no listeners of their own: one delegated click handler on
+      // the stream runs every batch strip's count button and every video's
+      // play control (server-rendered or built here), and one capturing
+      // scroll listener keeps each strip's "2 / 4" current. Installed at
+      // once, so a tap before the rest of hydration still plays inline.
+      function onStream(list) {
+        list.addEventListener('click', function (e) {
+          var t = e.target.closest && e.target.closest('.live-play, .live-count');
+          if (!t) return;
+          if (t.classList.contains('live-play')) {
+            if (!t.parentNode.classList.contains('is-video')) return;
+            e.preventDefault();
+            return playIn(t.parentNode, t);
+          }
+          var s = t.parentNode.querySelector('.live-strip'), atEnd = s.scrollLeft + s.clientWidth >= s.scrollWidth - 4;
+          s.scrollTo({ left: atEnd ? 0 : s.scrollLeft + s.clientWidth * 0.9, behavior: L.reduced ? 'auto' : 'smooth' });
+        });
+        list.addEventListener('scroll', function (e) {
+          var s = e.target;
+          if (!s.classList || !s.classList.contains('live-strip') || s.__raf) return;
+          s.__raf = requestAnimationFrame(function () {
+            s.__raf = 0;
+            var n = s.parentNode.querySelector('.live-count');
+            if (!n) return;
+            var k = 0, slides = s.children, li = s.closest('.ls-post');
+            for (var i = 0; i < slides.length; i++) if (slides[i].offsetLeft - s.scrollLeft <= s.clientWidth / 2) k = i;
+            n.textContent = (k + 1) + ' / ' + (+li.getAttribute('data-count') || slides.length);
           });
-          var raf = 0;
-          s.addEventListener('scroll', function () {
-            if (raf) return;
-            raf = requestAnimationFrame(function () {
-              raf = 0;
-              var k = 0, slides = s.children;
-              for (var i = 0; i < slides.length; i++) if (slides[i].offsetLeft - s.scrollLeft <= s.clientWidth / 2) k = i;
-              n.textContent = (k + 1) + ' / ' + total;
-            });
-          }, { passive: true });
-          media.appendChild(n);
-        }
-        card.appendChild(media);
+        }, { capture: true, passive: true });
+      }
+      onStream(first); onStream(rest);
 
-        // The big red line is present tense, from the post's real age; the
-        // exact time is the quiet sub-line under it (and it ticks).
-        var body = L.el('div', 'ls-body'), head = L.el('h3', 'ls-head'), sub = L.el('p', 'ls-sub');
-        head.setAttribute('data-t', p.posted_at);
-        head.setAttribute('data-town', p.town || '');
-        body.appendChild(head);
-        sub.appendChild(document.createTextNode('Posted '));
-        var when = L.el('time', null, W.ago(p.posted_at));
-        when.setAttribute('datetime', p.posted_at);
-        when.setAttribute('data-posted', p.posted_at);
-        sub.appendChild(when);
-        if (p.taken_at && !isNaN(Date.parse(p.taken_at))) sub.appendChild(document.createTextNode(' · taken ' + W.date(p.taken_at)));
-        body.appendChild(sub);
-        if (p.comment) body.appendChild(L.el('p', 'ls-comment', p.comment));
-        card.appendChild(body);
-        c.appendChild(card);
-
-        var chip = null;
-        c.setAttribute('data-live-box', '');
-        c.setLive = function (on) {
+      // Hydrate one card: its LIVE state follows the clock (brgLive.tick
+      // calls setLive). The card already shows the state as of when it was
+      // rendered, so nothing is touched now.
+      function wire(li) {
+        var media = li.querySelector('.live-media');
+        li.setLive = function (on) {
+          var chip = media.querySelector('.live-chip');
           if (on && !chip) {
             chip = L.el('span', 'live-chip');
             chip.appendChild(L.dot(true));
             chip.appendChild(document.createTextNode('LIVE'));
             media.appendChild(chip);
-          } else if (!on && chip) { chip.remove(); chip = null; }
-          c.classList.toggle('is-live', on);
+          } else if (!on && chip) chip.remove();
+          li.classList.toggle('is-live', on);
         };
-        c.setLive(L.isLive(p.posted_at));
-        return c;
+        ids[li.getAttribute('data-id')] = li.id;
+        return li;
       }
+
       // Headlines: each post's tier from its real age; k = how many posts of
-      // the same tier came before it, so neighbours never repeat. Re-run as
-      // time passes (a post moves fresh -> today -> yesterday). The box keeps
-      // its height whatever the words (CSS), so a relabel never moves a thing.
+      // the same tier came before it. Re-run as time passes (fresh -> today ->
+      // yesterday). The box keeps its height whatever the words (CSS), so the
+      // upgrade from the server's stamp — and every relabel — moves nothing.
       function headlines(now) {
         var seen = {}, hs = document.querySelectorAll('.ls-head');
         for (var i = 0; i < hs.length; i++) {
@@ -509,30 +357,7 @@ permalink: /live/
           if (hs[i].textContent !== s) hs[i].textContent = s;
         }
       }
-
       W.relabel = headlines;
-
-      function dayNode(p) {
-        var d = L.el('li', 'ls-day'), s = L.el('span', 'ls-day-label', W.dayLabel(p.posted_at));
-        d.setAttribute('data-t', p.posted_at);
-        d.classList.toggle('is-today', W.dayLabel(p.posted_at) === 'Today');
-        d.appendChild(L.el('span', 'ls-node'));
-        d.appendChild(s);
-        return d;
-      }
-      function hookNode(p) {
-        var hk = W.hook(p, hooks++), h = L.el('li', 'ls-hook'), box = L.el('p', 'ls-hook-text', hk.text),
-            a = L.el('a', 'ls-hook-tel', 'Call (256) 616-6760'), b = L.el('a', 'ls-hook-book', 'book online');
-        h.setAttribute('data-kind', hk.kind);
-        a.href = 'tel:2566166760';
-        b.href = BOOK; b.target = '_blank'; b.rel = 'noopener';
-        box.appendChild(a);
-        box.appendChild(document.createTextNode(' or '));
-        box.appendChild(b);
-        h.appendChild(L.el('span', 'ls-node'));
-        h.appendChild(box);
-        return h;
-      }
 
       // Glide to a post in the stream (filmstrip thumbs, the polaroid stack).
       function jumpTo(id, ev) {
@@ -544,13 +369,20 @@ permalink: /live/
         if (ev && window.brgTrack) brgTrack(ev);
         return true;
       }
+      function cardId(p) { return ids[p.id] || ''; }
+      function vthumb(img, cls) {
+        var w = L.el('span', cls);
+        w.appendChild(img);
+        w.appendChild(L.glyph());
+        return w;
+      }
 
       // Hero backdrop made of the crew's photos: the filmstrip's own w_200
-      // URLs (already on the page), tiled, treated dark in CSS, drifting slowly.
+      // URLs, tiled, treated dark in CSS, drifting slowly.
       function fillMosaic() {
         var srcs = [];
-        shown.forEach(function (p) { photos(p).forEach(function (x) { if (srcs.length < 18) srcs.push({ src: L.small(L.still(x)), video: x.kind === 'video' }); }); });
-        if (!srcs.length) return;
+        shown.forEach(function (p) { C.photos(p).forEach(function (x) { if (srcs.length < 18) srcs.push({ src: L.small(L.still(x)), video: x.kind === 'video' }); }); });
+        if (!srcs.length || mosaic.firstChild) return;
         var n = matchMedia('(max-width: 768px)').matches ? 9 : 18, frag = document.createDocumentFragment();
         for (var i = 0; i < n; i++) {
           var img = L.el('img', 'live-mosaic-tile'), t = srcs[i % srcs.length];
@@ -567,12 +399,11 @@ permalink: /live/
       function fillPolaroids() {
         var top3 = shown.slice(0, 3);
         if (!top3.length) return;
-        var a = L.el('a', 'live-pol');
-        a.href = '#ls-1';
+        var a = L.el('a', 'live-pol'), to = cardId(top3[0]);
+        a.href = '#' + to;
         a.setAttribute('aria-label', 'Newest post: ' + W.headline(top3[0], null, 0) + ' — jump to it');
         top3.slice().reverse().forEach(function (p) {
-          var i = top3.indexOf(p), card = L.el('span', 'pol-card pol-' + i), img = L.el('img');
-          var x0 = photos(p)[0];
+          var i = top3.indexOf(p), card = L.el('span', 'pol-card pol-' + i), img = L.el('img'), x0 = C.photos(p)[0];
           img.alt = ''; img.decoding = 'async';
           img.src = L.still(x0);
           card.appendChild(x0.kind === 'video' ? vthumb(img, 'pol-photo') : img);
@@ -588,7 +419,8 @@ permalink: /live/
           }
           a.appendChild(card);
         });
-        a.addEventListener('click', function (e) { if (jumpTo('ls-1', 'live_polaroid_tap')) e.preventDefault(); });
+        a.addEventListener('click', function (e) { if (jumpTo(to, 'live_polaroid_tap')) e.preventDefault(); });
+        pols.textContent = '';
         pols.appendChild(a);
       }
 
@@ -596,8 +428,8 @@ permalink: /live/
       // posts. Real posts only; with none this week the static line stays.
       var tickerText = '';
       function fillTicker() {
-        var items = [], st = W.stats(shown), seen = {};
-        if (st) items.push(st);
+        var items = [], s = W.stats(shown), seen = {};
+        if (s) items.push(s);
         var wk = shown.filter(function (p) { return Date.now() - Date.parse(p.posted_at) < 7 * 86400000; }).slice(0, 10), k = {};
         wk.forEach(function (p) {
           var tr = W.tier(p.posted_at), h = W.headline(p, null, k[tr] = (k[tr] || 0)); k[tr]++;
@@ -614,13 +446,14 @@ permalink: /live/
       }
 
       // Filmstrip: the latest photos, newest first; a tap glides to the post.
+      var filmWired = false;
       function fillFilm() {
         var frag = document.createDocumentFragment(), n = 0;
-        shown.some(function (p, i) {
-          photos(p).forEach(function (x, k) {
+        shown.some(function (p) {
+          C.photos(p).forEach(function (x, k) {
             if (n >= FILM_MAX) return;
             var a = L.el('a', 'live-film-thumb' + (!k && L.isLive(p.posted_at) ? ' is-live' : '')), img = L.el('img');
-            a.href = '#ls-' + (i + 1);
+            a.href = '#' + cardId(p);
             a.setAttribute('aria-label', 'Jump to ' + W.headline(p, null, 0) + (x.kind === 'video' ? ' (video)' : k ? ' (photo ' + (k + 1) + ')' : ''));
             img.alt = ''; img.width = 96; img.height = 96; img.decoding = 'async'; img.loading = n < 8 ? 'eager' : 'lazy';
             img.src = L.small(L.still(x));
@@ -633,17 +466,20 @@ permalink: /live/
         });
         film.textContent = '';
         film.appendChild(frag);
+        if (filmWired) return;
+        filmWired = true;
         film.addEventListener('click', function (e) {
           var a = e.target.closest && e.target.closest('a[href^="#ls-"]');
           if (!a) return;
           if (jumpTo(a.getAttribute('href').slice(1), 'live_film_tap')) e.preventDefault();
         });
       }
+      function fillHero() { if (!shown.length) return; fillFilm(); fillMosaic(); fillPolaroids(); fillTicker(); }
 
       function ld() {
         var graph = [];
         shown.forEach(function (p) {
-          photos(p).forEach(function (x) {
+          C.photos(p).forEach(function (x) {
             var org = { '@type': 'Organization', name: 'Blue River Gutters', url: 'https://bluerivergutters.com/' }, o;
             if (L.isVideo(x)) {
               // VideoObject: the mp4, its poster, ISO duration; same town-only place.
@@ -666,47 +502,11 @@ permalink: /live/
         s.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
       }
 
-      function add(d, lazy) {
-        var posts = (d && d.posts) || [], top = document.createDocumentFragment(), below = document.createDocumentFragment(), prev = shown[shown.length - 1];
-        posts.forEach(function (p) {
-          if (!p || seen[p.id] || !photos(p).length || isNaN(Date.parse(p.posted_at))) return;
-          seen[p.id] = 1;
-          var before = count;
-          // A hook after post n (n % 4 == 0), keyed to that post — not right
-          // before the form, and never at the very end (only once another post follows).
-          if (before > 0 && before % HOOK_EVERY === 0 && before !== K) (before < K ? top : below).appendChild(hookNode(prev));
-          shown.push(p); count++;
-          var into = count <= K ? top : below, day = W.dayKey(p.posted_at);
-          if (day !== lastDay || before === K) into.appendChild(dayNode(p));
-          lastDay = day;
-          var el = post(p);
-          if (reveal && count > K) { el.classList.add('is-pending'); reveal.observe(el); }
-          into.appendChild(el);
-          prev = p;
-        });
-        first.appendChild(top);
-        next = d && d.next ? d.next : null;
-        more.hidden = !next;
-        if (lazy) {
-          // First page: the first screen goes in now; the stream below the
-          // form card (off screen) follows in small tasks, so no long task
-          // holds a slow phone. Load More appends at once (space is reserved).
-          var kids = [].slice.call(below.childNodes);
-          (function chunk() {
-            var f = document.createDocumentFragment();
-            kids.splice(0, 8).forEach(function (n) { f.appendChild(n); });
-            rest.appendChild(f);
-            if (kids.length) setTimeout(chunk, 0); else headlines();
-          })();
-        } else rest.appendChild(below);
-        if (shown.length) {
-          headlines();
-          var st = W.stats(shown);
-          statsEl.textContent = st;
-          form2.hidden = count < K + FORM2_AFTER;
-          (window.requestIdleCallback || setTimeout)(ld);
-          L.startTicking();
-        } else down('Nothing posted yet today — the crews are out on jobs.');
+      function settle() {
+        headlines();
+        statsEl.textContent = W.stats(shown);
+        (window.requestIdleCallback || setTimeout)(ld);
+        L.startTicking();
       }
       function down(msg) {
         status.textContent = msg;
@@ -716,6 +516,102 @@ permalink: /live/
         first.classList.add('is-empty');
       }
 
+      // ---- PLAIN SHELL: build from the feed (first page and Load More).
+      // The first screen (posts 1..K) is parsed and placed at once; the
+      // stream below the form card (off screen) follows in small tasks, so no
+      // long task holds a slow phone. Load More appends at once (space is
+      // reserved). The data is known up front (shown), so the hero strip
+      // doesn't wait for the cards.
+      function place(items, into, done) {
+        var f = html(items.map(function (it) { return it.html; }).join(''));
+        [].forEach.call(f.querySelectorAll('li.ls-post'), function (li) {
+          wire(li);
+          if (+li.id.slice(3) > K) pend(li);
+        });
+        into.appendChild(f);
+        if (done) done();
+      }
+      function add(d, lazy) {
+        var posts = ((d && d.posts) || []).filter(function (p) { return p && !ids[p.id]; });
+        var items = C.sequence(posts, st).filter(function (it) { return it.type !== 'form'; }); // the form card sits between the two lists
+        var top = items.filter(function (it) { return it.n <= K; }), below = items.filter(function (it) { return it.n > K; });
+        items.forEach(function (it) { if (it.type === 'post') { shown.push(it.post); ids[it.post.id] = 'ls-' + it.n; } });
+        place(top, first);
+        next = d && d.next ? d.next : null;
+        more.hidden = !next;
+        if (lazy) (function chunk() {
+          place(below.splice(0, 8), rest, function () { if (below.length) setTimeout(chunk, 0); else headlines(); });
+        })();
+        else place(below, rest);
+        if (shown.length) {
+          form2.hidden = st.count < K + FORM2_AFTER;
+          settle();
+        } else down('Nothing posted yet today — the crews are out on jobs.');
+      }
+
+      // ---- SERVER-RENDERED: hydrate, then (page 1) top up from the feed.
+      // Before the first paint only the stamps become present-tense lines
+      // (text in fixed-height boxes: no layout read, no move, no flash).
+      // The rest waits for the first frame: read the cards' data back, mark
+      // the ones below the screen for the slide-in (all positions read first,
+      // then classes written — one layout), then the clock.
+      var hydrated = null;
+      function hydrate() {
+        headlines();
+        hydrated = new Promise(function (done) {
+          requestAnimationFrame(function () { setTimeout(function () {
+            var lis = [].slice.call(first.querySelectorAll('li.ls-post'));
+            lis.forEach(function (li) { shown.push(read(wire(li))); });
+            if (!shown.length) { down('Nothing posted yet today — the crews are out on jobs.'); return done(); }
+            var h = innerHeight, below = lis.filter(function (li) { return li.getBoundingClientRect().top >= h; });
+            below.forEach(pend);
+            settle();
+            done();
+          }, 0); });
+        });
+      }
+      // Posts newer than the server's copy (it is cached up to a minute), in
+      // at the top, newest first, never twice. Zigzag sides continue from the
+      // card they land above; a day node opens a newer day.
+      function topUp(posts) {
+        var newest = Date.parse(shown.length ? shown[0].posted_at : 0) || 0;
+        var fresh = (posts || []).filter(function (p) { return C.ok(p) && !ids[p.id] && Date.parse(p.posted_at) > newest; });
+        if (!fresh.length) return;
+        var anchorDay = first.querySelector('li.ls-day'), firstPost = first.querySelector('li.ls-post');
+        var anchorKey = anchorDay ? W.dayKey(anchorDay.getAttribute('data-t')) : null;
+        var side = firstPost && firstPost.classList.contains('is-left') ? 'is-left' : 'is-right';
+        var imgs = { img: 1 };
+        function put() {
+          var m = fresh.length, before = document.createDocumentFragment(), after = document.createDocumentFragment(), lastKey = null, built = [];
+          fresh.forEach(function (p, i) {
+            var key = W.dayKey(p.posted_at), into = key === anchorKey ? after : before;
+            if (key !== lastKey && key !== anchorKey) before.appendChild(html(C.day(p)).firstChild);
+            lastKey = key;
+            var sd = (m - 1 - i) % 2 ? side : side === 'is-left' ? 'is-right' : 'is-left';
+            var node = html(C.card(p, { id: 'ls-n' + (++topUp.n), side: sd, alive: true, st: imgs })).firstChild;
+            into.appendChild(node);
+            built.push(node);
+          });
+          var ref = anchorDay || firstPost;
+          if (ref) { ref.parentNode.insertBefore(before, ref); if (anchorDay) anchorDay.parentNode.insertBefore(after, anchorDay.nextSibling); else ref.parentNode.insertBefore(after, ref); }
+          else first.appendChild(before), first.appendChild(after);
+          built.forEach(wire);
+          shown = fresh.concat(shown);
+          settle();
+          fillHero();
+        }
+        // Below the screen: in now — nothing on screen moves. Anywhere else (on
+        // screen, or already scrolled past, where inserting above would shove
+        // the page): a pill over the "newest at the top" line, absolutely
+        // positioned so it moves nothing either; a tap puts them in.
+        if ((anchorDay || firstPost).getBoundingClientRect().top >= innerHeight) return put();
+        var top = first.querySelector('.ls-top'), pill = L.el('button', 'ls-fresh', '↑ ' + fresh.length + ' new post' + (fresh.length === 1 ? '' : 's') + ' from the field');
+        pill.type = 'button';
+        pill.addEventListener('click', function () { pill.remove(); put(); if (window.brgTrack) brgTrack('live_fresh_tap'); });
+        top.appendChild(pill);
+      }
+      topUp.n = 0;
+
       // Labels age with the page: headlines, day nodes, the stats sentence.
       setInterval(function () {
         if (document.hidden || !shown.length) return;
@@ -723,7 +619,7 @@ permalink: /live/
         var ds = document.querySelectorAll('.ls-day');
         for (var i = 0; i < ds.length; i++) {
           var lab = W.dayLabel(ds[i].getAttribute('data-t'));
-          ds[i].lastChild.textContent = lab;
+          if (ds[i].lastChild.textContent !== lab) ds[i].lastChild.textContent = lab;
           ds[i].classList.toggle('is-today', lab === 'Today');
         }
         statsEl.textContent = W.stats(shown);
@@ -732,23 +628,29 @@ permalink: /live/
         fillTicker();
       }, 60000);
 
-      window.brgLiveFirst.then(function (d) { add(d, true); if (shown.length) { fillFilm(); fillMosaic(); fillPolaroids(); fillTicker(); } }, function () {
-        down('We couldn’t load the latest photos just now — refresh in a minute.');
-      });
-
-      more.addEventListener('click', function () {
-        if (busy || !next) return;
-        busy = true; more.disabled = true;
-        // Reserve a screen of space now, inside the click's input window, so the
-        // new posts land in room that already exists.
-        rest.style.minHeight = (rest.offsetHeight + innerHeight) + 'px';
-        get(next).then(function (d) { more.textContent = 'Load more from the field'; add(d); }, function () {
-          more.textContent = 'Couldn’t load — tap to try again';
-        }).then(function () {
-          busy = false; more.disabled = false;
-          requestAnimationFrame(function () { rest.style.minHeight = ''; });
+      if (ssrPage) {
+        hydrate();
+        if (ssrPage === 1) {
+          Promise.all([window.brgLiveFirst.catch(function () { return null; }), hydrated]).then(function (r) { topUp(r[0] && r[0].posts); fillHero(); });
+        } else hydrated.then(function () { if (document.readyState === 'complete') fillHero(); else addEventListener('load', fillHero); });
+      } else {
+        window.brgLiveFirst.then(function (d) { add(d, true); fillHero(); }, function () {
+          down('We couldn’t load the latest photos just now — refresh in a minute.');
         });
-      });
+        more.addEventListener('click', function () {
+          if (busy || !next) return;
+          busy = true; more.disabled = true;
+          // Reserve a screen of space now, inside the click's input window, so the
+          // new posts land in room that already exists.
+          rest.style.minHeight = (rest.offsetHeight + innerHeight) + 'px';
+          get(next).then(function (d) { more.textContent = 'Load more from the field'; add(d); }, function () {
+            more.textContent = 'Couldn’t load — tap to try again';
+          }).then(function () {
+            busy = false; more.disabled = false;
+            requestAnimationFrame(function () { rest.style.minHeight = ''; });
+          });
+        });
+      }
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
   })();

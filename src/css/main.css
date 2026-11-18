@@ -645,6 +645,29 @@ section { padding: 4rem 0; }
 .ls-welcome-card .live-welcome-next { margin-bottom: 0; font-weight: 600; color: var(--navy); }
 .ls-end { height: 26px; }
 .ls-end .ls-node { top: 6px; background: var(--navy); border-color: #cbd5e1; }
+/* Server-rendered stream (WO-0150 #269). Spots: where the page moves its
+   forms in; empty (no JS) they take no space. */
+.ls-spot:empty { display: none; }
+.ls-older, .ls-newer, .ls-spot { position: relative; }
+/* The end point: "older work continues" — a real link to the next archive
+   page, on the rail. The last archive page ends on "the beginning". */
+.ls-older { margin: 0.5rem 0 2rem; }
+.ls-older .ls-node, .ls-newer .ls-node { top: 50%; width: 19px; height: 19px; margin-top: -9.5px; left: calc(var(--rail) - 52px - 9.5px); background: var(--navy); border-color: #fecaca; box-shadow: 0 0 0 3px var(--navy); }
+.ls-older-link { display: flex; flex-direction: column; gap: 0.3rem; padding: 1.25rem 1.4rem; border-radius: 14px; background: var(--navy); color: var(--white); text-decoration: none; box-shadow: 0 12px 30px rgba(15,23,42,0.22); }
+.ls-older-kicker { color: #fecaca; font-size: 0.78rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+.ls-older-cta { font-size: 1.4rem; font-weight: 800; line-height: 1.25; }
+a.ls-older-link:hover, a.ls-older-link:focus-visible { color: var(--white); background: #1e293b; }
+a.ls-older-link:hover .ls-older-cta, a.ls-older-link:focus-visible .ls-older-cta { text-decoration: underline; text-underline-offset: 4px; }
+.ls-older.is-start .ls-older-link { margin: 0; background: #e2e8f0; color: var(--navy); box-shadow: none; }
+.ls-older.is-start .ls-older-kicker { color: var(--red); }
+.ls-older.is-start .ls-node { background: #cbd5e1; box-shadow: 0 0 0 3px #cbd5e1; }
+.ls-newer { margin: 0 0 1.25rem; }
+.ls-newer-link { display: inline-flex; align-items: center; min-height: 44px; padding: 0.5rem 1.1rem; border-radius: 999px; background: #e2e8f0; color: var(--navy); font-weight: 700; }
+.ls-newer-link:hover, .ls-newer-link:focus-visible { background: var(--navy); color: var(--white); }
+/* New posts since the server's copy, while the top of the stream is on
+   screen: a pill over the "newest at the top" line (absolute: moves nothing). */
+.ls-fresh { position: absolute; left: 50%; top: 50%; z-index: 2; transform: translate(-50%, -50%); padding: 0.5rem 1.1rem; border: 0; border-radius: 999px; background: var(--red); color: var(--white); font: inherit; font-size: 0.85rem; font-weight: 800; letter-spacing: 0.04em; white-space: nowrap; box-shadow: 0 6px 18px rgba(185,28,28,0.4); cursor: pointer; }
+.ls-fresh:hover, .ls-fresh:focus-visible { background: var(--red-dark); }
 .live-more { display: block; margin: 0.5rem 0 2rem; }
 .live-more[hidden] { display: none; }
 @media (prefers-reduced-motion: reduce) {
@@ -692,6 +715,12 @@ section { padding: 4rem 0; }
   .ls-hook { max-width: 660px; margin: 0.5rem auto 2rem; }
   .ls-hook .ls-node, .ls-form .ls-node, .ls-welcome .ls-node, .ls-end .ls-node { left: calc(50% - 6.5px); top: -18px; }
   .ls-form .ls-node { left: calc(50% - 9.5px); top: -24px; }
+  .ls-older, .ls-newer { max-width: 660px; margin-left: auto; margin-right: auto; text-align: center; }
+  .ls-older { margin-top: 2.5rem; }
+  .ls-older .ls-node, .ls-newer .ls-node { left: calc(50% - 9.5px); top: -26px; margin-top: 0; }
+  .ls-older-link { align-items: center; }
+  .ls-newer { margin-top: 0.5rem; padding-top: 6px; }
+  .ls-newer .ls-node { display: none; }
   .ls-form, .ls-welcome { max-width: 780px; margin-left: auto; margin-right: auto; }
   .ls-form { margin-top: 2.5rem; }
   .live-more { margin: 1rem auto 2rem; position: relative; }
@@ -720,6 +749,8 @@ section { padding: 4rem 0; }
   .ls-top-node { left: calc(var(--rail) - 34px - 10px); }
   .ls-day .ls-node { left: calc(var(--rail) - 34px - 8.5px); }
   .ls-form .ls-node { left: calc(var(--rail) - 34px - 9.5px); }
+  .ls-older .ls-node, .ls-newer .ls-node { left: calc(var(--rail) - 34px - 9.5px); }
+  .ls-older-cta { font-size: 1.2rem; }
   .ls-post .ls-node::after { width: 16px; }
   .ls-post { margin-bottom: 1.4rem; }
   .ls-head { min-height: 2.4em; font-size: 1.28rem; white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
