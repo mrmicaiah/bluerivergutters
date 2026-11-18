@@ -1,6 +1,6 @@
 # Blue River Gutters website — how we work (build and bugs managers)
 
-Maintained by Remi (Studio87 operations). Version 1, 2026-11-15.
+Maintained by Remi (Studio87 operations). Version 2, 2026-11-18 (v1 2026-11-15). Change in v2: the "warn before the work" rule, first in section 3.
 Read this at the start of every chat and every work order. If anything older in your chat disagrees with this file, this file wins.
 
 **This repo is public.** Nothing private goes in it: no passwords, keys, tokens, personal emails or phone numbers, in files, commits or messages.
@@ -58,6 +58,7 @@ Don't fight for "gutters Huntsville AL". Blanket the service area with city-spec
 
 ## 3. Rules of the build
 
+- **Warn before the work, never make anyone retype (Micaiah, 11-18).** "I don't like it to refuse things. The goal here is to prevent having to retype everything. So if they are saving and we didn't let them know already then we've failed." A guiding principle for all our software. Anything that would block a save or a submit (a missing field, a wrong format, a limit, a rule) is shown UP FRONT, beside the field, before the person puts in the work. If a save or submit still fails, nothing they typed or picked is lost: entries stay on screen with the reason. Here that covers every form and Adam's posting/management link (photos picked, captions typed). Check it on every order that touches a form.
 - Nothing is ever deleted: close, combine, archive, park branches, or mark deprecated. Code included.
 - No workarounds: fix the real cause.
 - Nothing private in this public repo (see the top).
